@@ -1,18 +1,6 @@
 
 public class Main {
-	//
-	
-	
-	
-	
-	
-	//
-	
-	
-	
-	
-	
-	
-	//Friso is een zieke henk
-	
+	public static void main(String[] args){
+		System.out.print("Philip is een zieke henk.");
+	}	
 }
