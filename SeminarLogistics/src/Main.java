@@ -13,6 +13,6 @@ public class Main {
 	
 	
 	
-	//Friso is een zieke legend.
+	//Friso is een zieke henk
 	
 }
