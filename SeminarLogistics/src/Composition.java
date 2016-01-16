@@ -25,7 +25,7 @@ public class Composition {
 	//TODO: Do not forget to change the position for all functions!
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
 
-	public Composition coupleCompositionBack(Composition addcomposition){
+	public Composition coupleComposition(Composition addcomposition){
 		this.compositiontrains.addAll(addcomposition.getCompositionList());
 
 		addcomposition = null; //If this does not work well, we need to make the function in Main.
@@ -34,26 +34,15 @@ public class Composition {
 		this.updateComposition();
 		return this;
 	}
-
-	public int getCompositionLength(){
-		return compositionlength;
-	}
-	public int getCompositionSize(){
-		return compositionsize;
-	}
-
-	public Train getTrain(int i){
-		return this.compositiontrains.get(i);
-	}
-
-	public Composition[] decoupleCompBack2(int nrdecouple){
+	
+	public Composition[] decoupleComposition(int nrdecouple){
 		Composition[] newcomposition1 = new Composition[2];
 		
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
 
 		for(int i=1;i<=nrdecouple;i++){
-			newcompositionlist.add(0, this.getTrain(this.getCompositionSize()-1));
-			this.compositiontrains.remove(this.getCompositionSize()-1);
+			newcompositionlist.add(0, this.getTrain(this.getSize()-1));
+			this.compositiontrains.remove(this.getSize()-1);
 		}
 		
 		this.updateComposition();
@@ -66,13 +55,24 @@ public class Composition {
 		return newcomposition1;
 	}
 
+	public int getLength(){
+		return compositionlength;
+	}
+	public int getSize(){
+		return compositionsize;
+	}
+
+	public Train getTrain(int i){
+		return this.compositiontrains.get(i);
+	}
+
 	public ArrayList<Train> getCompositionList(){
 		return compositiontrains;
 	}
 
 	private void updateComposition(){
 		int templength = 0;
-		for(int i=0;i<this.compositionlength;i++){ //TODO: What if composition = 0?
+		for(int i=0;i<this.getCompositionList().size();i++){ //TODO: What if composition = 0?
 			templength += this.compositiontrains.get(i).getLength();
 			this.getTrain(i).changePosition(i);
 		}
