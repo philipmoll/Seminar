@@ -1,5 +1,14 @@
 import java.lang.*;
 
+/**
+ * 
+ * @author Philip Moll 431983
+ * @author Friso Tigchelaar 360024
+ * @author Robin Timmerman 344870
+ * @author Floor Wolfhagen 362063
+ *
+ */
+
 public class Train {
 	private static int train_ID;
 	private static int type;
@@ -16,7 +25,6 @@ public class Train {
 	private boolean washing;
 	
 	private int position;
-	
 	
 	public Train(int train_ID, int type){
 		this.train_ID = train_ID;
@@ -88,25 +96,25 @@ public class Train {
 	}
 	
 
-	public int getID(){
+	public static int getID(){
 		return train_ID;
 	}
-	public int getType(){
+	public static int getType(){
 		return type;
 	}
-	public int getLength(){
+	public static int getLength(){
 		return length;
 	}
-	public int getInspectionTime(){
+	public static int getInspectionTime(){
 		return inspectiontime;
 	}
-	public int getCleaningTime(){
+	public static int getCleaningTime(){
 		return cleaningtime;
 	}
-	public int getRepairingTime(){
+	public static int getRepairingTime(){
 		return repairingtime;
 	}
-	public int getWashingTime(){
+	public static int getWashingTime(){
 		return washingtime;
 	}
 	public boolean getInterchangeable(){

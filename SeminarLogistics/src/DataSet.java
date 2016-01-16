@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.io.StreamTokenizer;
 
 /**
- * The class DataSet reads a given file and stores each row of numbers in an ArrayList, containing vectors, called values.
- * It also contains a public accessor method that returns a column of data if the column number is inserted
- * @author 360024 Friso Tigchelaar
- * @author 362063 Floor Wolfhagen
  * 
+ * @author Philip Moll 431983
+ * @author Friso Tigchelaar 360024
+ * @author Robin Timmerman 344870
+ * @author Floor Wolfhagen 362063
+ *
  */
 
 public class DataSet {
