@@ -19,7 +19,7 @@ public class Composition {
 	public Composition(ArrayList<Train> compositiontrains){
 		this.compositiontrains = compositiontrains;
 
-		this.updateLength();
+		this.updateComposition();
 	}
 
 	//TODO: Do not forget to change the position for all functions!
@@ -30,10 +30,8 @@ public class Composition {
 
 		addcomposition = null; //If this does not work well, we need to make the function in Main.
 		//TODO: What happens if: In an ArrayList of objects, the objects is set to null but is not removed from the list?
-		for(int i=1;i<=this.getCompositionSize();i++){
-			addcomposition.getTrain(i).changePosition(i);
-		}
-		this.updateLength();
+
+		this.updateComposition();
 		return this;
 	}
 
@@ -58,7 +56,7 @@ public class Composition {
 			this.compositiontrains.remove(this.getCompositionSize()-1);
 		}
 		
-		this.updateLength();
+		this.updateComposition();
 		
 		Composition newcomposition = new Composition(newcompositionlist);
 		
@@ -72,11 +70,13 @@ public class Composition {
 		return compositiontrains;
 	}
 
-	private void updateLength(){
-		this.compositionlength = 0;
+	private void updateComposition(){
+		int templength = 0;
 		for(int i=0;i<this.compositionlength;i++){ //TODO: What if composition = 0?
-			this.compositionlength += this.compositiontrains.get(i).getLength();
+			templength += this.compositiontrains.get(i).getLength();
+			this.getTrain(i).changePosition(i);
 		}
 		this.compositionsize = compositiontrains.size();
+		this.compositionlength = templength;
 	}
 }

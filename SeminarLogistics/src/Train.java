@@ -10,13 +10,13 @@ import java.lang.*;
  */
 
 public class Train {
-	private static int train_ID;
-	private static int type;
-	private static int length;
-	private static int inspectiontime;
-	private static int cleaningtime;
-	private static int repairingtime;
-	private static int washingtime;
+	private final int train_ID;
+	private final int type;
+	private final int length;
+	private final int inspectiontime;
+	private final int cleaningtime;
+	private final int repairingtime;
+	private final int washingtime;
 	
 	private boolean interchangeable;
 	private boolean inspecting;
@@ -96,25 +96,25 @@ public class Train {
 	}
 	
 
-	public static int getID(){
+	public int getID(){
 		return train_ID;
 	}
-	public static int getType(){
+	public int getType(){
 		return type;
 	}
-	public static int getLength(){
+	public int getLength(){
 		return length;
 	}
-	public static int getInspectionTime(){
+	public int getInspectionTime(){
 		return inspectiontime;
 	}
-	public static int getCleaningTime(){
+	public int getCleaningTime(){
 		return cleaningtime;
 	}
-	public static int getRepairingTime(){
+	public int getRepairingTime(){
 		return repairingtime;
 	}
-	public static int getWashingTime(){
+	public int getWashingTime(){
 		return washingtime;
 	}
 	public boolean getInterchangeable(){
@@ -153,6 +153,6 @@ public class Train {
 	}
 	
 	public void changePosition(int newposition){
-		position = newposition;
+		this.position = newposition;
 	}
 }

@@ -104,6 +104,16 @@ public class Matrix {
 		}
 		return MatrixMultiplied;
 	}
+	//TODO: YET TO BE CHECKED
+	public Matrix dotmultiply(Matrix other){
+		Matrix MatrixMultiplied = new Matrix(MatrixTo.length,other.getNrColumns());
+		for(int i=0; i<this.getNrColumns(); i++){
+			for(int j=0; j<this.getNrRows();j++){
+				MatrixMultiplied.setElement(j, i, other.getElement(j, i)*this.getElement(j, i));
+			}
+		}
+		return MatrixMultiplied;	
+	}
 	public Matrix subtract(Matrix other)
 	{
 		//throw if matrices do not match. Does 'this' work in this case?!? Or should we replace it with 'other'?
