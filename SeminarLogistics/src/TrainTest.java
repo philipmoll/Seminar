@@ -19,11 +19,11 @@ public class TrainTest {
 	public void testConstructor() {
 		assertEquals(3, a.getID());
 		assertEquals(2, a.getType());
-		assertEquals(100,a.getLength());
-		assertEquals(20,a.getInspectionTime());
-		assertEquals(20,a.getCleaningTime());
-		assertEquals(20,a.getRepairingTime());
-		assertEquals(20,a.getWashingTime());
+		assertEquals(162,a.getLength());
+		assertEquals(10,a.getInspectionTime());
+		assertEquals(10,a.getCleaningTime());
+		assertEquals(10,a.getRepairingTime());
+		assertEquals(10,a.getWashingTime());
 		assertEquals(false,a.getInterchangeable());
 		assertEquals(false,a.getInspecting());
 		assertEquals(false,a.getCleaning());
@@ -35,7 +35,7 @@ public class TrainTest {
 	public void testConstructor2() {
 		assertEquals(2, b.getID());
 		assertEquals(1, b.getType());
-		assertEquals(50,b.getLength());
+		assertEquals(109,b.getLength());
 		assertEquals(10,b.getInspectionTime());
 		assertEquals(10,b.getCleaningTime());
 		assertEquals(10,b.getRepairingTime());
@@ -57,23 +57,23 @@ public class TrainTest {
 	}
 	@Test
 	public void testGetLength(){
-		assertEquals(100,a.getLength());
+		assertEquals(162,a.getLength());
 	}
 	@Test
 	public void testGetInspectionTime(){
-		assertEquals(20,a.getInspectionTime());
+		assertEquals(10,a.getInspectionTime());
 	}
 	@Test
 	public void testGetCleaningTime(){
-		assertEquals(20,a.getCleaningTime());	
+		assertEquals(10,a.getCleaningTime());	
 	}
 	@Test
 	public void testGetRepairingTime(){
-		assertEquals(20,a.getRepairingTime());
+		assertEquals(10,a.getRepairingTime());
 	}
 	@Test
 	public void testGetWashingTime(){
-		assertEquals(20,a.getWashingTime());
+		assertEquals(10,a.getWashingTime());
 	}
 	@Test
 	public void testGetInterchangeable(){
@@ -98,6 +98,10 @@ public class TrainTest {
 	@Test
 	public void testGetPosition(){
 		assertEquals(1,a.getPosition());
+	}
+	@Test
+	public void testNumberCarriages(){
+		assertEquals(6,a.getNumberCarriages());
 	}
 	@Test
 	public void testToggleInterchangeable(){

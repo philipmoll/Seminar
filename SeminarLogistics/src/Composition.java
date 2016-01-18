@@ -28,9 +28,9 @@ public class Composition {
 	public Composition coupleComposition(Composition addcomposition){
 		this.compositiontrains.addAll(addcomposition.getCompositionList());
 
-		addcomposition = null; //If this does not work well, we need to make the function in Main.
-		//TODO: What happens if: In an ArrayList of objects, the objects is set to null but is not removed from the list?
-
+		//addcomposition = null; If this does not work well, we need to make the function in Main.
+		//What happens if: In an ArrayList of objects, the objects is set to null but is not removed from the list?
+		// The objects is then removed from the ArrayList completely.
 		this.updateComposition();
 		return this;
 	}

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.Before;
 
-
 public class CompositionTest {
 
 	private Train a;

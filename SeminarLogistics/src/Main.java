@@ -15,9 +15,8 @@ public class Main {
 
 	public static void main(String args[])
 	{
-		//try {
-			//Load data and store as OurData.
-			//Matrix abc = new DataSet("abc.dat").DataToMatrix();
+		try {
+			Matrix compositiondata = new DataSet("compositiondata.dat").DataToMatrix();
 			
 			ArrayList<Composition> arrivingcompositions = new ArrayList<>();
 			ArrayList<Integer> arrivingtimes = new ArrayList<>(); //This arraylist should be as long as arrivingcompositions
@@ -55,12 +54,12 @@ public class Main {
 			*/
 			
 			
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		} catch (MatrixIncompleteException e) {
-//			e.printStackTrace();
-//		}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (MatrixIncompleteException e) {
+			e.printStackTrace();
+		}
 	}
 }
