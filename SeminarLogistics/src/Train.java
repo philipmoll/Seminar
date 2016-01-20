@@ -203,19 +203,19 @@ public class Train {
 	}
 	
 	public void toggleInterchangeable(){
-		interchangeable = !interchangeable;
+		interchangeable = !interchangeable; //TODO: why not this.
 	}
 	public void toggleInspecting(){
-		inspecting = !inspecting;
+		inspecting = !inspecting; //TODO: why not this
 	}
 	public void toggleCleaning(){
-		cleaning = !cleaning;
+		cleaning = !cleaning; //TODO: why not this
 	}
 	public void toggleRepairing(){
-		repairing = !repairing;
+		repairing = !repairing; //TODO: why not this
 	}
 	public void toggleWashing(){
-		washing = !washing;
+		washing = !washing; //TODO: why not this
 	}
 	
 	public void changePosition(int newposition){

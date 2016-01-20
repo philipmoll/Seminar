@@ -41,19 +41,6 @@ public class Main {
 			
 			
 			
-			
-			
-			/* Om te testen!!
-			ArrayList<Train> testest = new ArrayList<>();
-			Train a = new Train(1,2);
-			Train b = new Train(2,1);
-			testest.add(a);
-			testest.add(b);
-			a = null;
-			System.out.print(testest.get(0).getID());
-			*/
-			
-			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
