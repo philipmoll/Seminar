@@ -117,7 +117,7 @@ public void addCompositiontoTrackLeft(Composition composition){ //LEFT: links op
 }
 
 public void addCompositiontoTrackRight(Composition composition){ //RIGHT: rechts op de map, index max lengte arraylist
-	this.compositionlist.add(compositionlist.size(),composition);
+	this.compositionlist.add(composition);
 }
 
 }
