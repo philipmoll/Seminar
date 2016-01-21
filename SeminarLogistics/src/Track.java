@@ -20,15 +20,13 @@ private final boolean inspectionposition;
 private final boolean cleaningposition;
 private final boolean repairingposition; //TODO: add different types of repairing positions
 private final boolean washingposition;
-private final int distancebetweentrains;
-
 private int tracktype;
 
 private int[] occupation;
 private ArrayList<Composition> compositionlist;
 
 //set distancebetweentrains
-public Track(String label, int tracklength, int parktrain, boolean inspectionposition,  boolean cleaningposition, boolean repairingposition, boolean washingposition, int tracktype, int distancebetweentrains) {
+public Track(String label, int tracklength, int parktrain, boolean inspectionposition,  boolean cleaningposition, boolean repairingposition, boolean washingposition, int tracktype ) {
 	this.label = label;
 	this.tracklength = tracklength;
 	this.parktrain = parktrain;
@@ -37,24 +35,6 @@ public Track(String label, int tracklength, int parktrain, boolean inspectionpos
 	this.repairingposition = repairingposition;
 	this.washingposition = washingposition;
 	this.tracktype = tracktype;
-	this.distancebetweentrains = distancebetweentrains;
-	
-	occupation = new int[tracklength];
-	compositionlist = new ArrayList<Composition>();
-}
-
-//defaultvalue distancebetweentrains
-public Track(String label, int tracklength, int parktrain, boolean inspectionposition,  boolean cleaningposition, boolean repairingposition, boolean washingposition, int tracktype) {
-	this.label = label;
-	this.tracklength = tracklength;
-	this.parktrain = parktrain;
-	this.inspectionposition = inspectionposition;
-	this.cleaningposition = cleaningposition;
-	this.repairingposition = repairingposition;
-	this.washingposition = washingposition;
-	this.tracktype = tracktype;
-	this.distancebetweentrains = 5; //default value distancebetweentrains
-	
 	occupation = new int[tracklength];
 	compositionlist = new ArrayList<Composition>();
 }
