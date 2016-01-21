@@ -14,6 +14,8 @@ public class Composition {
 	private ArrayList<Train> compositiontrains;
 	private int compositionlength;
 	private int compositionsize;
+	private Track compositiontrack;
+	private int locationontrack;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
 	public Composition(ArrayList<Train> compositiontrains){

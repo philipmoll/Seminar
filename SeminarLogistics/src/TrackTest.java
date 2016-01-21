@@ -36,8 +36,8 @@ public class TrackTest {
 		e = new Composition(new ArrayList<Train>(){{add(a);}});
 		f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 		g = new Composition(new ArrayList<Train>(){{add(d);}});
-		h = new Track("tracktest1", 500, 2, false, true, false, true, 1);
-		i = new Track("tracktest2", 400, 0, true, false, true, false, 2);
+		h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
+		i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
 	}
 	
 	@Test
@@ -47,8 +47,8 @@ public class TrackTest {
 	
 	@Test
 	public void testGetLabel() {
-		assertEquals(h.getLabel(), "tracktest1");
-		assertEquals(i.getLabel(), "tracktest2");
+		assertEquals(h.getLabel(), "track1");
+		assertEquals(i.getLabel(), "track2");
 	}
 	
 	@Test
@@ -65,26 +65,26 @@ public class TrackTest {
 	
 	@Test
 	public void testGetInspectionposition(){
-		assertEquals(h.getInspectionposition(),false);
-		assertEquals(i.getInspectionposition(),true);
+		assertEquals(h.getInspectionposition(),0);
+		assertEquals(i.getInspectionposition(),1);
 	}
 	
 	@Test
 	public void testGetCleaningposition(){
-		assertEquals(h.getCleaningposition(),true);
-		assertEquals(i.getCleaningposition(),false);
+		assertEquals(h.getCleaningposition(),1);
+		assertEquals(i.getCleaningposition(),0);
 	}
 	
 	@Test
 	public void testGetRepairingposition(){
-		assertEquals(h.getRepairingposition(),false);
-		assertEquals(i.getRepairingposition(),true);
+		assertEquals(h.getRepairingposition(),0);
+		assertEquals(i.getRepairingposition(),1);
 	}
 	
 	@Test
 	public void testGetWashingposition(){
-		assertEquals(h.getWashingposition(),true);
-		assertEquals(i.getWashingposition(),false);
+		assertEquals(h.getWashingposition(),1);
+		assertEquals(i.getWashingposition(),0);
 	}
 	
 	@Test

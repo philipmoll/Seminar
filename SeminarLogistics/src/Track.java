@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 
-/**
- * 
- */
 
 /**
  * 
@@ -16,16 +13,16 @@ public class Track {
 private final String label;
 private final int tracklength;
 private final int parktrain;
-private final boolean inspectionposition;
-private final boolean cleaningposition;
-private final boolean repairingposition; //TODO: add different types of repairing positions
-private final boolean washingposition;
+private final int inspectionposition;
+private final int cleaningposition;
+private final int repairingposition; //TODO: add different types of repairing positions
+private final int washingposition;
 private int tracktype;
 
 private int[] occupation;
 private ArrayList<Composition> compositionlist;
 
-public Track(String label, int tracklength, int parktrain, boolean inspectionposition,  boolean cleaningposition, boolean repairingposition, boolean washingposition, int tracktype ) {
+public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition, int tracktype ) {
 	this.label = label;
 	this.tracklength = tracklength;
 	this.parktrain = parktrain;
@@ -38,6 +35,20 @@ public Track(String label, int tracklength, int parktrain, boolean inspectionpos
 	compositionlist = new ArrayList<Composition>();
 }
 
+public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition) {
+	this.label = label;
+	this.tracklength = tracklength;
+	this.parktrain = parktrain;
+	this.inspectionposition = inspectionposition;
+	this.cleaningposition = cleaningposition;
+	this.repairingposition = repairingposition;
+	this.washingposition = washingposition;
+	tracktype = 0;
+	occupation = new int[tracklength];
+	compositionlist = new ArrayList<Composition>();
+}
+
+
 public String getLabel(){
 	return label;
 }
@@ -47,16 +58,16 @@ public int getTracklength(){
 public int getParktrain(){
 	return parktrain;
 }
-public boolean getInspectionposition(){
+public int getInspectionposition(){
 	return inspectionposition;
 }
-public boolean getCleaningposition(){
+public int getCleaningposition(){
 	return cleaningposition;
 }
-public boolean getRepairingposition(){
+public int getRepairingposition(){
 	return repairingposition;
 }
-public boolean getWashingposition(){
+public int getWashingposition(){
 	return washingposition;
 }
 public int getTracktype(){
