@@ -25,7 +25,6 @@ private int tracktype;
 private int[] occupation;
 private ArrayList<Composition> compositionlist;
 
-//set distancebetweentrains
 public Track(String label, int tracklength, int parktrain, boolean inspectionposition,  boolean cleaningposition, boolean repairingposition, boolean washingposition, int tracktype ) {
 	this.label = label;
 	this.tracklength = tracklength;

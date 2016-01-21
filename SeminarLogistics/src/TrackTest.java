@@ -29,10 +29,10 @@ public class TrackTest {
 	
 	@Before
 	public void setUp(){
-		a = new Train(1,2,1,2);
-		b = new Train(2,2,1,2);
-		c = new Train(3,1,1,2);
-		d = new Train(4,2,1,2);
+		a = new Train(1,2,40,3);
+		b = new Train(2,2,40,3);
+		c = new Train(3,1,40,3);
+		d = new Train(4,2,40,3);
 		e = new Composition(new ArrayList<Train>(){{add(a);}});
 		f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 		g = new Composition(new ArrayList<Train>(){{add(d);}});
@@ -94,10 +94,7 @@ public class TrackTest {
 	}
 	
 	@Test
-	public void testGetSetOccupiedFree(){
-		i.setOccupied(4);
-		i.setOccupied(20,100);
-		
+	public void testGetSetOccupiedFree(){		
 		assertEquals(h.getOccupied(20),0);
 		h.setOccupied(20);
 		assertEquals(h.getOccupied(20),1);
@@ -132,25 +129,37 @@ public class TrackTest {
 			assertEquals(i.getOccupied(x), 0);
 		}
 	}
-	/**
+	
 	@Test
 	public void testGetCompositionlist(){
 		h.addCompositiontoTrackLeft(e);
+		h.addCompositiontoTrackRight(g);
 		i.addCompositiontoTrackLeft(f);
+		
+		ArrayList<Composition> test1 = new ArrayList<Composition>();
+		test1.add(e);
+		test1.add(g);
+		
+		ArrayList<Composition> test2 = new ArrayList<Composition>();
+		test2.add(f);
+		
+		assertEquals(h.getCompositionlist(),test1);
+		assertEquals(i.getCompositionlist(),test2);
 	}
 
-	public ArrayList<Composition> getCompositionlist(){
-		return compositionlist;
+	@Test
+	public void testAddCompositiontoTrackLeftRight(){
+		h.addCompositiontoTrackLeft(e);
+		h.addCompositiontoTrackLeft(g);
+		h.addCompositiontoTrackRight(f);
+		h.addCompositiontoTrackRight(e);;
+		
+		ArrayList<Composition> test1 = new ArrayList<Composition>();
+		test1.add(g);
+		test1.add(e);
+		test1.add(f);
+		test1.add(e);
+		
+		assertEquals(h.getCompositionlist(),test1);
 	}
-
-	public void addCompositiontoTrackLeft(Composition composition){ //LEFT: links op de map, index 0 //TODO: check total length
-		this.compositionlist.add(0,composition);
-	}
-
-	public void addCompositiontoTrackRight(Composition composition){ //RIGHT: rechts op de map, index max lengte arraylist
-		this.compositionlist.add(compositionlist.size(),composition);
-	}
-
-*/
-
 }
