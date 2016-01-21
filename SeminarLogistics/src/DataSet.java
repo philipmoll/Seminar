@@ -62,7 +62,7 @@ public class DataSet {
 			case StreamTokenizer.TT_EOL:
 
 				rowvalues = temporary.toArray(new Double[0]);
-
+				
 				values.add(rowvalues);
 
 				//If the size of the just added array is not equal to the size of the previous added array (matrix is not rectangular), throw MatrixIncompleteException.
@@ -77,6 +77,7 @@ public class DataSet {
 
 				//In case of "Word" token, do not do anything.
 			case StreamTokenizer.TT_WORD:
+				//temporary.add(str.sval); Cannot have strings as input in a matrix as it consists of doubles.
 				break;
 
 				//In case of "Number" token, store this number to the temporary ArrayList.

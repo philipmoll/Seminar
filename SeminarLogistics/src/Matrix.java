@@ -73,6 +73,13 @@ public class Matrix {
 	{
 		return MatrixTo[row][column];
 	}
+	public double[] getArray(int column){
+		double[] returnarray = new double[nRows];
+		for(int i = 0; i<nRows;i++){
+			returnarray[i] = this.getElement(i, column);
+		}
+		return returnarray;
+	}
 	public Matrix transpose()
 	{
 		Matrix MatrixTransposed = new Matrix(MatrixTo[0].length, MatrixTo.length);

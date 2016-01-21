@@ -15,9 +15,9 @@ public class CompositionTest {
 
 	@Before
 	public void setUp(){
-		a = new Train(1,2);
-		b = new Train(2,2);
-		c = new Train(3,1);
+		a = new Train(1,2,1,6);
+		b = new Train(2,2,2,4);
+		c = new Train(3,1,3,4);
 		d = new Composition(new ArrayList<Train>(){{add(a);}});
 		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 	}
@@ -29,7 +29,7 @@ public class CompositionTest {
 	@Test
 	public void testCoupleComposition(){
 		d.coupleComposition(e);
-		assertEquals(250, d.getLength());
+		assertEquals(6,d.getLength());
 		assertEquals(0,d.getTrain(0).getPosition());
 		assertEquals(1,d.getTrain(1).getPosition());
 		assertEquals(2,d.getTrain(2).getPosition());
@@ -44,8 +44,8 @@ public class CompositionTest {
 	}
 	@Test
 	public void testGetLength(){
-		assertEquals(100, d.getLength());
-		assertEquals(150, e.getLength());
+		assertEquals(1, d.getLength());
+		assertEquals(5, e.getLength());
 	}
 	@Test
 	public void testGetSize(){
@@ -58,11 +58,11 @@ public class CompositionTest {
 		
 		assertEquals(1, d.getTrain(0).getID());
 		assertEquals(2, d.getTrain(0).getType());
-		assertEquals(100,d.getTrain(0).getLength());
-		assertEquals(20,d.getTrain(0).getInspectionTime());
-		assertEquals(20,d.getTrain(0).getCleaningTime());
-		assertEquals(20,d.getTrain(0).getRepairingTime());
-		assertEquals(20,d.getTrain(0).getWashingTime());
+		assertEquals(1,d.getTrain(0).getLength());
+		assertEquals(10,d.getTrain(0).getInspectionTime());
+		assertEquals(10,d.getTrain(0).getCleaningTime());
+		assertEquals(10,d.getTrain(0).getRepairingTime());
+		assertEquals(10,d.getTrain(0).getWashingTime());
 		assertEquals(false,d.getTrain(0).getInterchangeable());
 		assertEquals(false,d.getTrain(0).getInspecting());
 		assertEquals(false,d.getTrain(0).getCleaning());
@@ -73,7 +73,7 @@ public class CompositionTest {
 		assertEquals(c, e.getTrain(1));
 		assertEquals(3, e.getTrain(1).getID());
 		assertEquals(1, e.getTrain(1).getType());
-		assertEquals(50,e.getTrain(1).getLength());
+		assertEquals(3,e.getTrain(1).getLength());
 		assertEquals(10,e.getTrain(1).getInspectionTime());
 		assertEquals(10,e.getTrain(1).getCleaningTime());
 		assertEquals(10,e.getTrain(1).getRepairingTime());

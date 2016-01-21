@@ -11,36 +11,49 @@ import java.util.*;
  *
  */
 
+
 public class Main {
 
 	public static void main(String args[])
 	{
+		readInTrains();
+		
+		ArrayList<Composition> arrivingcompositions = new ArrayList<>();
+		ArrayList<Integer> arrivingtimes = new ArrayList<>(); //This ArrayList should be as long as arrivingcompositions
+
+		ArrayList<Composition> currentcompositions = new ArrayList<>();
+
+		ArrayList<Composition> leavingcompositions = new ArrayList<>();
+		ArrayList<Composition> leavingtimes = new ArrayList<>(); //This ArrayList should be as long as leavingcompositions
+		
+	}
+	public static void readInTrains(){
 		try {
-			Matrix compositiondata = new DataSet("compositiondata.dat").DataToMatrix();
-			
-			ArrayList<Composition> arrivingcompositions = new ArrayList<>();
-			ArrayList<Integer> arrivingtimes = new ArrayList<>(); //This arraylist should be as long as arrivingcompositions
-			
-			Train T1 = new Train(1,2);
-			Train T2 = new Train(2,2);
-			Train T3 = new Train(3,1);
-			Train T4 = new Train(4,2);
-			Train T5 = new Train(5,2);
-			Train T6 = new Train(6,1);
-			
-			System.out.print(T1.getID() +" " + T1.getType() +" " + T1.getLength());
-			
-			Composition C1 = new Composition(new ArrayList<Train>(){{add(T1);add(T2);}});
-			
-			//System.out.print(C1.getCompositionLength());
-			
-			//ArrayList<Composition> currentcompositions = new ArrayList<>();
-			ArrayList<Composition> currentcompositions = arrivingcompositions; //Is this allowed?
-			ArrayList<Composition> leavingcompositions = new ArrayList<>();
-			
-			
-			
-			
+			int length;
+			//Voor ieder een eigen path
+			Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+
+			Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+
+			ArrayList<Train> trains = new ArrayList<>();
+			for(int i = 0; i< compositiondata.getNrRows();i++){
+				length = 0;
+				
+				for(int j = 0; j<compositiondata2.getNrRows();j++){
+					if(compositiondata2.getArray(0)[j] == compositiondata.getElement(i,1) && compositiondata2.getArray(1)[j] == compositiondata.getElement(i,2)){
+						length = (int) compositiondata2.getElement(j, 5);
+					}
+				}
+				
+				trains.add(new Train(i+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length));
+			}
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -11,7 +11,7 @@ public class TrainTest {
 
 	@Before
 	public void setUp() {
-		a = new Train(3,2);
+		a = new Train(3,2,4,5);
 		b = new Train(2,1,false,false,true,false,true);
 	}
 
@@ -19,7 +19,7 @@ public class TrainTest {
 	public void testConstructor() {
 		assertEquals(3, a.getID());
 		assertEquals(2, a.getType());
-		assertEquals(162,a.getLength());
+		assertEquals(4,a.getLength());
 		assertEquals(10,a.getInspectionTime());
 		assertEquals(10,a.getCleaningTime());
 		assertEquals(10,a.getRepairingTime());
@@ -57,7 +57,7 @@ public class TrainTest {
 	}
 	@Test
 	public void testGetLength(){
-		assertEquals(162,a.getLength());
+		assertEquals(4,a.getLength());
 	}
 	@Test
 	public void testGetInspectionTime(){
@@ -100,8 +100,12 @@ public class TrainTest {
 		assertEquals(1,a.getPosition());
 	}
 	@Test
+	public void testGetLocation(){
+		assertEquals(0,a.getLocation());
+	}
+	@Test
 	public void testNumberCarriages(){
-		assertEquals(6,a.getNumberCarriages());
+		assertEquals(5,a.getCarriages());
 	}
 	@Test
 	public void testToggleInterchangeable(){
@@ -132,5 +136,10 @@ public class TrainTest {
 	public void testChangePosition(){
 		a.changePosition(5);
 		assertEquals(5,a.getPosition());
+	}
+	@Test
+	public void testChangeLocation(){
+		a.changeLocation(3);
+		assertEquals(3, a.getLocation());
 	}
 }
