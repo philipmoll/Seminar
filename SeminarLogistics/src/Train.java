@@ -17,7 +17,7 @@ public class Train {
 	private final int cleaningtime;
 	private final int repairingtime;
 	private final int washingtime;
-	private final int numbercarriages;
+	private final int carriages;
 	
 	private boolean interchangeable;
 	private boolean inspecting;
@@ -26,10 +26,14 @@ public class Train {
 	private boolean washing;
 	
 	private int position;
+	private int location;
 	
-	public Train(int train_ID, int type){
+	public Train(int train_ID, int type, int length, int carriages){
 		this.train_ID = train_ID;
 		this.type = type;
+		this.length = length;
+		this.carriages = carriages;
+		this.location = 0;
 		
 		position = 1; //If you make a new train, it is the only train in its composition
 		
@@ -40,56 +44,53 @@ public class Train {
 		washing = false;
 		
 		switch (type){
-		case 1:length = 109; //Meters
+		case 1:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
 		break;
-		case 2:length = 162; //Meters
+		case 2:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
 		break;
-		case 3:length = 101; //Meters
+		case 3:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
+
 		break;
-		case 4:length = 154; //Meters
+		case 4:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
+
 		break;
-		case 5:length = 70; //Meters
+		case 5:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
+
 		break;
-		case 6:length = 101; //Meters
+		case 6:
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
+
 		break;
-		default: length = 0 ; //Meters
+		default: 
 		inspectiontime = 0; //Minutes
 		cleaningtime = 0; //Minutes
 		repairingtime = 0; //Minutes
 		washingtime = 0; //Minutes ;;
-		numbercarriages = 0;
+
 		break;
-		
 		
 		}
 	}
@@ -110,49 +111,49 @@ public class Train {
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
+		carriages = 4;
 		break;
 		case 2:length = 162; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
+		carriages = 6;
 		break;
 		case 3:length = 101; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
+		carriages = 4;
 		break;
 		case 4:length = 154; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
+		carriages = 6;
 		break;
 		case 5:length = 70; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 4;
+		carriages = 4;
 		break;
 		case 6:length = 101; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
-		numbercarriages = 6;
+		carriages = 6;
 		break;
 		default: length = 0 ; //Meters
 		inspectiontime = 0; //Minutes
 		cleaningtime = 0; //Minutes
 		repairingtime = 0; //Minutes
 		washingtime = 0; //Minutes
-		numbercarriages = 0;
+		carriages = 0;
 		break;
 		
 		}
@@ -198,8 +199,11 @@ public class Train {
 	public int getPosition(){
 		return position;
 	}
-	public int getNumberCarriages(){
-		return numbercarriages;
+	public int getCarriages(){
+		return carriages;
+	}
+	public int getLocation(){
+		return location;
 	}
 	
 	public void toggleInterchangeable(){
@@ -217,8 +221,10 @@ public class Train {
 	public void toggleWashing(){
 		washing = !washing; //TODO: why not this
 	}
-	
 	public void changePosition(int newposition){
 		this.position = newposition;
+	}
+	public void changeLocation(int newlocation){
+		this.location = newlocation;
 	}
 }
