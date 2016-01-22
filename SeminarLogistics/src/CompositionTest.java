@@ -18,8 +18,8 @@ public class CompositionTest {
 		a = new Train(1,2,1,6);
 		b = new Train(2,2,2,4);
 		c = new Train(3,1,3,4);
-		d = new Composition(new ArrayList<Train>(){{add(a);}}, 1.0, 0);
-		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}}, 1.0, 0);
+		d = new Composition(new ArrayList<Train>(){{add(a);}});
+		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 	}
 
 	@Test

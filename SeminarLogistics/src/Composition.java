@@ -16,14 +16,10 @@ public class Composition {
 	private int compositionsize;
 	private Track compositiontrack;
 	private int locationontrack;
-	private double time;
-	private int arrordeptrack;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
-	public Composition(ArrayList<Train> compositiontrains, double time, int arrordeptrack){
+	public Composition(ArrayList<Train> compositiontrains){
 		this.compositiontrains = compositiontrains;
-		this.time = time;
-		this.arrordeptrack = arrordeptrack;
 		this.updateComposition();
 	}
 
@@ -51,7 +47,7 @@ public class Composition {
 		
 		this.updateComposition(); //TODO: TIJD EN VERTREKPLEK TOEVOEGEN!!!!
 		
-		Composition newcomposition = new Composition(newcompositionlist, 1.0 , 1); //TODO: 1.0, 1 ZEKER NOG VERANDEREN!!!!!!!!!!!
+		Composition newcomposition = new Composition(newcompositionlist); //TODO: 1.0, 1 ZEKER NOG VERANDEREN!!!!!!!!!!!
 		return newcomposition;
 	}
 
@@ -69,14 +65,21 @@ public class Composition {
 	public ArrayList<Train> getCompositionList(){
 		return compositiontrains;
 	}
-
 	private void updateComposition(){
 		int templength = 0;
 		for(int i=0;i<this.getCompositionList().size();i++){ //TODO: What if composition = 0?
 			templength += this.compositiontrains.get(i).getLength();
-			this.getTrain(i).changePosition(i);
+			this.getTrain(i).setPosition(i);
+			this.getTrain(i).setComposition(this);
 		}
 		this.compositionsize = compositiontrains.size();
 		this.compositionlength = templength;
 	}
+	public Track getTrack(){
+		return compositiontrack;
+	}
+	public int getLocationOnTrack(){
+		return locationontrack;
+	}
+	
 }

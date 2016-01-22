@@ -26,16 +26,16 @@ public class Train {
 	private boolean washing;
 	
 	private int position;
-	private int location;
+	private Composition composition;
 	
 	public Train(int train_ID, int type, int carriages, int length){
 		this.train_ID = train_ID;
 		this.type = type;
 		this.length = length;
 		this.carriages = carriages;
-		this.location = 0;
+		this.composition = null;
 		
-		position = 0; //If you make a new train, it is the only train in its composition
+		position = -1; //If you make a new train, it is the only train in its composition
 		
 		interchangeable = false;
 		inspecting = false;
@@ -202,10 +202,9 @@ public class Train {
 	public int getCarriages(){
 		return carriages;
 	}
-	public int getLocation(){
-		return location;
+	public Composition getComposition(){
+		return composition;
 	}
-	
 	public void toggleInterchangeable(){
 		interchangeable = !interchangeable; //TODO: why not this.
 	}
@@ -221,10 +220,10 @@ public class Train {
 	public void toggleWashing(){
 		washing = !washing; //TODO: why not this
 	}
-	public void changePosition(int newposition){
+	public void setPosition(int newposition){
 		this.position = newposition;
 	}
-	public void changeLocation(int newlocation){
-		this.location = newlocation;
+	public void setComposition(Composition newcomposition){
+		this.composition = newcomposition;
 	}
 }

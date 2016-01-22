@@ -100,10 +100,6 @@ public class TrainTest {
 		assertEquals(0,a.getPosition());
 	}
 	@Test
-	public void testGetLocation(){
-		assertEquals(0,a.getLocation());
-	}
-	@Test
 	public void testNumberCarriages(){
 		assertEquals(5,a.getCarriages());
 	}
@@ -134,12 +130,7 @@ public class TrainTest {
 	}
 	@Test
 	public void testChangePosition(){
-		a.changePosition(5);
+		a.setPosition(5);
 		assertEquals(5,a.getPosition());
-	}
-	@Test
-	public void testChangeLocation(){
-		a.changeLocation(3);
-		assertEquals(3, a.getLocation());
 	}
 }
