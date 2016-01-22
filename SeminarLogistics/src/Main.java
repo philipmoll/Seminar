@@ -21,22 +21,19 @@ public class Main {
 
 
 		ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trains);
-		
-		System.out.print(arrivingcompositions.get(0).equals(arrivingcompositions.get(1)));
-		
+				
 		ArrayList<Composition> currentcompositions = new ArrayList<>();
 
-		ArrayList<Composition> leavingcompositions = setUpCompositions(1, trains); //TODO: THIS SHOULD ALSO BE A DUPLICATE OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-
-
+		ArrayList<Composition> leavingcompositions = setUpCompositions(1, trains); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
+		
 		//This is how we should write a couple function, N.B.: with the .remove function.
-		arrivingcompositions.get(0).coupleComposition(arrivingcompositions.get(1));
-		arrivingcompositions.remove(1);
-
+		//arrivingcompositions.get(0).coupleComposition(arrivingcompositions.get(1));
+		//arrivingcompositions.remove(1);
+		
 		//TODO: CURRENT SHOULD BE A DUPLICATE OF THE ARRIVING AND NOT A DIRECT REFERENCE TO THEIR OBEJCTS!!!!!!!
-
 		//This is how we should write a decouple function, N.B.: with the.add function.
-		arrivingcompositions.add(arrivingcompositions.get(0).decoupleComposition(0));
+		//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
+
 
 	}
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1){

@@ -85,10 +85,10 @@ public class Train {
 
 		break;
 		default: 
-		inspectiontime = 0; //Minutes
-		cleaningtime = 0; //Minutes
-		repairingtime = 0; //Minutes
-		washingtime = 0; //Minutes ;;
+		inspectiontime = -1; //Minutes
+		cleaningtime = -1; //Minutes
+		repairingtime = -1; //Minutes
+		washingtime = -1; //Minutes
 
 		break;
 		

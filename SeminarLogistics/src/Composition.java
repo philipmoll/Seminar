@@ -43,16 +43,15 @@ public class Composition {
 	public Composition decoupleComposition(int locationdecouple){
 		
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
-
-		for(int i=0;i<this.getSize()-locationdecouple;i++){
-			newcompositionlist.add(0, this.getTrain(this.getSize()-1));
-			this.compositiontrains.remove(this.getSize()-1);
+		int a = this.getSize();
+		for(int i=0;i<a-1-locationdecouple;i++){
+			newcompositionlist.add(0, this.getTrain(a-1-i));
+			this.compositiontrains.remove(a-1-i);
 		}
 		
 		this.updateComposition(); //TODO: TIJD EN VERTREKPLEK TOEVOEGEN!!!!
 		
 		Composition newcomposition = new Composition(newcompositionlist, 1.0 , 1); //TODO: 1.0, 1 ZEKER NOG VERANDEREN!!!!!!!!!!!
-		
 		return newcomposition;
 	}
 
