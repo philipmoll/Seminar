@@ -15,7 +15,7 @@ import java.util.*;
 public class Main {
 	public static void main(String args[])
 	{
-		ArrayList<Train> trains = readInTrains();
+		Train[] trains = readInTrains();
 		Track[] tracks =  readInTracks();
 		Network ournetwork = new Network(); //TODO: consider deleting the Networkclass and reading the network in similarly to trains and tracks
 		Matrix connectionmatrix = ournetwork.getConnections();
@@ -30,7 +30,11 @@ public class Main {
 		ArrayList<Composition> leavingtimes = new ArrayList<>(); //This ArrayList should be as long as leavingcompositions
 		
 	}
-	public static ArrayList<Train> readInTrains(){ //TODO: change ArrayList to Array
+	public static ArrayList<Composition> setUpCompositions(){
+		ArrayList<Composition> compositions = new ArrayList<>();
+		return compositions;
+	}
+	public static Train[] readInTrains(){
 		try {
 			int length;
 			//Voor ieder een eigen path
@@ -44,7 +48,7 @@ public class Main {
 			//Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 			//Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 
-			ArrayList<Train> trains = new ArrayList<>();
+			Train[] trains = new Train[compositiondata.getNrRows()];
 			
 			for(int i = 0; i< compositiondata.getNrRows();i++){
 				length = 0;
@@ -54,8 +58,7 @@ public class Main {
 						length = (int) compositiondata2.getElement(j, 5);
 					}
 				}
-				
-				trains.add(new Train(i+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length));
+				trains[i] = new Train(i+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length);
 			}
 			
 			return trains;

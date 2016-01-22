@@ -28,14 +28,14 @@ public class Train {
 	private int position;
 	private int location;
 	
-	public Train(int train_ID, int type, int length, int carriages){
+	public Train(int train_ID, int type, int carriages, int length){
 		this.train_ID = train_ID;
 		this.type = type;
 		this.length = length;
 		this.carriages = carriages;
 		this.location = 0;
 		
-		position = 1; //If you make a new train, it is the only train in its composition
+		position = 0; //If you make a new train, it is the only train in its composition
 		
 		interchangeable = false;
 		inspecting = false;

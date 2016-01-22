@@ -29,7 +29,7 @@ public class TrainTest {
 		assertEquals(false,a.getCleaning());
 		assertEquals(false,a.getRepairing());
 		assertEquals(false,a.getWashing());
-		assertEquals(1,a.getPosition());
+		assertEquals(0,a.getPosition());
 	}
 	@Test 
 	public void testConstructor2() {
@@ -97,7 +97,7 @@ public class TrainTest {
 	}
 	@Test
 	public void testGetPosition(){
-		assertEquals(1,a.getPosition());
+		assertEquals(0,a.getPosition());
 	}
 	@Test
 	public void testGetLocation(){
