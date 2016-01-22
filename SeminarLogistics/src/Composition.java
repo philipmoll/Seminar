@@ -16,11 +16,14 @@ public class Composition {
 	private int compositionsize;
 	private Track compositiontrack;
 	private int locationontrack;
+	private double time;
+	private int arrordeptrack;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
-	public Composition(ArrayList<Train> compositiontrains){
+	public Composition(ArrayList<Train> compositiontrains, double time, int arrordeptrack){
 		this.compositiontrains = compositiontrains;
-
+		this.time = time;
+		this.arrordeptrack = arrordeptrack;
 		this.updateComposition();
 	}
 
@@ -37,24 +40,20 @@ public class Composition {
 		return this;
 	}
 	
-	public Composition[] decoupleComposition(int nrdecouple){
-		Composition[] newcomposition1 = new Composition[2];
+	public Composition decoupleComposition(int locationdecouple){
 		
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
 
-		for(int i=1;i<=nrdecouple;i++){
+		for(int i=0;i<this.getSize()-locationdecouple;i++){
 			newcompositionlist.add(0, this.getTrain(this.getSize()-1));
 			this.compositiontrains.remove(this.getSize()-1);
 		}
 		
-		this.updateComposition();
+		this.updateComposition(); //TODO: TIJD EN VERTREKPLEK TOEVOEGEN!!!!
 		
-		Composition newcomposition = new Composition(newcompositionlist);
+		Composition newcomposition = new Composition(newcompositionlist, 1.0 , 1); //TODO: 1.0, 1 ZEKER NOG VERANDEREN!!!!!!!!!!!
 		
-		newcomposition1[0] = this;
-		newcomposition1[1] = newcomposition;
-
-		return newcomposition1;
+		return newcomposition;
 	}
 
 	public int getLength(){

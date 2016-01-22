@@ -33,9 +33,9 @@ public class TrackTest {
 		b = new Train(2,2,40,3);
 		c = new Train(3,1,40,3);
 		d = new Train(4,2,40,3);
-		e = new Composition(new ArrayList<Train>(){{add(a);}});
-		f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
-		g = new Composition(new ArrayList<Train>(){{add(d);}});
+		e = new Composition(new ArrayList<Train>(){{add(a);}}, 1.0, 0);
+		f = new Composition(new ArrayList<Train>(){{add(b); add(c);}}, 1.0, 0);
+		g = new Composition(new ArrayList<Train>(){{add(d);}}, 1.0, 0);
 		h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
 		i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
 	}
