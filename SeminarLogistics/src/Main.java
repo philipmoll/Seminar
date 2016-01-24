@@ -38,10 +38,9 @@ public class Main {
 
 
 			Track[] tracks =  readInTracks(trackdata);
-			Train[] trainsarr = readInTrains(compositiondata, compositiondata2, compositiondata3);
-			Train[] trainsdep = readInTrains(compositiondata, compositiondata2, compositiondata3);
-
-			
+			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
+			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
+						
 			Network ournetwork = new Network(); //TODO: consider deleting the Networkclass and reading the network in similarly to trains and tracks
 			Matrix connectionmatrix = ournetwork.getConnections();
 
@@ -91,14 +90,14 @@ public class Main {
 		return compositions;
 	}
 
-	public static Train[] readInTrains(Matrix compositiondata, Matrix compositiondata2, Matrix compositiondata3){
+	public static Train[] readInTrains(int arrordep, Matrix compositiondata, Matrix compositiondata2, Matrix compositiondata3){
 		int abcd = 0;
 		int length;
 
 		Train[] trains = new Train[compositiondata.getNrRows()/2];
 
 		for(int k = 0; k<compositiondata3.getNrRows();k++){
-			if(compositiondata3.getElement(k,1) ==0){
+			if(compositiondata3.getElement(k,1) ==arrordep){
 				for(int i = 0; i< compositiondata.getNrRows();i++){
 					if(compositiondata3.getElement(k,0) == compositiondata.getElement(i,0)){
 						length = 0;
