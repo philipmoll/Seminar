@@ -226,4 +226,27 @@ public class Train {
 	public void setComposition(Composition newcomposition){
 		this.composition = newcomposition;
 	}
+	public boolean getSameClass(Train trainisequal){
+		boolean issameclass = true;
+		if(type == trainisequal.getType() && length == trainisequal.getLength() && carriages == trainisequal.getCarriages()){
+			
+		}
+		else{
+			issameclass = false;
+		}
+		return issameclass;
+	}
+	public int[] getSameClass(Train[] trainsareequal){
+		int[] temptrains = new int[trainsareequal.length];
+		
+		for(int i = 0; i<temptrains.length;i++){
+			if(this.getSameClass(trainsareequal[i])){
+				temptrains[i] = 1;
+			}
+			else{
+				temptrains[i] = 0;
+			}
+		}
+		return temptrains;
+	}
 }

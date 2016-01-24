@@ -40,7 +40,7 @@ public class Main {
 			Track[] tracks =  readInTracks(trackdata);
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
-						
+			
 			Network ournetwork = new Network(); //TODO: consider deleting the Networkclass and reading the network in similarly to trains and tracks
 			Matrix connectionmatrix = ournetwork.getConnections();
 
