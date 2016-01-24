@@ -16,24 +16,24 @@ public class Main {
 	{
 
 		try {
-			Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
-			//Matrix compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			Matrix compositiondata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 
-			Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+			//Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
 			//Matrix compositiondata2 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-			//Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			Matrix compositiondata2 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
 			//Matrix compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
 
-			Matrix compositiondata3 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
-			//Matrix compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
-			//Matrix compositiondata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			//Matrix compositiondata3 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
+			//Matrix compositiondata3 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+			Matrix compositiondata3 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
 			//Matrix compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();		
 
-			Matrix trackdata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-			//Matrix trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
 			//Matrix trackdata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+			//Matrix trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+			Matrix trackdata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
 			//Matrix trackdata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
 
 
@@ -45,14 +45,14 @@ public class Main {
 			Matrix connectionmatrix = ournetwork.getConnections();
 
 			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);			
-			ArrayList<Double> arrivingtimes = new ArrayList<>();
-			ArrayList<Track> arrivingtracks = new ArrayList<>();
+			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
+			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 			
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
 
 			/*ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-			ArrayList<Double> leavingtimes = new ArrayList<>();
-			ArrayList<Track> leavingtracks = new ArrayList<>();
+			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
+			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
 			*/
 
 
@@ -89,6 +89,32 @@ public class Main {
 		}
 		return compositions;
 	}
+	
+	public static ArrayList<Double> setUpTimes(int arrordep, Matrix compositiondata3){
+		ArrayList<Double> times = new ArrayList<>();
+		for (int i = 0; i<compositiondata3.getNrRows();i++){
+			if(compositiondata3.getElement(i,1)==arrordep){
+				times.add(compositiondata3.getElement(i,2));
+			}
+		}
+		return times;
+	}
+	
+	public static ArrayList<Track> setUpTracks(int arrordep, Track[] tracks1, Matrix compositiondata3){
+		ArrayList<Track> arrordeptracks = new ArrayList<>();
+		for (int i = 0; i<compositiondata3.getNrRows();i++){
+			if(compositiondata3.getElement(i, 1)==arrordep){
+				if(compositiondata3.getElement(i, 3)==0){
+					arrordeptracks.add(tracks1[0]);
+				}
+				else if(compositiondata3.getElement(i, 3)==1){
+					arrordeptracks.add(tracks1[tracks1.length-1]);
+				}
+			}
+		}
+		return arrordeptracks;
+	}
+
 
 	public static Train[] readInTrains(int arrordep, Matrix compositiondata, Matrix compositiondata2, Matrix compositiondata3){
 		int abcd = 0;
