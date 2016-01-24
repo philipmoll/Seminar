@@ -3,7 +3,7 @@ compositiondata:
 
 compositiondata2:
 
-compositiondata3:
+compositiondata3: times are fractional and arriving/departure tracks are coded like 0=906 and 1=104
 
 timetabledata:
 
