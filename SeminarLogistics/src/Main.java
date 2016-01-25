@@ -71,6 +71,7 @@ public class Main {
 		} catch (MatrixIncompleteException e) {
 			e.printStackTrace();
 		}
+		//TODO: catch IndexOutOfBoundsException, TrackNotFreeException, MisMatchException
 	}
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1, Matrix compositiondata, Matrix compositiondata3){
 		int abcd = 0;

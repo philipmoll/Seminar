@@ -25,8 +25,9 @@ public class TrackTest {
 	private Composition g;
 	private Track h;
 	private Track i;
-		
-	
+
+
+	@SuppressWarnings("serial")
 	@Before
 	public void setUp(){
 		a = new Train(1,2,40,3);
@@ -39,127 +40,138 @@ public class TrackTest {
 		h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
 		i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
 	}
-	
-	@Test
-	public void testConstructor(){
-		//TODO: hoe doe je dit ook al weer voor een constructor
-	}
-	
+
+
 	@Test
 	public void testGetLabel() {
 		assertEquals(h.getLabel(), "track1");
 		assertEquals(i.getLabel(), "track2");
 	}
-	
+
 	@Test
 	public void testGetTracklength(){
 		assertEquals(h.getTracklength(),500);
 		assertEquals(i.getTracklength(),400);
 	}
-	
+
 	@Test
 	public void testGetParktrain(){
 		assertEquals(h.getParktrain(),2);
 		assertEquals(i.getParktrain(),0);
 	}
-	
+
 	@Test
 	public void testGetInspectionposition(){
 		assertEquals(h.getInspectionposition(),0);
 		assertEquals(i.getInspectionposition(),1);
 	}
-	
+
 	@Test
 	public void testGetCleaningposition(){
 		assertEquals(h.getCleaningposition(),1);
 		assertEquals(i.getCleaningposition(),0);
 	}
-	
+
 	@Test
 	public void testGetRepairingposition(){
 		assertEquals(h.getRepairingposition(),0);
 		assertEquals(i.getRepairingposition(),1);
 	}
-	
+
 	@Test
 	public void testGetWashingposition(){
 		assertEquals(h.getWashingposition(),1);
 		assertEquals(i.getWashingposition(),0);
 	}
-	
+
 	@Test
 	public void testGetTracktype(){
 		assertEquals(h.getTracktype(),1);
 		assertEquals(i.getTracktype(),2);
 	}
-	
+
 	@Test
-	public void testGetSetOccupiedFree(){		
-		assertEquals(h.getOccupied(20),0);
-		h.setOccupied(20);
-		assertEquals(h.getOccupied(20),1);
-		h.setFree(20);
-		assertEquals(h.getOccupied(20),0);
-		for (int x = 0; x <= 2; x++){
-			assertEquals(h.getOccupied(x), 0);
-		}
-		h.setOccupied(0, 2);
-		for (int x = 0; x <= 2; x++){
-			assertEquals(h.getOccupied(x), 1);
-		}
-		h.setFree(0,2);
-		for (int x = 0; x <= 2; x++){
-			assertEquals(h.getOccupied(x), 0);
-		}
-		
-		assertEquals(i.getOccupied(4),0);
-		i.setOccupied(4);
-		assertEquals(i.getOccupied(4),1);
-		i.setFree(4);
-		assertEquals(i.getOccupied(4),0);
-		for (int x = 20; x <= 100; x++){
-			assertEquals(i.getOccupied(x), 0);
-		}
-		i.setOccupied(20, 100);
-		for (int x = 20; x <= 100; x++){
-			assertEquals(i.getOccupied(x), 1);
-		}
-		i.setFree(20,100);
-		for (int x = 20; x <= 100; x++){
-			assertEquals(i.getOccupied(x), 0);
+	public void testGetSetOccupiedFree(){	
+		try {
+			assertEquals(h.getOccupied(20),0);
+			h.setOccupied(20);
+
+			assertEquals(h.getOccupied(20),1);
+			h.setFree(20);
+			assertEquals(h.getOccupied(20),0);
+			for (int x = 0; x <= 2; x++){
+				assertEquals(h.getOccupied(x), 0);
+			}
+			h.setOccupied(0, 2);
+			for (int x = 0; x <= 2; x++){
+				assertEquals(h.getOccupied(x), 1);
+			}
+			h.setFree(0,2);
+			for (int x = 0; x <= 2; x++){
+				assertEquals(h.getOccupied(x), 0);
+			}
+
+			assertEquals(i.getOccupied(4),0);
+			i.setOccupied(4);
+			assertEquals(i.getOccupied(4),1);
+			i.setFree(4);
+			assertEquals(i.getOccupied(4),0);
+			for (int x = 20; x <= 100; x++){
+				assertEquals(i.getOccupied(x), 0);
+			}
+			i.setOccupied(20, 100);
+			for (int x = 20; x <= 100; x++){
+				assertEquals(i.getOccupied(x), 1);
+			}
+			i.setFree(20,100);
+			for (int x = 20; x <= 100; x++){
+				assertEquals(i.getOccupied(x), 0);
+			}
+		} catch (IndexOutofBoundsException e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void testGetCompositionlist(){
-		h.addCompositiontoTrackLeft(e);
-		h.addCompositiontoTrackRight(g);
-		i.addCompositiontoTrackLeft(f);
-		
-		ArrayList<Composition> test1 = new ArrayList<Composition>();
-		test1.add(e);
-		test1.add(g);
-		
-		ArrayList<Composition> test2 = new ArrayList<Composition>();
-		test2.add(f);
-		
-		assertEquals(h.getCompositionlist(),test1);
-		assertEquals(i.getCompositionlist(),test2);
+		try {
+			h.addCompositiontoTrackLeft(e);
+			h.addCompositiontoTrackRight(g);
+			i.addCompositiontoTrackLeft(f);
+
+			ArrayList<Composition> test1 = new ArrayList<Composition>();
+			test1.add(e);
+			test1.add(g);
+
+			ArrayList<Composition> test2 = new ArrayList<Composition>();
+			test2.add(f);
+
+			assertEquals(h.getCompositionlist(),test1);
+			assertEquals(i.getCompositionlist(),test2);
+		} catch (TrackNotFreeException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Test
 	public void testAddCompositiontoTrackLeftRight(){
-		h.addCompositiontoTrackLeft(e);
+		try {
+			h.addCompositiontoTrackLeft(e);
+		
 		h.addCompositiontoTrackLeft(g);
 		h.addCompositiontoTrackRight(f);
 		h.addCompositiontoTrackRight(e);;
-		
+
 		ArrayList<Composition> test1 = new ArrayList<Composition>();
 		test1.add(g);
 		test1.add(e);
 		test1.add(f);
 		test1.add(e);
-		
+
 		assertEquals(h.getCompositionlist(),test1);
+		} catch (TrackNotFreeException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

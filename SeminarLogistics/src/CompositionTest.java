@@ -12,6 +12,8 @@ public class CompositionTest {
 	private Train c;
 	private Composition d;
 	private Composition e;
+	private Track f;
+	private Track g;
 
 	@Before
 	public void setUp(){
@@ -20,6 +22,13 @@ public class CompositionTest {
 		c = new Train(3,1,3,4);
 		d = new Composition(new ArrayList<Train>(){{add(a);}});
 		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
+		f = new Track("testtrack",500,1,0,0,1,1,0);
+		try {
+			f.addCompositiontoTrackLeft(d);
+			f.addCompositiontoTrackLeft(e);
+		} catch (TrackNotFreeException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Test
@@ -45,8 +54,8 @@ public class CompositionTest {
 	}
 	@Test
 	public void testGetLength(){
-		assertEquals(1, d.getLength());
-		assertEquals(5, e.getLength());
+		assertEquals(6, d.getLength());
+		assertEquals(8, e.getLength());
 	}
 	@Test
 	public void testGetSize(){
@@ -59,7 +68,7 @@ public class CompositionTest {
 		
 		assertEquals(1, d.getTrain(0).getID());
 		assertEquals(2, d.getTrain(0).getType());
-		assertEquals(1,d.getTrain(0).getLength());
+		assertEquals(6,d.getTrain(0).getLength());
 		assertEquals(10,d.getTrain(0).getInspectionTime());
 		assertEquals(10,d.getTrain(0).getCleaningTime());
 		assertEquals(10,d.getTrain(0).getRepairingTime());
@@ -74,7 +83,7 @@ public class CompositionTest {
 		assertEquals(c, e.getTrain(1));
 		assertEquals(3, e.getTrain(1).getID());
 		assertEquals(1, e.getTrain(1).getType());
-		assertEquals(3,e.getTrain(1).getLength());
+		assertEquals(4,e.getTrain(1).getLength());
 		assertEquals(10,e.getTrain(1).getInspectionTime());
 		assertEquals(10,e.getTrain(1).getCleaningTime());
 		assertEquals(10,e.getTrain(1).getRepairingTime());
@@ -93,5 +102,20 @@ public class CompositionTest {
 	@Test
 	public void testUpdateComposition(){
 		//I don't know how to test this function as it constantly done in all the functions above already.
+	}
+	
+	@Test
+	public void testMoveComposition(){
+		
+	}
+	
+	@Test
+	public void testGetPositionOnTrack(){
+		try {
+			assertEquals(d.getPositionOnTrack(),1);
+			assertEquals(e.getPositionOnTrack(),0);
+		} catch (MisMatchException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

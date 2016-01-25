@@ -74,25 +74,37 @@ public int getTracktype(){
 	return tracktype;
 }
 
-public int getOccupied(int position){
+public int getOccupied(int position)throws IndexOutofBoundsException{
+	if (position < 0 || position >= tracklength)
+	{
+		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function getOccupied is out of trackbound");
+	}
 	return occupation[position];
 }
 
-public void setOccupied(int position){ //TODO: throw exception when position is out of bounds
+public void setOccupied(int position) throws IndexOutofBoundsException{
+	if (position < 0 || position >= tracklength)
+	{
+		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setOccupied is out of trackbound");
+	}
 	this.occupation[position] = 1;
 }
 
-public void setOccupied(int beginposition, int endposition){ //TODO: throw exception when position is out of bounds
+public void setOccupied(int beginposition, int endposition) throws IndexOutofBoundsException{
 	for (int i=beginposition; i<=endposition; i++){
 		this.setOccupied(i);
 	}
 }
 
-public void setFree(int position){ //TODO: throw exception when position is out of bounds
+public void setFree(int position) throws IndexOutofBoundsException{
+	if (position < 0 || position >= tracklength)
+	{
+		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setFree is out of trackbound");
+	}
 	this.occupation[position] = 0;
 }
 
-public void setFree(int beginposition, int endposition){ //TODO: throw exception when position is out of bounds
+public void setFree(int beginposition, int endposition) throws IndexOutofBoundsException{
 	for (int i=beginposition; i<=endposition; i++){
 		this.setFree(i);
 	}
@@ -102,12 +114,40 @@ public ArrayList<Composition> getCompositionlist(){
 	return compositionlist;
 }
 
-public void addCompositiontoTrackLeft(Composition composition){ //LEFT: links op de map, index 0 //TODO: check total length
+public void addCompositiontoTrackLeft(Composition composition) throws TrackNotFreeException{ //LEFT: links op de map, index 0 //TODO: check total length
+	int compositionslength = 0;
+	for (int i = 0; i<compositionlist.size();i++){
+		compositionslength += compositionlist.get(i).getLength();
+	}
+	if (compositionslength+composition.getLength()>tracklength){
+		throw new TrackNotFreeException("Track "+label+" has no room for a composition of length "+composition.getLength()+" (function addCompositionToTrackLeft)");
+	}
+	
 	this.compositionlist.add(0,composition);
 }
 
-public void addCompositiontoTrackRight(Composition composition){ //RIGHT: rechts op de map, index max lengte arraylist
+public void addCompositiontoTrackRight(Composition composition) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+		int compositionslength = 0;
+		for (int i = 0; i<compositionlist.size();i++){
+			compositionslength += compositionlist.get(i).getLength();
+		}
+		if (compositionslength+composition.getLength()>tracklength){
+			throw new TrackNotFreeException("Track "+label+" has no room for a composition of length "+composition.getLength()+" (function addCompositionToTrackRight)");
+		}
 	this.compositionlist.add(compositionlist.size(),composition);
 }
+
+public void addCompositiontoTrack(Composition composition, int positionontrack) { //TODO: testfunctie
+this.compositionlist.add(positionontrack,composition);
+}
+
+public void removeComposition(int position)throws IndexOutofBoundsException{ //TODO testfunctie
+	if (position < 0 || position >= tracklength)
+	{
+		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function removeComposition is out of trackbound");
+	}
+	compositionlist.remove(position);
+}
+
 
 }
