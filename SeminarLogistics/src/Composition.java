@@ -19,14 +19,14 @@ public class Composition {
 	private int locationontrack;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
-	public Composition(ArrayList<Train> compositiontrains){
+	public Composition(ArrayList<Train> compositiontrains) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
 		compositiontrack = null; //default
 		locationontrack = -1; //default
 	}
 
-	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutofBoundsException, TrackNotFreeException{
+	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutofBoundsException, TrackNotFreeException, IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
 		//add composition to compositiontrack
@@ -36,13 +36,39 @@ public class Composition {
 			if (compositiontrack.getOccupied(i)==1){
 				throw new TrackNotFreeException("Composition cannot be initialized on "+compositiontrack.getLabel()+" at position " + locationontrack + "as there is not enough free track space from location " + i + " onward");
 			}
-			//TODO: 
 		}
+		//
+		ArrayList<Composition> compositionlist = this.compositiontrack.getCompositionlist();
+		int[] locations = new int[compositionlist.size()];
+		for (int i = 0; i<compositionlist.size();i++){
+			locations[i] = compositionlist.get(i).getLocationOnTrack();
+		}
+		boolean check = false;
+		int i = 0;
+		int newposition = -1;
+		if (this.locationontrack < locations[0]){ //if new train will be at first location
+			newposition =0;
+		}
+		else if (this.locationontrack > locations[0] && locationontrack < locations[compositionlist.size()-1]){
+			while (check == false && i < compositionlist.size()-1){
+				if(this.locationontrack > locations[i]&&this.locationontrack <locations[i+1]){
+					newposition = i+1;
+					break;
+				}
+				i++;
+			}
+		}
+		else if (this.locationontrack > locations[compositionlist.size()-1]){
+			newposition = compositionlist.size()-1;
+		}
+
+		this.compositiontrack.addCompositiontoTrack(this,newposition);
+		//TODO where on the track is this composition?
 	}
 
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
 
-	public void coupleComposition(Composition addcomposition) throws MisMatchException, IndexOutofBoundsException{
+	public void coupleComposition(Composition addcomposition) throws MisMatchException, IndexOutofBoundsException, IOException{
 		this.compositiontrains.addAll(addcomposition.getCompositionList());
 
 		//addcomposition = null; If this does not work well, we need to make the function in Main.
@@ -62,7 +88,7 @@ public class Composition {
 				this.updateComposition(addcomposition.getLocationOnTrack());
 			}
 			else{
-			this.updateComposition();
+				this.updateComposition();
 			}
 		}
 		else{
@@ -70,7 +96,7 @@ public class Composition {
 		}
 	}
 
-	public Composition decoupleComposition(int locationdecouple) throws MisMatchException, IndexOutofBoundsException, TrackNotFreeException{
+	public Composition decoupleComposition(int locationdecouple) throws MisMatchException, IndexOutofBoundsException, TrackNotFreeException, IOException{
 
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
 		int a = this.getSize();
