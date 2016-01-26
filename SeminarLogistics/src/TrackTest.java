@@ -40,7 +40,7 @@ public class TrackTest {
 			e = new Composition(new ArrayList<Train>(){{add(a);}});
 			f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 			g = new Composition(new ArrayList<Train>(){{add(d);}});
-			
+
 			h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
 			i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
 		} catch (IOException e) {
@@ -179,8 +179,50 @@ public class TrackTest {
 
 			assertEquals(h.getCompositionlist(),test1);
 		} catch (TrackNotFreeException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
+
+	@Test
+	public void testAddCompositiontoTrack(){
+		try {
+			h.addCompositiontoTrack(e, 0);
+			h.addCompositiontoTrack(f, 1);
+			h.addCompositiontoTrack(g, 1);
+		} catch (IndexOutofBoundsException e1) {
+			e1.printStackTrace();
+		}
+
+
+		assertEquals(3,h.getCompositionlist().size());
+		assertEquals(e, h.getCompositionlist().get(0));
+		assertEquals(f, h.getCompositionlist().get(2));
+		assertEquals(g, h.getCompositionlist().get(1));
+	}
+	@Test
+	public void removeComposition(){
+		try {
+			h.addCompositiontoTrack(e, 0);
+			h.addCompositiontoTrack(f, 1);
+			h.addCompositiontoTrack(g, 1);
+
+			h.removeComposition(1);
+			assertEquals(2, h.getCompositionlist().size());
+			assertEquals(e, h.getCompositionlist().get(0));
+			assertEquals(f, h.getCompositionlist().get(1));
+		} catch (IndexOutofBoundsException e1) {
+			e1.printStackTrace();
+		}
+
+	}
 }
+
+/**
+public void removeComposition(int position)throws IndexOutofBoundsException{ //TODO testfunctie
+	if (position < 0 || position >= tracklength)
+	{
+		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function removeComposition is out of trackbound");
+	}
+	compositionlist.remove(position);
+}
+ */

@@ -18,104 +18,104 @@ public class Train {
 	private final int repairingtime;
 	private final int washingtime;
 	private final int carriages;
-	
+
 	private boolean interchangeable;
 	private boolean inspecting;
 	private boolean cleaning;
 	private boolean repairing;
 	private boolean washing;
-	
+
 	private int position;
 	private Composition composition;
-	
+
 	public Train(int train_ID, int type, int carriages, int length){
 		this.train_ID = train_ID;
 		this.type = type;
 		this.length = length;
 		this.carriages = carriages;
 		this.composition = null;
-		
+
 		position = -1; //If you make a new train, it is the only train in its composition
-		
+
 		interchangeable = false;
 		inspecting = false;
 		cleaning = false;
 		repairing = false;
 		washing = false;
-		
+
 		switch (type){
 		case 1:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
-		break;
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
+			break;
 		case 2:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
-		break;
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
+			break;
 		case 3:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
 
-		break;
+			break;
 		case 4:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
 
-		break;
+			break;
 		case 5:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
 
-		break;
+			break;
 		case 6:
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+			inspectiontime = 10; //Minutes
+			cleaningtime = 10; //Minutes
+			repairingtime = 10; //Minutes
+			washingtime = 10; //Minutes
 
-		break;
+			break;
 		default: 
-		inspectiontime = -1; //Minutes
-		cleaningtime = -1; //Minutes
-		repairingtime = -1; //Minutes
-		washingtime = -1; //Minutes
+			inspectiontime = -1; //Minutes
+			cleaningtime = -1; //Minutes
+			repairingtime = -1; //Minutes
+			washingtime = -1; //Minutes
 
-		break;
-		
+			break;
+
 		}
 	}
-	
+
 	public Train(int train_ID, int type, int carriages, int length, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
 		this.length = length;
 		this.carriages = carriages;
 		this.composition = null;
-		
+
 		position = -1; //If you make a new train, it is the only train in its composition
-		
+
 		this.interchangeable = interchangeable;
 		this.inspecting = inspecting;
 		this.cleaning = cleaning;
 		this.repairing = repairing;
 		this.washing = washing;
-		
+
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
 		washingtime = 10; //Minutes
 	}
-	
+
 	public Train(int train_ID, int type, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
@@ -123,9 +123,9 @@ public class Train {
 		this.cleaning = cleaning;
 		this.repairing = repairing;
 		this.washing = washing;
-		
+
 		position = 1; //If you make a new train, it is the only train in its composition
-		
+
 		switch (type){
 		case 1:length = 109; //Meters
 		inspectiontime = 10; //Minutes
@@ -176,10 +176,10 @@ public class Train {
 		washingtime = 0; //Minutes
 		carriages = 0;
 		break;
-		
+
 		}
 	}
-	
+
 
 	public int getID(){
 		return train_ID;
@@ -250,7 +250,7 @@ public class Train {
 	public boolean getSameClass(Train trainisequal){
 		boolean issameclass = true;
 		if(type == trainisequal.getType() && length == trainisequal.getLength() && carriages == trainisequal.getCarriages()){
-			
+
 		}
 		else{
 			issameclass = false;
@@ -259,7 +259,7 @@ public class Train {
 	}
 	public int[] getSameClass(Train[] trainsareequal){
 		int[] temptrains = new int[trainsareequal.length];
-		
+
 		for(int i = 0; i<temptrains.length;i++){
 			if(this.getSameClass(trainsareequal[i])){
 				temptrains[i] = 1;
