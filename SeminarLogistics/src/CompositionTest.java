@@ -15,13 +15,14 @@ public class CompositionTest {
 	private Track f;
 	private Track g;
 
+	@SuppressWarnings("serial")
 	@Before
 	public void setUp(){
 		a = new Train(1,2,1,6);
 		b = new Train(2,2,2,4);
 		c = new Train(3,1,3,4);
-		d = new Composition(new ArrayList<Train>(){{add(a);}});
-		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
+		d = new Composition(new ArrayList<Train>(){{add(a);}}, f, 250);
+		e = new Composition(new ArrayList<Train>(){{add(b); add(c);}},f, 1);
 		f = new Track("testtrack",500,1,0,0,1,1,0);
 		try {
 			f.addCompositiontoTrackLeft(d);
