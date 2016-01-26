@@ -99,17 +99,17 @@ public class Composition {
 			}
 			if (a>b)
 			{
-				//System.out.println("a>b, addcomposition.getLocationOnTrack() = " +addcomposition.getLocationOnTrack()+" addcomposition.getLength() = "+addcomposition.getLength()+" addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 = "+addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 + " this.locationontrack = "+this.locationontrack);
-				if (addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 != this.locationontrack){
+				//System.out.println("a>b, addcomposition.getLocationOnTrack() = " +addcomposition.getLocationOnTrack()+" addcomposition.getLength() = "+addcomposition.getLength()+" addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 = "+(addcomposition.getLocationOnTrack()+addcomposition.getLength()+1) + " this.locationontrack = "+this.locationontrack);
+				if (addcomposition.getLocationOnTrack()+addcomposition.getLength() != this.locationontrack){
 					throw new MisMatchException("Compositions aren't located exactly next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
 				}
 				this.updateComposition(addcomposition.getLocationOnTrack());
 			}
 			else{
-				//System.out.println("a<b, this.getLocationOnTrack() = " +this.getLocationOnTrack()+" this.getLength() = "+this.getLength()+" this.getLocationOnTrack()+this.getLength()+1 = "+this.getLocationOnTrack()+this.getLength()+1 + " addcomposition.locationontrack = "+addcomposition.locationontrack);
+				//System.out.println("a<b, this.getLocationOnTrack() = " +this.getLocationOnTrack()+" this.getLength() = "+this.getLength()+" this.getLocationOnTrack()+this.getLength()+1 = "+(this.getLocationOnTrack()+this.getLength()+1) + " addcomposition.locationontrack = "+addcomposition.locationontrack);
 			
 				
-				if (this.locationontrack+this.compositionlength+1 != addcomposition.getLocationOnTrack()){
+				if (this.locationontrack+this.compositionlength != addcomposition.getLocationOnTrack()){
 					throw new MisMatchException("Compositions aren't located exactly next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
 				}
 				this.updateComposition();
@@ -121,7 +121,12 @@ public class Composition {
 	}
 
 	public Composition decoupleComposition(int locationdecouple) throws MisMatchException, IndexOutofBoundsException, TrackNotFreeException, IOException{
-
+		if (compositionsize < 2){
+			throw new IOException("Composition consists of less than two trains, thus decoupling is impossible");
+		}
+		if (locationdecouple < 0 || locationdecouple > compositionsize-2){
+			throw new IndexOutofBoundsException("Composition of size "+compositionsize+" cannot be decoupled at index "+locationdecouple);
+		}
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
 		int a = this.getSize();
 		for(int i=0;i<a-1-locationdecouple;i++){

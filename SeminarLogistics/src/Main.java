@@ -65,7 +65,7 @@ public class Main {
 
                         //This is how we should write a couple function, N.B.: with the .remove function.
                         //arrivingcompositions.get(0).coupleComposition(arrivingcompositions.get(1));
-                        //Composition a = arrivingcompositions.get(0);
+                        //Composition a = arrivingcompositions.get(1);
                         //a = null;
                         //arrivingcompositions.remove(1);
 

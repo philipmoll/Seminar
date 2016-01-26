@@ -58,7 +58,16 @@ public class CompositionTest {
 	}
 	@Test
 	public void testDecoupleComposition(){
-
+		try {
+			d.coupleComposition(e);
+			e = null;
+			d.decoupleComposition(1);
+		} catch (MisMatchException | IndexOutofBoundsException | IOException | TrackNotFreeException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+			
 	}
 	@Test
 	public void testGetLength(){
