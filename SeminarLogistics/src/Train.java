@@ -227,19 +227,19 @@ public class Train {
 		return composition;
 	}
 	public void toggleInterchangeable(){
-		interchangeable = !interchangeable; //TODO: why not this.
+		interchangeable = !interchangeable; 
 	}
 	public void toggleInspecting(){
-		inspecting = !inspecting; //TODO: why not this
+		inspecting = !inspecting; 
 	}
 	public void toggleCleaning(){
-		cleaning = !cleaning; //TODO: why not this
+		cleaning = !cleaning; 
 	}
 	public void toggleRepairing(){
-		repairing = !repairing; //TODO: why not this
+		repairing = !repairing; 
 	}
 	public void toggleWashing(){
-		washing = !washing; //TODO: why not this
+		washing = !washing; 
 	}
 	public void setPosition(int newposition){
 		this.position = newposition;

@@ -19,6 +19,7 @@ public class Composition {
 	private int locationontrack;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
+
 	public Composition(ArrayList<Train> compositiontrains) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
@@ -37,33 +38,46 @@ public class Composition {
 				throw new TrackNotFreeException("Composition cannot be initialized on "+compositiontrack.getLabel()+" at position " + locationontrack + "as there is not enough free track space from location " + i + " onward");
 			}
 		}
-		//
+		//check where to insert the composition in the compositionlist of the track
 		ArrayList<Composition> compositionlist = this.compositiontrack.getCompositionlist();
-		int[] locations = new int[compositionlist.size()];
-		for (int i = 0; i<compositionlist.size();i++){
-			locations[i] = compositionlist.get(i).getLocationOnTrack();
+		if (compositionlist.size()==0){ //just add if the track has no compositions yet
+			this.compositiontrack.addCompositiontoTrackLeft(this);
 		}
-		boolean check = false;
-		int i = 0;
-		int newposition = -1;
-		if (this.locationontrack < locations[0]){ //if new train will be at first location
-			newposition =0;
-		}
-		else if (this.locationontrack > locations[0] && locationontrack < locations[compositionlist.size()-1]){
-			while (check == false && i < compositionlist.size()-1){
-				if(this.locationontrack > locations[i]&&this.locationontrack <locations[i+1]){
-					newposition = i+1;
-					break;
-				}
-				i++;
+		else if (compositionlist.size()==1){ //check whether we insert it left or right of the existing train if there is only one composition
+			if (compositionlist.get(0).getLocationOnTrack()<this.locationontrack){
+				this.compositiontrack.addCompositiontoTrackRight(this);
+			}
+			else if (compositionlist.get(0).getLocationOnTrack()>this.locationontrack){
+				this.compositiontrack.addCompositiontoTrackLeft(this);
 			}
 		}
-		else if (this.locationontrack > locations[compositionlist.size()-1]){
-			newposition = compositionlist.size()-1;
-		}
+		else{
+			int[] locations = new int[compositionlist.size()];
+			for (int i = 0; i<compositionlist.size();i++){
+				locations[i] = compositionlist.get(i).getLocationOnTrack();
+			}
+			boolean check = false;
+			int i = 0;
+			int newposition = -1;
+			if (this.locationontrack < locations[0]){ //if new train will be at first location
+				newposition =0;
+			}
+			else if (this.locationontrack > locations[0] && locationontrack < locations[compositionlist.size()-1]){
+				while (check == false && i < compositionlist.size()-1){
+					if(this.locationontrack > locations[i]&&this.locationontrack <locations[i+1]){
+						newposition = i+1;
+						break;
+					}
+					i++;
+				}
+			}
+			else if (this.locationontrack > locations[compositionlist.size()-1]){
+				newposition = compositionlist.size()-1;
+			}
 
-		this.compositiontrack.addCompositiontoTrack(this,newposition);
-		//TODO where on the track is this composition?
+			this.compositiontrack.addCompositiontoTrack(this,newposition);
+		}
+		//je hoeft dus niet meer zelf toe te voegen aan je track als je een compositie op een track maakt!! :)
 	}
 
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
@@ -81,13 +95,23 @@ public class Composition {
 			this.compositiontrack.removeComposition(b);
 			int x = Math.abs(a-b);
 			if (x!=1){
-				throw new MisMatchException("Compositions aren't located next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
+				throw new MisMatchException("There are other compositions between the coupling compositions when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
 			}
 			if (a>b)
 			{
+				//System.out.println("a>b, addcomposition.getLocationOnTrack() = " +addcomposition.getLocationOnTrack()+" addcomposition.getLength() = "+addcomposition.getLength()+" addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 = "+addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 + " this.locationontrack = "+this.locationontrack);
+				if (addcomposition.getLocationOnTrack()+addcomposition.getLength()+1 != this.locationontrack){
+					throw new MisMatchException("Compositions aren't located exactly next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
+				}
 				this.updateComposition(addcomposition.getLocationOnTrack());
 			}
 			else{
+				//System.out.println("a<b, this.getLocationOnTrack() = " +this.getLocationOnTrack()+" this.getLength() = "+this.getLength()+" this.getLocationOnTrack()+this.getLength()+1 = "+this.getLocationOnTrack()+this.getLength()+1 + " addcomposition.locationontrack = "+addcomposition.locationontrack);
+			
+				
+				if (this.locationontrack+this.compositionlength+1 != addcomposition.getLocationOnTrack()){
+					throw new MisMatchException("Compositions aren't located exactly next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
+				}
 				this.updateComposition();
 			}
 		}
@@ -169,7 +193,7 @@ public class Composition {
 		return locationontrack;
 	}
 
-	//int aorb indicates whether we want to add the composition to the a side or the b side of the track
+	//int aorb indicates whether we want to add the composition to the a (left) side or the b (right) side of the track
 	public void moveComposition(Track track, int location, String aorb) throws TrackNotFreeException, IndexOutofBoundsException, IOException, MisMatchException{ //TODO testfunctie
 		//First check whether there is room on the new track
 		for (int i = location; i<location+compositionlength;i++){

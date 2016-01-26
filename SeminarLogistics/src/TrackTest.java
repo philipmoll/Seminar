@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -30,15 +31,21 @@ public class TrackTest {
 	@SuppressWarnings("serial")
 	@Before
 	public void setUp(){
-		a = new Train(1,2,40,3);
-		b = new Train(2,2,40,3);
-		c = new Train(3,1,40,3);
-		d = new Train(4,2,40,3);
-		e = new Composition(new ArrayList<Train>(){{add(a);}});
-		f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
-		g = new Composition(new ArrayList<Train>(){{add(d);}});
-		h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
-		i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
+		try {
+			a = new Train(1,2,40,3);
+			b = new Train(2,2,40,3);
+			c = new Train(3,1,40,3);
+			d = new Train(4,2,40,3);
+
+			e = new Composition(new ArrayList<Train>(){{add(a);}});
+			f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
+			g = new Composition(new ArrayList<Train>(){{add(d);}});
+			
+			h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
+			i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -148,6 +155,8 @@ public class TrackTest {
 
 			assertEquals(h.getCompositionlist(),test1);
 			assertEquals(i.getCompositionlist(),test2);
+			assertEquals(h.getCompositionlist().size(),2);
+			assertEquals(i.getCompositionlist().size(),1);
 		} catch (TrackNotFreeException e1) {
 			e1.printStackTrace();
 		}
@@ -157,18 +166,18 @@ public class TrackTest {
 	public void testAddCompositiontoTrackLeftRight(){
 		try {
 			h.addCompositiontoTrackLeft(e);
-		
-		h.addCompositiontoTrackLeft(g);
-		h.addCompositiontoTrackRight(f);
-		h.addCompositiontoTrackRight(e);;
 
-		ArrayList<Composition> test1 = new ArrayList<Composition>();
-		test1.add(g);
-		test1.add(e);
-		test1.add(f);
-		test1.add(e);
+			h.addCompositiontoTrackLeft(g);
+			h.addCompositiontoTrackRight(f);
+			h.addCompositiontoTrackRight(e);;
 
-		assertEquals(h.getCompositionlist(),test1);
+			ArrayList<Composition> test1 = new ArrayList<Composition>();
+			test1.add(g);
+			test1.add(e);
+			test1.add(f);
+			test1.add(e);
+
+			assertEquals(h.getCompositionlist(),test1);
 		} catch (TrackNotFreeException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
