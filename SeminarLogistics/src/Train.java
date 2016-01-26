@@ -95,6 +95,27 @@ public class Train {
 		}
 	}
 	
+	public Train(int train_ID, int type, int carriages, int length, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
+		this.train_ID = train_ID;
+		this.type = type;
+		this.length = length;
+		this.carriages = carriages;
+		this.composition = null;
+		
+		position = -1; //If you make a new train, it is the only train in its composition
+		
+		this.interchangeable = interchangeable;
+		this.inspecting = inspecting;
+		this.cleaning = cleaning;
+		this.repairing = repairing;
+		this.washing = washing;
+		
+		inspectiontime = 10; //Minutes
+		cleaningtime = 10; //Minutes
+		repairingtime = 10; //Minutes
+		washingtime = 10; //Minutes
+	}
+	
 	public Train(int train_ID, int type, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
