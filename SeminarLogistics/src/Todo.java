@@ -127,5 +127,27 @@ public class Todo {
 		return temp;
 
 	}
-	
+	private int getMin(){
+		double temp = 33299004;
+		int temptemp = -1;
+		for(int i = 0; i<trains.size(); i++){
+			if(times.get(i)<temp){
+				temp = times.get(i);
+				temptemp = i;
+			}
+		}
+		return temptemp;
+	}
+	public double getMinTime(){
+		return times.get(this.getMin());
+	}
+	public Train getMinTrain(){
+		return trains.get(this.getMin());
+	}
+	public int getMinActivity(){
+		return activities.get(this.getMin());
+	}
+	public Track getMinTrack(){
+		return tracksassigned.get(this.getMin());
+	}
 }
