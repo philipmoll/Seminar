@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -74,37 +75,37 @@ public class Track {
 		return tracktype;
 	}
 
-	public int getOccupied(int position)throws IndexOutofBoundsException{
+	public int getOccupied(int position)throws IndexOutOfBoundsException{
 		if (position < 0 || position >= tracklength)
 		{
-			throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function getOccupied is out of trackbound");
+			throw new IndexOutOfBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function getOccupied is out of trackbound");
 		}
 		return occupation[position];
 	}
 
-	public void setOccupied(int position) throws IndexOutofBoundsException{
+	public void setOccupied(int position) throws IndexOutOfBoundsException{
 		if (position < 0 || position >= tracklength)
 		{
-			throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setOccupied is out of trackbound");
+			throw new IndexOutOfBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setOccupied is out of trackbound");
 		}
 		this.occupation[position] = 1;
 	}
 
-	public void setOccupied(int beginposition, int endposition) throws IndexOutofBoundsException{
+	public void setOccupied(int beginposition, int endposition) throws IndexOutOfBoundsException{
 		for (int i=beginposition; i<=endposition; i++){
 			this.setOccupied(i);
 		}
 	}
 
-	public void setFree(int position) throws IndexOutofBoundsException{
+	public void setFree(int position) throws IndexOutOfBoundsException{
 		if (position < 0 || position >= tracklength)
 		{
-			throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setFree is out of trackbound");
+			throw new IndexOutOfBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function setFree is out of trackbound");
 		}
 		this.occupation[position] = 0;
 	}
 
-	public void setFree(int beginposition, int endposition) throws IndexOutofBoundsException{
+	public void setFree(int beginposition, int endposition) throws IndexOutOfBoundsException{
 		for (int i=beginposition; i<=endposition; i++){
 			this.setFree(i);
 		}
@@ -115,10 +116,7 @@ public class Track {
 	}
 
 	public void addCompositiontoTrackLeft(Composition composition) throws TrackNotFreeException{ //LEFT: links op de map, index 0 
-		int compositionslength = 0;
-		for (int i = 0; i<compositionlist.size();i++){
-			compositionslength += compositionlist.get(i).getLength();
-		}
+		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+composition.getLength()>tracklength){
 			throw new TrackNotFreeException("Track "+label+" has no room for a composition of length "+composition.getLength()+" (function addCompositionToTrackLeft)");
 		}
@@ -127,32 +125,92 @@ public class Track {
 	}
 
 	public void addCompositiontoTrackRight(Composition composition) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
-		int compositionslength = 0;
-		for (int i = 0; i<compositionlist.size();i++){
-			compositionslength += compositionlist.get(i).getLength();
-		}
+		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+composition.getLength()>tracklength){
 			throw new TrackNotFreeException("Track "+label+" has no room for a composition of length "+composition.getLength()+" (function addCompositionToTrackRight)");
 		}
 		this.compositionlist.add(compositionlist.size(),composition);
 	}
 
-	public void addCompositiontoTrack(Composition composition, int positionontrack) throws IndexOutofBoundsException {
+	public void addCompositiontoTrack(Composition composition, int positionontrack) throws IndexOutOfBoundsException {
 		if (positionontrack < 0 || positionontrack > compositionlist.size())
 		{
-			throw new IndexOutofBoundsException("Index "+ positionontrack+" on track "+label+" in function addComposition is out of trackbound");
+			throw new IndexOutOfBoundsException("Index "+ positionontrack+" on track "+label+" in function addComposition is out of trackbound");
 		}
 
 		this.compositionlist.add(positionontrack,composition);
 	}
 
-	public void removeComposition(int position)throws IndexOutofBoundsException{
+	public void removeComposition(int position)throws IndexOutOfBoundsException{
 		if (position < 0 || position > compositionlist.size()-1)
 		{
-			throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" in function removeComposition is out of trackbound");
+			throw new IndexOutOfBoundsException("Index "+ position+" on track "+label+" in function removeComposition is out of trackbound");
 		}
 		compositionlist.remove(position);
 	}
+	
+	/**This function returns the total length of the compositions on the track
+	 * 
+	 * @return Total length of compositions on track
+	 */
+	public int getCompositionLengthOnTrack(){ 
+		int length = 0;
+		for (int i = 0; i<compositionlist.size(); i++){
+			length += compositionlist.get(i).getLength();
+		}
+		return length;
+	}
+	
+	/**This function a arraylist of compositions located completely to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
+	 * Only compositions located completely to the left or right of a location are included
+	 * 
+	 * @param location, location on track we want to insert the enteringcomposition on
+	 * @param aorb, a if we want compositions to the left, b if we want compositions to the right of location
+	 * @param enteringcomposition, composition we want to insert
+	 * 
+	 * @return Total length of compositions on track
+	 * 
+	 * @throws IOException if input for aorb parameter is not a or b
+	 */
+	public ArrayList<Composition> getPartialCompositionList(int location, String aorb, Composition enteringcomposition) throws IOException{
+		ArrayList<Composition> partialcompositionlist = new ArrayList<Composition>();
+		if (aorb == "a"){
+			boolean stop = false;
+			int i = 0;
+			while (stop==false){
+				Composition currentcomposition = compositionlist.get(i);
+				if (currentcomposition.getLocationOnTrack()+currentcomposition.getLength()-1<location){
+					partialcompositionlist.add(currentcomposition);
+				}
+				else{
+					stop = true;
+				}
+				i++;
+			}
+		}
+		else if (aorb == "b"){
+			boolean stop = false;
+			int i = compositionlist.size()-1;
+			while (stop==false){
+				Composition currentcomposition = compositionlist.get(i);
+				if (currentcomposition.getLocationOnTrack()>location+enteringcomposition.getLength()-1){
+					partialcompositionlist.add(0,currentcomposition);
+				}
+				else{
+					stop = true;
+				}
+				i--;
+			}
+		}
+		else{
+			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+		}
+		
+		return partialcompositionlist;
+	}
+	
+	
 
+	
 
 }

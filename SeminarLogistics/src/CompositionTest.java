@@ -41,8 +41,7 @@ public class CompositionTest {
 			v = new Composition(new ArrayList<Train>(){{add(x);}}, g, 9);
 			w = new Composition(new ArrayList<Train>(){{add(y); add(z);}},g, 1);
 
-
-		} catch (IndexOutofBoundsException | TrackNotFreeException | IOException e2) {
+		} catch (IndexOutOfBoundsException | TrackNotFreeException | IOException e2) {
 			e2.printStackTrace();
 		}
 	}
@@ -58,7 +57,7 @@ public class CompositionTest {
 		assertEquals(2,d.getTrack().getCompositionlist().size());
 		try {
 			d.coupleComposition(e);
-		} catch (MisMatchException | IndexOutofBoundsException | IOException e1) {
+		} catch (MisMatchException | IndexOutOfBoundsException | IOException e1) {
 			e1.printStackTrace();
 		}
 		assertEquals(14,d.getLength());
@@ -79,7 +78,7 @@ public class CompositionTest {
 			assertEquals(1,d.getTrack().getCompositionlist().size());
 			e = null;
 			x = d.decoupleComposition(1);
-		} catch (MisMatchException | IndexOutofBoundsException | IOException | TrackNotFreeException e1) {
+		} catch (MisMatchException | IndexOutOfBoundsException | IOException | TrackNotFreeException e1) {
 			e1.printStackTrace();
 		}
 		//check
@@ -151,36 +150,37 @@ public class CompositionTest {
 	@Test
 	public void testMoveComposition(){
 		try {
-			int locationold = e.getLocationOnTrack();
-			Track trackold = e.getTrack();
-			e.moveComposition(g, 0, "a"); //TODO dit kan helemaal niet gekkies
-			for (int i = locationold;i<locationold+e.getLength();i++)
+				
+			int locationold = d.getLocationOnTrack();
+			Track trackold = d.getTrack();
+			d.moveComposition(g, 400, "b");
+			for (int i = locationold;i<locationold+d.getLength();i++)
 			{
 				assertEquals(0,trackold.getOccupied(i));
 			}
-			for (int i = e.getLocationOnTrack();i<e.getLocationOnTrack()+e.getLength();i++)
+			for (int i = d.getLocationOnTrack();i<d.getLocationOnTrack()+d.getLength();i++)
 			{
-				assertEquals(1,e.getTrack().getOccupied(i));
+				assertEquals(1,d.getTrack().getOccupied(i));
 			}
 
 			assertEquals(1,f.getCompositionlist().size());
 			for (int i = 0; i < f.getCompositionlist().size();i++){
-				assertNotEquals(e,f.getCompositionlist().get(i));
+				assertNotEquals(d,f.getCompositionlist().get(i));
 			}
-			assertEquals(d,f.getCompositionlist().get(0));
+			assertEquals(e,f.getCompositionlist().get(0));
 
 			assertEquals(3,g.getCompositionlist().size());
-			assertEquals(w,g.getCompositionlist().get(1));
-			assertEquals(v,g.getCompositionlist().get(2));
-			assertEquals(e,g.getCompositionlist().get(0));
+			assertEquals(w,g.getCompositionlist().get(0));
+			assertEquals(v,g.getCompositionlist().get(1));
+			assertEquals(d,g.getCompositionlist().get(2));
 
-			assertEquals(0, e.getLocationOnTrack());
-			assertEquals(g, e.getTrack());
+			assertEquals(400, d.getLocationOnTrack());
+			assertEquals(g, d.getTrack());
 
-			assertNotEquals(1, e.getLocationOnTrack());
-			assertNotEquals(f, e.getTrack());
-			System.out.println(w.getLocationOnTrack());
-		} catch (TrackNotFreeException | IndexOutofBoundsException | IOException | MisMatchException e) {
+			assertNotEquals(1, d.getLocationOnTrack());
+			assertNotEquals(f, d.getTrack());
+			//System.out.println(w.getLocationOnTrack());
+		} catch (TrackNotFreeException | IndexOutOfBoundsException | IOException | MisMatchException e) {
 			e.printStackTrace();
 		}
 
@@ -203,8 +203,14 @@ public class CompositionTest {
 			assertEquals(2,d.getPositionOnTrack());
 			assertEquals(1,x.getPositionOnTrack());
 			assertEquals(0,e.getPositionOnTrack());
-		} catch (MisMatchException | IndexOutofBoundsException | IOException | TrackNotFreeException e1) {
+		} catch (MisMatchException | IndexOutOfBoundsException | IOException | TrackNotFreeException e1) {
 			e1.printStackTrace();
 		}
 	}
 }
+/**
+System.out.println("label: " +compositiontrack.getLabel()+ " this.locationontrack: " + this.locationontrack + " this.lcoationontrack+compositionlength: " + (this.locationontrack+compositionlength-1));
+		for (int i = this.locationontrack; i<locationontrack+compositionlength; i++){
+			System.out.println("i: "+i+" occupied: " + compositiontrack.getOccupied(i));
+		}
+*/

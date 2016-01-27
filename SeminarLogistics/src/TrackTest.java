@@ -36,10 +36,13 @@ public class TrackTest {
 			b = new Train(2,2,40,3);
 			c = new Train(3,1,40,3);
 			d = new Train(4,2,40,3);
+			
 
 			e = new Composition(new ArrayList<Train>(){{add(a);}});
 			f = new Composition(new ArrayList<Train>(){{add(b); add(c);}});
 			g = new Composition(new ArrayList<Train>(){{add(d);}});
+			
+			
 
 			h = new Track("track1", 500, 2, 0, 1, 0, 1, 1);
 			i = new Track("track2", 400, 0, 1, 0, 1, 0, 2);
@@ -134,7 +137,7 @@ public class TrackTest {
 			for (int x = 20; x <= 100; x++){
 				assertEquals(i.getOccupied(x), 0);
 			}
-		} catch (IndexOutofBoundsException e) {
+		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 		}
 	}
@@ -189,7 +192,7 @@ public class TrackTest {
 			h.addCompositiontoTrack(e, 0);
 			h.addCompositiontoTrack(f, 1);
 			h.addCompositiontoTrack(g, 1);
-		} catch (IndexOutofBoundsException e1) {
+		} catch (IndexOutOfBoundsException e1) {
 			e1.printStackTrace();
 		}
 
@@ -200,7 +203,7 @@ public class TrackTest {
 		assertEquals(g, h.getCompositionlist().get(1));
 	}
 	@Test
-	public void removeComposition(){
+	public void testRemoveComposition(){
 		try {
 			h.addCompositiontoTrack(e, 0);
 			h.addCompositiontoTrack(f, 1);
@@ -210,19 +213,70 @@ public class TrackTest {
 			assertEquals(2, h.getCompositionlist().size());
 			assertEquals(e, h.getCompositionlist().get(0));
 			assertEquals(f, h.getCompositionlist().get(1));
-		} catch (IndexOutofBoundsException e1) {
+		} catch (IndexOutOfBoundsException e1) {
 			e1.printStackTrace();
 		}
 
 	}
+	
+	@Test
+	public void testGetCompositionLengthOnTrack(){ 
+		try {
+			h.addCompositiontoTrackRight(g);
+			assertEquals(3,h.getCompositionLengthOnTrack());
+			h.addCompositiontoTrackLeft(e);
+			assertEquals(6,h.getCompositionLengthOnTrack());
+			h.addCompositiontoTrack(f, 0);
+			assertEquals(12,h.getCompositionLengthOnTrack());
+		} catch (TrackNotFreeException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testGetPartialCompositionList(){
+		
+	}
+	
 }
 
-/**
-public void removeComposition(int position)throws IndexOutofBoundsException{ //TODO testfunctie
-	if (position < 0 || position >= tracklength)
-	{
-		throw new IndexOutofBoundsException("Index "+ position+" on track "+label+" of length "+tracklength+" in function removeComposition is out of trackbound");
+
+
+public ArrayList<Composition> getPartialCompositionList(int location, String aorb, Composition enteringcomposition) throws IOException{
+	ArrayList<Composition> partialcompositionlist = new ArrayList<Composition>();
+	if (aorb == "a"){
+		boolean stop = false;
+		int i = 0;
+		while (stop==false){
+			Composition currentcomposition = compositionlist.get(i);
+			if (currentcomposition.getLocationOnTrack()+currentcomposition.getLength()-1<location){
+				partialcompositionlist.add(currentcomposition);
+			}
+			else{
+				stop = true;
+			}
+			i++;
+		}
 	}
-	compositionlist.remove(position);
+	else if (aorb == "b"){
+		boolean stop = false;
+		int i = compositionlist.size()-1;
+		while (stop==false){
+			Composition currentcomposition = compositionlist.get(i);
+			if (currentcomposition.getLocationOnTrack()>location+enteringcomposition.getLength()-1){
+				partialcompositionlist.add(0,currentcomposition);
+			}
+			else{
+				stop = true;
+			}
+			i--;
+		}
+	}
+	else{
+		throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+	}
+	
+	return partialcompositionlist;
 }
- */
+
+
