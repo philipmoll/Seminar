@@ -161,7 +161,8 @@ public class Track {
 		return length;
 	}
 	
-	/**This function a arraylist of compositions located completely to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
+	/**
+	 * This function a arraylist of compositions located completely to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
 	 * Only compositions located completely to the left or right of a location are included
 	 * 
 	 * @param location, location on track we want to insert the enteringcomposition on
@@ -172,7 +173,7 @@ public class Track {
 	 * 
 	 * @throws IOException if input for aorb parameter is not a or b
 	 */
-	public ArrayList<Composition> getPartialCompositionList(int location, String aorb, Composition enteringcomposition) throws IOException{
+	public ArrayList<Composition> getPartialCompositionListExcl (int location, String aorb, Composition enteringcomposition) throws IOException{
 		ArrayList<Composition> partialcompositionlist = new ArrayList<Composition>();
 		if (aorb == "a"){
 			boolean stop = false;
@@ -208,6 +209,61 @@ public class Track {
 		
 		return partialcompositionlist;
 	}
+	
+	/**
+	 * This function a arraylist of compositions located completely or partly to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
+	 * Also compositions located partly to the left or right of a location span are included
+	 * 
+	 * @param location, location on track we want to insert the enteringcomposition on
+	 * @param aorb, a if we want compositions to the left, b if we want compositions to the right of location
+	 * @param enteringcomposition, composition we want to insert
+	 * 
+	 * @return Total length of compositions on track
+	 * 
+	 * @throws IOException if input for aorb parameter is not a or b
+	 */
+	public ArrayList<Composition> getPartialCompositionListIncl (int location, String aorb, Composition enteringcomposition) throws IOException{
+		ArrayList<Composition> partialcompositionlist = new ArrayList<Composition>();
+		if (aorb == "a"){
+			boolean stop = false;
+			int i = 0;
+			while (stop==false){
+				Composition currentcomposition = compositionlist.get(i);
+				if (currentcomposition.getLocationOnTrack()<=location+enteringcomposition.getLength()-1){
+					partialcompositionlist.add(currentcomposition);
+				}
+				else{
+					stop = true;
+				}
+				i++;
+				if (i >= compositionlist.size()){
+					break;
+				}
+			}
+		}
+		else if (aorb == "b"){
+			boolean stop = false;
+			int i = compositionlist.size()-1;
+			while (stop==false){
+				Composition currentcomposition = compositionlist.get(i);
+				if (currentcomposition.getLocationOnTrack()+currentcomposition.getLength()-1>=location) {
+					partialcompositionlist.add(0,currentcomposition);
+				}
+				else{
+					stop = true;
+				}
+				i--;
+				if (i < 0){
+					break;
+				}
+			}
+		}
+		else{
+			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+		}
+		
+		return partialcompositionlist;
+	} 
 	
 	
 

@@ -262,16 +262,19 @@ public class Composition {
 	//int allow indicates whether we allow (1) or not (0) to move other compositions on the destination track to the left or to the right to make room for the composition we want to move
 
 	public void moveComposition(Track track, int location, String aorb, int allow) throws TrackNotFreeException, IndexOutOfBoundsException, IOException, MisMatchException{ 
-		if (allow == 0){
+		if (allow == 0 || track == compositiontrack){
 			this.moveComposition(track, location, aorb); //if not allowed, call default not allowed function
 		}
 		else if (allow == 1){
 			if (aorb == "a"){ //move in from the left
+				//check if it can leave
 				if (this.getPositionOnTrack()!=0){
 					throw new TrackNotFreeException("The composition is not the first on track "+this.getTrack().getLabel()+ " and therefore cannot leave from the left side");
 				}
+
+				//check if it can enter freely
 				boolean check = true;
-				for (int i = 0; i<location;i++){
+				for (int i = 0; i<location+compositionlength;i++){
 					if (track.getOccupied(i)==1){
 						check = false;
 						break;
@@ -280,42 +283,109 @@ public class Composition {
 				if (check == true){
 					this.moveComposition(track, location, aorb);
 				}
+				//check if it can enter by first moving some other compositions
 				else{
 					//check whether there is enough room on the track to the right of the desired location
 					if (track.getTracklength() - location >= compositionlength+track.getCompositionLengthOnTrack()){
 						throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering left and possibly moving the other compositions to the right");
 					}
 				}
-				
-				//TODO check whether there are compositions that or not in the way that need to be moved
-				//TODO If yes, move others
-				//TODO move composition to new position
-			}
-			else if (aorb == "b"){ //move in from the right
-				if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1){
-					throw new TrackNotFreeException("The composition is not the last on track "+this.getTrack().getLabel()+ " and therefore cannot leave from the right side");
+				//check whether we need to move compositions that are complete to the right of the desired location span\
+				boolean movepartial = false; //default
+				ArrayList<Composition> partiallistexclb = track.getPartialCompositionListExcl(location, "b", this);
+				ArrayList<Composition> partiallistincla = track.getPartialCompositionListIncl(location, "a", this);
+				int lengthincla = 0;
+				if (partiallistexclb.size()==0){
+					movepartial = false; //partiallistexclb is empty, so we will never have to move it
 				}
-				boolean check = true;
-				for (int i=track.getTracklength()-1;i > location+compositionlength;i--){
-					if (track.getOccupied(i)==1){
-						check = false;
-						break;
+				else{
+					int distance;
+					distance = partiallistexclb.get(0).getLocationOnTrack()-(location+compositionlength);
+					for (int i = 0; i<partiallistincla.size(); i++){
+						lengthincla += partiallistincla.get(i).getLength();
+					}
+					if (distance >= lengthincla){
+						movepartial = false; //partiallistexcl is not in the way, so does not have to be moved
+					}
+					else {
+						movepartial = true; //exclb moet wel gemoved
 					}
 				}
-				if (check == true){
-					this.moveComposition(track, location, aorb);		
+				//move compositions that are in the way
+				if (movepartial == true){
+					//move exclb
+					int minstartposexclb = (location+compositionlength-1)+(lengthincla+1);
+					int[] locationlist = new int[partiallistexclb.size()];
+					//find moves for exclb:
+					locationlist[0]=minstartposexclb;
+					for (int i = 1; i<partiallistexclb.size();i++){
+						locationlist[i] = locationlist[i-1]+partiallistexclb.get(i-1).getLength();
+					}
+					//move exclb
+					for (int i = partiallistexclb.size()-1; i>=0; i--){
+						if (locationlist[i]>partiallistexclb.get(i).getLocationOnTrack()){
+							//only move if necessary
+							partiallistexclb.get(i).moveComposition(this.getTrack(), locationlist[i], "a"); //aorb is arbitrary here
+						}
+					}
 				}
-				
-				//check whether there is enough room on the track to the left of the desired location
-				if (location + compositionlength-1 >= compositionlength+track.getCompositionLengthOnTrack()){
-					throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering right and possibly moving the other compositions to the left");
+			}
+			
+			//move incla
+			
+
+			//TODO If yes, move others
+			//TODO move composition to new position
+			//TODO update move function (regular) to move on the same track
+		}
+		else if (aorb == "b"){ //move in from the right
+			if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1){
+				throw new TrackNotFreeException("The composition is not the last on track "+this.getTrack().getLabel()+ " and therefore cannot leave from the right side");
+			}
+			boolean check = true;
+			for (int i=track.getTracklength()-1;i >= location;i--){
+				if (track.getOccupied(i)==1){
+					check = false;
+					break;
 				}
+			}
+			if (check == true){
+				this.moveComposition(track, location, aorb);		
+			}
+
+			//check whether there is enough room on the track to the left of the desired location
+			if (location + compositionlength-1 >= compositionlength+track.getCompositionLengthOnTrack()){
+				throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering right and possibly moving the other compositions to the left");
+			}
+			//check whether we need to move compositions that are complete to the left of the desired location span
+			boolean movepartial = false; //default
+			ArrayList<Composition> partiallistexcla = track.getPartialCompositionListExcl(location, "a", this);
+			ArrayList<Composition> partiallistinclb = track.getPartialCompositionListIncl(location, "b", this);
+			if (partiallistexcla.size()==0){
+				movepartial = false; //partiallistexcla is empty, so we will never have to move it
 			}
 			else{
-				throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+				int distance;
+				if (partiallistexcla.size()>0){
+					distance = location - (partiallistexcla.get(partiallistexcla.size()-1).getLocationOnTrack() + partiallistexcla.get(partiallistexcla.size()-1).getLength());
+					int lengthinclb = 0;
+					for (int i = 0; i<partiallistinclb.size(); i++){
+						lengthinclb += partiallistinclb.get(i).getLength();
+					}
+					if (distance >= lengthinclb){
+						movepartial = false; //excla hoeft niet gemoved
+					}
+					else {
+						movepartial = true; //excla moet wel gemoved
+					}
+				}
 			}
 		}
+		else{
+			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+		}
 	}
+
 
 
 
@@ -334,19 +404,30 @@ public class Composition {
 		}
 		return positionontrack;
 	}
-	
+
 	/**
-	 * This function assigns a track in case a composition
+	 * This function assigns a track and a location on track to a composition in case it wasn't initialized a track.
+	 * This location can only be right at the beginning of an arriving track.
 	 * 
-	 * @param initialtrack
+	 * @param initialtrack: the track we want to assign the composition to
+	 * @param initiallocation: the location on the track we want to assign the composition to
+	 * 
+	 * @throws IOException 
+	 * @throws TrackNotFreeException 
 	 */
-	public void setTrack(Track initialtrack){
-		
+	public void setTrackandLocation(Track initialtrack, int initiallocation) throws IOException, TrackNotFreeException{
+		if (compositiontrack != null || locationontrack != -1){
+			throw new IOException("Track "+initialtrack.getLabel()+"cannot be assigned to the composition, as the composition is already assigned to a track");
+		}
+		for (int i = initiallocation; i<initiallocation+compositionlength;i++){
+			if (initialtrack.getOccupied(i)==1){
+				throw new TrackNotFreeException("The composition cannot be assigned to track "+initialtrack.getLabel()+" on location " + initiallocation +" as it is occupied");
+			}
+		}
+
+		compositiontrack = initialtrack;
+		locationontrack = initiallocation;
 	}
-	
-	public void setLocationonTrack(){
-	}
-	
-	}
+
 
 }
