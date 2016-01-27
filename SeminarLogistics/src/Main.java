@@ -70,7 +70,6 @@ public class Main {
 
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
 
-			ArrayList<int[]> TODO = getTODO(trainsarr);
 
 			/*double time=0;
                         while (time!=1){
@@ -130,45 +129,6 @@ public class Main {
 		}
 
 		return compositions;
-	}
-	public static int[] getActivities(int[] currenttrainlist, Train[] trainlist, int activity){
-		boolean efd ;
-		int[] abcd = new int[currenttrainlist.length];
-		for(int i =0;i<currenttrainlist.length;i++){
-			if (currenttrainlist[i]==1){
-				switch (activity){
-				case 0: efd = trainlist[i].getInspecting();
-				case 1: efd = trainlist[i].getCleaning();
-				case 2: efd = trainlist[i].getRepairing();
-				case 3: efd = trainlist[i].getWashing();
-				default: efd=false;
-				}
-				if(efd){
-					abcd[i]=1;
-				}
-			}
-		}
-		return abcd;
-	}
-	public static ArrayList<int[]> getTODO(Train[] trainlist){
-		ArrayList<int[]> temp = new ArrayList<>();
-		for(int i = 0; i<trainlist.length;i++){
-			
-			if(trainlist[i].getInspecting()){
-				temp.add(new int[] {trainlist[i].getID(), 0});
-			}
-			if(trainlist[i].getCleaning()){
-				temp.add(new int[] {trainlist[i].getID(), 1}); System.out.print(trainlist[i].getCleaning() + " " + i + "\n");
-			}
-			if(trainlist[i].getRepairing()){
-				temp.add(new int[] {trainlist[i].getID(), 2});
-			}
-			if(trainlist[i].getWashing()){
-				temp.add(new int[] {trainlist[i].getID(), 3});
-			}
-		}
-		return temp;
-
 	}
 
 	public static ArrayList<Double> setUpTimes(int arrordep, Matrix compositiondata3){
