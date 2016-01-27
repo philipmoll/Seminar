@@ -5,35 +5,97 @@ public class Todo {
 	private ArrayList<Train> trains;
 	private ArrayList<Integer> activities;
 	private ArrayList<Double> times;
-	private ArrayList<Track> tracks;
-
+	private ArrayList<Track> tracksassigned;
+	ArrayList<Track> platforms = new ArrayList<>();
+	ArrayList<Track> washareas = new ArrayList<>();
+	
 	public Todo(ArrayList<Track> tracks){
 		trains = new ArrayList<>();
 		activities = new ArrayList<>();
 		times = new ArrayList<>();
-		this.tracks = tracks;
+		
+		for(int i=0;i<tracks.size();i++){
+			if (tracks.get(i).getInspectionposition() ==1){
+				platforms.add(tracks.get(i));
+			}
+			if(tracks.get(i).getWashingposition()== 1){
+				washareas.add(tracks.get(i));
+			}
+		}
+
 	}
+		
 	public void addComposition(Composition addedcomp){
+		double temp;
+		Track temp1;
 		for(int i = 0; i<addedcomp.getSize(); i++){
+			temp = 32299004;
+			temp1 = null;
 			if(addedcomp.getTrain(i).getInspecting()){
 				trains.add(addedcomp.getTrain(i));
 				activities.add(0);
-				times.add(0.0);
+				
+				
+				
+				for(int j = 0; j<platforms.size(); j++){
+					if(platforms.get(j).getFreeTime()<temp){
+						temp = platforms.get(j).getFreeTime();
+						temp1 = platforms.get(j);
+					}
+				}
+				
+				times.add(temp);
+				tracksassigned.add(temp1);
+				temp1.setFreeTime(temp1.getFreeTime()+addedcomp.getTrain(i).getInspectionTime());
 			}
 			else if(addedcomp.getTrain(i).getCleaning()){
 				trains.add(addedcomp.getTrain(i));
 				activities.add(1);
-				times.add(0.0);
+				
+				
+				
+				for(int j = 0; j<platforms.size(); j++){
+					if(platforms.get(j).getFreeTime()<temp){
+						temp = platforms.get(j).getFreeTime();
+						temp1 = platforms.get(j);
+					}
+				}
+				
+				times.add(temp);
+				tracksassigned.add(temp1);
+				temp1.setFreeTime(temp1.getFreeTime()+addedcomp.getTrain(i).getCleaningTime());
 			}
 			else if(addedcomp.getTrain(i).getRepairing()){
 				trains.add(addedcomp.getTrain(i));
 				activities.add(2);
-				times.add(0.0);
+				
+				
+				
+				for(int j = 0; j<platforms.size(); j++){
+					if(platforms.get(j).getFreeTime()<temp){
+						temp = platforms.get(j).getFreeTime();
+						temp1 = platforms.get(j);
+					}
+				}
+				
+				times.add(temp);
+				tracksassigned.add(temp1);
+				temp1.setFreeTime(temp1.getFreeTime()+addedcomp.getTrain(i).getRepairingTime());
 			}
 			else if(addedcomp.getTrain(i).getWashing()){
 				trains.add(addedcomp.getTrain(i));
 				activities.add(3);
-				times.add(0.0);
+				
+				for(int j = 0; j<washareas.size(); j++){
+					if(washareas.get(j).getFreeTime()<temp){
+						temp = washareas.get(j).getFreeTime();
+						temp1 = washareas.get(j);
+					}
+				}
+				
+				times.add(temp);
+				tracksassigned.add(temp1);
+				temp1.setFreeTime(temp1.getFreeTime()+addedcomp.getTrain(i).getWashingTime());
 			}
 		}
 	}
@@ -41,6 +103,7 @@ public class Todo {
 		times.remove(i);
 		trains.remove(i);
 		activities.remove(i);
+		tracksassigned.remove(i);
 	}
 	
 	

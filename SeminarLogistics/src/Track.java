@@ -19,6 +19,7 @@ public class Track {
 	private final int repairingposition; //TODO: add different types of repairing positions
 	private final int washingposition;
 	private int tracktype;
+	private double freetime;
 
 	private int[] occupation;
 	private ArrayList<Composition> compositionlist;
@@ -34,6 +35,7 @@ public class Track {
 		this.tracktype = tracktype;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
+		freetime = 0;
 	}
 
 	public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition) {
@@ -47,6 +49,7 @@ public class Track {
 		tracktype = 0;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
+		freetime = 0;
 	}
 
 
@@ -148,7 +151,7 @@ public class Track {
 		}
 		compositionlist.remove(position);
 	}
-	
+
 	/**This function returns the total length of the compositions on the track
 	 * 
 	 * @return Total length of compositions on track
@@ -160,7 +163,7 @@ public class Track {
 		}
 		return length;
 	}
-	
+
 	/**
 	 * This function a arraylist of compositions located completely to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
 	 * Only compositions located completely to the left or right of a location are included
@@ -206,10 +209,10 @@ public class Track {
 		else{
 			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
 		}
-		
+
 		return partialcompositionlist;
 	}
-	
+
 	/**
 	 * This function a arraylist of compositions located completely or partly to the left (a) or the right (b) of the entire span of the location for an enteringcomposition location.
 	 * Also compositions located partly to the left or right of a location span are included
@@ -261,12 +264,17 @@ public class Track {
 		else{
 			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
 		}
-		
+
 		return partialcompositionlist;
 	} 
-	
-	
 
-	
+	public double getFreeTime(){
+		return freetime;
+	}
+	public void setFreeTime(double newtime){
+		freetime = newtime;
+	}
+
+
 
 }
