@@ -150,4 +150,12 @@ public class Todo {
 	public Track getMinTrack(){
 		return tracksassigned.get(this.getMin());
 	}
+	public boolean getEmpty(){
+		if(trains.size() == 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

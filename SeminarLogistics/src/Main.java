@@ -17,8 +17,8 @@ public class Main {
 
 		try {
 			
-			//int user = 1; //Friso
-			int user = 2; //Floor
+			int user = 1; //Friso
+			//int user = 2; //Floor
 			//int user = 3; //Robin
 			//int user = 4; //Philip
 			
@@ -69,17 +69,10 @@ public class Main {
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
-
-
-			/*double time=0;
-                        while (time!=1){
-                        }*/
-
-
-
-
-
-
+			
+			//while(!EventList.getEmpty() || !Todo.getEmpty()){
+				
+			//}
 
 
 			/*ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
