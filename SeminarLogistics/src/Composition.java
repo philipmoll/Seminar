@@ -202,76 +202,97 @@ public class Composition {
 
 	//int aorb indicates whether we want to add the composition to the a (left) side or the b (right) side of the track
 	public void moveComposition(Track track, int location, String aorb) throws TrackNotFreeException, IndexOutOfBoundsException, IOException, MisMatchException{ 
-		//First check whether there is room on the new track
-		for (int i = location; i<location+compositionlength;i++){
-			//System.out.println(track.getOccupied(i)+" i: "+i);
-			if (track.getOccupied(i) != 0){
-				throw new TrackNotFreeException("Track "+track.getLabel()+" has no room for a composition of length "+compositionlength+" at location "+location+" (function moveComposition)");
-			}
-		}
+		//if we move on the track
 		if (track == compositiontrack){
 			if (location < locationontrack){
 				//move left (to a side)
+				for (int i = location; i < locationontrack;i++){
+					if (track.getOccupied(i) != 0){
+						throw new TrackNotFreeException("On track "+track.getLabel()+" we cannot move from location "+locationontrack+" to location "+location);
+					}
+				}
+				compositiontrack.setFree(locationontrack,locationontrack+compositionlength-1); //set current track free on correct indices
+
+				locationontrack = location; //update locationontrack
+
+				compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
 			}
 			else if (location > locationontrack){
 				//move right (to b side)
+				for (int i = locationontrack+compositionlength; i < location+compositionlength-1;i++){
+					if (track.getOccupied(i) != 0){
+						throw new TrackNotFreeException("On track "+track.getLabel()+" we cannot move from location "+locationontrack+" to location "+location);
+					}
+				}
+				compositiontrack.setFree(locationontrack,locationontrack+compositionlength-1); //set current track free on correct indices
+
+				locationontrack = location; //update locationontrack
+
+				compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
+
 			}
 			else
 			{
-				//doe niks of excepttion
+				throw new IOException("We move to the same location on track "+compositiontrack.getLabel()+", this is not possible");
 			}
-			
-			
-			//TODO schrijf move functie
+
 		}
-		else{
-		//addcomposition to compositionlist of new track, throw exceptions if infeasible direction
-		if (aorb == "a"){
-			//check whether the track is free to move out left, and move in left
-			int x = -1;
-			boolean check = true;
-			for (int i = 0; i<location;i++){
-				if (track.getOccupied(i)==1){
-					x = i;
-					check = false;
-					break;
+		else{ //if we move to another track
+			//First check whether there is room on the new track
+			for (int i = location; i<location+compositionlength;i++){
+				//System.out.println(track.getOccupied(i)+" i: "+i);
+				if (track.getOccupied(i) != 0){
+					throw new TrackNotFreeException("Track "+track.getLabel()+" has no room for a composition of length "+compositionlength+" at location "+location+" (function moveComposition)");
 				}
 			}
-			if (this.getPositionOnTrack()!=0 || check == false){
-				throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the left side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
-			}
-
-			track.addCompositiontoTrackLeft(this);
-		}
-		else if (aorb == "b") {
-			//check whether the track is free to move out right, and move in right
-			int x = -1;
-			boolean check = true;
-			for (int i=track.getTracklength()-1;i > location+compositionlength;i--){
-				if (track.getOccupied(i)==1){
-					x = i;
-					check = false;
-					break;
+			//addcomposition to compositionlist of new track, throw exceptions if infeasible direction
+			if (aorb == "a"){
+				//check whether the track is free to move out left, and move in left
+				int x = -1;
+				boolean check = true;
+				for (int i = 0; i<location;i++){
+					if (track.getOccupied(i)==1){
+						x = i;
+						check = false;
+						break;
+					}
 				}
+				if (this.getPositionOnTrack()!=0 || check == false){
+					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the left side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
+				}
+
+				track.addCompositiontoTrackLeft(this);
 			}
-			if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1 || check == false){
-				throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the right side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
+			else if (aorb == "b") {
+				//check whether the track is free to move out right, and move in right
+				int x = -1;
+				boolean check = true;
+				for (int i=track.getTracklength()-1;i > location+compositionlength;i--){
+					if (track.getOccupied(i)==1){
+						x = i;
+						check = false;
+						break;
+					}
+				}
+				if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1 || check == false){
+					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the right side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
+				}
+				track.addCompositiontoTrackRight(this);
 			}
-			track.addCompositiontoTrackRight(this);
+			else{
+				throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
+			}
+
+			compositiontrack.setFree(this.locationontrack,this.locationontrack+compositionlength-1); //set current track free on correct indices
+
+			compositiontrack.removeComposition(this.getPositionOnTrack());
+
+			compositiontrack = track; //update compositiontrack
+			locationontrack = location; //update locationontrack
+
+			compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
 		}
-		else{
-			throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
-		}
-		}
 
-		compositiontrack.setFree(this.locationontrack,this.locationontrack+compositionlength-1); //set current track free on correct indices
-
-		compositiontrack.removeComposition(this.getPositionOnTrack());
-
-		compositiontrack = track; //update compositiontrack
-		locationontrack = location; //update locationontrack
-
-		compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
 	}
 
 	//String aorb indicates whether we want to add the composition to the a (left) side or the b (right) side of the track
@@ -302,7 +323,7 @@ public class Composition {
 				//check if it can enter by first moving some other compositions
 				else{
 					//check whether there is enough room on the track to the right of the desired location
-					if (track.getTracklength() - location >= compositionlength+track.getCompositionLengthOnTrack()){
+					if (track.getTracklength() - location +1< compositionlength+track.getCompositionLengthOnTrack()){
 						throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering left and possibly moving the other compositions to the right");
 					}
 				}
@@ -341,7 +362,7 @@ public class Composition {
 					for (int i = partiallistexclb.size()-1; i>=0; i--){
 						if (locationlist[i]>partiallistexclb.get(i).getLocationOnTrack()){
 							//only move if necessary
-							partiallistexclb.get(i).moveComposition(this.getTrack(), locationlist[i], "a"); //aorb is arbitrary here
+							partiallistexclb.get(i).moveComposition(track, locationlist[i], "a"); //aorb is arbitrary here
 						}
 					}
 				}
@@ -356,7 +377,7 @@ public class Composition {
 				}
 				//actually move incla
 				for (int i = partiallistincla.size()-1; i>=0; i--){
-					partiallistincla.get(i).moveComposition(this.getTrack(), locationlist2[i], "a"); //aorb is arbitrary here
+					partiallistincla.get(i).moveComposition(track, locationlist2[i], "a"); //aorb is arbitrary here
 				}
 
 				//finally move current composition
@@ -364,7 +385,7 @@ public class Composition {
 			}
 
 			else if (aorb == "b"){ //move in from the right
-				if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1){
+				if (this.getPositionOnTrack()!=compositiontrack.getCompositionlist().size()-1){
 					throw new TrackNotFreeException("The composition is not the last on track "+this.getTrack().getLabel()+ " and therefore cannot leave from the right side");
 				}
 				boolean check = true;
@@ -379,7 +400,7 @@ public class Composition {
 				}
 
 				//check whether there is enough room on the track to the left of the desired location
-				if (location + compositionlength-1 >= compositionlength+track.getCompositionLengthOnTrack()){
+				if (location +compositionlength < compositionlength+track.getCompositionLengthOnTrack()){
 					throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering right and possibly moving the other compositions to the left");
 				}
 				//check whether we need to move compositions that are complete to the left of the desired location span
@@ -419,7 +440,7 @@ public class Composition {
 					for (int i = 0; i<partiallistexcla.size(); i++){
 						if (locationlist[i]<partiallistexcla.get(i).getLocationOnTrack()){
 							//only move if necessary
-							partiallistexcla.get(i).moveComposition(this.getTrack(), locationlist[i], "b"); //aorb is arbitrary here
+							partiallistexcla.get(i).moveComposition(track, locationlist[i], "b"); //aorb is arbitrary here
 						}
 					}
 				}
@@ -433,7 +454,7 @@ public class Composition {
 				}
 				//actually move inclb
 				for (int i = 0; i<partiallistinclb.size(); i++){
-					partiallistinclb.get(i).moveComposition(this.getTrack(), locationlist2[i], "b"); //aorb is arbitrary here
+					partiallistinclb.get(i).moveComposition(track, locationlist2[i], "b"); //aorb is arbitrary here
 				}
 				//finally move current composition
 				this.moveComposition(track, location, aorb);

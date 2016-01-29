@@ -147,8 +147,9 @@ public class CompositionTest {
 		//I don't know how to test this function as it constantly done in all the functions above already.
 	}
 
+	/**
 	@Test
-	public void testMoveComposition(){
+	public void testMoveComposition1(){
 		try {
 				
 			int locationold = d.getLocationOnTrack();
@@ -183,7 +184,130 @@ public class CompositionTest {
 		} catch (TrackNotFreeException | IndexOutOfBoundsException | IOException | MisMatchException e) {
 			e.printStackTrace();
 		}
-
+	}
+	*/
+	@Test
+	public void testMoveComposition2(){
+		try {
+			assertEquals(2,g.getCompositionlist().size());
+			e.moveComposition(g, 10, "a", 1);
+			
+			assertEquals(18,w.getLocationOnTrack());
+			assertEquals(26,v.getLocationOnTrack());
+			assertEquals(10,e.getLocationOnTrack());
+			assertEquals(g,e.getTrack());
+			assertEquals(1,f.getCompositionlist().size());
+			for (int i = 1; i<9; i++){
+				assertEquals(0,f.getOccupied(i));
+			}
+			for (int i = 10; i<32; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			assertEquals(e,g.getCompositionlist().get(0));
+			assertEquals(w,g.getCompositionlist().get(1));
+			assertEquals(v,g.getCompositionlist().get(2));
+			
+			v.moveComposition(g, 460, "b");
+			assertEquals(460,v.getLocationOnTrack());
+			w.moveComposition(g, 50, "a");
+			assertEquals(50,w.getLocationOnTrack());
+			d.moveComposition(g, 40, "a", 1);
+			
+			assertEquals(54,w.getLocationOnTrack());
+			assertEquals(460,v.getLocationOnTrack());
+			assertEquals(46,e.getLocationOnTrack());
+			assertEquals(40,d.getLocationOnTrack());
+			assertEquals(g,d.getTrack());
+			assertEquals(0,f.getCompositionlist().size());
+			for (int i = 0; i<f.getTracklength(); i++){
+				assertEquals(0,f.getOccupied(i));
+			}
+			for (int i = 0; i<40; i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			for (int i = 40; i<62; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			for (int i = 62; i<460; i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			for (int i = 460; i<466; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			for (int i = 466; i<g.getTracklength(); i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			assertEquals(d,g.getCompositionlist().get(0));
+			assertEquals(e,g.getCompositionlist().get(1));
+			assertEquals(w,g.getCompositionlist().get(2));
+			assertEquals(v,g.getCompositionlist().get(3));
+			
+			setUp();
+			v.moveComposition(g, 400, "a");
+			d.moveComposition(g, 14, "b",1);
+			assertEquals(0,w.getLocationOnTrack());
+			assertEquals(8,v.getLocationOnTrack());
+			assertEquals(14,d.getLocationOnTrack());
+			assertEquals(g,d.getTrack());
+			assertEquals(1,f.getCompositionlist().size());
+			for (int i = 9; i<f.getTracklength(); i++){
+				assertEquals(0,f.getOccupied(i));
+			}
+			for (int i = 0; i<19; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			for (int i = 20; i<g.getTracklength(); i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			assertEquals(d,g.getCompositionlist().get(2));
+			assertEquals(w,g.getCompositionlist().get(0));
+			assertEquals(v,g.getCompositionlist().get(1));
+	
+			setUp();
+			d.moveComposition(g, 14, "b",1);
+			assertEquals(0,w.getLocationOnTrack());
+			assertEquals(8,v.getLocationOnTrack());
+			assertEquals(14,d.getLocationOnTrack());
+			assertEquals(g,d.getTrack());
+			assertEquals(1,f.getCompositionlist().size());
+			for (int i = 9; i<f.getTracklength(); i++){
+				assertEquals(0,f.getOccupied(i));
+			}
+			for (int i = 0; i<20; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			for (int i = 20; i<g.getTracklength(); i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			assertEquals(d,g.getCompositionlist().get(2));
+			assertEquals(w,g.getCompositionlist().get(0));
+			assertEquals(v,g.getCompositionlist().get(1));
+			
+			setUp();
+			v.moveComposition(g, 11, "a");
+			d.moveComposition(g, 15, "b",1);
+			assertEquals(1,w.getLocationOnTrack());
+			assertEquals(9,v.getLocationOnTrack());
+			assertEquals(15,d.getLocationOnTrack());
+			assertEquals(g,d.getTrack());
+			assertEquals(1,f.getCompositionlist().size());
+			for (int i = 9; i<f.getTracklength(); i++){
+				assertEquals(0,f.getOccupied(i));
+			}
+			assertEquals(0,g.getOccupied(0));
+			for (int i = 1; i<21; i++){
+				assertEquals(1,g.getOccupied(i));
+			}
+			for (int i = 21; i<g.getTracklength(); i++){
+				assertEquals(0,g.getOccupied(i));
+			}
+			assertEquals(d,g.getCompositionlist().get(2));
+			assertEquals(w,g.getCompositionlist().get(0));
+			assertEquals(v,g.getCompositionlist().get(1));
+			
+		} catch (IndexOutOfBoundsException | TrackNotFreeException | IOException | MisMatchException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
