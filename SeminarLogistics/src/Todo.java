@@ -5,8 +5,9 @@ public class Todo {
 	private ArrayList<Composition> compositions;
 	private ArrayList<Integer> activities;
 	private ArrayList<Double> duration;
-	private ArrayList<Double> times;
+	private ArrayList<Double> plannedtimes;
 	private ArrayList<Track> tracksassigned;
+	private ArrayList<Double> ultimatetimes;
 
 	ArrayList<Track> platforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
@@ -14,7 +15,10 @@ public class Todo {
 	public Todo(ArrayList<Track> tracks){
 		compositions = new ArrayList<>();
 		activities = new ArrayList<>();
-		times = new ArrayList<>();
+		duration = new ArrayList<>();
+		plannedtimes = new ArrayList<>();
+		tracksassigned = new ArrayList<>();
+		ultimatetimes = new ArrayList<>();
 
 		for(int i=0;i<tracks.size();i++){
 			if (tracks.get(i).getInspectionposition() ==1){
@@ -43,19 +47,38 @@ public class Todo {
 				}
 			}
 			if(durationactivity>0){
+				if(j == 0 || j == 1 || j == 2){
+					compositions.add(addedcomp);
+					activities.add(j);
+					duration.add(durationactivity);
+
+					for(int k = 0; k<platforms.size(); k++){
+						if(platforms.get(k).getFreeTime()<temp){
+							temp = platforms.get(k).getFreeTime();
+							temp1 = platforms.get(k);
+						}
+					}
+					ultimatetimes.add(addedcomp.getDepartureTime()-durationactivity);
+					plannedtimes.add(temp);
+					tracksassigned.add(temp1);
+					temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
+				}
+			}
+			else if(j == 3){
 				compositions.add(addedcomp);
 				activities.add(j);
 				duration.add(durationactivity);
-				
-				for(int k = 0; k<platforms.size(); k++){
-					if(platforms.get(k).getFreeTime()<temp){
-						temp = platforms.get(k).getFreeTime();
-						temp1 = platforms.get(k);
+
+				for(int k = 0; k<washareas.size(); k++){
+					if(washareas.get(k).getFreeTime()<temp){
+						temp = washareas.get(k).getFreeTime();
+						temp1 = washareas.get(k);
 					}
 				}
-				times.add(temp);
+				ultimatetimes.add(addedcomp.getDepartureTime()-durationactivity);
+				plannedtimes.add(temp);
 				tracksassigned.add(temp1);
-				temp1.setFreeTime(temp1.getFreeTime()+durationactivity);
+				temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
 			}
 		}
 	}
@@ -180,12 +203,12 @@ public class Todo {
 	}
 	 */
 	public void removeActivity(int i){
-		times.remove(i);
+		plannedtimes.remove(i);
 		compositions.remove(i);
 		activities.remove(i);
 		tracksassigned.remove(i);
-		localdecouple.remove(i);
 		duration.remove(i);
+		ultimatetimes.remove(i);
 	}
 
 
@@ -213,15 +236,15 @@ public class Todo {
 		double temp = 33299004;
 		int temptemp = -1;
 		for(int i = 0; i<compositions.size(); i++){
-			if(times.get(i)<temp){
-				temp = times.get(i);
+			if(plannedtimes.get(i)<temp){
+				temp = plannedtimes.get(i);
 				temptemp = i;
 			}
 		}
 		return temptemp;
 	}
 	public double getMinTime(){
-		return times.get(this.getMin());
+		return plannedtimes.get(this.getMin());
 	}
 	public Composition getMinTrain(){
 		return compositions.get(this.getMin());
