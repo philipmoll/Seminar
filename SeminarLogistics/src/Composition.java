@@ -99,6 +99,11 @@ public class Composition {
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
 
 	public void coupleComposition(Composition addcomposition) throws MisMatchException, IndexOutOfBoundsException, IOException{
+		if (arrivaltime != addcomposition.getArrivaltime() || departuretime != addcomposition.getDeparturetime()){
+			throw new MisMatchException("Arrivaltime or departuretime are not the same when coupling two compositions");
+		}
+		
+		
 		this.compositiontrains.addAll(addcomposition.getTrainList());
 
 		//addcomposition = null; If this does not work well, we need to make the function in Main.
@@ -159,6 +164,9 @@ public class Composition {
 		else{ //if locationontrack != -1, composition has been placed on a track yet
 			newcomposition = new Composition(newcompositionlist,compositiontrack,locationontrack+this.compositionlength); 
 		}
+		
+		newcomposition.setArrivaltime(arrivaltime);
+		newcomposition.setDeparturetime(departuretime);
 		return newcomposition;
 	}
 
