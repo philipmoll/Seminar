@@ -17,6 +17,8 @@ public class Composition {
 	private int compositionsize; //number of trains
 	private Track compositiontrack;
 	private int locationontrack;
+	private double arrivaltime;
+	private double departuretime;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
 
@@ -25,6 +27,17 @@ public class Composition {
 		this.updateComposition();
 		compositiontrack = null; //default
 		locationontrack = -1; //default
+		arrivaltime = -1; //default
+		departuretime = -1; //default
+	}
+	
+	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime) throws IOException{
+		this.compositiontrains = compositiontrains;
+		this.updateComposition();
+		compositiontrack = null; //default
+		locationontrack = -1; //default
+		this.arrivaltime = arrivaltime; //default
+		this.departuretime = departuretime;
 	}
 
 	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutOfBoundsException, TrackNotFreeException, IOException{
@@ -506,6 +519,42 @@ public class Composition {
 
 		compositiontrack = initialtrack;
 		locationontrack = initiallocation;
+	}
+	
+	/**
+	 * This function returns the arrivaltime of a composition/block
+	 * 
+	 * @return arrivaltime
+	 */
+	public double getArrivaltime(){
+		return arrivaltime;
+	}
+	
+	/**
+	 * This function sets the arrivaltime of a composition/block
+	 * 
+	 * @param arrivaltime
+	 */
+	public void setArrivaltime(double arrivaltime){
+		this.arrivaltime = arrivaltime;
+	}
+	
+	/**
+	 * This function returns the departuretime of a composition/block
+	 * 
+	 * @return departuretime
+	 */
+	public double getDeparturetime(){
+		return departuretime;
+	}
+	
+	/**
+	 * This function sets the departuretime of a composition/block
+	 * 
+	 * @param departuretime
+	 */
+	public void setDeparturetime(double departuretime){
+		this.departuretime = departuretime;
 	}
 
 

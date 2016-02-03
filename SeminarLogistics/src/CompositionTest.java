@@ -331,6 +331,19 @@ public class CompositionTest {
 			e1.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testSetGetarrivaltime(){
+		d.setArrivaltime(0.06);
+		assertEquals(0.06,d.getArrivaltime(),0.000001);
+	}
+	
+	@Test
+	public void testSetGetdeparturetime(){
+		d.setDeparturetime(0.06);
+		assertEquals(0.06,d.getDeparturetime(),0.000001);
+	}
+	
 }
 /**
 System.out.println("label: " +compositiontrack.getLabel()+ " this.locationontrack: " + this.locationontrack + " this.lcoationontrack+compositionlength: " + (this.locationontrack+compositionlength-1));

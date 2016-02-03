@@ -68,6 +68,12 @@ public class Main {
 			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
+			ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
+			for (int i = 0; i< arrivingcompositions.size();i++){
+				Composition temp = arrivingcompositions.get(i);
+				temp.setArrivaltime(arrivingtimes.get(i));
+				arrivingcompositionswitharrtime.add(temp);
+			}
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
 			
 			//while(!EventList.getEmpty() || !Todo.getEmpty()){
@@ -75,10 +81,14 @@ public class Main {
 			//}
 
 
-			/*ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-                        ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
-                        ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
-			 */
+			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
+            ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
+            ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
+			
+			for (int i = 0; i< leavingcompositions.size();i++){
+				leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i));
+			}
+            
 
 
 			//This is how we should write a couple function, N.B.: with the .remove function.
