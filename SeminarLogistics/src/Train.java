@@ -202,6 +202,24 @@ public class Train {
 	public int getWashingTime(){
 		return washingtime;
 	}
+	public double getActivityTime(int abcd){
+		//TODO: THROW EXCEPTION IF INT > 3
+		if(abcd == 0){
+			return (double) this.getInspectionTime();
+		}
+		else if(abcd == 1){
+			return (double) this.getCleaningTime();
+		}
+		else if(abcd == 2){
+			return (double) this.getRepairingTime();
+		}
+		else if(abcd == 3){
+			return (double) this.getWashingTime();
+		}
+		else{
+			return 0.0;
+		}
+	}
 	public boolean getInterchangeable(){
 		return interchangeable;
 	}
@@ -216,6 +234,24 @@ public class Train {
 	}
 	public boolean getWashing(){
 		return washing;
+	}
+	public boolean getActivity(int abcd){
+		//TODO: THROW EXCEPTION IF INT > 3
+		if(abcd == 0){
+			return this.getInspecting();
+		}
+		else if(abcd == 1){
+			return this.getCleaning();
+		}
+		else if(abcd == 2){
+			return this.getRepairing();
+		}
+		else if(abcd == 3){
+			return this.getWashing();
+		}
+		else{
+			return false;
+		}
 	}
 	public int getPosition(){
 		return position;
