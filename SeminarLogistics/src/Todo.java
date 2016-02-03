@@ -58,7 +58,7 @@ public class Todo {
 							temp1 = platforms.get(k);
 						}
 					}
-					ultimatetimes.add(addedcomp.getDepartureTime()-durationactivity);
+					ultimatetimes.add(addedcomp.getDeparturetime()-durationactivity);
 					plannedtimes.add(temp);
 					tracksassigned.add(temp1);
 					temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
@@ -75,7 +75,7 @@ public class Todo {
 						temp1 = washareas.get(k);
 					}
 				}
-				ultimatetimes.add(addedcomp.getDepartureTime()-durationactivity);
+				ultimatetimes.add(addedcomp.getDeparturetime()-durationactivity);
 				plannedtimes.add(temp);
 				tracksassigned.add(temp1);
 				temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
@@ -262,5 +262,13 @@ public class Todo {
 		else{
 			return false;
 		}
+	}
+	public boolean checkFeasibility(){
+		
+		for(int i = 0; i<activities.size(); i++){
+			
+		}
+		
+		return false;
 	}
 }
