@@ -2,30 +2,25 @@ import java.util.ArrayList;
 
 
 public class Todo {
-	private ArrayList<Composition> compositions;
-	private ArrayList<Integer> activities;
-	private ArrayList<Double> duration;
-	private ArrayList<Double> plannedtimes;
-	private ArrayList<Track> tracksassigned;
-	private ArrayList<Double> ultimatetimes;
+	
+	private ArrayList<Activity> activities;
 
 	ArrayList<Track> platforms = new ArrayList<>();
+	ArrayList<Activity[]> busytimesplatforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
+	ArrayList<Activity[]> busytimeswashareas = new ArrayList<>();
 
 	public Todo(ArrayList<Track> tracks){
-		compositions = new ArrayList<>();
 		activities = new ArrayList<>();
-		duration = new ArrayList<>();
-		plannedtimes = new ArrayList<>();
-		tracksassigned = new ArrayList<>();
-		ultimatetimes = new ArrayList<>();
 
 		for(int i=0;i<tracks.size();i++){
 			if (tracks.get(i).getInspectionposition() ==1){
 				platforms.add(tracks.get(i));
+				busytimesplatforms.add(new Activity[60*24]);
 			}
 			if(tracks.get(i).getWashingposition()== 1){
 				washareas.add(tracks.get(i));
+				busytimeswashareas.add(new Activity[60*24]);
 			}
 		}
 	}
@@ -36,10 +31,15 @@ public class Todo {
 	public void addComposition(Composition addedcomp){
 		double durationactivity;
 		double temp;
+		double temptemp;
+		int mintemp = (int) addedcomp.getArrivaltime()*24*60; //TODO: AFRONDEN GOED?
 		Track temp1;
+		Track temptemp1;
 		for(int j = 0; j<4; j++){
 			temp = 124123123;
+			temptemp = 123124;
 			temp1 = null;
+			temptemp1 = null;
 			durationactivity = 0;
 			for(int i = 0; i<addedcomp.getSize(); i++){
 				if(addedcomp.getTrain(i).getActivity(j)){
@@ -48,26 +48,33 @@ public class Todo {
 			}
 			if(durationactivity>0){
 				if(j == 0 || j == 1 || j == 2){
-					compositions.add(addedcomp);
-					activities.add(j);
-					duration.add(durationactivity);
-
+					activities.add(new Activity(durationactivity, addedcomp.getDeparturetime()-durationactivity, addedcomp, j));
 					for(int k = 0; k<platforms.size(); k++){
-						if(platforms.get(k).getFreeTime()<temp){
+						
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								temptemp = l;
+								temptemp1 = platforms.get(k);
+								break;
+							}
+						}
+						if(temptemp < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+						
+						/*if(platforms.get(k).getFreeTime()<temp){
 							temp = platforms.get(k).getFreeTime();
 							temp1 = platforms.get(k);
-						}
+						}*/
 					}
-					ultimatetimes.add(addedcomp.getDeparturetime()-durationactivity);
-					plannedtimes.add(temp);
-					tracksassigned.add(temp1);
+					activities.get(activities.size()-1).setUpdate(temp, temp1);
+					mintemp = (int) (temp + durationactivity);
+					//TODO: DECOUPLE AND COUPLE TO REDUCE TIME WITHIN AN ACTIVITY
 					temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
 				}
 			}
 			else if(j == 3){
-				compositions.add(addedcomp);
-				activities.add(j);
-				duration.add(durationactivity);
 
 				for(int k = 0; k<washareas.size(); k++){
 					if(washareas.get(k).getFreeTime()<temp){
@@ -75,14 +82,13 @@ public class Todo {
 						temp1 = washareas.get(k);
 					}
 				}
-				ultimatetimes.add(addedcomp.getDeparturetime()-durationactivity);
-				plannedtimes.add(temp);
-				tracksassigned.add(temp1);
+
+				activities.add(new Activity(temp, durationactivity, addedcomp.getDeparturetime()-durationactivity ,addedcomp, j, temp1));
+
 				temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
 			}
 		}
 	}
-
 
 	/*public void addComposition(Composition addedcomp){
 		boolean locallydecouple;
@@ -202,15 +208,26 @@ public class Todo {
 		}
 	}
 	 */
-	public void removeActivity(int i){
-		plannedtimes.remove(i);
-		compositions.remove(i);
-		activities.remove(i);
-		tracksassigned.remove(i);
-		duration.remove(i);
-		ultimatetimes.remove(i);
+	
+	public void assignActivityToTrack(int activity, int whichtrack, int kindoftrack, int starttime){
+		//TODO: IF whichplatform IS OUT OF BOUNDS EXCEPTION!
+		//TODO: Exception for starttime out of bounds (may be 0 up to 1439)!!!!!!
+		
+		if(kindoftrack == 0){// 0 refers to a platform
+			for(int i = starttime; i<starttime+activities.get(activity).getDuration(); i++){
+				busytimesplatforms.get(whichtrack)[i] = activities.get(activity);
+			}
+		}
+		else if(kindoftrack == 1){// 1 refers to a wash area
+			for(int i = starttime; i<starttime+activities.get(activity).getDuration(); i++){
+				busytimeswashareas.get(whichtrack)[i] = activities.get(activity);
+			}
+		}
 	}
-
+	public void removeActivityFromTrack(int activity){
+		//TODO: Exception out of bounds
+		
+	}
 
 	public static ArrayList<int[]> getTODO(Train[] trainlist){
 		ArrayList<int[]> temp = new ArrayList<>();
@@ -235,28 +252,28 @@ public class Todo {
 	private int getMin(){
 		double temp = 33299004;
 		int temptemp = -1;
-		for(int i = 0; i<compositions.size(); i++){
-			if(plannedtimes.get(i)<temp){
-				temp = plannedtimes.get(i);
+		for(int i = 0; i<activities.size(); i++){
+			if(activities.get(i).getPlannedTime()<temp){
+				temp = activities.get(i).getPlannedTime();
 				temptemp = i;
 			}
 		}
 		return temptemp;
 	}
 	public double getMinTime(){
-		return plannedtimes.get(this.getMin());
+		return activities.get(this.getMin()).getPlannedTime();
 	}
 	public Composition getMinTrain(){
-		return compositions.get(this.getMin());
+		return activities.get(this.getMin()).getComposition();
 	}
-	public int getMinActivity(){
+	public Activity getMinActivity(){
 		return activities.get(this.getMin());
 	}
 	public Track getMinTrack(){
-		return tracksassigned.get(this.getMin());
+		return activities.get(this.getMin()).getTrackAssigned();
 	}
 	public boolean getEmpty(){
-		if(compositions.size() == 0){
+		if(activities.size() == 0){
 			return true;
 		}
 		else{
@@ -264,11 +281,117 @@ public class Todo {
 		}
 	}
 	public boolean checkFeasibility(){
-		
+		boolean abcd = true;
 		for(int i = 0; i<activities.size(); i++){
-			
+			if(activities.get(i).getPlannedTime()>activities.get(i).getUltimateTime()){
+				abcd = false;
+			}	
+		}
+		return abcd;
+	}
+	public int getLeastMargin(){
+		double temp;
+		int temp1 = -1;
+
+		for(int i = 0; i< 20; i++){
+			temp = 1123;
+			temp1 = -1;
+			for(int j = 0; j< activities.size(); j++){
+
+				if(activities.get(i).getUltimateTime() - activities.get(i).getPlannedTime() < temp){
+					temp = activities.get(i).getUltimateTime() - activities.get(i).getPlannedTime();
+					temp1 = j;
+				}
+
+			}
+		}
+		return temp1;
+	}
+	/*public int[] getMaxMargin(double timespan, int amount, int currentactivity){
+		double[] temptimes = new double[plannedtimes.size()];
+		for(int i = 0; i<temptimes.length; i++){
+			temptimes[i] = plannedtimes.get(i);
+		}
+		int[] indices = new int[amount];
+		int index = -1;
+		double temp = 0;
+		for(int j = 0; j<amount; j++){
+			index = -1;
+			temp = 0;
+			for(int i = 0; i<temptimes.length; i++){
+				if(plannedtimes.get(currentactivity)-plannedtimes.get(i)<=timespan && plannedtimes.get(currentactivity)-plannedtimes.get(i)>0){
+					if(temptimes[i]>temp){
+						temp = temptimes[i];
+						index = i;
+					}
+				}
+			}
+			temptimes[index] = 0;
+			indices[j] = index;
+		}
+		return indices;
+	}*/
+	public int getSwap(int currentactivity){
+		
+		
+		
+		return 5;
+	}
+	/*
+	 * Arrival of train with the current activity must be before the swapped activity time
+	 * Inspection must remain the first activity to be done
+	 * If current activity has a longer duration than the swapped activity, than we must shift all activities later of the swapped activity to a later time. Then check if all activities later remain feasible and check their margins.
+	 * If current activity has a shorter duration than the swapped activity, than we must shift all activities later earlier. We must check if this is possible due to arrival times.
+	 */
+	public boolean getFeasibilitySwap(int activity1, int activity2){
+		boolean feasible = true;
+		
+		if(activities.get(activity1).getComposition().getArrivaltime() > activities.get(activity2).getPlannedTime()){
+			feasible = false;
+		}
+		else if(activities.get(activity1).getPlannedTime()+activities.get(activity2).getDuration() > activities.get(activity2).getComposition().getDeparturetime()){
+			feasible = false;
+		}
+		else if(activities.get(activity1).getDuration() > activities.get(activity2).getDuration()){
+			for(int i = 0; i<activities.size(); i++){
+				if(activities.get(i).getTrackAssigned() == activities.get(activity2).getTrackAssigned()){
+					if(activities.get(i).getPlannedTime() > activities.get(activity2).getPlannedTime()){
+						if(activities.get(i).getPlannedTime()+(activities.get(activity1).getDuration()-activities.get(activity2).getDuration())>activities.get(i).getUltimateTime()){
+							feasible = false;
+						}
+					}
+				}
+			}
+		}
+		else if(activities.get(activity1).getDuration() < activities.get(activity2).getDuration()){
+			for(int i = 0; i<activities.size(); i++){
+				if(activities.get(i).getTrackAssigned() == activities.get(activity1).getTrackAssigned()){
+					if(activities.get(i).getPlannedTime() > activities.get(activity1).getPlannedTime()){
+						if(activities.get(i).getPlannedTime()+(activities.get(activity2).getDuration()-activities.get(activity1).getDuration())>activities.get(i).getUltimateTime()){
+							feasible = false;
+						}
+					}
+				}
+			}
 		}
 		
-		return false;
+		return feasible;
+	}
+	public double getMargins(){
+		
+	}
+	public void swapActivities(int activity1, int activity2){
+		
+	}
+	public void improveTODO(){
+		int temp1;
+
+		for(int i = 0; i< 20; i++){
+
+			temp1 = this.getLeastMargin();
+
+
+
+		}
 	}
 }

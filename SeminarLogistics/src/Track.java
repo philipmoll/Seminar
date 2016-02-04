@@ -19,7 +19,7 @@ public class Track {
 	private final int repairingposition; //TODO: add different types of repairing positions
 	private final int washingposition;
 	private int tracktype;
-	private double freetime;
+	private Activity[] busytime;
 
 	private int[] occupation;
 	private ArrayList<Composition> compositionlist;
@@ -35,7 +35,7 @@ public class Track {
 		this.tracktype = tracktype;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
-		freetime = 0;
+		busytime = new Activity[60*24];
 	}
 
 	public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition) {
@@ -49,7 +49,7 @@ public class Track {
 		tracktype = 0;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
-		freetime = 0;
+		busytime = new Activity[60*24];
 	}
 
 
@@ -267,14 +267,29 @@ public class Track {
 
 		return partialcompositionlist;
 	} 
-
-	public double getFreeTime(){
-		return freetime;
+	public void setBusyTime(Activity activity){
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			busytime[i] = activity;
+		}
 	}
-	public void setFreeTime(double newtime){
-		freetime = newtime;
+	public void removeBusyTime(Activity activity){
+		for(int i = 0; i<busytime.length; i++){
+			if(busytime[i].equals(activity)){
+				busytime[i] = null; //TODO: TEST WHETHER THIS IS ALLOWED, ONLY REMOVE REFERENCE TO OBJECT, NOT OBJECT SELF
+			}
+		}
 	}
-
-
+	public boolean checkFeasibility(Activity activity, int timetobechecked){
+		
+		boolean feasible = true;
+		
+		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
+			if(busytime[i]!=null){
+				feasible = false;
+			}
+		}
+		
+		return feasible;
+	}
 
 }
