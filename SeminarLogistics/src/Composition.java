@@ -13,8 +13,6 @@ import java.util.*;
 public class Composition {
 
 	private ArrayList<Train> compositiontrains;
-	private int compositionlength;
-	private int compositionsize; //number of trains
 	private Track compositiontrack;
 	private int locationontrack;
 	private double arrivaltime;
@@ -46,7 +44,7 @@ public class Composition {
 		//add composition to compositiontrack
 		this.compositiontrack = compositiontrack;
 		this.locationontrack = locationontrack;
-		for (int i = locationontrack; i < locationontrack+compositionlength; i++){
+		for (int i = locationontrack; i < locationontrack+this.getLength(); i++){
 			if (compositiontrack.getOccupied(i)==1){
 				throw new TrackNotFreeException("Composition cannot be initialized on "+compositiontrack.getLabel()+" at position " + locationontrack + "as there is not enough free track space from location " + i + " onward");
 			}
@@ -92,7 +90,7 @@ public class Composition {
 			this.compositiontrack.addCompositiontoTrack(this,newposition);
 		}
 		this.updateComposition();
-		compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1);
+		compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1);
 		//je hoeft dus niet meer zelf toe te voegen aan je track als je een compositie op een track maakt!! :)
 	}
 
@@ -130,7 +128,7 @@ public class Composition {
 				//System.out.println("a<b, this.getLocationOnTrack() = " +this.getLocationOnTrack()+" this.getLength() = "+this.getLength()+" this.getLocationOnTrack()+this.getLength()+1 = "+(this.getLocationOnTrack()+this.getLength()+1) + " addcomposition.locationontrack = "+addcomposition.locationontrack);
 
 
-				if (this.locationontrack+this.compositionlength != addcomposition.getLocationOnTrack()){
+				if (this.locationontrack+this.getLength() != addcomposition.getLocationOnTrack()){
 					throw new MisMatchException("Compositions aren't located exactly next to each other when coupling on track "+this.compositiontrack.getLabel()+ " (function coupleComposition)");
 				}
 				this.updateComposition();
@@ -142,11 +140,11 @@ public class Composition {
 	}
 
 	public Composition decoupleComposition(int locationdecouple) throws MisMatchException, IndexOutOfBoundsException, TrackNotFreeException, IOException{
-		if (compositionsize < 2){
+		if (this.getSize() < 2){
 			throw new IOException("Composition consists of less than two trains, thus decoupling is impossible");
 		}
-		if (locationdecouple < 0 || locationdecouple > compositionsize-2){
-			throw new IndexOutOfBoundsException("Composition of size "+compositionsize+" cannot be decoupled at index "+locationdecouple);
+		if (locationdecouple < 0 || locationdecouple > this.getSize()-2){
+			throw new IndexOutOfBoundsException("Composition of size "+this.getSize()+" cannot be decoupled at index "+locationdecouple);
 		}
 		ArrayList<Train> newcompositionlist = new ArrayList<>();
 		int a = this.getSize();
@@ -162,7 +160,7 @@ public class Composition {
 			newcomposition = new Composition(newcompositionlist); 
 		}
 		else{ //if locationontrack != -1, composition has been placed on a track yet
-			newcomposition = new Composition(newcompositionlist,compositiontrack,locationontrack+this.compositionlength); 
+			newcomposition = new Composition(newcompositionlist,compositiontrack,locationontrack+this.getLength()); 
 		}
 		
 		newcomposition.setArrivaltime(arrivaltime);
@@ -171,10 +169,14 @@ public class Composition {
 	}
 
 	public int getLength(){
+		int compositionlength = 0;
+		for (int i = 0; i<compositiontrains.size(); i++){
+			compositionlength += compositiontrains.get(i).getLength();
+		}
 		return compositionlength;
 	}
 	public int getSize(){
-		return compositionsize;
+		return compositiontrains.size();
 	}
 
 	public Train getTrain(int i){
@@ -188,14 +190,10 @@ public class Composition {
 		if(compositiontrains.size() <=0){
 			throw new IOException("Input composition contains no trains in function updateComposition()");
 		}
-		int templength = 0;
 		for(int i=0;i<this.getTrainList().size();i++){
-			templength += this.compositiontrains.get(i).getLength();
 			this.getTrain(i).setPosition(i);
 			this.getTrain(i).setComposition(this);
 		}
-		this.compositionsize = compositiontrains.size();
-		this.compositionlength = templength;
 	}
 
 	private void updateComposition(int locationontrack) throws IOException{
@@ -209,9 +207,6 @@ public class Composition {
 			this.getTrain(i).setComposition(this);
 		}
 		this.locationontrack = locationontrack;
-
-		this.compositionsize = compositiontrains.size();
-		this.compositionlength = templength;
 	}
 
 	public Track getTrack(){
@@ -232,24 +227,24 @@ public class Composition {
 						throw new TrackNotFreeException("On track "+track.getLabel()+" we cannot move from location "+locationontrack+" to location "+location);
 					}
 				}
-				compositiontrack.setFree(locationontrack,locationontrack+compositionlength-1); //set current track free on correct indices
+				compositiontrack.setFree(locationontrack,locationontrack+this.getLength()-1); //set current track free on correct indices
 
 				locationontrack = location; //update locationontrack
 
-				compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
+				compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1); //set new track occupied on correct indices
 			}
 			else if (location > locationontrack){
 				//move right (to b side)
-				for (int i = locationontrack+compositionlength; i < location+compositionlength-1;i++){
+				for (int i = locationontrack+this.getLength(); i < location+this.getLength()-1;i++){
 					if (track.getOccupied(i) != 0){
 						throw new TrackNotFreeException("On track "+track.getLabel()+" we cannot move from location "+locationontrack+" to location "+location);
 					}
 				}
-				compositiontrack.setFree(locationontrack,locationontrack+compositionlength-1); //set current track free on correct indices
+				compositiontrack.setFree(locationontrack,locationontrack+this.getLength()-1); //set current track free on correct indices
 
 				locationontrack = location; //update locationontrack
 
-				compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
+				compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1); //set new track occupied on correct indices
 
 			}
 			else
@@ -260,10 +255,10 @@ public class Composition {
 		}
 		else{ //if we move to another track
 			//First check whether there is room on the new track
-			for (int i = location; i<location+compositionlength;i++){
+			for (int i = location; i<location+this.getLength();i++){
 				//System.out.println(track.getOccupied(i)+" i: "+i);
 				if (track.getOccupied(i) != 0){
-					throw new TrackNotFreeException("Track "+track.getLabel()+" has no room for a composition of length "+compositionlength+" at location "+location+" (function moveComposition)");
+					throw new TrackNotFreeException("Track "+track.getLabel()+" has no room for a composition of length "+this.getLength()+" at location "+location+" (function moveComposition)");
 				}
 			}
 			//addcomposition to compositionlist of new track, throw exceptions if infeasible direction
@@ -279,7 +274,7 @@ public class Composition {
 					}
 				}
 				if (this.getPositionOnTrack()!=0 || check == false){
-					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the left side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
+					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the left side for a composition of length "+this.getLength()+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
 				}
 
 				track.addCompositiontoTrackLeft(this);
@@ -288,7 +283,7 @@ public class Composition {
 				//check whether the track is free to move out right, and move in right
 				int x = -1;
 				boolean check = true;
-				for (int i=track.getTracklength()-1;i > location+compositionlength;i--){
+				for (int i=track.getTracklength()-1;i > location+this.getLength();i--){
 					if (track.getOccupied(i)==1){
 						x = i;
 						check = false;
@@ -296,7 +291,7 @@ public class Composition {
 					}
 				}
 				if (this.getPositionOnTrack()!=this.compositiontrack.getCompositionlist().size()-1 || check == false){
-					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the right side for a composition of length "+compositionlength+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
+					throw new TrackNotFreeException("Track "+track.getLabel()+" cannot enter on the right side for a composition of length "+this.getLength()+" at location "+location+", blockage occurs at "+x+" (function moveComposition)");
 				}
 				track.addCompositiontoTrackRight(this);
 			}
@@ -304,14 +299,14 @@ public class Composition {
 				throw new IOException("Input in function moveComposition must be a or b, and is "+aorb);
 			}
 
-			compositiontrack.setFree(this.locationontrack,this.locationontrack+compositionlength-1); //set current track free on correct indices
+			compositiontrack.setFree(this.locationontrack,this.locationontrack+this.getLength()-1); //set current track free on correct indices
 
 			compositiontrack.removeComposition(this.getPositionOnTrack());
 
 			compositiontrack = track; //update compositiontrack
 			locationontrack = location; //update locationontrack
 
-			compositiontrack.setOccupied(locationontrack,locationontrack+compositionlength-1); //set new track occupied on correct indices
+			compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1); //set new track occupied on correct indices
 		}
 
 	}
@@ -332,7 +327,7 @@ public class Composition {
 
 				//check if it can enter freely
 				boolean check = true;
-				for (int i = 0; i<location+compositionlength;i++){
+				for (int i = 0; i<location+this.getLength();i++){
 					if (track.getOccupied(i)==1){
 						check = false;
 						break;
@@ -344,8 +339,8 @@ public class Composition {
 				//check if it can enter by first moving some other compositions
 				else{
 					//check whether there is enough room on the track to the right of the desired location
-					if (track.getTracklength() - location +1< compositionlength+track.getCompositionLengthOnTrack()){
-						throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering left and possibly moving the other compositions to the right");
+					if (track.getTracklength() - location +1< this.getLength()+track.getCompositionLengthOnTrack()){
+						throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+this.getLength()+" at location "+location+" when entering left and possibly moving the other compositions to the right");
 					}
 				}
 				//check whether we need to move compositions that are complete to the right of the desired location span\
@@ -361,7 +356,7 @@ public class Composition {
 				}
 				else{
 					int distance;
-					distance = partiallistexclb.get(0).getLocationOnTrack()-(location+compositionlength);
+					distance = partiallistexclb.get(0).getLocationOnTrack()-(location+this.getLength());
 					if (distance >= lengthincla){
 						movepartial = false; //partiallistexcl is not in the way, so does not have to be moved
 					}
@@ -372,7 +367,7 @@ public class Composition {
 				//move compositions that are in the way
 				if (movepartial == true){
 					//move exclb
-					int minstartposexclb = (location+compositionlength-1)+(lengthincla+1);
+					int minstartposexclb = (location+this.getLength()-1)+(lengthincla+1);
 					int[] locationlist = new int[partiallistexclb.size()];
 					//find moves for exclb:
 					locationlist[0]=minstartposexclb;
@@ -389,7 +384,7 @@ public class Composition {
 				}
 
 				//move incla
-				int minstartposincla = (location+compositionlength);
+				int minstartposincla = (location+this.getLength());
 				int[] locationlist2 = new int[partiallistincla.size()];
 				//find moves for incla:
 				locationlist2[0]=minstartposincla;
@@ -421,8 +416,8 @@ public class Composition {
 				}
 
 				//check whether there is enough room on the track to the left of the desired location
-				if (location +compositionlength < compositionlength+track.getCompositionLengthOnTrack()){
-					throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+compositionlength+" at location "+location+" when entering right and possibly moving the other compositions to the left");
+				if (location +this.getLength() < this.getLength()+track.getCompositionLengthOnTrack()){
+					throw new TrackNotFreeException("Track "+track.getLabel()+" does not fit a composition of length "+this.getLength()+" at location "+location+" when entering right and possibly moving the other compositions to the left");
 				}
 				//check whether we need to move compositions that are complete to the left of the desired location span
 				boolean movepartial = false; //default
@@ -519,7 +514,7 @@ public class Composition {
 		if (compositiontrack != null || locationontrack != -1){
 			throw new IOException("Track "+initialtrack.getLabel()+"cannot be assigned to the composition, as the composition is already assigned to a track");
 		}
-		for (int i = initiallocation; i<initiallocation+compositionlength;i++){
+		for (int i = initiallocation; i<initiallocation+this.getLength();i++){
 			if (initialtrack.getOccupied(i)==1){
 				throw new TrackNotFreeException("The composition cannot be assigned to track "+initialtrack.getLabel()+" on location " + initiallocation +" as it is occupied");
 			}
@@ -573,7 +568,7 @@ public class Composition {
 	 */
 	public double getTotalServiceTime() throws IOException{ //TODO testfunctie!!
 		double totalservicetime = 0;
-		for (int i = 0; i<compositionsize; i++){
+		for (int i = 0; i<this.getSize(); i++){
 			Train currenttrain = compositiontrains.get(i);
 			for (int j = 0; j<=3; j++){
 				if (currenttrain.getActivity(j)==true){

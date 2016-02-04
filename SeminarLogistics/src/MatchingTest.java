@@ -49,9 +49,10 @@ public class MatchingTest {
 			e = new Composition(new ArrayList<Train>(){{add(b); add(c);}},0.1,-1);
 			f = new Composition(new ArrayList<Train>(){{add(x); add(y); add(z);}},0.5,-1);
 
-			compositionlist.add(d);
+			compositionlist = new ArrayList<>();
+			//compositionlist.add(d);
 			compositionlist.add(e);
-			compositionlist.add(f);
+			//compositionlist.add(f);
 			
 			aa = new Block(new ArrayList<Train>(){{add(a);}},0,-1,d,-1,0);
 			bb = new Block(new ArrayList<Train>(){{add(b); add(c);}},0.1,-1,e,-1,1);
@@ -64,6 +65,7 @@ public class MatchingTest {
 			ii = new Block(new ArrayList<Train>(){{add(z);}},0.5,-1,f,1,2);
 			jj = new Block(new ArrayList<Train>(){{add(x); add(y);}},0.5,-1,f,-1,1);
 			
+			testblocklist = new ArrayList<>();
 			testblocklist.add(aa);
 			testblocklist.add(bb);
 			testblocklist.add(cc);
@@ -89,10 +91,31 @@ public class MatchingTest {
 		try {
 			ArrayList<Block> blocklist = new ArrayList<Block>();
 			blocklist = Matching.makeblocks(compositionlist);
-			
-			for (int i=0; i<testblocklist.size();i++){
-				assertEquals(testblocklist.get(i),blocklist.get(i));
+			for (int i = 0; i <blocklist.size(); i++){
+				System.out.println(blocklist.get(i).getTrainList());
 			}
+			System.out.println("hoi");
+			for (int i = 0; i <testblocklist.size(); i++){
+				System.out.println(testblocklist.get(i).getTrainList());
+			}
+						
+			System.out.println("hoi2");
+			for (int i=0; i<1;i++){
+				boolean check = false;
+				for (int j = 0; j<testblocklist.size();j++){
+					if (blocklist.get(i).checkEqual(testblocklist.get(j)) == true){
+						System.out.println("blocklist "+i+" equal to testblocklist "+j);
+						check = true;
+					}
+					else{
+						System.out.println("blocklist "+i+" not equal to testblocklist "+j);
+
+					}
+				}
+				assertEquals(true,check);
+				System.out.println(" ");
+			}
+			
 			
 		} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | IOException e) {
 			e.printStackTrace();

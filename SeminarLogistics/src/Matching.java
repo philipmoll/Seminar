@@ -1,8 +1,8 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import ilog.concert.*;
-import ilog.cplex.*;
+//import ilog.concert.*;
+//import ilog.cplex.*;
 
 public class Matching { //TODO: testclass
 	
@@ -26,13 +26,16 @@ public class Matching { //TODO: testclass
 			if (currentcomposition.getSize()>=4){
 				throw new IndexOutOfBoundsException("Composition with index "+i+" has length "+temp.getSize()+" and for function makeblocks in Matching a max of 3 is assumed.");
 			}
-			blocklist.add(new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),temp,-1,temp.getSize()-1));
-			if(currentcomposition.getSize()==2){
+			Block test = new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),temp,-1,temp.getSize()-1);
+			blocklist.add(test);
+			System.out.println(blocklist.get(blocklist.size()-1).getTrainList());
+			System.out.println("size temp = "+temp.getSize()+" size trainlist = "+temp.getTrainList().size());
+			/*if(currentcomposition.getSize()==2){
 				Composition temp2 = temp.decoupleComposition(0);
 				blocklist.add(new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
 				blocklist.add(new Block(temp2.getTrainList(),temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,1));
-			}
-			else if(currentcomposition.getSize()==3){
+			}*/
+			/*else*/ if(currentcomposition.getSize()==3){
 				Composition temp2 = temp.decoupleComposition(0);
 				blocklist.add(new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
 				blocklist.add(new Block(temp2.getTrainList(),temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,2));

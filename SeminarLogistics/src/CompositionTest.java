@@ -55,6 +55,7 @@ public class CompositionTest {
 	@Test
 	public void testCoupleComposition(){
 		assertEquals(2,d.getTrack().getCompositionlist().size());
+		assertEquals(1,d.getSize());
 		try {
 			d.coupleComposition(e);
 		} catch (MisMatchException | IndexOutOfBoundsException | IOException e1) {
@@ -68,6 +69,7 @@ public class CompositionTest {
 		for (int i = 0; i <f.getCompositionlist().size();i++){
 			assertNotEquals(f.getCompositionlist().get(i),e);
 		}
+		assertEquals(3,d.getSize());
 		assertEquals(1,d.getTrack().getCompositionlist().size());
 	}
 	@Test
@@ -84,6 +86,9 @@ public class CompositionTest {
 		//check
 		assertEquals(10,d.getLength());
 		assertEquals(4,x.getLength());
+		
+		assertEquals(2,d.getSize());
+		assertEquals(1,x.getSize());
 
 		assertEquals(2,d.getTrack().getCompositionlist().size());
 		assertEquals(d.getTrack().getCompositionlist().get(0),d);
