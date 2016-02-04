@@ -73,7 +73,18 @@ public class Main {
 				Composition temp = arrivingcompositions.get(i);
 				temp.setArrivaltime(arrivingtimes.get(i));
 				arrivingcompositionswitharrtime.add(temp);
+				
+				
 			}
+			
+					ArrayList<Block> blocklist = new ArrayList<Block>();
+					try {
+						blocklist = Matching.makeblocks(arrivingcompositionswitharrtime);
+					} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
 			
 			//while(!EventList.getEmpty() || !Todo.getEmpty()){
@@ -177,8 +188,8 @@ public class Main {
 								length = (int) compositiondata2.getElement(j, 5);
 							}
 						}
-						//trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length);
-						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length, (compositiondata.getElement(i,4)== 1.0), (compositiondata.getElement(i,5)== 1.0), (compositiondata.getElement(i,6)== 1.0), (compositiondata.getElement(i,7)== 1.0), (compositiondata.getElement(i,8)== 1.0));
+						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length);
+						//trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length, (compositiondata.getElement(i,4)== 1.0), (compositiondata.getElement(i,5)== 1.0), (compositiondata.getElement(i,6)== 1.0), (compositiondata.getElement(i,7)== 1.0), (compositiondata.getElement(i,8)== 1.0));
 						abcd += 1;
 					}
 				}
