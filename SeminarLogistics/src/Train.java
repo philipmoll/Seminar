@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.lang.*;
 
 /**
@@ -29,6 +30,14 @@ public class Train {
 	private int position;
 	private Composition composition;
 
+	/**
+	 * Constructor for train
+	 * 
+	 * @param train_ID
+	 * @param type
+	 * @param carriages
+	 * @param length
+	 */
 	public Train(int train_ID, int type, int carriages, int length){
 		this.train_ID = train_ID;
 		this.type = type;
@@ -96,27 +105,18 @@ public class Train {
 		}
 	}
 
-	public Train(int train_ID, int type, int carriages, int length, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
-		this.train_ID = train_ID;
-		this.type = type;
-		this.length = length;
-		this.carriages = carriages;
-		this.composition = null;
+	
 
-		position = -1; //If you make a new train, it is the only train in its composition
-
-		this.interchangeable = interchangeable;
-		this.inspecting = inspecting;
-		this.cleaning = cleaning;
-		this.repairing = repairing;
-		this.washing = washing;
-
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
-	}
-
+	/**
+	 * 
+	 * @param train_ID
+	 * @param type
+	 * @param interchangeable
+	 * @param inspecting
+	 * @param cleaning
+	 * @param repairing
+	 * @param washing
+	 */
 	public Train(int train_ID, int type, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
@@ -203,18 +203,28 @@ public class Train {
 	public int getWashingTime(){
 		return washingtime;
 	}
-	public double getActivityTime(int abcd){
-		//TODO: THROW EXCEPTION IF INT > 3
-		if(abcd == 0){
+	
+	/**
+	 * This function returns the time it takes for a certain activity to be performed
+	 * 
+	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing)
+	 * @return activitytime : time needed to perform activity activitynumber on this train
+	 * @throws IOException : when activitynumber is not 0, 1, 2, or 3
+	 */
+	public double getActivityTime(int activitynumber) throws IOException { //TODO: testfunctie
+		if (activitynumber < 0 || activitynumber > 3){
+			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivityTime, and is "+activitynumber);
+		}
+		if(activitynumber == 0){
 			return (double) this.getInspectionTime();
 		}
-		else if(abcd == 1){
+		else if(activitynumber == 1){
 			return (double) this.getCleaningTime();
 		}
-		else if(abcd == 2){
+		else if(activitynumber == 2){
 			return (double) this.getRepairingTime();
 		}
-		else if(abcd == 3){
+		else if(activitynumber == 3){
 			return (double) this.getWashingTime();
 		}
 		else{
@@ -236,18 +246,28 @@ public class Train {
 	public boolean getWashing(){
 		return washing;
 	}
-	public boolean getActivity(int abcd){
-		//TODO: THROW EXCEPTION IF INT > 3
-		if(abcd == 0){
+	
+	/**
+	 * This function returns a boolean whether a certain activity still needs to be performed (true) or not (false).
+	 * 
+	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing)
+	 * @return boolean : whether activity number activitynumber still needs to be performed (true) or not (false)
+	 * @throws IOException : when activitynumber is not 0, 1, 2, or 3
+	 */
+	public boolean getActivity(int activitynumber)throws IOException { //TODO: testfunctie
+		if (activitynumber < 0 || activitynumber > 3){
+			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivity, and is "+activitynumber);
+		}
+		if(activitynumber == 0){
 			return this.getInspecting();
 		}
-		else if(abcd == 1){
+		else if(activitynumber == 1){
 			return this.getCleaning();
 		}
-		else if(abcd == 2){
+		else if(activitynumber == 2){
 			return this.getRepairing();
 		}
-		else if(abcd == 3){
+		else if(activitynumber == 3){
 			return this.getWashing();
 		}
 		else{

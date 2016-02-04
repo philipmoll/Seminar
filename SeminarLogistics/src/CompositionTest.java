@@ -344,6 +344,10 @@ public class CompositionTest {
 		assertEquals(0.06,d.getDeparturetime(),0.000001);
 	}
 	
+	@Test
+	public void testGetTotalServiceTime(){
+		
+	}
 }
 /**
 System.out.println("label: " +compositiontrack.getLabel()+ " this.locationontrack: " + this.locationontrack + " this.lcoationontrack+compositionlength: " + (this.locationontrack+compositionlength-1));

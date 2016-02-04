@@ -564,6 +564,25 @@ public class Composition {
 	public void setDeparturetime(double departuretime){
 		this.departuretime = departuretime;
 	}
+	
+	/**
+	 * This function returns the total time of the activities that still need to be performed on the composition/block
+	 * 
+	 * @return totalservicetime : total time of activities that still need to be performed on the composition/block
+	 * @throws IOException
+	 */
+	public double getTotalServiceTime() throws IOException{ //TODO testfunctie!!
+		double totalservicetime = 0;
+		for (int i = 0; i<compositionsize; i++){
+			Train currenttrain = compositiontrains.get(i);
+			for (int j = 0; j<=3; j++){
+				if (currenttrain.getActivity(j)==true){
+					totalservicetime += currenttrain.getActivityTime(j);
+				}
+			}
+		}
+		return totalservicetime;
+	}
 
 
 }
