@@ -53,9 +53,11 @@ public class Todo {
 						
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
 							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 								temptemp = l;
 								temptemp1 = platforms.get(k);
 								break;
+							}
 							}
 						}
 						if(temptemp < temp){
@@ -71,21 +73,66 @@ public class Todo {
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 					mintemp = (int) (temp + durationactivity);
 					//TODO: DECOUPLE AND COUPLE TO REDUCE TIME WITHIN AN ACTIVITY
-					temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
+					addedcomp.setBusyTime(activities.get(activities.size()-1));
+					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
 				}
 			}
 			else if(j == 3){
-
-				for(int k = 0; k<washareas.size(); k++){
-					if(washareas.get(k).getFreeTime()<temp){
-						temp = washareas.get(k).getFreeTime();
-						temp1 = washareas.get(k);
+				activities.add(new Activity(durationactivity, addedcomp.getDeparturetime()-durationactivity, addedcomp, j));
+				boolean needinspection = false;
+				for (int m = 0; m<addedcomp.getSize();m++){
+					if (addedcomp.getTrain(m).getActivity(0));
+					needinspection = true;
+					break;
+				}
+				if (needinspection){
+					for(int k = 0; k<washareas.size(); k++){
+					
+					for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
+						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+							if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+							temptemp = l;
+							temptemp1 = washareas.get(k);
+							break;
+						}
+						}
+					}
+					if(temptemp < temp){
+						temp = temptemp;
+						temp1 = temptemp1;
 					}
 				}
 
-				activities.add(new Activity(temp, durationactivity, addedcomp.getDeparturetime()-durationactivity ,addedcomp, j, temp1));
-
-				temp1.setFreeTime(temp1.getFreeTime()+durationactivity); //TODO: MOVING TIME MUST BE INCLUDED
+				activities.get(activities.size()-1).setUpdate(temp, temp1);
+				mintemp = (int) (temp + durationactivity);
+				
+				addedcomp.setBusyTime(activities.get(activities.size()-1));
+				temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+			}
+				else {
+					mintemp = (int) addedcomp.getArrivaltime()*24*60;
+					for(int k = 0; k<washareas.size(); k++){
+						
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+								temptemp = l;
+								temptemp1 = washareas.get(k);
+								break;
+								}
+							}
+						}
+						if(temptemp < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+					activities.get(activities.size()-1).setUpdate(temp, temp1);
+					mintemp = (int) (temp + durationactivity);
+					
+					addedcomp.setBusyTime(activities.get(activities.size()-1));
+					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+				}
 			}
 		}
 	}

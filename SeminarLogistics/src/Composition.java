@@ -17,6 +17,7 @@ public class Composition implements Cloneable{
 	private int locationontrack;
 	private double arrivaltime;
 	private double departuretime;
+	private Activity[] busytime;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
 
@@ -27,6 +28,7 @@ public class Composition implements Cloneable{
 		locationontrack = -1; //default
 		arrivaltime = -1; //default
 		departuretime = -1; //default
+		busytime = new Activity[60*24];
 	}
 	
 	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime) throws IOException{
@@ -36,6 +38,7 @@ public class Composition implements Cloneable{
 		locationontrack = -1; //default
 		this.arrivaltime = arrivaltime; //default
 		this.departuretime = departuretime;
+		busytime = new Activity[60*24];
 	}
 
 	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutOfBoundsException, TrackNotFreeException, IOException{
@@ -92,6 +95,7 @@ public class Composition implements Cloneable{
 		this.updateComposition();
 		compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1);
 		//je hoeft dus niet meer zelf toe te voegen aan je track als je een compositie op een track maakt!! :)
+		busytime = new Activity[60*24];
 	}
 
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
@@ -577,6 +581,31 @@ public class Composition implements Cloneable{
 			}
 		}
 		return totalservicetime;
+	}
+	
+	public void setBusyTime(Activity activity){
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			busytime[i] = activity;
+		}
+	}
+	public void removeBusyTime(Activity activity){
+		for(int i = 0; i<busytime.length; i++){
+			if(busytime[i].equals(activity)){
+				busytime[i] = null; //TODO: TEST WHETHER THIS IS ALLOWED, ONLY REMOVE REFERENCE TO OBJECT, NOT OBJECT SELF
+			}
+		}
+	}
+	public boolean checkFeasibility(Activity activity, int timetobechecked){
+		
+		boolean feasible = true;
+		
+		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
+			if(busytime[i]!=null){
+				feasible = false;
+			}
+		}
+		
+		return feasible;
 	}
 	
 	/**
