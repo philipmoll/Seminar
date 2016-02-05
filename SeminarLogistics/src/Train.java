@@ -1,5 +1,5 @@
 import java.io.IOException;
-import java.lang.*;
+import java.io.Serializable;
 
 /**
  * 
@@ -10,7 +10,8 @@ import java.lang.*;
  *
  */
 
-public class Train {
+@SuppressWarnings("serial")
+public class Train implements Serializable{
 	//////
 	private final int train_ID;
 	private final int type;
@@ -304,6 +305,12 @@ public class Train {
 	public void setComposition(Composition newcomposition){
 		this.composition = newcomposition;
 	}
+	/**
+	 * Returns true if a train is of the same class and same number of carriages
+	 * 
+	 * @param trainisequal
+	 * @return true if same class/nr carriages, false otherwise
+	 */
 	public boolean getSameClass(Train trainisequal){
 		boolean issameclass = true;
 		if(type == trainisequal.getType() && length == trainisequal.getLength() && carriages == trainisequal.getCarriages()){
@@ -314,6 +321,12 @@ public class Train {
 		}
 		return issameclass;
 	}
+	/**
+	 * Function that returns an array with a 1 at index i if train at index i of trainsareequal is of same class/nr carriages as this, 0 otherwise
+	 * 
+	 * @param trainsareequal - array with trains to be compared
+	 * @return temptrains, array with 1 at index i if trainsareequal has train with same class/nr carriages at index i, 0 otherwise
+	 */
 	public int[] getSameClass(Train[] trainsareequal){
 		int[] temptrains = new int[trainsareequal.length];
 
@@ -326,5 +339,22 @@ public class Train {
 			}
 		}
 		return temptrains;
+	}
+	/**
+	 * Returns true if trainisequal is of same class and has same ID as this, false otherwise
+	 * 
+	 * @param trainisequal - train to be compared
+	 * @return true if equal, false otherwise
+	 */
+	public boolean getSameClassAndID(Train trainisequal){
+		boolean issameclassandid = true;
+		if (this.getSameClass(trainisequal) == false){
+			issameclassandid = false;
+		}
+		if (train_ID != trainisequal.getID()){
+			issameclassandid = false;
+		}
+		return issameclassandid;
+		
 	}
 }

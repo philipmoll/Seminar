@@ -1,5 +1,9 @@
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 /**
@@ -80,7 +84,7 @@ public class Main {
 					ArrayList<Block> blocklist = new ArrayList<Block>();
 					try {
 						blocklist = Matching.makeblocks(arrivingcompositionswitharrtime);
-					} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException e) {
+					} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -229,8 +233,6 @@ public class Main {
 
 		return tracks;
 	}
-	
-
 }
 
 //voor testen inlezen:
