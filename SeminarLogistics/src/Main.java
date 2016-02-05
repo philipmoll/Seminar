@@ -16,11 +16,11 @@ public class Main {
 	{
 
 		try {
-			
+			System.out.println("hier ben ik");
 			//int user = 1; //Friso
-			//int user = 2; //Floor
+			int user = 2; //Floor
 			//int user = 3; //Robin
-			int user = 4; //Philip
+			//int user = 4; //Philip
 			
 			Matrix compositiondata;
 			Matrix compositiondata2;
@@ -36,11 +36,11 @@ public class Main {
 				connections = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
 			}
 			else if (user == 2){ //Floor
-				compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
-				compositiondata2 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-				compositiondata3 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
-				trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-				connections = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+				compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+				compositiondata2 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+				compositiondata3 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
+				trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+				connections = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
 
 			}
 			else if (user == 3){ //Robin

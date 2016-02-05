@@ -10,7 +10,7 @@ import java.util.*;
  *
  */
 
-public class Composition {
+public class Composition implements Cloneable{
 
 	private ArrayList<Train> compositiontrains;
 	private Track compositiontrack;
@@ -577,6 +577,17 @@ public class Composition {
 			}
 		}
 		return totalservicetime;
+	}
+	
+	/**
+	 * Inherited function from Cloneable interface, returns clone of composition
+	 * Used for deep copying
+	 *
+	 * @return super.clone(), returns the clone
+	 * 
+	 **/
+	protected Object clone() throws CloneNotSupportedException{
+		return super.clone();
 	}
 
 
