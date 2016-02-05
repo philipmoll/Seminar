@@ -43,6 +43,7 @@ public class Composition implements Cloneable{
 
 	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutOfBoundsException, TrackNotFreeException, IOException{
 		this.compositiontrains = compositiontrains;
+		busytime = new Activity[60*24];
 
 		//add composition to compositiontrack
 		this.compositiontrack = compositiontrack;
@@ -95,7 +96,6 @@ public class Composition implements Cloneable{
 		this.updateComposition();
 		compositiontrack.setOccupied(locationontrack,locationontrack+this.getLength()-1);
 		//je hoeft dus niet meer zelf toe te voegen aan je track als je een compositie op een track maakt!! :)
-		busytime = new Activity[60*24];
 	}
 
 	//Splitting a composition of size 2, returns 2 compositions of size 1 train
@@ -602,6 +602,7 @@ public class Composition implements Cloneable{
 		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
 			if(busytime[i]!=null){
 				feasible = false;
+				break;
 			}
 		}
 		

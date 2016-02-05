@@ -1,8 +1,9 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Todo {
-	
+
 	private ArrayList<Activity> activities;
 
 	ArrayList<Track> platforms = new ArrayList<>();
@@ -27,8 +28,9 @@ public class Todo {
 	/**
 	 * 
 	 * @param addedcomp
+	 * @throws IOException 
 	 */
-	public void addComposition(Composition addedcomp){
+	public void addComposition(Composition addedcomp) throws IOException{
 		double durationactivity;
 		double temp;
 		double temptemp;
@@ -50,31 +52,33 @@ public class Todo {
 				if(j == 0 || j == 1 || j == 2){
 					activities.add(new Activity(durationactivity, addedcomp.getDeparturetime()-durationactivity, addedcomp, j));
 					for(int k = 0; k<platforms.size(); k++){
-						
+
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
 							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
-								temptemp = l;
-								temptemp1 = platforms.get(k);
-								break;
-							}
+									temptemp = l;
+									temptemp1 = platforms.get(k);
+									break;
+								}
 							}
 						}
 						if(temptemp < temp){
 							temp = temptemp;
 							temp1 = temptemp1;
 						}
-						
+
 						/*if(platforms.get(k).getFreeTime()<temp){
 							temp = platforms.get(k).getFreeTime();
 							temp1 = platforms.get(k);
 						}*/
 					}
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
-					mintemp = (int) (temp + durationactivity);
 					//TODO: DECOUPLE AND COUPLE TO REDUCE TIME WITHIN AN ACTIVITY
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
 					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+					if(j==0){
+						mintemp += 
+					}
 				}
 			}
 			else if(j == 3){
@@ -87,38 +91,38 @@ public class Todo {
 				}
 				if (needinspection){
 					for(int k = 0; k<washareas.size(); k++){
-					
-					for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
-						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
-							if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
-							temptemp = l;
-							temptemp1 = washareas.get(k);
-							break;
-						}
-						}
-					}
-					if(temptemp < temp){
-						temp = temptemp;
-						temp1 = temptemp1;
-					}
-				}
 
-				activities.get(activities.size()-1).setUpdate(temp, temp1);
-				mintemp = (int) (temp + durationactivity);
-				
-				addedcomp.setBusyTime(activities.get(activities.size()-1));
-				temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
-			}
-				else {
-					mintemp = (int) addedcomp.getArrivaltime()*24*60;
-					for(int k = 0; k<washareas.size(); k++){
-						
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
 							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
-								temptemp = l;
-								temptemp1 = washareas.get(k);
-								break;
+									temptemp = l;
+									temptemp1 = washareas.get(k);
+									break;
+								}
+							}
+						}
+						if(temptemp < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+
+					activities.get(activities.size()-1).setUpdate(temp, temp1);
+					mintemp = (int) (temp + durationactivity);
+
+					addedcomp.setBusyTime(activities.get(activities.size()-1));
+					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+				}
+				else {
+					mintemp = (int) addedcomp.getArrivaltime()*24*60;
+					for(int k = 0; k<washareas.size(); k++){
+
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+									temptemp = l;
+									temptemp1 = washareas.get(k);
+									break;
 								}
 							}
 						}
@@ -129,7 +133,7 @@ public class Todo {
 					}
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 					mintemp = (int) (temp + durationactivity);
-					
+
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
 					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
 				}
@@ -255,11 +259,11 @@ public class Todo {
 		}
 	}
 	 */
-	
+
 	public void assignActivityToTrack(int activity, int whichtrack, int kindoftrack, int starttime){
 		//TODO: IF whichplatform IS OUT OF BOUNDS EXCEPTION!
 		//TODO: Exception for starttime out of bounds (may be 0 up to 1439)!!!!!!
-		
+
 		if(kindoftrack == 0){// 0 refers to a platform
 			for(int i = starttime; i<starttime+activities.get(activity).getDuration(); i++){
 				busytimesplatforms.get(whichtrack)[i] = activities.get(activity);
@@ -273,7 +277,7 @@ public class Todo {
 	}
 	public void removeActivityFromTrack(int activity){
 		//TODO: Exception out of bounds
-		
+
 	}
 
 	public static ArrayList<int[]> getTODO(Train[] trainlist){
@@ -379,9 +383,9 @@ public class Todo {
 		return indices;
 	}*/
 	public int getSwap(int currentactivity){
-		
-		
-		
+
+
+
 		return 5;
 	}
 	/*
@@ -392,7 +396,7 @@ public class Todo {
 	 */
 	public boolean getFeasibilitySwap(int activity1, int activity2){
 		boolean feasible = true;
-		
+
 		if(activities.get(activity1).getComposition().getArrivaltime() > activities.get(activity2).getPlannedTime()){
 			feasible = false;
 		}
@@ -421,14 +425,14 @@ public class Todo {
 				}
 			}
 		}
-		
+
 		return feasible;
 	}
 	public double getMargins(){
-		
+
 	}
 	public void swapActivities(int activity1, int activity2){
-		
+
 	}
 	public void improveTODO(){
 		int temp1;
