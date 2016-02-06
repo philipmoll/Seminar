@@ -133,42 +133,42 @@ public class Train implements Serializable{
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 4;
 		break;
 		case 2:length = 162; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 6;
 		break;
 		case 3:length = 101; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 4;
 		break;
 		case 4:length = 154; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 6;
 		break;
 		case 5:length = 70; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 4;
 		break;
 		case 6:length = 101; //Meters
 		inspectiontime = 10; //Minutes
 		cleaningtime = 10; //Minutes
 		repairingtime = 10; //Minutes
-		washingtime = 10; //Minutes
+		washingtime = 20; //Minutes
 		carriages = 6;
 		break;
 		default: length = 0 ; //Meters
