@@ -12,7 +12,7 @@ import org.junit.Test;
  */
 
 /**
- * @author frisotigchelaar
+ * @author
  *
  */
 public class Todo2Test {
@@ -51,8 +51,17 @@ public class Todo2Test {
 		
 		todo.addComposition(c1);
 		
-		
-		
+		System.out.print("Composition 1:");
+		c1.printTimeLine();
+		System.out.print("\n");
+		System.out.print("Platform 1:");
+		p1.printTimeLine();
+		System.out.print("\n");
+		System.out.print("Platform 2:");
+		p2.printTimeLine();
+		System.out.print("\n");
+		System.out.print("Wash area 1:");
+		w1.printTimeLine();
 		
 		
 	}

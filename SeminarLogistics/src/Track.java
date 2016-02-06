@@ -291,5 +291,10 @@ public class Track {
 		
 		return feasible;
 	}
+	public void printTimeLine(){
+		for(int i = 0; i<60*24; i++){
+			System.out.print(busytime[i].getActivity());
+		}
+	}
 
 }
