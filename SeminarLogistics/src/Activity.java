@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 
+
 public class Activity {
 	private double plannedtime;
 	private Composition composition;
