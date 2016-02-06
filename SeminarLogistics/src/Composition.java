@@ -22,7 +22,6 @@ public class Composition implements Serializable{
 	private Activity[] busytime;
 	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
-
 	public Composition(ArrayList<Train> compositiontrains) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
@@ -192,6 +191,7 @@ public class Composition implements Serializable{
 	public ArrayList<Train> getTrainList(){
 		return compositiontrains;
 	}
+	
 	private void updateComposition() throws IOException{
 		if(compositiontrains.size() <=0){
 			throw new IOException("Input composition contains no trains in function updateComposition()");
@@ -485,9 +485,6 @@ public class Composition implements Serializable{
 		}
 	}
 
-
-
-
 	public int getPositionOnTrack() throws MisMatchException{
 		int positionontrack = -1;
 		ArrayList<Composition> compositionlist = new ArrayList<>();
@@ -608,7 +605,3 @@ public class Composition implements Serializable{
 		return feasible;
 	}
 }
-
-
-
-

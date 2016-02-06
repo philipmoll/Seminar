@@ -60,6 +60,10 @@ public class Activity {
 	public void setUltimateTime(double abcd){
 		ultimatetime = abcd;
 	}
+	public void removeTimes(){
+		trackassigned.removeBusyTime(this);
+		composition.removeBusyTime(this);
+	}
 	public void setUpdate(double newplannedtime, Track newtrack){
 		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!
 		trackassigned.removeBusyTime(this);
