@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -10,7 +11,8 @@ import java.util.*;
  *
  */
 
-public class Composition implements Cloneable{
+@SuppressWarnings("serial")
+public class Composition implements Serializable{
 
 	private ArrayList<Train> compositiontrains;
 	private Track compositiontrack;
@@ -30,7 +32,7 @@ public class Composition implements Cloneable{
 		departuretime = -1; //default
 		busytime = new Activity[60*24];
 	}
-	
+
 	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
@@ -104,8 +106,8 @@ public class Composition implements Cloneable{
 		if (arrivaltime != addcomposition.getArrivaltime() || departuretime != addcomposition.getDeparturetime()){
 			throw new MisMatchException("Arrivaltime or departuretime are not the same when coupling two compositions");
 		}
-		
-		
+
+
 		this.compositiontrains.addAll(addcomposition.getTrainList());
 
 		//addcomposition = null; If this does not work well, we need to make the function in Main.
@@ -166,7 +168,7 @@ public class Composition implements Cloneable{
 		else{ //if locationontrack != -1, composition has been placed on a track yet
 			newcomposition = new Composition(newcompositionlist,compositiontrack,locationontrack+this.getLength()); 
 		}
-		
+
 		newcomposition.setArrivaltime(arrivaltime);
 		newcomposition.setDeparturetime(departuretime);
 		return newcomposition;
@@ -204,9 +206,7 @@ public class Composition implements Cloneable{
 		if(compositiontrains.size() <=0){
 			throw new IOException("Input composition contains no trains in function updateComposition(int locationontrack)");
 		}
-		int templength = 0;
 		for(int i=0;i<this.getTrainList().size();i++){
-			templength += this.compositiontrains.get(i).getLength();
 			this.getTrain(i).setPosition(i);
 			this.getTrain(i).setComposition(this);
 		}
@@ -527,7 +527,7 @@ public class Composition implements Cloneable{
 		compositiontrack = initialtrack;
 		locationontrack = initiallocation;
 	}
-	
+
 	/**
 	 * This function returns the arrivaltime of a composition/block
 	 * 
@@ -536,7 +536,7 @@ public class Composition implements Cloneable{
 	public double getArrivaltime(){
 		return arrivaltime;
 	}
-	
+
 	/**
 	 * This function sets the arrivaltime of a composition/block
 	 * 
@@ -545,7 +545,7 @@ public class Composition implements Cloneable{
 	public void setArrivaltime(double arrivaltime){
 		this.arrivaltime = arrivaltime;
 	}
-	
+
 	/**
 	 * This function returns the departuretime of a composition/block
 	 * 
@@ -554,7 +554,7 @@ public class Composition implements Cloneable{
 	public double getDeparturetime(){
 		return departuretime;
 	}
-	
+
 	/**
 	 * This function sets the departuretime of a composition/block
 	 * 
@@ -563,7 +563,7 @@ public class Composition implements Cloneable{
 	public void setDeparturetime(double departuretime){
 		this.departuretime = departuretime;
 	}
-	
+
 	/**
 	 * This function returns the total time of the activities that still need to be performed on the composition/block
 	 * 
@@ -582,7 +582,7 @@ public class Composition implements Cloneable{
 		}
 		return totalservicetime;
 	}
-	
+
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
 			busytime[i] = activity;
@@ -596,29 +596,19 @@ public class Composition implements Cloneable{
 		}
 	}
 	public boolean checkFeasibility(Activity activity, int timetobechecked){
-		
+
 		boolean feasible = true;
-		
+
 		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
 			if(busytime[i]!=null){
 				feasible = false;
 				break;
 			}
 		}
-		
 		return feasible;
 	}
-	
-	/**
-	 * Inherited function from Cloneable interface, returns clone of composition
-	 * Used for deep copying
-	 *
-	 * @return super.clone(), returns the clone
-	 * 
-	 **/
-	protected Object clone() throws CloneNotSupportedException{
-		return super.clone();
-	}
-
-
 }
+
+
+
+

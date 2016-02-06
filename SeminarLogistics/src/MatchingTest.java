@@ -1,12 +1,14 @@
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class MatchingTest {
+@SuppressWarnings("serial")
+public class MatchingTest implements Serializable{
 
 	private Train a;
 	private Train b;
@@ -17,11 +19,8 @@ public class MatchingTest {
 	private Composition d;
 	private Composition e;
 	private Composition f;
-	private Composition v;
-	private Composition w;
 	private ArrayList<Composition> compositionlist;
 	private ArrayList<Block> testblocklist;
-	//private Matching matchtest;
 	
 	private Block aa;
 	private Block bb;
@@ -34,7 +33,6 @@ public class MatchingTest {
 	private Block ii;
 	private Block jj;
 
-	@SuppressWarnings("serial")
 	@Before
 	public void setUp(){
 		try {
@@ -50,9 +48,9 @@ public class MatchingTest {
 			f = new Composition(new ArrayList<Train>(){{add(x); add(y); add(z);}},0.5,-1);
 
 			compositionlist = new ArrayList<>();
-			//compositionlist.add(d);
+			compositionlist.add(d);
 			compositionlist.add(e);
-			//compositionlist.add(f);
+			compositionlist.add(f);
 			
 			aa = new Block(new ArrayList<Train>(){{add(a);}},0,-1,d,-1,0);
 			bb = new Block(new ArrayList<Train>(){{add(b); add(c);}},0.1,-1,e,-1,1);
@@ -76,10 +74,7 @@ public class MatchingTest {
 			testblocklist.add(hh);
 			testblocklist.add(ii);
 			testblocklist.add(jj);
-			//matchtest = new Matching();
-			
-			v = new Composition(new ArrayList<Train>(){{add(x);}});
-			w = new Composition(new ArrayList<Train>(){{add(y); add(z);}});
+
 
 		} catch (IndexOutOfBoundsException | IOException e2) {
 			e2.printStackTrace();
@@ -91,28 +86,20 @@ public class MatchingTest {
 		try {
 			ArrayList<Block> blocklist = new ArrayList<Block>();
 			blocklist = Matching.makeblocks(compositionlist);
-			for (int i = 0; i <blocklist.size(); i++){
-				System.out.println(blocklist.get(i).getTrainList());
-			}
-			System.out.println("hoi");
-			for (int i = 0; i <testblocklist.size(); i++){
-				System.out.println(testblocklist.get(i).getTrainList());
-			}
-						
-			System.out.println("hoi2");
-			for (int i=0; i<3;i++){
+			
+			for (int i=0; i<blocklist.size();i++){
 				boolean check = false;
 				for (int j = 0; j<testblocklist.size();j++){
 					if (blocklist.get(i).checkEqual(testblocklist.get(j)) == true){
-						System.out.println("blocklist "+i+" equal to testblocklist "+j);
+						//System.out.println("blocklist "+i+" equal to testblocklist "+j);
 						check = true;
 					}
 					else{
-						System.out.println("blocklist "+i+" not equal to testblocklist "+j);
+						//System.out.println("blocklist "+i+" not equal to testblocklist "+j);
 
 					}
 				}
-				//assertEquals(true,check);
+				assertEquals(true,check);
 				System.out.println(" ");
 			}
 			
