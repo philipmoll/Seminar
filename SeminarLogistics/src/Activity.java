@@ -62,9 +62,11 @@ public class Activity {
 	public void setUpdate(double newplannedtime, Track newtrack){
 		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!
 		trackassigned.removeBusyTime(this);
+		composition.removeBusyTime(this);
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
 		trackassigned.setBusyTime(this);
+		composition.setBusyTime(this);
 	}
 	//TODO: ROND DIE DIT GOED AF???
 	public int getPlannedTimeInteger(){
@@ -75,5 +77,8 @@ public class Activity {
 	}
 	public double getUltimateTimeInteger(){
 		return (int) ultimatetime*24*60;
+	}
+	public double getMargin(){
+		return (ultimatetime-plannedtime);
 	}
 }
