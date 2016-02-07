@@ -40,9 +40,9 @@ public class Todo2Test {
 		c1 = new Composition(new ArrayList<Train>(){{add(t1);}}, 0, 1);
 		c2 = new Composition(new ArrayList<Train>(){{add(t2);}}, 0, 1);
 		c3 = new Composition(new ArrayList<Train>(){{add(t3);add(t4);}}, 0, 1);
-		p1 = new Track("p1", 500, 1, 1, 1, 1, 0, 1);
-		p2 = new Track("p2", 500, 1, 1, 1, 1, 0, 1);
-		w1 = new Track("p3", 500, 1, 0, 0, 0, 1, 0);
+		p1 = new Track("p1", 500, 1, 1, 1, 1, 0);
+		p2 = new Track("p2", 500, 1, 1, 1, 1, 0);
+		w1 = new Track("p3", 500, 1, 0, 0, 0, 1);
 		todo = new Todo2(new ArrayList<Track>(){{add(p1);add(p2);add(w1);}});
 	}
 
@@ -50,17 +50,20 @@ public class Todo2Test {
 	public void test() throws IOException {
 		
 		todo.addComposition(c1);
-		
-		System.out.print("Composition 1:");
+		todo.addComposition(c2);
+		System.out.print("Composition 1: ");
 		c1.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Platform 1:");
+		System.out.print("Composition 2: ");
+		c2.printTimeLine();
+		System.out.print("\n");
+		System.out.print("Platform 1:    ");
 		p1.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Platform 2:");
+		System.out.print("Platform 2:    ");
 		p2.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Wash area 1:");
+		System.out.print("Wash area 1:   ");
 		w1.printTimeLine();
 		
 		

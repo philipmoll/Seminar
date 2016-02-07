@@ -191,7 +191,7 @@ public class Composition implements Serializable{
 	public ArrayList<Train> getTrainList(){
 		return compositiontrains;
 	}
-	
+
 	private void updateComposition() throws IOException{
 		if(compositiontrains.size() <=0){
 			throw new IOException("Input composition contains no trains in function updateComposition()");
@@ -551,6 +551,9 @@ public class Composition implements Serializable{
 	public double getDeparturetime(){
 		return departuretime;
 	}
+	public int getDepartureTimeInteger(){
+		return (int) departuretime*60*24;
+	}
 
 	/**
 	 * This function sets the departuretime of a composition/block
@@ -587,7 +590,7 @@ public class Composition implements Serializable{
 	}
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<busytime.length; i++){
-			if(busytime[i].equals(activity)){
+			if(busytime[i] != null && busytime[i].equals(activity)){
 				busytime[i] = null; //TODO: TEST WHETHER THIS IS ALLOWED, ONLY REMOVE REFERENCE TO OBJECT, NOT OBJECT SELF
 			}
 		}
@@ -606,7 +609,12 @@ public class Composition implements Serializable{
 	}
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
-			System.out.print(busytime[i].getActivity());
+			if(busytime[i]!=null){
+				System.out.print(busytime[i].getActivity());
+			}
+			else{
+				System.out.print(7);
+			}
 		}
 	}
 }

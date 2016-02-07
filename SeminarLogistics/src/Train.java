@@ -216,20 +216,40 @@ public class Train implements Serializable{
 		if (activitynumber < 0 || activitynumber > 3){
 			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivityTime, and is "+activitynumber);
 		}
-		if(activitynumber == 0){
-			return (double) this.getInspectionTime();
+		else if(activitynumber == 0){
+			return (double) this.getInspectionTime()/24/60;
 		}
 		else if(activitynumber == 1){
-			return (double) this.getCleaningTime();
+			return (double) this.getCleaningTime()/24/60;
 		}
 		else if(activitynumber == 2){
-			return (double) this.getRepairingTime();
+			return (double) this.getRepairingTime()/24/60;
 		}
 		else if(activitynumber == 3){
-			return (double) this.getWashingTime();
+			return (double) this.getWashingTime()/24/60;
 		}
 		else{
 			return 0.0;
+		}
+	}
+	public int getActivityTimeInteger(int activitynumber) throws IOException { //TODO: testfunctie
+		if (activitynumber < 0 || activitynumber > 3){
+			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivityTime, and is "+activitynumber);
+		}
+		else if(activitynumber == 0){
+			return (int) this.getInspectionTime();
+		}
+		else if(activitynumber == 1){
+			return (int) this.getCleaningTime();
+		}
+		else if(activitynumber == 2){
+			return (int) this.getRepairingTime();
+		}
+		else if(activitynumber == 3){
+			return (int) this.getWashingTime();
+		}
+		else{
+			return 0;
 		}
 	}
 	public boolean getInterchangeable(){
