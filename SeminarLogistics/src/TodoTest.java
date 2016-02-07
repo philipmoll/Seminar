@@ -19,7 +19,7 @@ public class TodoTest {
 
 	private Train t1;
 	private Train t2;
-	private Train t3;
+	private Train t3; 
 	private Train t4;
 	private Composition c1;
 	private Composition c2;
