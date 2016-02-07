@@ -15,7 +15,7 @@ import org.junit.Test;
  * @author
  *
  */
-public class Todo2Test {
+public class TodoTest {
 
 	private Train t1;
 	private Train t2;
@@ -24,7 +24,7 @@ public class Todo2Test {
 	private Composition c1;
 	private Composition c2;
 	private Composition c3;
-	private Todo2 todo;
+	private Todo todo;
 	private Track p1;
 	private Track p2;
 	private Track w1;
@@ -43,7 +43,7 @@ public class Todo2Test {
 		p1 = new Track("p1", 500, 1, 1, 1, 1, 0);
 		p2 = new Track("p2", 500, 1, 1, 1, 1, 0);
 		w1 = new Track("p3", 500, 1, 0, 0, 0, 1);
-		todo = new Todo2(new ArrayList<Track>(){{add(p1);add(p2);add(w1);}});
+		todo = new Todo(new ArrayList<Track>(){{add(p1);add(p2);add(w1);}});
 	}
 
 	@Test
