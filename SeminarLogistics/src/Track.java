@@ -267,18 +267,21 @@ public class Track {
 
 		return partialcompositionlist;
 	} 
+	
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
 			busytime[i] = activity;
 		}
 	}
+	
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<busytime.length; i++){
 			if(busytime[i] != null && busytime[i].equals(activity)){
-				busytime[i] = null; //TODO: TEST WHETHER THIS IS ALLOWED, ONLY REMOVE REFERENCE TO OBJECT, NOT OBJECT SELF
+				busytime[i] = null;
 			}
 		}
 	}
+	
 	public boolean checkFeasibility(Activity activity, int timetobechecked){
 
 		boolean feasible = true;
@@ -291,6 +294,7 @@ public class Track {
 
 		return feasible;
 	}
+	
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(busytime[i]!=null){
