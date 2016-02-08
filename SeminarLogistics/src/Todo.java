@@ -27,6 +27,8 @@ public class Todo {
 	 */	
 	public void addComposition(Composition addedcomp) throws IOException{
 		int durationactivity;
+		int count;
+		int acttime;
 		int temp;
 		int temptemp;
 		int amount = 0;
@@ -57,7 +59,14 @@ public class Todo {
 				}
 			}
 			else if (addedcomp.getSize()>1){
-				
+				count = 0;
+				acttime = 0;
+				for (int i=0; i<addedcomp.getSize(); i++){
+					if (addedcomp.getTrain(i).getActivity(j)){
+						count++;
+						acttime = addedcomp.getTrain(i).getActivityTimeInteger(j);
+					}
+				}
 			}
 
 			//Only if the activity must really be done
