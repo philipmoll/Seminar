@@ -51,10 +51,13 @@ public class Todo {
 			durationactivity = 0;
 
 			//Calculating the required time to perform the activity on the whole composition
-			for(int i = 0; i<addedcomp.getSize(); i++){
-				if(addedcomp.getTrain(i).getActivity(j)){
-					durationactivity += addedcomp.getTrain(i).getActivityTimeInteger(j);
+			if (addedcomp.getSize()==1){
+				if (addedcomp.getTrain(0).getActivity(j)){
+					durationactivity = addedcomp.getTrain(0).getActivityTimeInteger(j);
 				}
+			}
+			else if (addedcomp.getSize()>1){
+				
 			}
 
 			//Only if the activity must really be done
