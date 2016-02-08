@@ -127,6 +127,7 @@ public class Train implements Serializable{
 		this.cleaning = cleaning;
 		this.repairing = repairing;
 		this.washing = washing;
+		this.movingtime = 2;
 
 		position = 1; //If you make a new train, it is the only train in its composition
 
@@ -306,7 +307,7 @@ public class Train implements Serializable{
 			return this.getWashing();
 		}
 		else if(activitynumber == 4){
-			return.this.getMoving();
+			return this.getMoving();
 		}
 		else{
 			return false;
