@@ -54,59 +54,52 @@ public class Train implements Serializable{
 		repairing = false;
 		washing = false;
 
-		switch (type){
-		case 1:
+		if(type == 1 && carriages == 4){ //SLT 4 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-			break;
-		case 2:
+		}
+		else if(type == 1 && carriages == 6){ //SLT 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-			break;
-		case 3:
+		}
+		else if(type == 2 && carriages == 4){ //VIRM 4 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-
-			break;
-		case 4:
+		}
+		else if(type == 2 && carriages == 6){ //VIRM 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-
-			break;
-		case 5:
+		}
+		else if(type == 3 && carriages == 4){ //DDZ 4 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-
-			break;
-		case 6:
+		}
+		else if(type == 3 && carriages == 6){ //DDZ 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
-
-			break;
-		default: 
+		}
+		else{
 			inspectiontime = -1; //Minutes
 			cleaningtime = -1; //Minutes
 			repairingtime = -1; //Minutes
 			washingtime = -1; //Minutes
 
-			break;
-
 		}
 	}
 
-	
+
 
 	/**
 	 * 
@@ -204,7 +197,7 @@ public class Train implements Serializable{
 	public int getWashingTime(){
 		return washingtime;
 	}
-	
+
 	/**
 	 * This function returns the time it takes for a certain activity to be performed
 	 * 
@@ -267,7 +260,7 @@ public class Train implements Serializable{
 	public boolean getWashing(){
 		return washing;
 	}
-	
+
 	/**
 	 * This function returns a boolean whether a certain activity still needs to be performed (true) or not (false).
 	 * 
@@ -375,6 +368,6 @@ public class Train implements Serializable{
 			issameclassandid = false;
 		}
 		return issameclassandid;
-		
+
 	}
 }
