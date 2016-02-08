@@ -29,6 +29,7 @@ public class Todo {
 		int durationactivity;
 		int count;
 		int acttime;
+		int tempacttime;
 		int temp;
 		int temptemp;
 		int amount = 0;
@@ -64,8 +65,17 @@ public class Todo {
 				for (int i=0; i<addedcomp.getSize(); i++){
 					if (addedcomp.getTrain(i).getActivity(j)){
 						count++;
-						acttime = addedcomp.getTrain(i).getActivityTimeInteger(j);
+						if(acttime < addedcomp.getTrain(i).getActivityTimeInteger(j)){
+							acttime = addedcomp.getTrain(i).getActivityTimeInteger(j);
+						}
 					}
+				}
+				if (count==1){
+					durationactivity = acttime;
+				}
+				//Here we decouple the composition, so that the trains can be handled simultaneously and add 5 minutes for coupling/decoupling
+				else if (count>1){
+					durationactivity = acttime + 5;
 				}
 			}
 
@@ -81,7 +91,7 @@ public class Todo {
 					//We find the soonest possible time to start the activity looking at each possible track the activity can be done.
 					for(int k = 0; k<platforms.size(); k++){
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
-							
+
 							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 									temptemp = l;
@@ -108,7 +118,7 @@ public class Todo {
 					if(j == 0){	
 						mintemp += durationactivity;
 					}
-					
+
 					//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 					else if(j == 1){
 						time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
@@ -118,7 +128,7 @@ public class Todo {
 						}
 						amount += 1;
 					}
-					
+
 					//Storing the first solution ............. see above.
 					else if(j == 2){
 						time12 = activities.get(activities.size()-1).getPlannedTimeInteger();
@@ -129,11 +139,11 @@ public class Todo {
 						amount += 1;
 					}
 				}
-				
+
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
 					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
-					
+
 					//Keeping track of amount of activities done except for inspection
 					amount += 1;
 
@@ -148,7 +158,7 @@ public class Todo {
 								}
 							}
 						}
-						
+
 						//Update if we find better solution than the previous ones at a different track.
 						if(temptemp < temp){
 							temp = temptemp;
@@ -157,7 +167,7 @@ public class Todo {
 					}
 
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
-					
+
 					//Storing first solution
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
 					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
@@ -176,7 +186,7 @@ public class Todo {
 		for(int i = 0; i<amount; i++){
 			activities.get(activities.size()-1-i).removeTimes();
 		}
-		
+
 		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 		for(int j = 0; j<amount; j++){
 
@@ -233,7 +243,7 @@ public class Todo {
 
 				}
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
-				
+
 				addedcomp.setBusyTime(activities.get(activities.size()-1-j));
 				temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 				if(j == 1){
@@ -248,7 +258,7 @@ public class Todo {
 				}
 			}
 		}
-		
+
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)
 		if(margin1 >= margin2){
 			for(int i = 0; i<amount; i++){
@@ -285,7 +295,7 @@ public class Todo {
 		}
 		return temp;
 	}
-	
+
 	public boolean checkFeasibility(){
 		boolean abcd = true;
 		for(int i = 0; i<activities.size(); i++){
@@ -295,7 +305,7 @@ public class Todo {
 		}
 		return abcd;
 	}
-	
+
 	public int getLeastMargin(){
 		double temp;
 		int temp1 = -1;
@@ -345,7 +355,7 @@ public class Todo {
 	 * If current activity has a longer duration than the swapped activity, than we must shift all activities later of the swapped activity to a later time. Then check if all activities later remain feasible and check their margins.
 	 * If current activity has a shorter duration than the swapped activity, than we must shift all activities later earlier. We must check if this is possible due to arrival times.
 	 */
-/*
+	/*
 	public boolean getFeasibilitySwap(int activity1, int activity2){
 		boolean feasible = true;
 		//INCLUDE OVERLAP WITH DIFFERENT ACTIVITY AND INSPECTION AVAILABILITY (TRIANGLE APPROACH???)
@@ -397,6 +407,6 @@ public class Todo {
 			temp1 = this.getLeastMargin();
 		}
 	}
-	*/
-	
+	 */
+
 }
