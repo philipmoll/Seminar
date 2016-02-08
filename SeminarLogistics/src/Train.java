@@ -20,6 +20,7 @@ public class Train implements Serializable{
 	private final int cleaningtime;
 	private final int repairingtime;
 	private final int washingtime;
+	private final int movingtime;
 	private final int carriages;
 
 	private boolean interchangeable;
@@ -27,6 +28,7 @@ public class Train implements Serializable{
 	private boolean cleaning;
 	private boolean repairing;
 	private boolean washing;
+	private boolean moving;
 
 	private int position;
 	private Composition composition;
@@ -59,42 +61,49 @@ public class Train implements Serializable{
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
 			inspectiontime = 10; //Minutes
 			cleaningtime = 10; //Minutes
 			repairingtime = 10; //Minutes
 			washingtime = 10; //Minutes
+			movingtime = 2;
 		}
 		else{
 			inspectiontime = -1; //Minutes
 			cleaningtime = -1; //Minutes
 			repairingtime = -1; //Minutes
 			washingtime = -1; //Minutes
+			movingtime = 2;
 
 		}
 	}
@@ -197,17 +206,20 @@ public class Train implements Serializable{
 	public int getWashingTime(){
 		return washingtime;
 	}
+	public int getMovingTime(){
+		return movingtime;
+	}
 
 	/**
 	 * This function returns the time it takes for a certain activity to be performed
 	 * 
-	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing)
+	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing, 4 = moving)
 	 * @return activitytime : time needed to perform activity activitynumber on this train
-	 * @throws IOException : when activitynumber is not 0, 1, 2, or 3
+	 * @throws IOException : when activitynumber is not 0, 1, 2, 3 or 4
 	 */
 	public double getActivityTime(int activitynumber) throws IOException { //TODO: testfunctie
-		if (activitynumber < 0 || activitynumber > 3){
-			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivityTime, and is "+activitynumber);
+		if (activitynumber < 0 || activitynumber > 4){
+			throw new IOException("Activity number can only be 0, 1, 2, 3 or 4 in function getActivityTime, and is "+activitynumber);
 		}
 		else if(activitynumber == 0){
 			return (double) this.getInspectionTime()/24/60;
@@ -221,13 +233,16 @@ public class Train implements Serializable{
 		else if(activitynumber == 3){
 			return (double) this.getWashingTime()/24/60;
 		}
+		else if(activitynumber == 4){
+			return (double) this.getMovingTime()/24/60;
+		}
 		else{
 			return 0.0;
 		}
 	}
 	public int getActivityTimeInteger(int activitynumber) throws IOException { //TODO: testfunctie
-		if (activitynumber < 0 || activitynumber > 3){
-			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivityTime, and is "+activitynumber);
+		if (activitynumber < 0 || activitynumber > 4){
+			throw new IOException("Activity number can only be 0, 1, 2, 3 or 4 in function getActivityTime, and is "+activitynumber);
 		}
 		else if(activitynumber == 0){
 			return (int) this.getInspectionTime();
@@ -240,6 +255,9 @@ public class Train implements Serializable{
 		}
 		else if(activitynumber == 3){
 			return (int) this.getWashingTime();
+		}
+		else if(activitynumber == 4){
+			return (int) this.getMovingTime();
 		}
 		else{
 			return 0;
@@ -260,17 +278,20 @@ public class Train implements Serializable{
 	public boolean getWashing(){
 		return washing;
 	}
+	public boolean getMoving(){
+		return moving;
+	}
 
 	/**
 	 * This function returns a boolean whether a certain activity still needs to be performed (true) or not (false).
 	 * 
-	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing)
+	 * @param activitynumber : (0 = inspecting, 1 = cleaning, 2 = repairing, 3 = washing, 4 = moving)
 	 * @return boolean : whether activity number activitynumber still needs to be performed (true) or not (false)
-	 * @throws IOException : when activitynumber is not 0, 1, 2, or 3
+	 * @throws IOException : when activitynumber is not 0, 1, 2, 3 or 4
 	 */
 	public boolean getActivity(int activitynumber)throws IOException { //TODO: testfunctie
-		if (activitynumber < 0 || activitynumber > 3){
-			throw new IOException("Activity number can only be 0, 1, 2, or 3 in function getActivity, and is "+activitynumber);
+		if (activitynumber < 0 || activitynumber > 4){
+			throw new IOException("Activity number can only be 0, 1, 2, 3 or 4 in function getActivity, and is "+activitynumber);
 		}
 		if(activitynumber == 0){
 			return this.getInspecting();
@@ -283,6 +304,9 @@ public class Train implements Serializable{
 		}
 		else if(activitynumber == 3){
 			return this.getWashing();
+		}
+		else if(activitynumber == 4){
+			return.this.getMoving();
 		}
 		else{
 			return false;
