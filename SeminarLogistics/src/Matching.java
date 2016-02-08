@@ -6,12 +6,25 @@ import ilog.cplex.*;
 
 public class Matching {
 	public static final double c = 0.1;
+	public static final int minplatformlength = 200;
+	public static final int M = 1000;
 
 	private ArrayList<Block> arrivingblocklist; //set I
 	private ArrayList<Block> departingblocklist; //set J
 	private boolean[][] z_ij; //matchings i and j
 
 	private ArrayList<Composition> arrivingcompositions;
+	private ArrayList<Composition> departingcompositions;
+	private CompatibleArrivingBlocks[] compatiblearrivingblocksset;
+	private CompatibleDepartingBlocks[] compatibledepartingblocksset;
+	private Arcs[] arcsarrivingcompositionsset;
+	private Arcs[] arcsdepartingcompositionsset;
+	private ArcsOutgoing[][] arcsoutofnodearrivingcompositionsset;
+	private ArcsOutgoing[][] arcsoutofnodedepartingcompositionsset;
+	private ArcsIncoming[][] arcsintonodearrivingcompositionsset;
+	private ArcsIncoming[][] arcsintonodedepartingcompositionsset;
+	private IntermediateNodes[] intermediatenodesarrivingcompositionsset;
+	private IntermediateNodes[] intermediatenodesdepartingcompositionsset;
 
 	/**
 	 * Constructor method for a matching
@@ -29,7 +42,7 @@ public class Matching {
 	 * A_h^t-_a:arcsintonodearrivingcompositionsset[t][h] (merge with A_h^t-_d)
 	 * A_h^t-_d:arcsintonodedepartingcompositionsset[t][h] (merge with A_h^t-_a)
 	 * C^-_t_a:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_d)
-	 * C^-_t_d:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_a)
+	 * C^-_t_d:	intermediatenodesdepartingcompositionsset[t] (merge with C^-_t_a)
 	 * 
 	 * @param arrivingcompositions
 	 * @param departingcompositions
@@ -55,19 +68,19 @@ public class Matching {
 		int nrdepartingcompositions = departingcompositions.size();
 
 		//set J_i at index i for every i in I
-		CompatibleDepartingBlocks[] compatibledepartingblocksset = new CompatibleDepartingBlocks[nrarrivingblocks];
+		compatibledepartingblocksset = new CompatibleDepartingBlocks[nrarrivingblocks];
 		for (int i = 0; i<nrarrivingblocks;i++){
 			compatibledepartingblocksset[i] = new CompatibleDepartingBlocks(arrivingblocklist.get(i),departingblocklist);
 		}
 
 		//set I_j at index j for every j in J
-		CompatibleArrivingBlocks[] compatiblearrivingblocksset = new CompatibleArrivingBlocks[nrdepartingblocks];
+		compatiblearrivingblocksset = new CompatibleArrivingBlocks[nrdepartingblocks];
 		for (int i = 0; i<nrdepartingblocks;i++){
 			compatiblearrivingblocksset[i] = new CompatibleArrivingBlocks(departingblocklist.get(i),arrivingblocklist);
 		}
 
 		//Set A_h^t+_a at index t,h for every t in T_a
-		ArcsOutgoing[][] arcsoutofnodearrivingcompositionsset = new ArcsOutgoing[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
+		arcsoutofnodearrivingcompositionsset = new ArcsOutgoing[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrarrivingcompositions; i++){
 			if (arrivingcompositions.get(i).getSize() == 1){
 				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1);
@@ -87,7 +100,7 @@ public class Matching {
 		}
 
 		//Set A_h^t+_d at index t,h for every t in T_d
-		ArcsOutgoing[][] arcsoutofnodedepartingcompositionsset = new ArcsOutgoing[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
+		arcsoutofnodedepartingcompositionsset = new ArcsOutgoing[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrdepartingcompositions; i++){
 			if (departingcompositions.get(i).getSize() == 1){
 				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1);
@@ -107,7 +120,7 @@ public class Matching {
 		}
 
 		//Set A_h^t-_a at index t,h for every t in T_a
-		ArcsIncoming[][] arcsintonodearrivingcompositionsset = new ArcsIncoming[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
+		arcsintonodearrivingcompositionsset = new ArcsIncoming[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrarrivingcompositions; i++){
 			if (arrivingcompositions.get(i).getSize() == 1){
 				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0);
@@ -127,7 +140,7 @@ public class Matching {
 		}
 
 		//Set A_h^t-_d at index t,h for every t in T_d
-		ArcsIncoming[][] arcsintonodedepartingcompositionsset = new ArcsIncoming[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
+		arcsintonodedepartingcompositionsset = new ArcsIncoming[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrdepartingcompositions; i++){
 			if (departingcompositions.get(i).getSize() == 1){
 				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0);
@@ -147,25 +160,25 @@ public class Matching {
 		}
 
 		//Set C^-_t_a at index t for every t in T_a
-		IntermediateNodes[] intermediatenodesarrivingcompositionsset = new IntermediateNodes[nrarrivingcompositions];
+		intermediatenodesarrivingcompositionsset = new IntermediateNodes[nrarrivingcompositions];
 		for (int i = 0; i<nrarrivingcompositions; i++){
 			intermediatenodesarrivingcompositionsset[i] = new IntermediateNodes(arrivingcompositions.get(i));
 		}
 
 		//Set C^-_t_d at index t for every t in T_d
-		IntermediateNodes[] intermediatenodesdepartingcompositionsset = new IntermediateNodes[nrdepartingcompositions];
+		intermediatenodesdepartingcompositionsset = new IntermediateNodes[nrdepartingcompositions];
 		for (int i = 0; i<nrdepartingcompositions; i++){
 			intermediatenodesdepartingcompositionsset[i] = new IntermediateNodes(departingcompositions.get(i));
 		}
 
 		//Set A^t_a at index t for every t in T_a
-		Arcs[] arcsarrivingcompositionsset = new Arcs[nrarrivingcompositions];
+		arcsarrivingcompositionsset = new Arcs[nrarrivingcompositions];
 		for (int i=0; i<nrarrivingcompositions; i++){
 			arcsarrivingcompositionsset[i] = new Arcs(arrivingcompositions.get(i));
 		}
 
 		//Set A^t_d at index t for every t in T_d
-		Arcs[] arcsdepartingcompositionsset = new Arcs[nrdepartingcompositions];
+		arcsdepartingcompositionsset = new Arcs[nrdepartingcompositions];
 		for (int i=0; i<nrdepartingcompositions; i++){
 			arcsdepartingcompositionsset[i] = new Arcs(departingcompositions.get(i));
 		}
@@ -244,13 +257,13 @@ public class Matching {
 		return blocklist;
 	}
 
-	
+
 	public void model1(){
 		int nrnodes = 4;
 		int nrdepnodes = nrnodes-1;
 		int Q = 1; //Penalty for splitting
 
-		ArrayList<IloNumVar[][]> u = null;
+		ArrayList<IloNumVar[][]> u = null; //TODO: WAAROM MAAK JE HIER EEN ARRAY VAN --> ARRAYLIST EN WAAROM TWEE DIMENSIES?
 		ArrayList<IloLinearNumExpr[]> UsedArcsRow = null;
 		ArrayList<IloLinearNumExpr[]> UsedArcsCol = null;
 
@@ -266,6 +279,15 @@ public class Matching {
 					u.get(j)[i] = cplex.boolVarArray(nrnodes);
 				}
 			}
+			
+			//IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
+			//IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
+
+			IloNumVar[][] z = new IloNumVar[arrivingblocklist.size()][];
+			for (int i = 0; i<arrivingblocklist.size(); i++){
+				z[i] = cplex.boolVarArray(departingblocklist.size());
+			}
+
 
 			/* EXAMPLES
 			 * 
@@ -284,8 +306,7 @@ public class Matching {
 			 * IloNumVar y = cplex.numVar(0,Double.MAX_VALUE, "Y");
 			 * */
 
-			// expressions
-
+			// expressions			
 			for(int k = 0; k< arrivingcompositions.size(); k++){
 				if(arrivingcompositions.get(k).getSize()==1){
 					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
@@ -388,6 +409,40 @@ public class Matching {
 				}
 			}
 
+			//expressions for constraints (6)
+			IloLinearNumExpr[] summatchingsmade6 = new IloLinearNumExpr[arrivingblocklist.size()];
+			for (int i = 0; i<arrivingblocklist.size(); i++){
+				summatchingsmade6[i] = cplex.linearNumExpr();
+				for (int j = 0; j<departingblocklist.size(); j++){
+					for (int k = 0; k<compatibledepartingblocksset[i].getCompatibleDepartingBlocks().size(); k++){
+						if (compatibledepartingblocksset[i].getCompatibleDepartingBlocks().get(k) == departingblocklist.get(j)){
+							summatchingsmade6[i].addTerm(1.0, z[i][j]);
+						}
+					}
+				}
+			}
+			
+			
+			//expressions for constraints (7)
+			IloLinearNumExpr[] summatchingsmade7 = new IloLinearNumExpr[departingblocklist.size()];
+			for (int j = 0; j<departingblocklist.size(); j++){
+				summatchingsmade7[j] = cplex.linearNumExpr();
+				for (int i = 0; i<arrivingblocklist.size(); i++){
+					for (int k = 0; k<compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().size(); k++){
+						if (compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().get(k) == arrivingblocklist.get(i)){
+							summatchingsmade7[j].addTerm(1.0,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
+						}
+					}
+				}
+			}
+			//expressions for constraints (8) (max blocklength)
+			IloLinearNumExpr[] weightexpr = new IloLinearNumExpr[arrivingblocklist.size()];
+			for (int i =0; i<arrivingblocklist.size(); i++){
+				weightexpr[i] = cplex.linearNumExpr();
+				weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength;
+				//TODO ^werkt dit zo?? moet dit niet met addterm? (weet niet hoe dat moet met een constante M
+			}
+
 			IloLinearNumExpr objective = cplex.linearNumExpr();
 			for(int k = 0; k<arrivingcompositions.size(); k++){
 				for(int j = 0; j<nrnodes; j++){
@@ -420,6 +475,26 @@ public class Matching {
 				cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
 			}
 
+			for (int k=0;k<arrivingcompositions.size();k++){
+
+			}
+			
+			//constraints (6)
+			for (int i=0;i<arrivingblocklist.size();i++){
+				cplex.addEq(summatchingsmade6[i],u[i]); //TODO: u[i] nog niet gedefinieerd
+			}
+
+			//constraints (7)
+			for (int j=0;j<departingblocklist.size();j++){
+				cplex.addEq(summatchingsmade7[j],v[j]); //TODO: v[j] nog niet gedefinieerd
+			}
+			
+			//constraints (length)
+			//TODO: check: hoeft toch alleen voor u_i gedefinieerd, want dan automatisch ook voor v_j?
+			for (int i = 0; i<arrivingblocklist.size(); i++){
+				cplex.addLe(arrivingblocklist.get(i).getLength(),weightexpr[i]);
+			}
+
 			//cplex.addEq(cplex.sum(arg0), 1)
 			/* EXAMPLES
 				cplex.addGe(cplex.sum(cplex.prod(60,x),cplex.prod(60, y)), 30);
@@ -428,8 +503,8 @@ public class Matching {
 			 */
 
 			cplex.setParam(IloCplex.Param.Simplex.Display, 1);
-			
-			
+
+
 			// solve
 			if(cplex.solve()){
 				System.out.println("obj = "+cplex.getObjValue());
@@ -437,14 +512,14 @@ public class Matching {
 			else {
 				System.out.println("Model not solved");
 			}
-			
+
 			cplex.end();
 		}
 		catch (IloException exc){
 			exc.printStackTrace();
 		}
 	}
-	
+
 }
 
 /**
