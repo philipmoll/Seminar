@@ -649,145 +649,196 @@ class CompatibleArrivingBlocks {
 	}
 
 
-//	public void model1(){
-//		int nrnodes = 4;
-//		int nrdepnodes = nrnodes-1;
-//		int n = 10; //I.getSize();
-//		int m = 8; //J.getSize();
-//
-//		try {	
-//			// define new model
-//			IloCplex cplex = new IloCplex();
-//
-//			// variables
-//			IloNumVar[][] u = new IloNumVar[nrdepnodes][];
-//			for(int i = 0; i < nrnodes; i++) {
-//				u[i] = cplex.boolVarArray(nrnodes); 
-//			}
-//			IloNumVar[] v = cplex.boolVarArray(m);
-//			IloNumVar[][] z = new IloNumVar[n][];
-//			for(int i = 0; i < n; i++) {
-//				z[i] = cplex.boolVarArray(m); 
-//			}	
-//			/* EXAMPLES
-//			 * 
-//			 * //Two dimensional x_ij
-//			 * IloNumVar [][] x = new IloNumVar[n][];
-//			 * for(int i<0;i<n.;i++){
-//			 * x[i] = cplex.numVarArray(m,0,Double.MAX_VALUE);
-//			 * }
-//			 * 
-//			 * boolean variables
-//			 * IloNumVar x = cplex.boolVar("X");
-//			 * IloNumVar y = cplex.boolVar("Y");
-//			 * 
-//			 * double variables
-//			 * IloNumVar x = cplex.boolVar(0,Double.MAX_VALUE,"X");
-//			 * IloNumVar y = cplex.numVar(0,Double.MAX_VALUE, "Y");
-//			 * */
-//
-//			// expressions
-//			IloLinearNumExpr[] UsedArcsSingleTrainCompRow = new IloLinearNumExpr[nrnodes];
-//			IloLinearNumExpr[] UsedArcsDoubleTrainCompRow = new IloLinearNumExpr[nrnodes];
-//			IloLinearNumExpr[] UsedArcsTripleTrainCompRow = new IloLinearNumExpr[nrnodes];
-//			for(int j=0;j<nrnodes;j++){
-//				UsedArcsSingleTrainCompRow[j] = cplex.linearNumExpr();
-//				UsedArcsDoubleTrainCompRow[j] = cplex.linearNumExpr();
-//				UsedArcsTripleTrainCompRow[j] = cplex.linearNumExpr();
-//				for (int i = 0; i<nrdepnodes;i++){
-//					if (j==3&&i==0){
-//						UsedArcsSingleTrainCompRow[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsSingleTrainCompRow[j].addTerm(0.0,u[i][j]);}
-//					if (((j==1||j==3)&&i==0)||(j==3&&i==1)){
-//						UsedArcsDoubleTrainCompRow[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsDoubleTrainCompRow[j].addTerm(0.0,u[i][j]);}
-//					if (((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
-//						UsedArcsTripleTrainCompRow[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsTripleTrainCompRow[j].addTerm(0.0,u[i][j]);}
-//				}
-//			}
-//			IloLinearNumExpr[] UsedArcsSingleTrainCompCol = new IloLinearNumExpr[nrdepnodes];
-//			IloLinearNumExpr[] UsedArcsDoubleTrainCompCol = new IloLinearNumExpr[nrdepnodes];
-//			IloLinearNumExpr[] UsedArcsTripleTrainCompCol = new IloLinearNumExpr[nrdepnodes];
-//			for(int j=0;j<nrdepnodes;j++){
-//				UsedArcsSingleTrainCompCol[j] = cplex.linearNumExpr();
-//				UsedArcsDoubleTrainCompCol[j] = cplex.linearNumExpr();
-//				UsedArcsTripleTrainCompCol[j] = cplex.linearNumExpr();
-//				for (int i = 0; i<nrnodes;i++){
-//					if (i==3&&j==0){
-//						UsedArcsSingleTrainCompCol[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsSingleTrainCompCol[j].addTerm(0.0,u[i][j]);}
-//					if (((i==1||i==3)&&j==0)||(i==3&&j==1)){
-//						UsedArcsDoubleTrainCompCol[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsDoubleTrainCompCol[j].addTerm(0.0,u[i][j]);}
-//					if (((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
-//						UsedArcsTripleTrainCompCol[j].addTerm(1.0,u[i][j]);
-//					}
-//					else{UsedArcsTripleTrainCompCol[j].addTerm(0.0,u[i][j]);}
-//				}
-//			}
-//
-//			IloLinearNumExpr objective = cplex.linearNumExpr();
-//			/* EXAMPLES 
-//			 * IloLinearNumExpr objective = cplex.linearNumExpr();
-//			 * objective.addTerm(13,x);
-//			 * objective.addTerm(15,y);
-//			 * 
-//			 * for(i=0;i<u.getSize();i++){
-//			 * objective.addTerm(Q,u[i]);
-//			 * for(j=0;j<z.getSize();j++){
-//			 * objective.addTerm(w[i][j], z[i][j]);
-//			 * }
-//			 * }
-//
-//			 */
-//
-//			// define objective 
-//			cplex.addMinimize(objective);
-//
-//			// define constraints
-//			for (int t=0;t<arrivingcompositions.size();t++){
-//				if (arrivingcompositions.get(t).getSize()==1){
-//					cplex.addEq(UsedArcsSingleTrainCompCol[0],  1);
-//				}
-//				else if (arrivingcompositions.get(t).getSize()==2){
-//					cplex.addEq(UsedArcsDoubleTrainCompCol[0],  1);
-//					cplex.addEq(UsedArcsDoubleTrainCompRow[1], UsedArcsDoubleTrainCompCol[1]);
-//				}
-//				else if(arrivingcompositions.get(t).getSize()==3){
-//					cplex.addEq(UsedArcsTripleTrainCompCol[0],  1);
-//					cplex.addEq(UsedArcsTripleTrainCompRow[1], UsedArcsTripleTrainCompCol[1]);
-//					cplex.addEq(UsedArcsTripleTrainCompRow[2], UsedArcsTripleTrainCompCol[2]);
-//				}
-//			}
-//
-//			cplex.addEq(cplex.sum(arg0), 1)
-//			/* EXAMPLES
-//				cplex.addGe(cplex.sum(cplex.prod(60,x),cplex.prod(60, y)), 30);
-//				cplex.addGe(cplex.sum(cplex.prod(12,x),cplex.prod(6, y)), 3);
-//				cplex.addGe(cplex.sum(cplex.prod(10,x),cplex.prod(30, y)), 9);
-//			 */
-//
-//			// solve
-//			if(cplex.solve()){
-//				System.out.println("obj = "+cplex.getObjValue());
-//				System.out.println("x   = "+cplex.getValue(x));
-//				System.out.println("y   = "+cplex.getValue(y));
-//			}
-//			else {
-//				System.out.println("Model not solved");
-//			}
-//		}
-//		catch (IloException exc){
-//			exc.printStackTrace();
-//		}
-//	}
-	
+	public void model1(){
+		int nrnodes = 4;
+		int nrdepnodes = nrnodes-1;
+		int n = 10; //I.getSize();
+		int m = 8; //J.getSize();
+
+		ArrayList<IloNumVar[][]> u;
+		ArrayList<IloLinearNumExpr[]> UsedArcsRow;
+		ArrayList<IloLinearNumExpr[]> UsedArcsCol;
+
+		try {	
+			// define new model
+			IloCplex cplex = new IloCplex();
+
+			// variables
+
+			for(int j = 0; j< arrivingcompositions.size(); j++){
+				u.add(new IloNumVar[nrdepnodes][]);
+				for(int i = 0; i < nrnodes; i++) {
+					u.get(u.size()-1)[i] = cplex.boolVarArray(nrnodes);
+				}
+			}
+			
+			/* EXAMPLES
+			 * 
+			 * //Two dimensional x_ij
+			 * IloNumVar [][] x = new IloNumVar[n][];
+			 * for(int i<0;i<n.;i++){
+			 * x[i] = cplex.numVarArray(m,0,Double.MAX_VALUE);
+			 * }
+			 * 
+			 * boolean variables
+			 * IloNumVar x = cplex.boolVar("X");
+			 * IloNumVar y = cplex.boolVar("Y");
+			 * 
+			 * double variables
+			 * IloNumVar x = cplex.boolVar(0,Double.MAX_VALUE,"X");
+			 * IloNumVar y = cplex.numVar(0,Double.MAX_VALUE, "Y");
+			 * */
+
+			// expressions
+			
+			for(int k = 0; k< arrivingcompositions.size(); k++){
+				if(arrivingcompositions.get(k).getSize()==1){
+					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+					for(int j = 0; j<nrnodes; j++){
+						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrdepnodes; i++){
+							if(j==3 && i==0){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else{
+								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+					for(int j = 0; j<nrdepnodes; j++){
+						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrnodes; i++){
+							if (i==3&&j==0){
+								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else{
+								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+				}
+				else if(arrivingcompositions.get(k).getSize()==2){
+					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+					for(int j = 0; j<nrnodes; j++){
+						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrdepnodes; i++){
+							if(j==3 && i==0){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else{
+								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+					for(int j = 0; j<nrdepnodes; j++){
+						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrnodes; i++){
+							if (i==3&&j==0){
+								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else{
+								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+				}
+				else if(arrivingcompositions.get(k).getSize()==3){
+					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+					for(int j = 0; j<nrnodes; j++){
+						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrdepnodes; i++){
+							if(j==3 && i==0){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
+								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else{
+								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+					for(int j = 0; j<nrdepnodes; j++){
+						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+						for(int i = 0; i<nrnodes; i++){
+							if (i==3&&j==0){
+								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+							}
+							else if(((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
+								
+							}
+							else{
+								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+							}
+						}
+					}
+				}
+				else{
+					
+				}
+			}
+
+			IloLinearNumExpr objective = cplex.linearNumExpr();
+			/* EXAMPLES 
+			 * IloLinearNumExpr objective = cplex.linearNumExpr();
+			 * objective.addTerm(13,x);
+			 * objective.addTerm(15,y);
+			 * 
+			 * for(i=0;i<u.getSize();i++){
+			 * objective.addTerm(Q,u[i]);
+			 * for(j=0;j<z.getSize();j++){
+			 * objective.addTerm(w[i][j], z[i][j]);
+			 * }
+			 * }
+
+			 */
+
+			// define objective 
+			cplex.addMinimize(objective);
+
+			// define constraints. the amount of constraints can be reduced though!
+			for (int k=0;k<arrivingcompositions.size();k++){
+					cplex.addEq(UsedArcsCol.get(k)[0],  1);
+					cplex.addEq(UsedArcsCol.get(k)[1], UsedArcsRow.get(k)[1]);
+					cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
+			}
+
+			//cplex.addEq(cplex.sum(arg0), 1)
+			/* EXAMPLES
+				cplex.addGe(cplex.sum(cplex.prod(60,x),cplex.prod(60, y)), 30);
+				cplex.addGe(cplex.sum(cplex.prod(12,x),cplex.prod(6, y)), 3);
+				cplex.addGe(cplex.sum(cplex.prod(10,x),cplex.prod(30, y)), 9);
+			 */
+
+			// solve
+			if(cplex.solve()){
+				System.out.println("obj = "+cplex.getObjValue());
+				System.out.println("x   = "+cplex.getValue(x));
+				System.out.println("y   = "+cplex.getValue(y));
+			}
+			else {
+				System.out.println("Model not solved");
+			}
+		}
+		catch (IloException exc){
+			exc.printStackTrace();
+		}
+	}
 }
 
 
