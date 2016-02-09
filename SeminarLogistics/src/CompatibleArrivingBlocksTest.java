@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+@SuppressWarnings("serial")
 public class CompatibleArrivingBlocksTest implements Serializable{
 	private Train a;
 	private Train b;
@@ -22,15 +23,11 @@ public class CompatibleArrivingBlocksTest implements Serializable{
 	private Composition h;
 	private Composition i;
 	
-	private CompatibleArrivingBlocks k;
-	private CompatibleArrivingBlocks l;
-	private CompatibleArrivingBlocks m;
-	
 	private ArrayList<Composition> arrivingcompositions;
-	private ArrayList<Composition> departingcompositions;
+	//private ArrayList<Composition> departingcompositions;
 	
 	private ArrayList<Block> arrivingblocks;
-	private ArrayList<Block> departingblocks;
+	//private ArrayList<Block> departingblocks;
 
 	private Block dd;
 	private Block ee;
@@ -43,8 +40,6 @@ public class CompatibleArrivingBlocksTest implements Serializable{
 	private CompatibleArrivingBlocks test2;
 	private CompatibleArrivingBlocks test3;
 	
-	
-	@SuppressWarnings("serial")
 	@Before
 	public void setUp() {
 		try {
@@ -70,10 +65,10 @@ public class CompatibleArrivingBlocksTest implements Serializable{
 			ii = new Block(new ArrayList<Train>(){{add(z);}},-1,0.7,i,-1,0);
 			
 			arrivingcompositions = new ArrayList<Composition>(){{add(d);add(e);add(f);}};
-			departingcompositions = new ArrayList<Composition>(){{add(g);add(h);add(i);}};
+			//departingcompositions = new ArrayList<Composition>(){{add(g);add(h);add(i);}};
 			
 			arrivingblocks = Matching.makeblocks(arrivingcompositions);
-			departingblocks = Matching.makeblocks(departingcompositions);
+			//departingblocks = Matching.makeblocks(departingcompositions);
 			
 			test1 = new CompatibleArrivingBlocks(gg, arrivingblocks);
 			test2 = new CompatibleArrivingBlocks(hh, arrivingblocks);

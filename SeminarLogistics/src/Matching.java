@@ -522,7 +522,7 @@ class Arcs {
 			arcs[0][1]=0;
 			for (int j = 0; j<blocklist.size(); j++){
 				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
-					blocks[j]=blocklist.get(j);
+					blocks[0]=blocklist.get(j);
 					break;
 				}
 			}
@@ -540,15 +540,15 @@ class Arcs {
 			while (count < 3){
 				for (int j = 0; j<blocklist.size(); j++){
 					if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==1){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==1){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 				}
@@ -573,27 +573,27 @@ class Arcs {
 			while (count < 6){
 				for (int j = 0; j<blocklist.size(); j++){
 					if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==1){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==2){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==1){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==2){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==1 && blocklist.get(j).getCutPosition2()==2){
-						blocks[j]=blocklist.get(j);
+						blocks[count]=blocklist.get(j);
 						count ++;
 					}
 				}
@@ -625,7 +625,7 @@ class Arcs {
 	 * 
 	 * @return blocks
 	 */
-	public Block[] getBlocks(){ //TODO: test
+	public Block[] getBlocks(){
 		return blocks;
 	}
 
@@ -713,7 +713,7 @@ class ArcsIncoming {
 	 * 
 	 * @return blocks
 	 */
-	public Block[] getBlocks(){ //TODO: test
+	public Block[] getBlocks(){
 		return blocks;
 	}
 
@@ -798,12 +798,9 @@ class ArcsOutgoing {
 	 * 
 	 * @return blocks
 	 */
-	public Block[] getBlocks(){ //TODO: test
+	public Block[] getBlocks(){
 		return blocks;
 	}
-
-
-
 }
 
 /**

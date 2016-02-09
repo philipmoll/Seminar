@@ -63,18 +63,7 @@ public class MatchingTest implements Serializable{
 			ii = new Block(new ArrayList<Train>(){{add(z);}},0.5,-1,f,1,2);
 			jj = new Block(new ArrayList<Train>(){{add(x); add(y);}},0.5,-1,f,-1,1);
 			
-			testblocklist = new ArrayList<>();
-			testblocklist.add(aa);
-			testblocklist.add(bb);
-			testblocklist.add(cc);
-			testblocklist.add(dd);
-			testblocklist.add(ee);
-			testblocklist.add(ff);
-			testblocklist.add(gg);
-			testblocklist.add(hh);
-			testblocklist.add(ii);
-			testblocklist.add(jj);
-
+			testblocklist = new ArrayList<Block>(){{add(aa);add(bb);add(cc);add(dd);add(ee);add(ff);add(gg);add(hh);add(ii);add(jj);}};
 
 		} catch (IndexOutOfBoundsException | IOException e2) {
 			e2.printStackTrace();
