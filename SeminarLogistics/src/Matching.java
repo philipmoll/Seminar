@@ -83,16 +83,16 @@ public class Matching {
 		arcsoutofnodearrivingcompositionsset = new ArcsOutgoing[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrarrivingcompositions; i++){
 			if (arrivingcompositions.get(i).getSize() == 1){
-				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1);
+				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1, arrivingblocklist);
 			}
 			else if (arrivingcompositions.get(i).getSize()==2){
-				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1);
-				arcsoutofnodearrivingcompositionsset[i][1]=new ArcsOutgoing(arrivingcompositions.get(i), 0);
+				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1, arrivingblocklist);
+				arcsoutofnodearrivingcompositionsset[i][1]=new ArcsOutgoing(arrivingcompositions.get(i), 0, arrivingblocklist);
 			}
 			else if (arrivingcompositions.get(i).getSize()==3){
-				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1);
-				arcsoutofnodearrivingcompositionsset[i][1]=new ArcsOutgoing(arrivingcompositions.get(i), 0);
-				arcsoutofnodearrivingcompositionsset[i][2]=new ArcsOutgoing(arrivingcompositions.get(i), 1);
+				arcsoutofnodearrivingcompositionsset[i][0]=new ArcsOutgoing(arrivingcompositions.get(i), -1, arrivingblocklist);
+				arcsoutofnodearrivingcompositionsset[i][1]=new ArcsOutgoing(arrivingcompositions.get(i), 0, arrivingblocklist);
+				arcsoutofnodearrivingcompositionsset[i][2]=new ArcsOutgoing(arrivingcompositions.get(i), 1, arrivingblocklist);
 			}
 			else{
 				throw new IOException("Arrivingcompositions ("+i+" is of size "+arrivingcompositions.get(i).getSize()+ "and max is 3");
@@ -103,16 +103,16 @@ public class Matching {
 		arcsoutofnodedepartingcompositionsset = new ArcsOutgoing[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrdepartingcompositions; i++){
 			if (departingcompositions.get(i).getSize() == 1){
-				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1);
+				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1, departingblocklist);
 			}
 			else if (departingcompositions.get(i).getSize()==2){
-				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1);
-				arcsoutofnodedepartingcompositionsset[i][1]=new ArcsOutgoing(departingcompositions.get(i), 0);
+				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1, departingblocklist);
+				arcsoutofnodedepartingcompositionsset[i][1]=new ArcsOutgoing(departingcompositions.get(i), 0, departingblocklist);
 			}
 			else if (departingcompositions.get(i).getSize()==3){
-				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1);
-				arcsoutofnodedepartingcompositionsset[i][1]=new ArcsOutgoing(departingcompositions.get(i), 0);
-				arcsoutofnodedepartingcompositionsset[i][2]=new ArcsOutgoing(departingcompositions.get(i), 1);
+				arcsoutofnodedepartingcompositionsset[i][0]=new ArcsOutgoing(departingcompositions.get(i), -1, departingblocklist);
+				arcsoutofnodedepartingcompositionsset[i][1]=new ArcsOutgoing(departingcompositions.get(i), 0, departingblocklist);
+				arcsoutofnodedepartingcompositionsset[i][2]=new ArcsOutgoing(departingcompositions.get(i), 1, departingblocklist);
 			}
 			else{
 				throw new IOException("Arrivingcompositions ("+i+" is of size "+arrivingcompositions.get(i).getSize()+ "and max is 3");
@@ -123,16 +123,16 @@ public class Matching {
 		arcsintonodearrivingcompositionsset = new ArcsIncoming[nrarrivingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrarrivingcompositions; i++){
 			if (arrivingcompositions.get(i).getSize() == 1){
-				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0);
+				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0, arrivingblocklist);
 			}
 			else if (arrivingcompositions.get(i).getSize()==2){
-				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0);
-				arcsintonodearrivingcompositionsset[i][1]=new ArcsIncoming(arrivingcompositions.get(i), 1);
+				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0, arrivingblocklist);
+				arcsintonodearrivingcompositionsset[i][1]=new ArcsIncoming(arrivingcompositions.get(i), 1, arrivingblocklist);
 			}
 			else if (arrivingcompositions.get(i).getSize()==3){
-				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0);
-				arcsintonodearrivingcompositionsset[i][1]=new ArcsIncoming(arrivingcompositions.get(i), 1);
-				arcsintonodearrivingcompositionsset[i][2]=new ArcsIncoming(arrivingcompositions.get(i), 2);
+				arcsintonodearrivingcompositionsset[i][0]=new ArcsIncoming(arrivingcompositions.get(i), 0, arrivingblocklist);
+				arcsintonodearrivingcompositionsset[i][1]=new ArcsIncoming(arrivingcompositions.get(i), 1, arrivingblocklist);
+				arcsintonodearrivingcompositionsset[i][2]=new ArcsIncoming(arrivingcompositions.get(i), 2, arrivingblocklist);
 			}
 			else{
 				throw new IOException("Arrivingcompositions ("+i+" is of size "+arrivingcompositions.get(i).getSize()+ "and max is 3");
@@ -143,16 +143,16 @@ public class Matching {
 		arcsintonodedepartingcompositionsset = new ArcsIncoming[nrdepartingcompositions][3]; //max 3 trains per composition, so max 4 nodes
 		for (int i = 0; i<nrdepartingcompositions; i++){
 			if (departingcompositions.get(i).getSize() == 1){
-				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0);
+				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0, departingblocklist);
 			}
 			else if (departingcompositions.get(i).getSize()==2){
-				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0);
-				arcsintonodedepartingcompositionsset[i][1]=new ArcsIncoming(departingcompositions.get(i), 1);
+				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0, departingblocklist);
+				arcsintonodedepartingcompositionsset[i][1]=new ArcsIncoming(departingcompositions.get(i), 1, departingblocklist);
 			}
 			else if (departingcompositions.get(i).getSize()==3){
-				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0);
-				arcsintonodedepartingcompositionsset[i][1]=new ArcsIncoming(departingcompositions.get(i), 1);
-				arcsintonodedepartingcompositionsset[i][2]=new ArcsIncoming(departingcompositions.get(i), 2);
+				arcsintonodedepartingcompositionsset[i][0]=new ArcsIncoming(departingcompositions.get(i), 0, departingblocklist);
+				arcsintonodedepartingcompositionsset[i][1]=new ArcsIncoming(departingcompositions.get(i), 1, departingblocklist);
+				arcsintonodedepartingcompositionsset[i][2]=new ArcsIncoming(departingcompositions.get(i), 2, departingblocklist);
 			}
 			else{
 				throw new IOException("Arrivingcompositions ("+i+" is of size "+arrivingcompositions.get(i).getSize()+ "and max is 3");
@@ -174,13 +174,13 @@ public class Matching {
 		//Set A^t_a at index t for every t in T_a
 		arcsarrivingcompositionsset = new Arcs[nrarrivingcompositions];
 		for (int i=0; i<nrarrivingcompositions; i++){
-			arcsarrivingcompositionsset[i] = new Arcs(arrivingcompositions.get(i));
+			arcsarrivingcompositionsset[i] = new Arcs(arrivingcompositions.get(i),arrivingblocklist);
 		}
 
 		//Set A^t_d at index t for every t in T_d
 		arcsdepartingcompositionsset = new Arcs[nrdepartingcompositions];
 		for (int i=0; i<nrdepartingcompositions; i++){
-			arcsdepartingcompositionsset[i] = new Arcs(departingcompositions.get(i));
+			arcsdepartingcompositionsset[i] = new Arcs(departingcompositions.get(i),departingblocklist);
 		}
 
 	}
@@ -258,14 +258,15 @@ public class Matching {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public void model1(){
 		int nrnodes = 4;
 		int nrdepnodes = nrnodes-1;
 		int Q = 1; //Penalty for splitting
 
-		ArrayList<IloNumVar[][]> u = null; //TODO: WAAROM MAAK JE HIER EEN ARRAY VAN --> ARRAYLIST EN WAAROM TWEE DIMENSIES?
-		ArrayList<IloLinearNumExpr[]> UsedArcsRow = null;
-		ArrayList<IloLinearNumExpr[]> UsedArcsCol = null;
+		//		ArrayList<IloNumVar[][]> u = null; 
+		//		ArrayList<IloLinearNumExpr[]> UsedArcsRow = null;
+		//		ArrayList<IloLinearNumExpr[]> UsedArcsCol = null;
 
 		try {	
 			// define new model
@@ -273,15 +274,15 @@ public class Matching {
 
 			// variables
 
-			for(int j = 0; j< arrivingcompositions.size(); j++){
-				u.add(new IloNumVar[nrdepnodes][]);
-				for(int i = 0; i < nrnodes; i++) {
-					u.get(j)[i] = cplex.boolVarArray(nrnodes);
-				}
-			}
-			
-			//IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
-			//IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
+			//			for(int j = 0; j< arrivingcompositions.size(); j++){
+			//				u.add(new IloNumVar[nrdepnodes][]);
+			//				for(int i = 0; i < nrnodes; i++) {
+			//					u.get(j)[i] = cplex.boolVarArray(nrnodes);
+			//				}
+			//			}
+
+			IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
+			IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
 
 			IloNumVar[][] z = new IloNumVar[arrivingblocklist.size()][];
 			for (int i = 0; i<arrivingblocklist.size(); i++){
@@ -307,105 +308,198 @@ public class Matching {
 			 * */
 
 			// expressions			
-			for(int k = 0; k< arrivingcompositions.size(); k++){
-				if(arrivingcompositions.get(k).getSize()==1){
-					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-					for(int j = 0; j<nrnodes; j++){
-						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrdepnodes; i++){
-							if(j==3 && i==0){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else{
-								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-							}
+			//			for(int k = 0; k< arrivingcompositions.size(); k++){
+			//				if(arrivingcompositions.get(k).getSize()==1){
+			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+			//					for(int j = 0; j<nrnodes; j++){
+			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrdepnodes; i++){
+			//							if(j==3 && i==0){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else{
+			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//					for(int j = 0; j<nrdepnodes; j++){
+			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrnodes; i++){
+			//							if (i==3&&j==0){
+			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else{
+			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//				}
+			//				else if(arrivingcompositions.get(k).getSize()==2){
+			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+			//					for(int j = 0; j<nrnodes; j++){
+			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrdepnodes; i++){
+			//							if(j==3 && i==0){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else{
+			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//					for(int j = 0; j<nrdepnodes; j++){
+			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrnodes; i++){
+			//							if (i==3&&j==0){
+			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else{
+			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//				}
+			//				else if(arrivingcompositions.get(k).getSize()==3){
+			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+			//					for(int j = 0; j<nrnodes; j++){
+			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrdepnodes; i++){
+			//							if(j==3 && i==0){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
+			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else{
+			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//					for(int j = 0; j<nrdepnodes; j++){
+			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+			//						for(int i = 0; i<nrnodes; i++){
+			//							if (i==3&&j==0){
+			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+			//							}
+			//							else if(((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
+			//
+			//							}
+			//							else{
+			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+			//							}
+			//						}
+			//					}
+			//				}
+			//				else{
+			//
+			//				}
+			//			}
+			//expressions for constraints(1)
+			IloLinearNumExpr[] arcsoutoforigin1 = new IloLinearNumExpr[arrivingcompositions.size()];
+			for (int t = 0; t<arrivingcompositions.size(); t++){
+				arcsoutoforigin1[t]=cplex.linearNumExpr();
+				for (int i = 0; i<arrivingblocklist.size(); i++){
+					int count = 0;
+					for (int b = 0; b<arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length; b++){
+						if (arcsoutofnodearrivingcompositionsset[t][0].getBlocks()[b] == arrivingblocklist.get(i)){
+							arcsoutoforigin1[t].addTerm(1.0, u[i]);
+							count ++;
 						}
 					}
-					for(int j = 0; j<nrdepnodes; j++){
-						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrnodes; i++){
-							if (i==3&&j==0){
-								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else{
-								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-							}
-						}
+					if (count >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length){
+						break;
 					}
 				}
-				else if(arrivingcompositions.get(k).getSize()==2){
-					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-					for(int j = 0; j<nrnodes; j++){
-						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrdepnodes; i++){
-							if(j==3 && i==0){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else{
-								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-							}
-						}
-					}
-					for(int j = 0; j<nrdepnodes; j++){
-						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrnodes; i++){
-							if (i==3&&j==0){
-								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
-								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else{
-								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-							}
-						}
-					}
-				}
-				else if(arrivingcompositions.get(k).getSize()==3){
-					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-					for(int j = 0; j<nrnodes; j++){
-						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrdepnodes; i++){
-							if(j==3 && i==0){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
-								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else{
-								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-							}
-						}
-					}
-					for(int j = 0; j<nrdepnodes; j++){
-						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-						for(int i = 0; i<nrnodes; i++){
-							if (i==3&&j==0){
-								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
-								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-							}
-							else if(((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
+			}
 
+			//expressions for constraints(2)
+			ArrayList<IloLinearNumExpr>[] intermediatearcs1 = new ArrayList[arrivingcompositions.size()]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			for (int t = 0; t<arrivingcompositions.size(); t++){
+				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
+					intermediatearcs1[t].add(cplex.linearNumExpr());
+					for (int i = 0; i<arrivingblocklist.size(); i++){
+						int count1 = 0;
+						int count2 = 0;
+						for (int b1 = 0; b1<arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks().length; b1++){
+							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
+								intermediatearcs1[t].get(h).addTerm(1.0, u[i]);
+								count1 ++;
+								break;
 							}
-							else{
-								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+						}
+						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
+							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
+								intermediatearcs1[t].get(h).addTerm(-1.0, u[i]);
+								count2 ++;
+								break;
 							}
+						}
+						if (count1 >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodearrivingcompositionsset[t][0].getBlocks().length){
+							break;
 						}
 					}
 				}
-				else{
+			}
+			
+			//expressions for constraints(4)
+			IloLinearNumExpr[] arcsoutoforigin2 = new IloLinearNumExpr[departingcompositions.size()];
+			for (int t = 0; t<departingcompositions.size(); t++){
+				arcsoutoforigin2[t]=cplex.linearNumExpr();
+				for (int i = 0; i<departingblocklist.size(); i++){
+					int count = 0;
+					for (int b = 0; b<arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length; b++){
+						if (arcsoutofnodedepartingcompositionsset[t][0].getBlocks()[b] == departingblocklist.get(i)){
+							arcsoutoforigin2[t].addTerm(1.0, v[i]);
+							count ++;
+						}
+					}
+					if (count >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length){
+						break;
+					}
+				}
+			}
 
+			//expressions for constraints(5)
+			ArrayList<IloLinearNumExpr>[] intermediatearcs2 = new ArrayList[departingcompositions.size()]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			for (int t = 0; t<departingcompositions.size(); t++){
+				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
+					intermediatearcs2[t].add(cplex.linearNumExpr());
+					for (int i = 0; i<departingblocklist.size(); i++){
+						int count1 = 0;
+						int count2 = 0;
+						for (int b1 = 0; b1<arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks().length; b1++){
+							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
+								intermediatearcs2[t].get(h).addTerm(1.0, v[i]);
+								count1 ++;
+								break;
+							}
+						}
+						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
+							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
+								intermediatearcs2[t].get(h).addTerm(-1.0, v[i]);
+								count2 ++;
+								break;
+							}
+						}
+						if (count1 >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodedepartingcompositionsset[t][0].getBlocks().length){
+							break;
+						}
+					}
 				}
 			}
 
@@ -421,8 +515,8 @@ public class Matching {
 					}
 				}
 			}
-			
-			
+
+
 			//expressions for constraints (7)
 			IloLinearNumExpr[] summatchingsmade7 = new IloLinearNumExpr[departingblocklist.size()];
 			for (int j = 0; j<departingblocklist.size(); j++){
@@ -439,18 +533,23 @@ public class Matching {
 			IloLinearNumExpr[] weightexpr = new IloLinearNumExpr[arrivingblocklist.size()];
 			for (int i =0; i<arrivingblocklist.size(); i++){
 				weightexpr[i] = cplex.linearNumExpr();
-				weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength;
+				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength;
 				//TODO ^werkt dit zo?? moet dit niet met addterm? (weet niet hoe dat moet met een constante M
 			}
-
+			
 			IloLinearNumExpr objective = cplex.linearNumExpr();
-			for(int k = 0; k<arrivingcompositions.size(); k++){
-				for(int j = 0; j<nrnodes; j++){
-					for(int i = 0; i<nrdepnodes; i++ ){
-						objective.addTerm(Q, u.get(k)[i][j]);
-					}
-				}
+			for (int i = 1; i<arrivingblocklist.size(); i++){
+				objective.addTerm(Q, u[i]);
 			}
+
+			//			IloLinearNumExpr objective = cplex.linearNumExpr();
+			//			for(int k = 0; k<arrivingcompositions.size(); k++){
+			//				for(int j = 0; j<nrnodes; j++){
+			//					for(int i = 0; i<nrdepnodes; i++ ){
+			//						objective.addTerm(Q, u.get(k)[i][j]);
+			//					}
+			//				}
+			//			}
 			/* EXAMPLES 
 			 * IloLinearNumExpr objective = cplex.linearNumExpr();
 			 * objective.addTerm(13,x);
@@ -469,26 +568,52 @@ public class Matching {
 			cplex.addMinimize(objective);
 
 			// define constraints. the amount of constraints can be reduced though!
-			for (int k=0;k<arrivingcompositions.size();k++){
-				cplex.addEq(UsedArcsCol.get(k)[0],  1);
-				cplex.addEq(UsedArcsCol.get(k)[1], UsedArcsRow.get(k)[1]);
-				cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
+			//			for (int k=0;k<arrivingcompositions.size();k++){
+			//				cplex.addEq(UsedArcsCol.get(k)[0],  1);
+			//				cplex.addEq(UsedArcsCol.get(k)[1], UsedArcsRow.get(k)[1]);
+			//				cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
+			//			}
+			//
+			//			for (int k=0;k<arrivingcompositions.size();k++){
+			//
+			//			}
+
+			//constraints (1)
+			for (int t=0; t<arrivingcompositions.size();t++){
+				cplex.addEq(arcsoutoforigin1[t], 1);
 			}
 
-			for (int k=0;k<arrivingcompositions.size();k++){
-
+			//constraints (2)
+			for (int t=0; t<arrivingcompositions.size();t++){
+				for (int h = 0; h<intermediatearcs1[t].size(); h++)
+				{
+					cplex.addEq(intermediatearcs1[t].get(h), 0);
+				}
 			}
 			
+			//constraints (4)
+			for (int t=0; t<departingcompositions.size();t++){
+				cplex.addEq(arcsoutoforigin2[t], 1);
+			}
+
+			//constraints (5)
+			for (int t=0; t<departingcompositions.size();t++){
+				for (int h = 0; h<intermediatearcs2[t].size(); h++)
+				{
+					cplex.addEq(intermediatearcs2[t].get(h), 0);
+				}
+			}
+
 			//constraints (6)
 			for (int i=0;i<arrivingblocklist.size();i++){
-				cplex.addEq(summatchingsmade6[i],u[i]); //TODO: u[i] nog niet gedefinieerd
+				cplex.addEq(summatchingsmade6[i],u[i]);
 			}
 
 			//constraints (7)
 			for (int j=0;j<departingblocklist.size();j++){
-				cplex.addEq(summatchingsmade7[j],v[j]); //TODO: v[j] nog niet gedefinieerd
+				cplex.addEq(summatchingsmade7[j],v[j]); 
 			}
-			
+
 			//constraints (length)
 			//TODO: check: hoeft toch alleen voor u_i gedefinieerd, want dan automatisch ook voor v_j?
 			for (int i = 0; i<arrivingblocklist.size(); i++){
@@ -535,34 +660,62 @@ class Arcs {
 
 	private Composition parent;
 	private int[][] arcs;
+	private Block[] blocks;
 
 	/**
 	 * Constructor for class Arcs
 	 * 
 	 * @param parent
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
 	 * @throws IOException
 	 */
-	public Arcs(Composition parent) throws IOException{
+	public Arcs(Composition parent, ArrayList<Block> blocklist) throws IOException{
 		this.parent = parent;
 		if (parent.getSize() != 1 && parent.getSize() != 2 && parent.getSize() != 3){
 			throw new IOException("Constructor of arcs can only handle compositions of max size 3, and this.parent is of size "+parent.getSize());
 		}
 		if (parent.getSize()==1){
 			arcs = new int[1][2];
+			blocks = new Block[1];
 			arcs[0][0]=-1;
 			arcs[0][1]=0;
+			for (int j = 0; j<blocklist.size(); j++){
+				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
+					blocks[j]=blocklist.get(j);
+					break;
+				}
+			}
 		}
 		else if (parent.getSize()==2){
 			arcs = new int[3][2];
+			blocks = new Block[3];
 			arcs[0][0]=-1;
 			arcs[0][1]=0;
 			arcs[1][0]=-1;
 			arcs[1][1]=1;
 			arcs[2][0]=0;
 			arcs[2][1]=1;
+			int count = 0;
+			while (count < 3){
+				for (int j = 0; j<blocklist.size(); j++){
+					if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==1){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==1){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+				}
+			}
 		}
 		else{ //parent.getSize()==3
 			arcs = new int[6][2];
+			blocks = new Block[6];
 			arcs[0][0]=-1;
 			arcs[0][1]=0;
 			arcs[1][0]=-1;
@@ -575,6 +728,35 @@ class Arcs {
 			arcs[4][1]=2;
 			arcs[5][0]=1;
 			arcs[5][1]=2;
+			int count = 0;
+			while (count < 6){
+				for (int j = 0; j<blocklist.size(); j++){
+					if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==0){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==1){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==-1 && blocklist.get(j).getCutPosition2()==2){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==1){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==0 && blocklist.get(j).getCutPosition2()==2){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+					else if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==1 && blocklist.get(j).getCutPosition2()==2){
+						blocks[j]=blocklist.get(j);
+						count ++;
+					}
+				}
+			}
 		}
 	}
 
@@ -597,6 +779,16 @@ class Arcs {
 	}
 
 
+	/**
+	 * Returns blocks
+	 * 
+	 * @return blocks
+	 */
+	public Block[] getBlocks(){ //TODO: test
+		return blocks;
+	}
+
+
 }
 
 
@@ -614,15 +806,17 @@ class ArcsIncoming {
 	private Composition parent;
 	private int node;
 	private int[][] arcs;
+	private Block[] blocks;
 
 	/**
 	 * Constructor for class ArcsIncoming
 	 * 
 	 * @param parent - Composition of which we want the incoming arcs
 	 * @param node - Node of which we want the incoming arcs
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
 	 * @throws IndexOutOfBoundsException 
 	 */
-	public ArcsIncoming(Composition parent, int node) throws IndexOutOfBoundsException{
+	public ArcsIncoming(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
 
@@ -633,9 +827,16 @@ class ArcsIncoming {
 
 		//update incoming arcs
 		arcs = new int[node-(-1)][2];
+		blocks = new Block[node-(-1)];
 		for (int i = 0; i< node-(-1); i++){
 			arcs[i][0]=i-1;
 			arcs[i][1]=node;
+			for (int j = 0; j<blocklist.size(); j++){
+				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==(i-1) && blocklist.get(j).getCutPosition2()==node){
+					blocks[j]=blocklist.get(j);
+					break;
+				}
+			}
 		}
 	}
 
@@ -666,6 +867,15 @@ class ArcsIncoming {
 		return arcs;
 	}
 
+	/**
+	 * Returns incoming blocks
+	 * 
+	 * @return blocks
+	 */
+	public Block[] getBlocks(){ //TODO: test
+		return blocks;
+	}
+
 }
 
 /**
@@ -681,15 +891,17 @@ class ArcsOutgoing {
 	private Composition parent;
 	private int node;
 	private int[][] arcs;
+	private Block[] blocks;
 
 	/**
 	 * Constructor for class ArcsOutgoing
 	 * 
 	 * @param parent - Composition of which we want the outgoing arcs
 	 * @param node - Node of which we want the outgoing arcs
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
 	 * @throws IndexOutOfBoundsException 
 	 */
-	public ArcsOutgoing(Composition parent, int node) throws IndexOutOfBoundsException{
+	public ArcsOutgoing(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
 
@@ -700,9 +912,16 @@ class ArcsOutgoing {
 
 		//update outgoing arcs
 		arcs = new int[(parent.getSize()-1)-node][2];
+		blocks = new Block[(parent.getSize()-1)-node];
 		for (int i = 0; i< (parent.getSize()-1)-node; i++){
 			arcs[i][0]=node;
 			arcs[i][1]=node+i+1;
+			for (int j = 0; j<blocklist.size(); j++){
+				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==node && blocklist.get(j).getCutPosition2()==node+i+1){
+					blocks[j]=blocklist.get(j);
+					break;
+				}
+			}
 		}
 	}
 
@@ -731,6 +950,18 @@ class ArcsOutgoing {
 	public int[][] getArcsOutgoing(){
 		return arcs;
 	}
+
+
+	/**
+	 * Returns outgoing blocks
+	 * 
+	 * @return blocks
+	 */
+	public Block[] getBlocks(){ //TODO: test
+		return blocks;
+	}
+
+
 
 }
 
