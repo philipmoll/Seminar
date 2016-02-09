@@ -588,6 +588,8 @@ public class Composition implements Serializable{
 			busytime[i] = activity;
 		}
 	}
+	
+
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<busytime.length; i++){
 			if(busytime[i] != null && busytime[i].equals(activity)){

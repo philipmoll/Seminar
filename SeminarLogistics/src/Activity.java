@@ -9,6 +9,7 @@ public class Activity {
 	private Track trackassigned;
 	private int duration;
 	private int ultimatetime;
+	private Track previoustrack;
 
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned){
 		this.plannedtime = plannedtime;
@@ -17,6 +18,7 @@ public class Activity {
 		this.trackassigned = trackassigned;
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
+		previoustrack = null;
 	}
 	public Activity(int duration, int ultimatetime, Composition composition, int activity){
 		this.duration = duration;
@@ -25,6 +27,17 @@ public class Activity {
 		this.activity = activity;
 		plannedtime = -1;
 		trackassigned = null;
+		previoustrack = null;
+	}
+	
+	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, Track previoustrack){
+		this.plannedtime = plannedtime;
+		this.composition = composition;
+		this.activity = activity;
+		this.trackassigned = trackassigned;
+		this.duration = duration;
+		this.ultimatetime = ultimatetime;
+		this.previoustrack = previoustrack;
 	}
 
 	public double getPlannedTime(){
@@ -39,6 +52,11 @@ public class Activity {
 	public Track getTrackAssigned(){
 		return trackassigned;
 	}
+	
+	public Track getPreviousTrack(){
+		return previoustrack;
+	}
+	
 	public double getDuration(){
 		return duration;
 	}
@@ -65,6 +83,7 @@ public class Activity {
 	public void removeTimes(){
 		trackassigned.removeBusyTime(this);
 		composition.removeBusyTime(this);
+		Todo.removeBusyMoveTime(this);
 	}
 	public void setUpdate(int newplannedtime, Track newtrack){
 		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!
