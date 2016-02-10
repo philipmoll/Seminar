@@ -60,7 +60,8 @@ public class Matching {
 		departingblocklist = makeblocks(departingcompositions);
 
 		//set T_a
-		arrivingcompositions = this.arrivingcompositions;
+		this.arrivingcompositions = arrivingcompositions;
+		this.departingcompositions = departingcompositions;
 
 		int nrarrivingblocks = arrivingblocklist.size();
 		int nrdepartingblocks = departingblocklist.size();
@@ -275,7 +276,7 @@ public class Matching {
 	 * @return z[i][j]
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean[][] model1(){
+	private boolean[][] model1(){
 		int Q = 1; //Penalty for splitting
 
 		try {	
@@ -896,8 +897,17 @@ class CompatibleDepartingBlocks {
 			if (alldepartingblocks.get(i).getArrivaltime()!=-1){
 				throw new IOException("Arrival time of alldepartingblocks("+i+") in class CompatibleDepartingBlocks is "+alldepartingblocks.get(i).getArrivaltime()+" and should be -1");
 			}
-			if (alldepartingblocks.get(i).getDeparturetime() > arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()*/ && arrivingblock.checkEqual(alldepartingblocks.get(i))==true){
-				compatibledepartingblocks.add(alldepartingblocks.get(i));
+			boolean check = true;
+			if (alldepartingblocks.get(i).getDeparturetime() > arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
+				for (int j = 0; j<arrivingblock.getTrainList().size(); j++){
+					if (arrivingblock.getTrainList().get(j).getSameClass(alldepartingblocks.get(i).getTrainList().get(j))== false){
+						check = false;
+					}
+				}
+				if (check == true){
+					compatibledepartingblocks.add(alldepartingblocks.get(i));	
+				}
+			
 			}
 		}	
 	}
@@ -964,8 +974,16 @@ class CompatibleArrivingBlocks {
 			if (allarrivingblocks.get(i).getDeparturetime()!=-1){
 				throw new IOException("Departure time of allarrivingblocks("+i+") in class CompatibleDepartingBlocks is "+allarrivingblocks.get(i).getDeparturetime()+" and should be -1");
 			}
-			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c /*+ allarrivingblocks.get(i).getTotalServiceTime()*/ < departingblock.getDeparturetime() && departingblock.checkEqual(allarrivingblocks.get(i))==true){
-				compatiblearrivingblocks.add(allarrivingblocks.get(i));
+			boolean check = true;
+			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c /*+ allarrivingblocks.get(i).getTotalServiceTime()*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
+				for (int j = 0; j<departingblock.getTrainList().size(); j++){
+					if (departingblock.getTrainList().get(j).getSameClass(allarrivingblocks.get(i).getTrainList().get(j))== false){
+						check = false;
+					}
+				}
+				if (check == true){
+					compatiblearrivingblocks.add(allarrivingblocks.get(i));	
+				}
 			}
 		}	
 	}
