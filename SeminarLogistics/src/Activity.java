@@ -12,8 +12,7 @@ public class Activity {
 	private int ultimatetime;
 	private Track previoustrack;
 	private int movetime;
-	private final int moveduration = 2;
-
+	
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned){
 		this.plannedtime = plannedtime;
 		this.composition = composition;
@@ -63,7 +62,7 @@ public class Activity {
 			movetime = 0;
 		}
 		else{
-			movetime = moveduration;
+			movetime = Todo.moveduration;
 		}
 		totalduration = duration + movetime;
 	}
@@ -128,16 +127,15 @@ public class Activity {
 		}
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
-		if(previoustrack.equals(trackassigned)){
-			movetime = 0;
+		if(previoustrack==null || !previoustrack.equals(trackassigned)){
+			movetime = Todo.moveduration;
 		}
 		else{
-			movetime = moveduration;
+			movetime = 0;
 		}
 		totalduration = duration + movetime;
 		trackassigned.setBusyTime(this);
 		composition.setBusyTime(this);
-
 	}
 	//TODO: ROND DIE DIT GOED AF???
 	public int getPlannedTimeInteger(){
@@ -153,9 +151,12 @@ public class Activity {
 		return (int) ultimatetime;
 	}
 	public double getMargin(){
-		return (ultimatetime-plannedtime);
+		return (ultimatetime-plannedtime-movetime);
 	}
 	public int getMarginInteger(){
-		return (int) (ultimatetime-plannedtime);
+		return (int) (ultimatetime-plannedtime-movetime);
+	}
+	public int getMoveTime(){
+		return (int) movetime;
 	}
 }

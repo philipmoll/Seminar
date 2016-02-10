@@ -51,16 +51,16 @@ public class TodoTest {
 
 		todo.addComposition(c1);
 		todo.addComposition(c2);
-		todo.addComposition(c3);
+//		todo.addComposition(c3);
 		System.out.print("Composition 1: ");
 		c1.printTimeLine();
 		System.out.print("\n");
 		System.out.print("Composition 2: ");
 		c2.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Composition 3: ");
-		c3.printTimeLine();
-		System.out.print("\n");
+//		System.out.print("Composition 3: ");
+//		c3.printTimeLine();
+//		System.out.print("\n");
 		System.out.print("Platform 1:    ");
 		p1.printTimeLine();
 		System.out.print("\n");
@@ -69,8 +69,8 @@ public class TodoTest {
 		System.out.print("\n");
 		System.out.print("Wash area 1:   ");
 		w1.printTimeLine();
-
-
+		System.out.print("\n");
+		System.out.print("Move list:     ");
+		todo.printTimeLine();
 	}
-
 }

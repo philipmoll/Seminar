@@ -282,11 +282,11 @@ public class Track {
 		}
 	}
 	
-	public boolean checkFeasibility(Activity activity, int timetobechecked){
+	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
 
-		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
+		for(int i = timetobechecked; i<timetobechecked+activity.getDuration()+checkmovetime; i++){
 			if(busytime[i]!=null){
 				feasible = false;
 			}

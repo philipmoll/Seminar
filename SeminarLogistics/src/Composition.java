@@ -596,11 +596,11 @@ public class Composition implements Serializable{
 			}
 		}
 	}
-	public boolean checkFeasibility(Activity activity, int timetobechecked){
+	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
 
-		for(int i = timetobechecked; i<timetobechecked+activity.getDuration(); i++){
+		for(int i = timetobechecked; i<timetobechecked+activity.getDuration()+checkmovetime; i++){
 			if(busytime[i]!=null){
 				feasible = false;
 				break;
@@ -617,5 +617,15 @@ public class Composition implements Serializable{
 				System.out.print(7);
 			}
 		}
+	}
+	public boolean getInspection(){
+		boolean abcd = false;
+		for(int i = 0; i<compositiontrains.size(); i++){
+			if(compositiontrains.get(i).getInspecting()){
+				abcd = true;
+				break;
+			}
+		}
+		return abcd;
 	}
 }
