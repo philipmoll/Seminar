@@ -7,7 +7,6 @@ public class Todo {
 	public final static int moveduration = 2;
 
 
-
 	ArrayList<Track> platforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
