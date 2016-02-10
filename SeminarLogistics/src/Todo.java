@@ -234,6 +234,7 @@ public class Todo {
 			}
 		}
 		
+		
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
 			activities.get(activities.size()-1-i).removeTimes();
