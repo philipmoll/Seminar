@@ -110,6 +110,11 @@ public class Todo {
 									}
 								}
 							}
+							//Update if we find better solution than the previous ones at a different track.
+							if(temptemp <= temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}
 						}
 						else{
 							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
@@ -125,13 +130,14 @@ public class Todo {
 									}
 								}
 							}
+							//Update if we find better solution than the previous ones at a different track.
+							if(temptemp + moveduration < temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}
 						}
 
-						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp < temp){
-							temp = temptemp;
-							temp1 = temptemp1;
-						}
+
 
 					}
 
@@ -192,6 +198,11 @@ public class Todo {
 									}
 								}
 							}
+							//Update if we find better solution than the previous ones at a different track.
+							if(temptemp <= temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}
 						}
 						else{
 							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
@@ -208,7 +219,7 @@ public class Todo {
 							}
 
 							//Update if we find better solution than the previous ones at a different track.
-							if(temptemp < temp){
+							if(temptemp + moveduration < temp){
 								temp = temptemp;
 								temp1 = temptemp1;
 							}
@@ -270,6 +281,11 @@ public class Todo {
 								}
 							}
 						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
 					}
 					else{
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
@@ -284,10 +300,11 @@ public class Todo {
 								}
 							}
 						}
-					}
-					if(temptemp < temp){
-						temp = temptemp;
-						temp1 = temptemp1;
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp + moveduration < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
 					}
 				}
 
@@ -320,6 +337,11 @@ public class Todo {
 								}
 							}
 						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
 					}
 					else{
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
@@ -334,12 +356,12 @@ public class Todo {
 								}
 							}
 						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp + moveduration < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
 					}
-					if(temptemp < temp){
-						temp = temptemp;
-						temp1 = temptemp1;
-					}
-
 				}
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				currenttrack = temp1;
