@@ -7,7 +7,7 @@ public class Todo {
 
 	private ArrayList<Track> platforms = new ArrayList<>();
 	private ArrayList<Track> washareas = new ArrayList<>();
-	private static Activity[] movelist;
+	private Activity[] movelist;
 
 	public Todo(ArrayList<Track> tracks){
 		activities = new ArrayList<>();
@@ -159,7 +159,7 @@ public class Todo {
 						activities.add(activities.size()-2, new Activity(temp-2, 2, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, 4, temp1));
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
 						addedcomp.setBusyTime(activities.get(activities.size()-2));
-						Todo.setBusyMoveTime(activities.get(activities.size()-2));
+						this.setBusyMoveTime(activities.get(activities.size()-2));
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
 					}
 					else if (activities.size()>=2){
@@ -168,7 +168,7 @@ public class Todo {
 							activities.add(activities.size()-2, new Activity(temp-2, 2, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, 4, temp1));
 							activities.get(activities.size()-1).setUpdate(temp, temp1);
 							addedcomp.setBusyTime(activities.get(activities.size()-2));
-							Todo.setBusyMoveTime(activities.get(activities.size()-2));
+							this.setBusyMoveTime(activities.get(activities.size()-2));
 							addedcomp.setBusyTime(activities.get(activities.size()-1));
 						}
 						else if (activities.get(activities.size()-1).getComposition()==activities.get(activities.size()-2).getComposition() && temp1 != activities.get(activities.size()-2).getTrackAssigned()){
@@ -176,7 +176,7 @@ public class Todo {
 							amount += 1; //the moving activities after the first one counts for the amount of activities which needs to be reconsidered
 							activities.get(activities.size()-1).setUpdate(temp, temp1);
 							addedcomp.setBusyTime(activities.get(activities.size()-2));
-							Todo.setBusyMoveTime(activities.get(activities.size()-2));
+							this.setBusyMoveTime(activities.get(activities.size()-2));
 							addedcomp.setBusyTime(activities.get(activities.size()-1));			
 						}
 
@@ -246,7 +246,7 @@ public class Todo {
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 
 					//Storing first solution
-					Todo.setBusyMoveTime(activities.get(activities.size()-2));
+					this.setBusyMoveTime(activities.get(activities.size()-2));
 					addedcomp.setBusyTime(activities.get(activities.size()-2));
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
 					temp1.setBusyTime(activities.get(activities.size()-1));
@@ -379,13 +379,13 @@ public class Todo {
 		return temp;
 	}
 
-	public static void setBusyMoveTime(Activity activity){
+	public void setBusyMoveTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
 			movelist[i] = activity;
 		}
 	}
 	
-	public static void removeBusyMoveTime(Activity activity){
+	public void removeBusyMoveTime(Activity activity){
 		for(int i = 0; i<movelist.length; i++){
 			if(movelist[i] != null && movelist[i].equals(activity)){
 				movelist[i] = null; 
