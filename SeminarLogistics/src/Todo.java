@@ -5,6 +5,7 @@ public class Todo {
 
 	private ArrayList<Activity> activities;
 
+	
 	ArrayList<Track> platforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
 
