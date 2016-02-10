@@ -182,6 +182,8 @@ public class Matching {
 		for (int i=0; i<nrdepartingcompositions; i++){
 			arcsdepartingcompositionsset[i] = new Arcs(departingcompositions.get(i),departingblocklist);
 		}
+		
+		z_ij = model1();
 
 	}
 
@@ -201,6 +203,16 @@ public class Matching {
 	 */
 	public ArrayList<Block> getDepartingBlockList(){
 		return departingblocklist;
+	}
+
+
+	/**
+	 * Returns z_ij (matchings
+	 * 
+	 * @return z
+	 */
+	public boolean[][] getZ(){
+		return z_ij;
 	}
 
 
@@ -257,30 +269,20 @@ public class Matching {
 		return blocklist;
 	}
 
-
+	/**
+	 * CPLEX model that calculates the optimal matching
+	 * 
+	 * @return z[i][j]
+	 */
 	@SuppressWarnings("unchecked")
-	public void model1(){
-		int nrnodes = 4;
-		int nrdepnodes = nrnodes-1;
+	public boolean[][] model1(){
 		int Q = 1; //Penalty for splitting
-
-		//		ArrayList<IloNumVar[][]> u = null; 
-		//		ArrayList<IloLinearNumExpr[]> UsedArcsRow = null;
-		//		ArrayList<IloLinearNumExpr[]> UsedArcsCol = null;
 
 		try {	
 			// define new model
 			IloCplex cplex = new IloCplex();
 
 			// variables
-
-			//			for(int j = 0; j< arrivingcompositions.size(); j++){
-			//				u.add(new IloNumVar[nrdepnodes][]);
-			//				for(int i = 0; i < nrnodes; i++) {
-			//					u.get(j)[i] = cplex.boolVarArray(nrnodes);
-			//				}
-			//			}
-
 			IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
 			IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
 
@@ -289,126 +291,6 @@ public class Matching {
 				z[i] = cplex.boolVarArray(departingblocklist.size());
 			}
 
-
-			/* EXAMPLES
-			 * 
-			 * //Two dimensional x_ij
-			 * IloNumVar [][] x = new IloNumVar[n][];
-			 * for(int i<0;i<n.;i++){
-			 * x[i] = cplex.numVarArray(m,0,Double.MAX_VALUE);
-			 * }
-			 * 
-			 * boolean variables
-			 * IloNumVar x = cplex.boolVar("X");
-			 * IloNumVar y = cplex.boolVar("Y");
-			 * 
-			 * double variables
-			 * IloNumVar x = cplex.boolVar(0,Double.MAX_VALUE,"X");
-			 * IloNumVar y = cplex.numVar(0,Double.MAX_VALUE, "Y");
-			 * */
-
-			// expressions			
-			//			for(int k = 0; k< arrivingcompositions.size(); k++){
-			//				if(arrivingcompositions.get(k).getSize()==1){
-			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-			//					for(int j = 0; j<nrnodes; j++){
-			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrdepnodes; i++){
-			//							if(j==3 && i==0){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else{
-			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//					for(int j = 0; j<nrdepnodes; j++){
-			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrnodes; i++){
-			//							if (i==3&&j==0){
-			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else{
-			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//				}
-			//				else if(arrivingcompositions.get(k).getSize()==2){
-			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-			//					for(int j = 0; j<nrnodes; j++){
-			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrdepnodes; i++){
-			//							if(j==3 && i==0){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else{
-			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//					for(int j = 0; j<nrdepnodes; j++){
-			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrnodes; i++){
-			//							if (i==3&&j==0){
-			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
-			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else{
-			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//				}
-			//				else if(arrivingcompositions.get(k).getSize()==3){
-			//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
-			//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
-			//					for(int j = 0; j<nrnodes; j++){
-			//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrdepnodes; i++){
-			//							if(j==3 && i==0){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
-			//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else{
-			//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//					for(int j = 0; j<nrdepnodes; j++){
-			//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
-			//						for(int i = 0; i<nrnodes; i++){
-			//							if (i==3&&j==0){
-			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
-			//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
-			//							}
-			//							else if(((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
-			//
-			//							}
-			//							else{
-			//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
-			//							}
-			//						}
-			//					}
-			//				}
-			//				else{
-			//
-			//				}
-			//			}
 			//expressions for constraints(1)
 			IloLinearNumExpr[] arcsoutoforigin1 = new IloLinearNumExpr[arrivingcompositions.size()];
 			for (int t = 0; t<arrivingcompositions.size(); t++){
@@ -439,14 +321,12 @@ public class Matching {
 							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
 								intermediatearcs1[t].get(h).addTerm(1.0, u[i]);
 								count1 ++;
-								break;
 							}
 						}
 						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
 							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
 								intermediatearcs1[t].get(h).addTerm(-1.0, u[i]);
 								count2 ++;
-								break;
 							}
 						}
 						if (count1 >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodearrivingcompositionsset[t][0].getBlocks().length){
@@ -455,7 +335,7 @@ public class Matching {
 					}
 				}
 			}
-			
+
 			//expressions for constraints(4)
 			IloLinearNumExpr[] arcsoutoforigin2 = new IloLinearNumExpr[departingcompositions.size()];
 			for (int t = 0; t<departingcompositions.size(); t++){
@@ -486,14 +366,12 @@ public class Matching {
 							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
 								intermediatearcs2[t].get(h).addTerm(1.0, v[i]);
 								count1 ++;
-								break;
 							}
 						}
 						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
 							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
 								intermediatearcs2[t].get(h).addTerm(-1.0, v[i]);
 								count2 ++;
-								break;
 							}
 						}
 						if (count1 >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodedepartingcompositionsset[t][0].getBlocks().length){
@@ -533,50 +411,20 @@ public class Matching {
 			IloLinearNumExpr[] weightexpr = new IloLinearNumExpr[arrivingblocklist.size()];
 			for (int i =0; i<arrivingblocklist.size(); i++){
 				weightexpr[i] = cplex.linearNumExpr();
-				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength;
-				//TODO ^werkt dit zo?? moet dit niet met addterm? (weet niet hoe dat moet met een constante M
+				weightexpr[i].setConstant(Matching.M+Matching.minplatformlength);
+				weightexpr[i].addTerm(Matching.M, u[i]);
+				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength = Matching.M+Matching.minplatformlength - Matching.M*u[i]
 			}
-			
+
 			IloLinearNumExpr objective = cplex.linearNumExpr();
 			for (int i = 1; i<arrivingblocklist.size(); i++){
 				objective.addTerm(Q, u[i]);
 			}
 
-			//			IloLinearNumExpr objective = cplex.linearNumExpr();
-			//			for(int k = 0; k<arrivingcompositions.size(); k++){
-			//				for(int j = 0; j<nrnodes; j++){
-			//					for(int i = 0; i<nrdepnodes; i++ ){
-			//						objective.addTerm(Q, u.get(k)[i][j]);
-			//					}
-			//				}
-			//			}
-			/* EXAMPLES 
-			 * IloLinearNumExpr objective = cplex.linearNumExpr();
-			 * objective.addTerm(13,x);
-			 * objective.addTerm(15,y);
-			 * 
-			 * for(i=0;i<u.getSize();i++){
-			 * objective.addTerm(Q,u[i]);
-			 * for(j=0;j<z.getSize();j++){
-			 * objective.addTerm(w[i][j], z[i][j]);
-			 * }
-			 * }
-
-			 */
 
 			// define objective 
 			cplex.addMinimize(objective);
 
-			// define constraints. the amount of constraints can be reduced though!
-			//			for (int k=0;k<arrivingcompositions.size();k++){
-			//				cplex.addEq(UsedArcsCol.get(k)[0],  1);
-			//				cplex.addEq(UsedArcsCol.get(k)[1], UsedArcsRow.get(k)[1]);
-			//				cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
-			//			}
-			//
-			//			for (int k=0;k<arrivingcompositions.size();k++){
-			//
-			//			}
 
 			//constraints (1)
 			for (int t=0; t<arrivingcompositions.size();t++){
@@ -590,7 +438,7 @@ public class Matching {
 					cplex.addEq(intermediatearcs1[t].get(h), 0);
 				}
 			}
-			
+
 			//constraints (4)
 			for (int t=0; t<departingcompositions.size();t++){
 				cplex.addEq(arcsoutoforigin2[t], 1);
@@ -615,17 +463,9 @@ public class Matching {
 			}
 
 			//constraints (length)
-			//TODO: check: hoeft toch alleen voor u_i gedefinieerd, want dan automatisch ook voor v_j?
 			for (int i = 0; i<arrivingblocklist.size(); i++){
 				cplex.addLe(arrivingblocklist.get(i).getLength(),weightexpr[i]);
 			}
-
-			//cplex.addEq(cplex.sum(arg0), 1)
-			/* EXAMPLES
-				cplex.addGe(cplex.sum(cplex.prod(60,x),cplex.prod(60, y)), 30);
-				cplex.addGe(cplex.sum(cplex.prod(12,x),cplex.prod(6, y)), 3);
-				cplex.addGe(cplex.sum(cplex.prod(10,x),cplex.prod(30, y)), 9);
-			 */
 
 			cplex.setParam(IloCplex.Param.Simplex.Display, 1);
 
@@ -643,6 +483,7 @@ public class Matching {
 		catch (IloException exc){
 			exc.printStackTrace();
 		}
+		return z_ij;
 	}
 
 }
@@ -833,7 +674,7 @@ class ArcsIncoming {
 			arcs[i][1]=node;
 			for (int j = 0; j<blocklist.size(); j++){
 				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==(i-1) && blocklist.get(j).getCutPosition2()==node){
-					blocks[j]=blocklist.get(j);
+					blocks[i]=blocklist.get(j);
 					break;
 				}
 			}
@@ -918,7 +759,7 @@ class ArcsOutgoing {
 			arcs[i][1]=node+i+1;
 			for (int j = 0; j<blocklist.size(); j++){
 				if (blocklist.get(j).getOriginComposition() == parent && blocklist.get(j).getCutPosition1()==node && blocklist.get(j).getCutPosition2()==node+i+1){
-					blocks[j]=blocklist.get(j);
+					blocks[i]=blocklist.get(j);
 					break;
 				}
 			}
@@ -1151,6 +992,120 @@ class CompatibleArrivingBlocks {
 	}
 }
 
+
+// expressions			
+//			for(int k = 0; k< arrivingcompositions.size(); k++){
+//				if(arrivingcompositions.get(k).getSize()==1){
+//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+//					for(int j = 0; j<nrnodes; j++){
+//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrdepnodes; i++){
+//							if(j==3 && i==0){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else{
+//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//					for(int j = 0; j<nrdepnodes; j++){
+//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrnodes; i++){
+//							if (i==3&&j==0){
+//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else{
+//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//				}
+//				else if(arrivingcompositions.get(k).getSize()==2){
+//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+//					for(int j = 0; j<nrnodes; j++){
+//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrdepnodes; i++){
+//							if(j==3 && i==0){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else{
+//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//					for(int j = 0; j<nrdepnodes; j++){
+//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrnodes; i++){
+//							if (i==3&&j==0){
+//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else{
+//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//				}
+//				else if(arrivingcompositions.get(k).getSize()==3){
+//					UsedArcsRow.add(new IloLinearNumExpr[nrnodes]);
+//					UsedArcsCol.add(new IloLinearNumExpr[nrdepnodes]);
+//					for(int j = 0; j<nrnodes; j++){
+//						UsedArcsRow.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrdepnodes; i++){
+//							if(j==3 && i==0){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((j==1||j==3)&&i==0)||(j==3&&i==1)){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((j==1||j==2||j==3)&&i==0)||((j==2||j==3)&&i==1)||(j==3&&i==2)){
+//								UsedArcsRow.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else{
+//								UsedArcsRow.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//					for(int j = 0; j<nrdepnodes; j++){
+//						UsedArcsCol.get(k)[j] = cplex.linearNumExpr();
+//						for(int i = 0; i<nrnodes; i++){
+//							if (i==3&&j==0){
+//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((i==1||i==3)&&j==0)||(i==3&&j==1)){
+//								UsedArcsCol.get(k)[j].addTerm(1.0, u.get(k)[i][j]);
+//							}
+//							else if(((i==1||i==2||i==3)&&j==0)||((i==2||i==3)&&j==1)||(i==3&&j==2)){
+//
+//							}
+//							else{
+//								UsedArcsCol.get(k)[j].addTerm(0.0, u.get(k)[i][j]);
+//							}
+//						}
+//					}
+//				}
+//				else{
+//
+//				}
+//			}
+
+//define constraints. the amount of constraints can be reduced though!
+//			for (int k=0;k<arrivingcompositions.size();k++){
+//				cplex.addEq(UsedArcsCol.get(k)[0],  1);
+//				cplex.addEq(UsedArcsCol.get(k)[1], UsedArcsRow.get(k)[1]);
+//				cplex.addEq(UsedArcsCol.get(k)[2], UsedArcsRow.get(k)[2]);
+//			}
+//
+//			for (int k=0;k<arrivingcompositions.size();k++){
+//
+//			}
 
 
 
