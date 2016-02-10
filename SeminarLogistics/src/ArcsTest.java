@@ -1,12 +1,14 @@
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ArcsTest {
+@SuppressWarnings("serial")
+public class ArcsTest implements Serializable{
 	private Train a;
 	private Train b;
 	private Train c;
@@ -22,8 +24,23 @@ public class ArcsTest {
 	private int[][] k;
 	private int[][] l;
 	private int[][] m;
+	private ArrayList<Composition> arrivingcompositions;
+	private ArrayList<Block> arrivingblocklist;
+	private Block o;
+	private Block p;
+	private Block q;
+	private Block r;
+	private Block s;
+	private Block t;
+	private Block u;
+	private Block v;
+	private Block w;
+	private Block ww;
+	private Block[] gg;
+	private Block[] hh;
+	private Block[] ii;
 
-	@SuppressWarnings("serial")
+
 	@Before
 	public void setUp() {
 		try {
@@ -38,9 +55,36 @@ public class ArcsTest {
 			e = new Composition(new ArrayList<Train>(){{add(b);add(c);}},0.3,-1);
 			f = new Composition(new ArrayList<Train>(){{add(x);add(y);add(z);}},0.5,-1);
 			
-			g = new Arcs(d);
-			h = new Arcs(e);
-			i = new Arcs(f);
+			arrivingcompositions = new ArrayList<Composition>(){{add(d); add(f); add(e);}};
+			arrivingblocklist = Matching.makeblocks(arrivingcompositions);
+			o = arrivingblocklist.get(0); //complete d
+			p = arrivingblocklist.get(1); //complete f
+			q = arrivingblocklist.get(2); //x
+			r = arrivingblocklist.get(3); //y,z
+			s = arrivingblocklist.get(4); //y
+			t = arrivingblocklist.get(5); //z
+			u = arrivingblocklist.get(6); //x,y
+			v = arrivingblocklist.get(7); //complete e
+			w = arrivingblocklist.get(8); //b
+			ww = arrivingblocklist.get(9); //c
+			
+			g = new Arcs(d,arrivingblocklist);
+			h = new Arcs(e,arrivingblocklist);
+			i = new Arcs(f,arrivingblocklist);
+			
+			gg = new Block[1];
+			gg[0]=o;
+			hh = new Block[3];
+			hh[0]=v;
+			hh[1]=w;
+			hh[2]=ww;
+			ii = new Block[6];
+			ii[0]=p;
+			ii[1]=q;
+			ii[2]=r;
+			ii[3]=s;
+			ii[4]=t;
+			ii[5]=u;
 			
 			k = new int[1][2];
 			k[0][0]=-1;
@@ -68,7 +112,7 @@ public class ArcsTest {
 			m[5][0]=1;
 			m[5][1]=2;
 			
-		} catch (IOException e) {
+		} catch (IOException | IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 	}
@@ -82,6 +126,11 @@ public class ArcsTest {
 		assertArrayEquals(k,g.getArcs());
 		assertArrayEquals(l,h.getArcs());
 		assertArrayEquals(m,i.getArcs());
+		
+		assertArrayEquals(gg,g.getBlocks());
+		assertArrayEquals(hh,h.getBlocks());
+		assertArrayEquals(ii,i.getBlocks());
+		
 	}
 	
 	@Test
@@ -96,6 +145,13 @@ public class ArcsTest {
 		assertArrayEquals(k,g.getArcs());
 		assertArrayEquals(l,h.getArcs());
 		assertArrayEquals(m,i.getArcs());       
+	}
+	
+	@Test
+	public void testGetBlocks(){
+		assertArrayEquals(gg,g.getBlocks());
+		assertArrayEquals(hh,h.getBlocks());
+		assertArrayEquals(ii,i.getBlocks());
 	}
 	
 }

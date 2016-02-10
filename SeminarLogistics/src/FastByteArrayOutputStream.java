@@ -1,7 +1,5 @@
 import java.io.OutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
 
 /**
  * ByteArrayOutputStream implementation that doesn't synchronize methods
