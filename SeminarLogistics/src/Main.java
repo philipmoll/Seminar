@@ -20,12 +20,12 @@ public class Main {
 	{
 
 		try {
-			System.out.println("hier ben ik");
+			//System.out.println("hier ben ik");
 			//int user = 1; //Friso
 			int user = 2; //Floor
 			//int user = 3; //Robin
 			//int user = 4; //Philip
-			
+
 			Matrix compositiondata;
 			Matrix compositiondata2;
 			Matrix compositiondata3;
@@ -62,7 +62,7 @@ public class Main {
 				trackdata = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
 				connections = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
 			}
-			
+
 			Track[] tracks =  readInTracks(trackdata);
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
@@ -77,33 +77,54 @@ public class Main {
 				Composition temp = arrivingcompositions.get(i);
 				temp.setArrivaltime(arrivingtimes.get(i));
 				arrivingcompositionswitharrtime.add(temp);
-				
-				
+
 			}
-			
-					ArrayList<Block> blocklist = new ArrayList<Block>();
-					try {
-						blocklist = Matching.makeblocks(arrivingcompositionswitharrtime);
-					} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+
+			ArrayList<Block> blocklist = new ArrayList<Block>();
+			try {
+				blocklist = Matching.makeblocks(arrivingcompositionswitharrtime);
+			} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
-			
+
 			//while(!EventList.getEmpty() || !Todo.getEmpty()){
-				
+
 			//}
 
 
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-            ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
-            ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
-			
+			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
+			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
+
 			for (int i = 0; i< leavingcompositions.size();i++){
 				leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i));
 			}
-            
+
+			ArrayList<Composition> arrival1 = new ArrayList<>();
+			ArrayList<Composition> departure1 = new ArrayList<>();
+			for (int i = 0; i<6; i++){
+				arrival1.add(arrivingcompositionswitharrtime.get(i));
+			}
+			for (int j = 0; j<7; j++){
+				departure1.add(leavingcompositions.get(j));
+			}
+			
+			Matching onzeMatching = new Matching(arrival1,departure1);
+		
+//			System.out.println(onzeMatching.getObjectiveValue());
+//			int teller = 0;
+//			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){
+//				for (int j = 0; j<onzeMatching.getDepartingBlockList().size(); j++){
+//					System.out.println("z("+i+","+j+") = "+onzeMatching.getZ()[i][j]);
+//					if (onzeMatching.getZ()[i][j] == true){
+//						teller ++;
+//					}
+//				}
+//			}
+//			System.out.println("teller: "+teller);
 
 
 			//This is how we should write a couple function, N.B.: with the .remove function.
@@ -116,14 +137,9 @@ public class Main {
 			//This is how we should write a decouple function, N.B.: with the.add function.
 			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (MatrixIncompleteException e) {
+		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | TrackNotFreeException | MisMatchException | CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		//TODO: catch IndexOutOfBoundsException, TrackNotFreeException, MisMatchException
 	}
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1, Matrix compositiondata, Matrix compositiondata3){
 		int abcd = 0;

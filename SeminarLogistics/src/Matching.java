@@ -12,9 +12,10 @@ public class Matching {
 	private ArrayList<Block> arrivingblocklist; //set I
 	private ArrayList<Block> departingblocklist; //set J
 	private boolean[][] z_ij; //matchings i and j
+	private double objectivevalue; //objectivevalue
 
-	private ArrayList<Composition> arrivingcompositions;
-	private ArrayList<Composition> departingcompositions;
+	//private ArrayList<Composition> arrivingcompositions;
+	//private ArrayList<Composition> departingcompositions;
 	private CompatibleArrivingBlocks[] compatiblearrivingblocksset;
 	private CompatibleDepartingBlocks[] compatibledepartingblocksset;
 	private Arcs[] arcsarrivingcompositionsset;
@@ -27,31 +28,31 @@ public class Matching {
 	private IntermediateNodes[] intermediatenodesdepartingcompositionsset;
 
 	/**
-	* Constructor method for a matching
-	* 
-	* T_a: 	arrivingcompositions
-	* T_d: 	departingcompositions
-	* I:		arrivingblocklist
-	* J:		departingblocklist
-	* I_j:		compatiblearrivingblocksset[j]
-	* J_i: 	compatibledepartingblockset[i]
-	* A^t_a: 	arcsarrivingcompositionsset[t] (merge with A^t_d)
-	* A^t_d:	arcsdepartingcompositionsset[t] (merge with A^t_a)
-	* A_h^t+_a:arcsoutofnodearrivingcompositionsset[t][h] (merge with A_h^t+_d)
-	* A_h^t+_d:arcsoutofnodedepartingcompositionsset[t][h] (merge with A_h^t+_a)
-	* A_h^t-_a:arcsintonodearrivingcompositionsset[t][h] (merge with A_h^t-_d)
-	* A_h^t-_d:arcsintonodedepartingcompositionsset[t][h] (merge with A_h^t-_a)
-	* C^-_t_a:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_d)
-	* C^-_t_d:	intermediatenodesdepartingcompositionsset[t] (merge with C^-_t_a)
-	* 
-	* @param arrivingcompositions
-	* @param departingcompositions
-	* @throws IndexOutOfBoundsException
-	* @throws MisMatchException
-	* @throws TrackNotFreeException
-	* @throws IOException
-	* @throws CloneNotSupportedException
-	*/
+	 * Constructor method for a matching
+	 * 
+	 * T_a: 	arrivingcompositions
+	 * T_d: 	departingcompositions
+	 * I:		arrivingblocklist
+	 * J:		departingblocklist
+	 * I_j:		compatiblearrivingblocksset[j]
+	 * J_i: 	compatibledepartingblockset[i]
+	 * A^t_a: 	arcsarrivingcompositionsset[t] (merge with A^t_d)
+	 * A^t_d:	arcsdepartingcompositionsset[t] (merge with A^t_a)
+	 * A_h^t+_a:arcsoutofnodearrivingcompositionsset[t][h] (merge with A_h^t+_d)
+	 * A_h^t+_d:arcsoutofnodedepartingcompositionsset[t][h] (merge with A_h^t+_a)
+	 * A_h^t-_a:arcsintonodearrivingcompositionsset[t][h] (merge with A_h^t-_d)
+	 * A_h^t-_d:arcsintonodedepartingcompositionsset[t][h] (merge with A_h^t-_a)
+	 * C^-_t_a:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_d)
+	 * C^-_t_d:	intermediatenodesdepartingcompositionsset[t] (merge with C^-_t_a)
+	 * 
+	 * @param arrivingcompositions
+	 * @param departingcompositions
+	 * @throws IndexOutOfBoundsException
+	 * @throws MisMatchException
+	 * @throws TrackNotFreeException
+	 * @throws IOException
+	 * @throws CloneNotSupportedException
+	 */
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
@@ -59,9 +60,9 @@ public class Matching {
 		//set J
 		departingblocklist = makeblocks(departingcompositions);
 
-		//set T_a
-		this.arrivingcompositions = arrivingcompositions;
-		this.departingcompositions = departingcompositions;
+		//set T_a and T_d
+		//this.arrivingcompositions = arrivingcompositions;
+		//this.departingcompositions = departingcompositions;
 
 		int nrarrivingblocks = arrivingblocklist.size();
 		int nrdepartingblocks = departingblocklist.size();
@@ -183,101 +184,10 @@ public class Matching {
 		for (int i=0; i<nrdepartingcompositions; i++){
 			arcsdepartingcompositionsset[i] = new Arcs(departingcompositions.get(i),departingblocklist);
 		}
-		
-		z_ij = model1();
 
-	}
-
-	/**
-	* Returns arriving block list
-	* 
-	* @return arrivingblocklist
-	*/
-	public ArrayList<Block> getArrivingBlockList(){
-		return arrivingblocklist;
-	}
-
-	/**
-	* Returns departing block list
-	* 
-	* @return departingblocklist
-	*/
-	public ArrayList<Block> getDepartingBlockList(){
-		return departingblocklist;
-	}
-
-
-	/**
-	* Returns z_ij (matchings
-	* 
-	* @return z
-	*/
-	public boolean[][] getZ(){
-		return z_ij;
-	}
-
-
-	/** Find set of all possible parts for all arriving or departing trains
-	* @return blocklist : complete set of blocks.
-	* @throws CloneNotSupportedException 
-	* */
-	public static ArrayList<Block> makeblocks(ArrayList<Composition>compositionlist) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{ 
-		ArrayList<Block> blocklist = new ArrayList<>();
-		for(int i = 0; i<compositionlist.size();i++){
-			Composition currentcomposition = compositionlist.get(i);
-			//deepcopy currentcompositiion, but make sure the trainlist still points to the original trains
-			Composition temp = (Composition) DeepCopy.copy(currentcomposition);
-			temp.coupleComposition(currentcomposition);
-			temp = temp.decoupleComposition(currentcomposition.getSize()-1);
-
-			//throw exception if composition consists of more than 3 trains
-			if (currentcomposition.getSize()>=4){
-				throw new IndexOutOfBoundsException("Composition with index "+i+" has length "+temp.getSize()+" and for function makeblocks in Matching a max of 3 is assumed.");
-			}
-			ArrayList<Train> trainlist = currentcomposition.getTrainList();
-			Block test = new Block(trainlist,currentcomposition.getArrivaltime(),currentcomposition.getDeparturetime(),currentcomposition,-1,currentcomposition.getSize()-1);
-			blocklist.add(test);
-			//System.out.println("trainlist blocklist 0"+blocklist.get(0).getTrainList());
-			//System.out.println("size temp = "+temp.getSize()+" size trainlist = "+temp.getTrainList().size());
-			if(currentcomposition.getSize()==2){
-				Composition temp2 = temp.decoupleComposition(0);
-				ArrayList<Train> trainlist2 = temp.getTrainList();
-				ArrayList<Train> trainlist3 = temp2.getTrainList();
-				blocklist.add(new Block(trainlist2,temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
-				blocklist.add(new Block(trainlist3,temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,1));
-			}
-			else if(currentcomposition.getSize()==3){
-				Composition temp2 = temp.decoupleComposition(0);
-				//save current version of temp2 as temp5
-				Composition temp5 = (Composition) DeepCopy.copy(temp2);
-				temp5.coupleComposition(temp2);
-				temp5 = temp5.decoupleComposition(temp2.getSize()-1);
-				//temp now final, will not be changed anymore so can be used:
-				blocklist.add(new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
-				blocklist.add(new Block(temp5.getTrainList(),temp5.getArrivaltime(),temp5.getDeparturetime(),currentcomposition,0,2));
-				Composition temp3 = temp2.decoupleComposition(0);
-				//temp2 now final, will not be changed anymore so can be used:
-				blocklist.add(new Block(temp2.getTrainList(),temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,1));
-				//temp3 now final, will not be changed anymore so can be used:
-				blocklist.add(new Block(temp3.getTrainList(),temp3.getArrivaltime(),temp3.getDeparturetime(),currentcomposition,1,2));
-				Composition temp4 = (Composition) DeepCopy.copy(temp);
-				temp4.coupleComposition(temp);
-				temp4 = temp4.decoupleComposition(0);
-				temp4.coupleComposition(temp2);
-				blocklist.add(new Block(temp4.getTrainList(),temp4.getArrivaltime(),temp4.getDeparturetime(),currentcomposition,-1,1));
-			}
-		}
-		return blocklist;
-	}
-
-	/**
-	* CPLEX model that calculates the optimal matching
-	* 
-	* @return z[i][j]
-	*/
-	private boolean[][] model1(){
+		//z_ij = model1();
 		int Q = 1; //Penalty for splitting
-		boolean[][] zij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
+		z_ij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
 		try {	
 			// define new model
 			IloCplex cplex = new IloCplex();
@@ -310,9 +220,9 @@ public class Matching {
 			}
 
 			//expressions for constraints(2)
-			IloLinearNumExpr[][] intermediatearcs1 = new IloLinearNumExpr[arrivingcompositions.size()][2]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			IloLinearNumExpr[][] intermediatearcs1 = new IloLinearNumExpr[arrivingcompositions.size()][2];
 			for (int t = 0; t<arrivingcompositions.size(); t++){
-				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
+				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ 
 					intermediatearcs1[t][h]=cplex.linearNumExpr();
 					for (int i = 0; i<arrivingblocklist.size(); i++){
 						int count1 = 0;
@@ -355,9 +265,9 @@ public class Matching {
 			}
 
 			//expressions for constraints(5)
-			IloLinearNumExpr[][] intermediatearcs2 = new IloLinearNumExpr[departingcompositions.size()][2]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			IloLinearNumExpr[][] intermediatearcs2 = new IloLinearNumExpr[departingcompositions.size()][2];
 			for (int t = 0; t<departingcompositions.size(); t++){
-				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
+				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){ 
 					intermediatearcs2[t][h]=cplex.linearNumExpr();
 					for (int i = 0; i<departingblocklist.size(); i++){
 						int count1 = 0;
@@ -410,7 +320,7 @@ public class Matching {
 							term = 1.0;
 							break;
 						}
-						
+
 					}
 					summatchingsmade7[j].addTerm(term,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
 				}
@@ -489,18 +399,341 @@ public class Matching {
 				for (int j=0;j<departingblocklist.size();j++){
 					//System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
 					if (cplex.getValue(z[i][j])==1){
-						zij[i][j] = true;
+						z_ij[i][j] = true;
 					}
 				}
 			}
+			objectivevalue = cplex.getObjValue();
 			cplex.end();
-			return zij;
 		}
 		catch (IloException exc){
 			exc.printStackTrace();
 		} 
-		return zij;
+
 	}
+
+	/**
+	 * Returns arriving block list
+	 * 
+	 * @return arrivingblocklist
+	 */
+	public ArrayList<Block> getArrivingBlockList(){
+		return arrivingblocklist;
+	}
+
+	/**
+	 * Returns departing block list
+	 * 
+	 * @return departingblocklist
+	 */
+	public ArrayList<Block> getDepartingBlockList(){
+		return departingblocklist;
+	}
+
+
+	/**
+	 * Returns z_ij (matchings)
+	 * 
+	 * @return z
+	 */
+	public boolean[][] getZ(){
+		return z_ij;
+	}
+
+	/**
+	 * Returns objective value of matching problem (number of blocks used)
+	 * 
+	 * @return
+	 */
+	public double getObjectiveValue(){
+		return objectivevalue;
+	}
+
+
+	/** Find set of all possible parts for all arriving or departing trains
+	 * @return blocklist : complete set of blocks.
+	 * @throws CloneNotSupportedException 
+	 * */
+	public static ArrayList<Block> makeblocks(ArrayList<Composition>compositionlist) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{ 
+		ArrayList<Block> blocklist = new ArrayList<>();
+		for(int i = 0; i<compositionlist.size();i++){
+			Composition currentcomposition = compositionlist.get(i);
+			//deepcopy currentcompositiion, but make sure the trainlist still points to the original trains
+			Composition temp = (Composition) DeepCopy.copy(currentcomposition);
+			temp.coupleComposition(currentcomposition);
+			temp = temp.decoupleComposition(currentcomposition.getSize()-1);
+
+			//throw exception if composition consists of more than 3 trains
+			if (currentcomposition.getSize()>=4){
+				throw new IndexOutOfBoundsException("Composition with index "+i+" has length "+temp.getSize()+" and for function makeblocks in Matching a max of 3 is assumed.");
+			}
+			ArrayList<Train> trainlist = currentcomposition.getTrainList();
+			Block test = new Block(trainlist,currentcomposition.getArrivaltime(),currentcomposition.getDeparturetime(),currentcomposition,-1,currentcomposition.getSize()-1);
+			blocklist.add(test);
+			//System.out.println("trainlist blocklist 0"+blocklist.get(0).getTrainList());
+			//System.out.println("size temp = "+temp.getSize()+" size trainlist = "+temp.getTrainList().size());
+			if(currentcomposition.getSize()==2){
+				Composition temp2 = temp.decoupleComposition(0);
+				ArrayList<Train> trainlist2 = temp.getTrainList();
+				ArrayList<Train> trainlist3 = temp2.getTrainList();
+				blocklist.add(new Block(trainlist2,temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
+				blocklist.add(new Block(trainlist3,temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,1));
+			}
+			else if(currentcomposition.getSize()==3){
+				Composition temp2 = temp.decoupleComposition(0);
+				//save current version of temp2 as temp5
+				Composition temp5 = (Composition) DeepCopy.copy(temp2);
+				temp5.coupleComposition(temp2);
+				temp5 = temp5.decoupleComposition(temp2.getSize()-1);
+				//temp now final, will not be changed anymore so can be used:
+				blocklist.add(new Block(temp.getTrainList(),temp.getArrivaltime(),temp.getDeparturetime(),currentcomposition,-1,0));
+				blocklist.add(new Block(temp5.getTrainList(),temp5.getArrivaltime(),temp5.getDeparturetime(),currentcomposition,0,2));
+				Composition temp3 = temp2.decoupleComposition(0);
+				//temp2 now final, will not be changed anymore so can be used:
+				blocklist.add(new Block(temp2.getTrainList(),temp2.getArrivaltime(),temp2.getDeparturetime(),currentcomposition,0,1));
+				//temp3 now final, will not be changed anymore so can be used:
+				blocklist.add(new Block(temp3.getTrainList(),temp3.getArrivaltime(),temp3.getDeparturetime(),currentcomposition,1,2));
+				Composition temp4 = (Composition) DeepCopy.copy(temp);
+				temp4.coupleComposition(temp);
+				temp4 = temp4.decoupleComposition(0);
+				temp4.coupleComposition(temp2);
+				blocklist.add(new Block(temp4.getTrainList(),temp4.getArrivaltime(),temp4.getDeparturetime(),currentcomposition,-1,1));
+			}
+		}
+		return blocklist;
+	}
+
+	//	/**
+	//	* CPLEX model that calculates the optimal matching
+	//	* 
+	//	* @return z[i][j]
+	//	*/
+	//	private boolean[][] model1(){
+	//		int Q = 1; //Penalty for splitting
+	//		boolean[][] zij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
+	//		try {	
+	//			// define new model
+	//			IloCplex cplex = new IloCplex();
+	//
+	//			// variables
+	//			IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
+	//			IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
+	//
+	//			IloNumVar[][] z = new IloNumVar[arrivingblocklist.size()][];
+	//			for (int i = 0; i<arrivingblocklist.size(); i++){
+	//				z[i] = cplex.boolVarArray(departingblocklist.size());
+	//			}
+	//
+	//			//expressions for constraints(1)
+	//			IloLinearNumExpr[] arcsoutoforigin1 = new IloLinearNumExpr[arrivingcompositions.size()];
+	//			for (int t = 0; t<arrivingcompositions.size(); t++){
+	//				arcsoutoforigin1[t]=cplex.linearNumExpr();
+	//				for (int i = 0; i<arrivingblocklist.size(); i++){
+	//					int count = 0;
+	//					for (int b = 0; b<arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length; b++){
+	//						if (arcsoutofnodearrivingcompositionsset[t][0].getBlocks()[b] == arrivingblocklist.get(i)){
+	//							arcsoutoforigin1[t].addTerm(1.0, u[i]);
+	//							count ++;
+	//						}
+	//					}
+	//					if (count >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length){
+	//						break;
+	//					}
+	//				}
+	//			}
+	//
+	//			//expressions for constraints(2)
+	//			IloLinearNumExpr[][] intermediatearcs1 = new IloLinearNumExpr[arrivingcompositions.size()][2];
+	//			for (int t = 0; t<arrivingcompositions.size(); t++){
+	//				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ 
+	//					intermediatearcs1[t][h]=cplex.linearNumExpr();
+	//					for (int i = 0; i<arrivingblocklist.size(); i++){
+	//						int count1 = 0;
+	//						int count2 = 0;
+	//						for (int b1 = 0; b1<arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks().length; b1++){
+	//							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
+	//								intermediatearcs1[t][h].addTerm(1.0, u[i]);
+	//								count1 ++;
+	//							}
+	//						}
+	//						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
+	//							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
+	//								intermediatearcs1[t][h].addTerm(-1.0, u[i]);
+	//								count2 ++;
+	//							}
+	//						}
+	//						if (count1 >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodearrivingcompositionsset[t][0].getBlocks().length){
+	//							break;
+	//						}
+	//					}
+	//				}
+	//			}
+	//
+	//			//expressions for constraints(4)
+	//			IloLinearNumExpr[] arcsoutoforigin2 = new IloLinearNumExpr[departingcompositions.size()];
+	//			for (int t = 0; t<departingcompositions.size(); t++){
+	//				arcsoutoforigin2[t]=cplex.linearNumExpr();
+	//				for (int i = 0; i<departingblocklist.size(); i++){
+	//					int count = 0;
+	//					for (int b = 0; b<arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length; b++){
+	//						if (arcsoutofnodedepartingcompositionsset[t][0].getBlocks()[b] == departingblocklist.get(i)){
+	//							arcsoutoforigin2[t].addTerm(1.0, v[i]);
+	//							count ++;
+	//						}
+	//					}
+	//					if (count >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length){
+	//						break;
+	//					}
+	//				}
+	//			}
+	//
+	//			//expressions for constraints(5)
+	//			IloLinearNumExpr[][] intermediatearcs2 = new IloLinearNumExpr[departingcompositions.size()][2];
+	//			for (int t = 0; t<departingcompositions.size(); t++){
+	//				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){
+	//					intermediatearcs2[t][h]=cplex.linearNumExpr();
+	//					for (int i = 0; i<departingblocklist.size(); i++){
+	//						int count1 = 0;
+	//						int count2 = 0;
+	//						for (int b1 = 0; b1<arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks().length; b1++){
+	//							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
+	//								intermediatearcs2[t][h].addTerm(1.0, v[i]);
+	//								count1 ++;
+	//							}
+	//						}
+	//						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
+	//							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
+	//								intermediatearcs2[t][h].addTerm(-1.0, v[i]);
+	//								count2 ++;
+	//							}
+	//						}
+	//						if (count1 >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodedepartingcompositionsset[t][0].getBlocks().length){
+	//							break;
+	//						}
+	//					}
+	//				}
+	//			}
+	//
+	//			//expressions for constraints (6)
+	//			IloLinearNumExpr[] summatchingsmade6 = new IloLinearNumExpr[arrivingblocklist.size()];
+	//			for (int i = 0; i<arrivingblocklist.size(); i++){
+	//				summatchingsmade6[i] = cplex.linearNumExpr();
+	//				for (int j = 0; j<departingblocklist.size(); j++){
+	//					double term = 0;
+	//					for (int k = 0; k<compatibledepartingblocksset[i].getCompatibleDepartingBlocks().size(); k++){
+	//						if (compatibledepartingblocksset[i].getCompatibleDepartingBlocks().get(k) == departingblocklist.get(j)){
+	//							term = 1;
+	//							break;
+	//						}
+	//					}
+	//					summatchingsmade6[i].addTerm(term, z[i][j]);
+	//				}
+	//			}
+	//
+	//
+	//			//expressions for constraints (7)
+	//			IloLinearNumExpr[] summatchingsmade7 = new IloLinearNumExpr[departingblocklist.size()];
+	//			for (int j = 0; j<departingblocklist.size(); j++){
+	//				summatchingsmade7[j] = cplex.linearNumExpr();
+	//				for (int i = 0; i<arrivingblocklist.size(); i++){
+	//					double term = 0;
+	//					for (int k = 0; k<compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().size(); k++){
+	//						if (compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().get(k) == arrivingblocklist.get(i)){
+	//							//System.out.println("j: "+j+" i: "+i+" k: "+k);
+	//							term = 1.0;
+	//							break;
+	//						}
+	//						
+	//					}
+	//					summatchingsmade7[j].addTerm(term,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
+	//				}
+	//			}
+	//			//expressions for constraints (8) (max blocklength)
+	//			IloLinearNumExpr[] weightexpr = new IloLinearNumExpr[arrivingblocklist.size()];
+	//			for (int i =0; i<arrivingblocklist.size(); i++){
+	//				weightexpr[i] = cplex.linearNumExpr();
+	//				weightexpr[i].setConstant(Matching.M+Matching.minplatformlength);
+	//				weightexpr[i].addTerm(Matching.M, u[i]);
+	//				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength = Matching.M+Matching.minplatformlength - Matching.M*u[i]
+	//			}
+	//
+	//			IloLinearNumExpr objective = cplex.linearNumExpr();
+	//			for (int i = 1; i<arrivingblocklist.size(); i++){
+	//				objective.addTerm(Q, u[i]);
+	//			}
+	//
+	//
+	//			// define objective 
+	//			cplex.addMinimize(objective);
+	//
+	//
+	//			//constraints (1)
+	//			for (int t=0; t<arrivingcompositions.size();t++){
+	//				cplex.addEq(arcsoutoforigin1[t], 1);
+	//			}
+	//
+	//			//constraints (2)
+	//			for (int t=0; t<arrivingcompositions.size();t++){
+	//				for (int h = 0; h<intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++)
+	//				{
+	//					cplex.addEq(intermediatearcs1[t][h], 0);
+	//				}
+	//			}
+	//
+	//			//constraints (4)
+	//			for (int t=0; t<departingcompositions.size();t++){
+	//				cplex.addEq(arcsoutoforigin2[t], 1);
+	//			}
+	//
+	//			//constraints (5)
+	//			for (int t=0; t<departingcompositions.size();t++){
+	//				for (int h = 0; h<intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++)
+	//				{
+	//					cplex.addEq(intermediatearcs2[t][h], 0);
+	//				}
+	//			}
+	//
+	//			//constraints (6)
+	//			for (int i=0;i<arrivingblocklist.size();i++){
+	//				cplex.addEq(summatchingsmade6[i],u[i]);
+	//			}
+	//
+	//			//constraints (7)
+	//			for (int j=0;j<departingblocklist.size();j++){
+	//				cplex.addEq(summatchingsmade7[j],v[j]); 
+	//			}
+	//
+	//			//constraints (length)
+	//			for (int i = 0; i<arrivingblocklist.size(); i++){
+	//				cplex.addLe(arrivingblocklist.get(i).getLength(),weightexpr[i]);
+	//			}
+	//
+	//			//cplex.setParam(IloCplex.Param.Simplex.Display, 1);
+	//
+	//
+	//			// solve
+	//			if(cplex.solve()){
+	//				System.out.println("obj = "+cplex.getObjValue());
+	//			}
+	//			else {
+	//				System.out.println("Model not solved");
+	//			}
+	//			for (int i=0;i<arrivingblocklist.size();i++){
+	//				for (int j=0;j<departingblocklist.size();j++){
+	//					//System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
+	//					if (cplex.getValue(z[i][j])==1){
+	//						zij[i][j] = true;
+	//					}
+	//				}
+	//			}
+	//			cplex.end();
+	//			return zij;
+	//		}
+	//		catch (IloException exc){
+	//			exc.printStackTrace();
+	//		} 
+	//		return zij;
+	//	}
 
 }
 
@@ -520,12 +753,12 @@ class Arcs {
 	private Block[] blocks;
 
 	/**
-	* Constructor for class Arcs
-	* 
-	* @param parent
-	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	* @throws IOException
-	*/
+	 * Constructor for class Arcs
+	 * 
+	 * @param parent
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	 * @throws IOException
+	 */
 	public Arcs(Composition parent, ArrayList<Block> blocklist) throws IOException{
 		this.parent = parent;
 		if (parent.getSize() != 1 && parent.getSize() != 2 && parent.getSize() != 3){
@@ -618,29 +851,29 @@ class Arcs {
 	}
 
 	/**
-	* Returns parent composition
-	* 
-	* @return parent
-	*/
+	 * Returns parent composition
+	 * 
+	 * @return parent
+	 */
 	public Composition getParent(){
 		return parent;
 	}
 
 	/**
-	* Returns arcs
-	* 
-	* @return arcs
-	*/
+	 * Returns arcs
+	 * 
+	 * @return arcs
+	 */
 	public int[][] getArcs(){
 		return arcs;
 	}
 
 
 	/**
-	* Returns blocks
-	* 
-	* @return blocks
-	*/
+	 * Returns blocks
+	 * 
+	 * @return blocks
+	 */
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -666,13 +899,13 @@ class ArcsIncoming {
 	private Block[] blocks;
 
 	/**
-	* Constructor for class ArcsIncoming
-	* 
-	* @param parent - Composition of which we want the incoming arcs
-	* @param node - Node of which we want the incoming arcs
-	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	* @throws IndexOutOfBoundsException 
-	*/
+	 * Constructor for class ArcsIncoming
+	 * 
+	 * @param parent - Composition of which we want the incoming arcs
+	 * @param node - Node of which we want the incoming arcs
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	 * @throws IndexOutOfBoundsException 
+	 */
 	public ArcsIncoming(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
@@ -698,37 +931,37 @@ class ArcsIncoming {
 	}
 
 	/**
-	* Returns parent composition
-	* 
-	* @return parent
-	*/
+	 * Returns parent composition
+	 * 
+	 * @return parent
+	 */
 	public Composition getParent() {
 		return parent;
 	}
 
 	/**
-	* Returns node
-	* 
-	* @return node
-	*/
+	 * Returns node
+	 * 
+	 * @return node
+	 */
 	public int getNode() {
 		return node;
 	}
 
 	/**
-	* Returns incoming arcs
-	* 
-	* @return arcs
-	*/
+	 * Returns incoming arcs
+	 * 
+	 * @return arcs
+	 */
 	public int[][] getArcsIncoming(){
 		return arcs;
 	}
 
 	/**
-	* Returns incoming blocks
-	* 
-	* @return blocks
-	*/
+	 * Returns incoming blocks
+	 * 
+	 * @return blocks
+	 */
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -751,13 +984,13 @@ class ArcsOutgoing {
 	private Block[] blocks;
 
 	/**
-	* Constructor for class ArcsOutgoing
-	* 
-	* @param parent - Composition of which we want the outgoing arcs
-	* @param node - Node of which we want the outgoing arcs
-	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	* @throws IndexOutOfBoundsException 
-	*/
+	 * Constructor for class ArcsOutgoing
+	 * 
+	 * @param parent - Composition of which we want the outgoing arcs
+	 * @param node - Node of which we want the outgoing arcs
+	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	 * @throws IndexOutOfBoundsException 
+	 */
 	public ArcsOutgoing(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
@@ -783,37 +1016,37 @@ class ArcsOutgoing {
 	}
 
 	/** Returns parent composition
-	* 
-	* @return parent
-	*/
+	 * 
+	 * @return parent
+	 */
 	public Composition getParent() {
 		return parent;
 	}
 
 	/**
-	* Returns node
-	* 
-	* @return node
-	*/
+	 * Returns node
+	 * 
+	 * @return node
+	 */
 	public int getNode() {
 		return node;
 	}
 
 	/**
-	* Returns outgoing arcs
-	* 
-	* @return arcs
-	*/
+	 * Returns outgoing arcs
+	 * 
+	 * @return arcs
+	 */
 	public int[][] getArcsOutgoing(){
 		return arcs;
 	}
 
 
 	/**
-	* Returns outgoing blocks
-	* 
-	* @return blocks
-	*/
+	 * Returns outgoing blocks
+	 * 
+	 * @return blocks
+	 */
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -833,10 +1066,10 @@ class IntermediateNodes {
 	private int[] nodes;
 
 	/**
-	* Constructor for class IntermediateNodes
-	* 
-	* @param parent - Composition of which we want the intermediate nodes
-	*/
+	 * Constructor for class IntermediateNodes
+	 * 
+	 * @param parent - Composition of which we want the intermediate nodes
+	 */
 	public IntermediateNodes(Composition parent){
 		this.parent=parent;
 		nodes = new int[parent.getSize()-1];
@@ -848,19 +1081,19 @@ class IntermediateNodes {
 	}
 
 	/**
-	* Returns parent composition
-	* 
-	* @return parent
-	*/
+	 * Returns parent composition
+	 * 
+	 * @return parent
+	 */
 	public Composition getParent(){
 		return parent;
 	}
 
 	/**
-	* Returns intermediate nodes
-	* 
-	* @return nodes
-	*/	
+	 * Returns intermediate nodes
+	 * 
+	 * @return nodes
+	 */	
 	public int[] getIntermediateNodes(){
 		return nodes;
 	}
@@ -882,11 +1115,11 @@ class CompatibleDepartingBlocks {
 	private ArrayList<Block> compatibledepartingblocks;
 
 	/**
-	* Constructor for class CompatibleDepartingBlocks
-	* 
-	* @param arrivingblock - Arriving block (element of I) of which we want the compatible departing blocks
-	* @throws IOException 
-	*/
+	 * Constructor for class CompatibleDepartingBlocks
+	 * 
+	 * @param arrivingblock - Arriving block (element of I) of which we want the compatible departing blocks
+	 * @throws IOException 
+	 */
 	public CompatibleDepartingBlocks(Block arrivingblock, ArrayList<Block> alldepartingblocks) throws IOException{
 		//throw exception if arrivingblock has an infeasible arrivaltime or departuretime not equal to -1 (-1 indicates it is an arrivingblock)
 		if (arrivingblock.getArrivaltime() <0 || arrivingblock.getArrivaltime() > 1){
@@ -922,25 +1155,25 @@ class CompatibleDepartingBlocks {
 				if (check == true){
 					compatibledepartingblocks.add(alldepartingblocks.get(i));	
 				}
-			
+
 			}
 		}	
 	}
 
 	/**
-	* Returns arriving block for which we determined the compatible departing blocks
-	* 
-	* @return arrivingblock
-	*/
+	 * Returns arriving block for which we determined the compatible departing blocks
+	 * 
+	 * @return arrivingblock
+	 */
 	public Block getArrivingBlock() {
 		return arrivingblock;
 	}
 
 	/**
-	* Returns compatible departing blocks of arrivingblock
-	* 
-	* @return compatibledepartingblocks
-	*/
+	 * Returns compatible departing blocks of arrivingblock
+	 * 
+	 * @return compatibledepartingblocks
+	 */
 	public ArrayList<Block> getCompatibleDepartingBlocks() {
 		return compatibledepartingblocks;
 	}
@@ -961,11 +1194,11 @@ class CompatibleArrivingBlocks {
 	private ArrayList<Block> compatiblearrivingblocks;
 
 	/**
-	* Constructor for class CompatibleArrivingBlocks
-	* 
-	* @param departingblock - Departing block (element of J) of which we want the compatible arriving blocks
-	* @throws IOException 
-	*/
+	 * Constructor for class CompatibleArrivingBlocks
+	 * 
+	 * @param departingblock - Departing block (element of J) of which we want the compatible arriving blocks
+	 * @throws IOException 
+	 */
 	public CompatibleArrivingBlocks(Block departingblock, ArrayList<Block> allarrivingblocks) throws IOException{
 		//throw exception if departing blocks arrival time not equal to -1 (-1 indicates it is an departing block)
 		//throw exception if departing block has an infeasible departure time
@@ -1004,19 +1237,19 @@ class CompatibleArrivingBlocks {
 	}
 
 	/**
-	* Returns departing block for which we determined the compatible arriving blocks
-	* 
-	* @return departingblock
-	*/
+	 * Returns departing block for which we determined the compatible arriving blocks
+	 * 
+	 * @return departingblock
+	 */
 	public Block getDepartingBlock() {
 		return departingblock;
 	}
 
 	/**
-	* Returns compatible arriving blocks of departingblock
-	* 
-	* @return compatiblearrivingblocks
-	*/
+	 * Returns compatible arriving blocks of departingblock
+	 * 
+	 * @return compatiblearrivingblocks
+	 */
 	public ArrayList<Block> getCompatibleArrivingBlocks() {
 		return compatiblearrivingblocks;
 	}
