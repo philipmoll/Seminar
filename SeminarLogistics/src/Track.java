@@ -269,7 +269,7 @@ public class Track {
 	} 
 	
 	public void setBusyTime(Activity activity){
-		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			busytime[i] = activity;
 		}
 	}
