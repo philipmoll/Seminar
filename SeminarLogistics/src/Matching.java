@@ -27,31 +27,31 @@ public class Matching {
 	private IntermediateNodes[] intermediatenodesdepartingcompositionsset;
 
 	/**
-	 * Constructor method for a matching
-	 * 
-	 * T_a: 	arrivingcompositions
-	 * T_d: 	departingcompositions
-	 * I:		arrivingblocklist
-	 * J:		departingblocklist
-	 * I_j:		compatiblearrivingblocksset[j]
-	 * J_i: 	compatibledepartingblockset[i]
-	 * A^t_a: 	arcsarrivingcompositionsset[t] (merge with A^t_d)
-	 * A^t_d:	arcsdepartingcompositionsset[t] (merge with A^t_a)
-	 * A_h^t+_a:arcsoutofnodearrivingcompositionsset[t][h] (merge with A_h^t+_d)
-	 * A_h^t+_d:arcsoutofnodedepartingcompositionsset[t][h] (merge with A_h^t+_a)
-	 * A_h^t-_a:arcsintonodearrivingcompositionsset[t][h] (merge with A_h^t-_d)
-	 * A_h^t-_d:arcsintonodedepartingcompositionsset[t][h] (merge with A_h^t-_a)
-	 * C^-_t_a:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_d)
-	 * C^-_t_d:	intermediatenodesdepartingcompositionsset[t] (merge with C^-_t_a)
-	 * 
-	 * @param arrivingcompositions
-	 * @param departingcompositions
-	 * @throws IndexOutOfBoundsException
-	 * @throws MisMatchException
-	 * @throws TrackNotFreeException
-	 * @throws IOException
-	 * @throws CloneNotSupportedException
-	 */
+	* Constructor method for a matching
+	* 
+	* T_a: 	arrivingcompositions
+	* T_d: 	departingcompositions
+	* I:		arrivingblocklist
+	* J:		departingblocklist
+	* I_j:		compatiblearrivingblocksset[j]
+	* J_i: 	compatibledepartingblockset[i]
+	* A^t_a: 	arcsarrivingcompositionsset[t] (merge with A^t_d)
+	* A^t_d:	arcsdepartingcompositionsset[t] (merge with A^t_a)
+	* A_h^t+_a:arcsoutofnodearrivingcompositionsset[t][h] (merge with A_h^t+_d)
+	* A_h^t+_d:arcsoutofnodedepartingcompositionsset[t][h] (merge with A_h^t+_a)
+	* A_h^t-_a:arcsintonodearrivingcompositionsset[t][h] (merge with A_h^t-_d)
+	* A_h^t-_d:arcsintonodedepartingcompositionsset[t][h] (merge with A_h^t-_a)
+	* C^-_t_a:	intermediatenodesarrivingcompositionsset[t] (merge with C^-_t_d)
+	* C^-_t_d:	intermediatenodesdepartingcompositionsset[t] (merge with C^-_t_a)
+	* 
+	* @param arrivingcompositions
+	* @param departingcompositions
+	* @throws IndexOutOfBoundsException
+	* @throws MisMatchException
+	* @throws TrackNotFreeException
+	* @throws IOException
+	* @throws CloneNotSupportedException
+	*/
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
@@ -189,38 +189,38 @@ public class Matching {
 	}
 
 	/**
-	 * Returns arriving block list
-	 * 
-	 * @return arrivingblocklist
-	 */
+	* Returns arriving block list
+	* 
+	* @return arrivingblocklist
+	*/
 	public ArrayList<Block> getArrivingBlockList(){
 		return arrivingblocklist;
 	}
 
 	/**
-	 * Returns departing block list
-	 * 
-	 * @return departingblocklist
-	 */
+	* Returns departing block list
+	* 
+	* @return departingblocklist
+	*/
 	public ArrayList<Block> getDepartingBlockList(){
 		return departingblocklist;
 	}
 
 
 	/**
-	 * Returns z_ij (matchings
-	 * 
-	 * @return z
-	 */
+	* Returns z_ij (matchings
+	* 
+	* @return z
+	*/
 	public boolean[][] getZ(){
 		return z_ij;
 	}
 
 
 	/** Find set of all possible parts for all arriving or departing trains
-	 * @return blocklist : complete set of blocks.
-	 * @throws CloneNotSupportedException 
-	 * */
+	* @return blocklist : complete set of blocks.
+	* @throws CloneNotSupportedException 
+	* */
 	public static ArrayList<Block> makeblocks(ArrayList<Composition>compositionlist) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{ 
 		ArrayList<Block> blocklist = new ArrayList<>();
 		for(int i = 0; i<compositionlist.size();i++){
@@ -271,14 +271,14 @@ public class Matching {
 	}
 
 	/**
-	 * CPLEX model that calculates the optimal matching
-	 * 
-	 * @return z[i][j]
-	 */
+	* CPLEX model that calculates the optimal matching
+	* 
+	* @return z[i][j]
+	*/
 	@SuppressWarnings("unchecked")
 	private boolean[][] model1(){
 		int Q = 1; //Penalty for splitting
-
+		boolean[][] zij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
 		try {	
 			// define new model
 			IloCplex cplex = new IloCplex();
@@ -311,22 +311,22 @@ public class Matching {
 			}
 
 			//expressions for constraints(2)
-			ArrayList<IloLinearNumExpr>[] intermediatearcs1 = new ArrayList[arrivingcompositions.size()]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			IloLinearNumExpr[][] intermediatearcs1 = new IloLinearNumExpr[arrivingcompositions.size()][2]; //TODO: check if we can do this (array of arraylists (warning suppressed))
 			for (int t = 0; t<arrivingcompositions.size(); t++){
 				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
-					intermediatearcs1[t].add(cplex.linearNumExpr());
+					intermediatearcs1[t][h]=cplex.linearNumExpr();
 					for (int i = 0; i<arrivingblocklist.size(); i++){
 						int count1 = 0;
 						int count2 = 0;
 						for (int b1 = 0; b1<arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks().length; b1++){
 							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
-								intermediatearcs1[t].get(h).addTerm(1.0, u[i]);
+								intermediatearcs1[t][h].addTerm(1.0, u[i]);
 								count1 ++;
 							}
 						}
 						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
 							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
-								intermediatearcs1[t].get(h).addTerm(-1.0, u[i]);
+								intermediatearcs1[t][h].addTerm(-1.0, u[i]);
 								count2 ++;
 							}
 						}
@@ -356,22 +356,22 @@ public class Matching {
 			}
 
 			//expressions for constraints(5)
-			ArrayList<IloLinearNumExpr>[] intermediatearcs2 = new ArrayList[departingcompositions.size()]; //TODO: check if we can do this (array of arraylists (warning suppressed))
+			IloLinearNumExpr[][] intermediatearcs2 = new IloLinearNumExpr[departingcompositions.size()][2]; //TODO: check if we can do this (array of arraylists (warning suppressed))
 			for (int t = 0; t<departingcompositions.size(); t++){
 				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){ //TODO: intermediatenodsarrivingcompositionsset niet per se nodig, kan gewoon grootte van compositie gebruiken
-					intermediatearcs2[t].add(cplex.linearNumExpr());
+					intermediatearcs2[t][h]=cplex.linearNumExpr();
 					for (int i = 0; i<departingblocklist.size(); i++){
 						int count1 = 0;
 						int count2 = 0;
 						for (int b1 = 0; b1<arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks().length; b1++){
 							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
-								intermediatearcs2[t].get(h).addTerm(1.0, v[i]);
+								intermediatearcs2[t][h].addTerm(1.0, v[i]);
 								count1 ++;
 							}
 						}
 						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
 							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
-								intermediatearcs2[t].get(h).addTerm(-1.0, v[i]);
+								intermediatearcs2[t][h].addTerm(-1.0, v[i]);
 								count2 ++;
 							}
 						}
@@ -434,9 +434,9 @@ public class Matching {
 
 			//constraints (2)
 			for (int t=0; t<arrivingcompositions.size();t++){
-				for (int h = 0; h<intermediatearcs1[t].size(); h++)
+				for (int h = 0; h<intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++)
 				{
-					cplex.addEq(intermediatearcs1[t].get(h), 0);
+					cplex.addEq(intermediatearcs1[t][h], 0);
 				}
 			}
 
@@ -447,9 +447,9 @@ public class Matching {
 
 			//constraints (5)
 			for (int t=0; t<departingcompositions.size();t++){
-				for (int h = 0; h<intermediatearcs2[t].size(); h++)
+				for (int h = 0; h<intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++)
 				{
-					cplex.addEq(intermediatearcs2[t].get(h), 0);
+					cplex.addEq(intermediatearcs2[t][h], 0);
 				}
 			}
 
@@ -474,17 +474,29 @@ public class Matching {
 			// solve
 			if(cplex.solve()){
 				System.out.println("obj = "+cplex.getObjValue());
+				System.out.println("Z(1,4) is equal to "+cplex.getValue(z[1][4]));
+				System.out.println("Z(8,0) is equal to "+cplex.getValue(z[8][0]));
+				System.out.println("Z(0,0) is equal to "+cplex.getValue(z[0][0]));
 			}
 			else {
 				System.out.println("Model not solved");
 			}
-
+			for (int i=0;i<arrivingblocklist.size();i++){
+				for (int j=0;j<departingblocklist.size();j++){
+					System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
+					if (cplex.getValue(z[i][j])>0.9){
+						System.out.println("Joehoe");
+						zij[i][j] = true;
+					}
+				}
+			}
 			cplex.end();
+			return zij;
 		}
 		catch (IloException exc){
 			exc.printStackTrace();
-		}
-		return z_ij;
+		} 
+		return zij;
 	}
 
 }
@@ -505,12 +517,12 @@ class Arcs {
 	private Block[] blocks;
 
 	/**
-	 * Constructor for class Arcs
-	 * 
-	 * @param parent
-	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	 * @throws IOException
-	 */
+	* Constructor for class Arcs
+	* 
+	* @param parent
+	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	* @throws IOException
+	*/
 	public Arcs(Composition parent, ArrayList<Block> blocklist) throws IOException{
 		this.parent = parent;
 		if (parent.getSize() != 1 && parent.getSize() != 2 && parent.getSize() != 3){
@@ -603,29 +615,29 @@ class Arcs {
 	}
 
 	/**
-	 * Returns parent composition
-	 * 
-	 * @return parent
-	 */
+	* Returns parent composition
+	* 
+	* @return parent
+	*/
 	public Composition getParent(){
 		return parent;
 	}
 
 	/**
-	 * Returns arcs
-	 * 
-	 * @return arcs
-	 */
+	* Returns arcs
+	* 
+	* @return arcs
+	*/
 	public int[][] getArcs(){
 		return arcs;
 	}
 
 
 	/**
-	 * Returns blocks
-	 * 
-	 * @return blocks
-	 */
+	* Returns blocks
+	* 
+	* @return blocks
+	*/
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -651,13 +663,13 @@ class ArcsIncoming {
 	private Block[] blocks;
 
 	/**
-	 * Constructor for class ArcsIncoming
-	 * 
-	 * @param parent - Composition of which we want the incoming arcs
-	 * @param node - Node of which we want the incoming arcs
-	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	 * @throws IndexOutOfBoundsException 
-	 */
+	* Constructor for class ArcsIncoming
+	* 
+	* @param parent - Composition of which we want the incoming arcs
+	* @param node - Node of which we want the incoming arcs
+	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	* @throws IndexOutOfBoundsException 
+	*/
 	public ArcsIncoming(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
@@ -683,37 +695,37 @@ class ArcsIncoming {
 	}
 
 	/**
-	 * Returns parent composition
-	 * 
-	 * @return parent
-	 */
+	* Returns parent composition
+	* 
+	* @return parent
+	*/
 	public Composition getParent() {
 		return parent;
 	}
 
 	/**
-	 * Returns node
-	 * 
-	 * @return node
-	 */
+	* Returns node
+	* 
+	* @return node
+	*/
 	public int getNode() {
 		return node;
 	}
 
 	/**
-	 * Returns incoming arcs
-	 * 
-	 * @return arcs
-	 */
+	* Returns incoming arcs
+	* 
+	* @return arcs
+	*/
 	public int[][] getArcsIncoming(){
 		return arcs;
 	}
 
 	/**
-	 * Returns incoming blocks
-	 * 
-	 * @return blocks
-	 */
+	* Returns incoming blocks
+	* 
+	* @return blocks
+	*/
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -736,13 +748,13 @@ class ArcsOutgoing {
 	private Block[] blocks;
 
 	/**
-	 * Constructor for class ArcsOutgoing
-	 * 
-	 * @param parent - Composition of which we want the outgoing arcs
-	 * @param node - Node of which we want the outgoing arcs
-	 * @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
-	 * @throws IndexOutOfBoundsException 
-	 */
+	* Constructor for class ArcsOutgoing
+	* 
+	* @param parent - Composition of which we want the outgoing arcs
+	* @param node - Node of which we want the outgoing arcs
+	* @param blocklist - arrivingblocklist if parent composition is arriving, departingblocklist if parent composition is departing
+	* @throws IndexOutOfBoundsException 
+	*/
 	public ArcsOutgoing(Composition parent, int node, ArrayList<Block> blocklist) throws IndexOutOfBoundsException{
 		this.parent=parent;
 		this.node=node;
@@ -768,37 +780,37 @@ class ArcsOutgoing {
 	}
 
 	/** Returns parent composition
-	 * 
-	 * @return parent
-	 */
+	* 
+	* @return parent
+	*/
 	public Composition getParent() {
 		return parent;
 	}
 
 	/**
-	 * Returns node
-	 * 
-	 * @return node
-	 */
+	* Returns node
+	* 
+	* @return node
+	*/
 	public int getNode() {
 		return node;
 	}
 
 	/**
-	 * Returns outgoing arcs
-	 * 
-	 * @return arcs
-	 */
+	* Returns outgoing arcs
+	* 
+	* @return arcs
+	*/
 	public int[][] getArcsOutgoing(){
 		return arcs;
 	}
 
 
 	/**
-	 * Returns outgoing blocks
-	 * 
-	 * @return blocks
-	 */
+	* Returns outgoing blocks
+	* 
+	* @return blocks
+	*/
 	public Block[] getBlocks(){
 		return blocks;
 	}
@@ -818,10 +830,10 @@ class IntermediateNodes {
 	private int[] nodes;
 
 	/**
-	 * Constructor for class IntermediateNodes
-	 * 
-	 * @param parent - Composition of which we want the intermediate nodes
-	 */
+	* Constructor for class IntermediateNodes
+	* 
+	* @param parent - Composition of which we want the intermediate nodes
+	*/
 	public IntermediateNodes(Composition parent){
 		this.parent=parent;
 		nodes = new int[parent.getSize()-1];
@@ -833,19 +845,19 @@ class IntermediateNodes {
 	}
 
 	/**
-	 * Returns parent composition
-	 * 
-	 * @return parent
-	 */
+	* Returns parent composition
+	* 
+	* @return parent
+	*/
 	public Composition getParent(){
 		return parent;
 	}
 
 	/**
-	 * Returns intermediate nodes
-	 * 
-	 * @return nodes
-	 */	
+	* Returns intermediate nodes
+	* 
+	* @return nodes
+	*/	
 	public int[] getIntermediateNodes(){
 		return nodes;
 	}
@@ -867,11 +879,11 @@ class CompatibleDepartingBlocks {
 	private ArrayList<Block> compatibledepartingblocks;
 
 	/**
-	 * Constructor for class CompatibleDepartingBlocks
-	 * 
-	 * @param arrivingblock - Arriving block (element of I) of which we want the compatible departing blocks
-	 * @throws IOException 
-	 */
+	* Constructor for class CompatibleDepartingBlocks
+	* 
+	* @param arrivingblock - Arriving block (element of I) of which we want the compatible departing blocks
+	* @throws IOException 
+	*/
 	public CompatibleDepartingBlocks(Block arrivingblock, ArrayList<Block> alldepartingblocks) throws IOException{
 		//throw exception if arrivingblock has an infeasible arrivaltime or departuretime not equal to -1 (-1 indicates it is an arrivingblock)
 		if (arrivingblock.getArrivaltime() <0 || arrivingblock.getArrivaltime() > 1){
@@ -913,19 +925,19 @@ class CompatibleDepartingBlocks {
 	}
 
 	/**
-	 * Returns arriving block for which we determined the compatible departing blocks
-	 * 
-	 * @return arrivingblock
-	 */
+	* Returns arriving block for which we determined the compatible departing blocks
+	* 
+	* @return arrivingblock
+	*/
 	public Block getArrivingBlock() {
 		return arrivingblock;
 	}
 
 	/**
-	 * Returns compatible departing blocks of arrivingblock
-	 * 
-	 * @return compatibledepartingblocks
-	 */
+	* Returns compatible departing blocks of arrivingblock
+	* 
+	* @return compatibledepartingblocks
+	*/
 	public ArrayList<Block> getCompatibleDepartingBlocks() {
 		return compatibledepartingblocks;
 	}
@@ -946,11 +958,11 @@ class CompatibleArrivingBlocks {
 	private ArrayList<Block> compatiblearrivingblocks;
 
 	/**
-	 * Constructor for class CompatibleArrivingBlocks
-	 * 
-	 * @param departingblock - Departing block (element of J) of which we want the compatible arriving blocks
-	 * @throws IOException 
-	 */
+	* Constructor for class CompatibleArrivingBlocks
+	* 
+	* @param departingblock - Departing block (element of J) of which we want the compatible arriving blocks
+	* @throws IOException 
+	*/
 	public CompatibleArrivingBlocks(Block departingblock, ArrayList<Block> allarrivingblocks) throws IOException{
 		//throw exception if departing blocks arrival time not equal to -1 (-1 indicates it is an departing block)
 		//throw exception if departing block has an infeasible departure time
@@ -989,19 +1001,19 @@ class CompatibleArrivingBlocks {
 	}
 
 	/**
-	 * Returns departing block for which we determined the compatible arriving blocks
-	 * 
-	 * @return departingblock
-	 */
+	* Returns departing block for which we determined the compatible arriving blocks
+	* 
+	* @return departingblock
+	*/
 	public Block getDepartingBlock() {
 		return departingblock;
 	}
 
 	/**
-	 * Returns compatible arriving blocks of departingblock
-	 * 
-	 * @return compatiblearrivingblocks
-	 */
+	* Returns compatible arriving blocks of departingblock
+	* 
+	* @return compatiblearrivingblocks
+	*/
 	public ArrayList<Block> getCompatibleArrivingBlocks() {
 		return compatiblearrivingblocks;
 	}
