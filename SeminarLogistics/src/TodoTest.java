@@ -34,7 +34,7 @@ public class TodoTest {
 	@Before
 	public void setUp() throws Exception {
 		t1 = new Train(1, 1, true, true, true, true, true);
-		t2 = new Train(2, 2, true, true, true, true, true);
+		t2 = new Train(2, 2, true, false, true, true, true);
 		t3 = new Train(3, 1, true, true, true, true, true);
 		t4 = new Train(4, 2, true, true, true, true, true);
 		c1 = new Composition(new ArrayList<Train>(){{add(t1);}}, 0, 1);
