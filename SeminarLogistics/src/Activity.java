@@ -45,7 +45,6 @@ public class Activity {
 		this.previoustrack = previoustrack;
 
 		totalduration = duration + movetime;
-		totalduration = duration + movetime;
 	}
 	
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, Track previoustrack){
@@ -150,13 +149,13 @@ public class Activity {
 	public double getUltimateTimeInteger(){
 		return (int) ultimatetime;
 	}
-	public double getMargin(){
-		return (ultimatetime-plannedtime-movetime);
-	}
 	public int getMarginInteger(){
-		return (int) (ultimatetime-plannedtime-movetime);
+		return (int) ultimatetime - plannedtime - movetime;
 	}
 	public int getMoveTime(){
 		return (int) movetime;
+	}
+	public void setCurrentTrack(Track abc){
+		previoustrack = abc;
 	}
 }

@@ -608,6 +608,9 @@ public class Composition implements Serializable{
 		}
 		return feasible;
 	}
+	public Activity returnActivity(int abc){
+		return busytime[abc];
+	}
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(busytime[i]!=null){

@@ -7,6 +7,7 @@ public class Todo {
 	public final static int moveduration = 2;
 
 
+
 	ArrayList<Track> platforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
@@ -144,15 +145,15 @@ public class Todo {
 					//Minimum time to loop from must be update since inspection cannot be moved later
 					if(j == 0){	
 						mintemp += durationactivity;
-						if(activities.get(activities.size()-1).getMargin()<margin1){
-							margin1 = activities.get(activities.size()-1).getMarginInteger();
-						}
+//						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+//							margin1 = activities.get(activities.size()-1).getMarginInteger();
+//						}
 					}
 					//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 					else if(j == 1){
 						time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 						track11 = activities.get(activities.size()-1).getTrackAssigned();
-						if(activities.get(activities.size()-1).getMargin()<margin1){
+						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 							margin1 = activities.get(activities.size()-1).getMarginInteger();
 						}
 						amount += 1;
@@ -162,7 +163,7 @@ public class Todo {
 					else if(j == 2){
 						time12 = activities.get(activities.size()-1).getPlannedTimeInteger();
 						track12 = activities.get(activities.size()-1).getTrackAssigned();
-						if(activities.get(activities.size()-1).getMargin()<margin1){
+						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 							margin1 = activities.get(activities.size()-1).getMarginInteger();
 						}
 						amount += 1;
@@ -214,6 +215,7 @@ public class Todo {
 						}
 
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
+						currenttrack = temp1;
 
 						//Storing first solution
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
@@ -223,7 +225,7 @@ public class Todo {
 						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
 						track13 = activities.get(activities.size()-1).getTrackAssigned();
 
-						if(activities.get(activities.size()-1).getMargin()<margin1){
+						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 							margin1 = activities.get(activities.size()-1).getMarginInteger();
 						}
 
@@ -231,7 +233,7 @@ public class Todo {
 				}
 			}
 		}
-
+		
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
 			activities.get(activities.size()-1-i).removeTimes();
@@ -245,7 +247,7 @@ public class Todo {
 		}
 		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 		for(int j = 0; j<amount; j++){
-
+			activities.get(activities.size()-1-j).setCurrentTrack(currenttrack);
 			temp = 124123123;
 			temptemp = 123124;
 			temp1 = null;
@@ -291,15 +293,15 @@ public class Todo {
 
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				this.setBusyTime(activities.get(activities.size()-1-j));
+				currenttrack = temp1;
 
 				//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
 				//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+				
 
-				if(activities.get(activities.size()-1-j).getMargin()<margin2){
+				if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 					margin2 = activities.get(activities.size()-1-j).getMarginInteger();
 				}
-
-
 			}
 			else if(activities.get(activities.size()-1-j).getActivity() == 1 || activities.get(activities.size()-1-j).getActivity() == 2){
 
@@ -340,26 +342,29 @@ public class Todo {
 
 				}
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
+				currenttrack = temp1;
 
 				addedcomp.setBusyTime(activities.get(activities.size()-1-j));
 				temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 				this.setBusyTime(activities.get(activities.size()-1-j));
 				if(j == 1){
-					if(activities.get(activities.size()-1-j).getMargin()<margin2){
-						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+
+					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 					}
 				}
 				else if(j == 2){
-					if(activities.get(activities.size()-1-j).getMargin()<margin2){
+
+					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+
 					}
 				}
 			}
 		}
-
+		
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)
 		
-		System.out.print(margin1 + " " + " ");
+		System.out.print(margin1 + " " + margin2 + " \n");
 		
 		if(margin1 >= margin2){
 			for(int i = 0; i<amount; i++){
@@ -436,7 +441,7 @@ public class Todo {
 		}
 		return abcd;
 	}
-
+/*
 	public int getLeastMargin(){
 		double temp;
 		int temp1 = -1;
@@ -455,7 +460,7 @@ public class Todo {
 		}
 		return temp1;
 	}
-
+*/
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(movelist[i]!=null){
