@@ -208,10 +208,12 @@ public class Matching {
 				for (int i = 0; i<arrivingblocklist.size(); i++){
 					int count = 0;
 					for (int b = 0; b<arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length; b++){
+						int term = 0;
 						if (arcsoutofnodearrivingcompositionsset[t][0].getBlocks()[b] == arrivingblocklist.get(i)){
-							arcsoutoforigin1[t].addTerm(1.0, u[i]);
+							term = 1;
 							count ++;
 						}
+						arcsoutoforigin1[t].addTerm(term, u[i]);
 					}
 					if (count >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length){
 						break;
@@ -228,16 +230,20 @@ public class Matching {
 						int count1 = 0;
 						int count2 = 0;
 						for (int b1 = 0; b1<arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks().length; b1++){
+							int term = 0;
 							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
-								intermediatearcs1[t][h].addTerm(1.0, u[i]);
+								term = 1;
 								count1 ++;
 							}
+							intermediatearcs1[t][h].addTerm(term, u[i]);
 						}
 						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
+							int term = 0;
 							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
-								intermediatearcs1[t][h].addTerm(-1.0, u[i]);
+								term = -1;
 								count2 ++;
 							}
+							intermediatearcs1[t][h].addTerm(term, u[i]);
 						}
 						if (count1 >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodearrivingcompositionsset[t][0].getBlocks().length){
 							break;
@@ -253,10 +259,12 @@ public class Matching {
 				for (int i = 0; i<departingblocklist.size(); i++){
 					int count = 0;
 					for (int b = 0; b<arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length; b++){
+						int term = 0;
 						if (arcsoutofnodedepartingcompositionsset[t][0].getBlocks()[b] == departingblocklist.get(i)){
-							arcsoutoforigin2[t].addTerm(1.0, v[i]);
+							term = 1;
 							count ++;
 						}
+						arcsoutoforigin2[t].addTerm(term, v[i]);
 					}
 					if (count >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length){
 						break;
@@ -273,16 +281,20 @@ public class Matching {
 						int count1 = 0;
 						int count2 = 0;
 						for (int b1 = 0; b1<arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks().length; b1++){
+							int term =0;
 							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
-								intermediatearcs2[t][h].addTerm(1.0, v[i]);
+								term = 1;
 								count1 ++;
 							}
+							intermediatearcs2[t][h].addTerm(term, v[i]);
 						}
 						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
+							int term = 0;
 							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
-								intermediatearcs2[t][h].addTerm(-1.0, v[i]);
+								term = -1;
 								count2 ++;
 							}
+							intermediatearcs2[t][h].addTerm(term, v[i]);
 						}
 						if (count1 >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodedepartingcompositionsset[t][0].getBlocks().length){
 							break;
