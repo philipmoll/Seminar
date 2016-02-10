@@ -275,7 +275,6 @@ public class Matching {
 	* 
 	* @return z[i][j]
 	*/
-	@SuppressWarnings("unchecked")
 	private boolean[][] model1(){
 		int Q = 1; //Penalty for splitting
 		boolean[][] zij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
@@ -387,11 +386,14 @@ public class Matching {
 			for (int i = 0; i<arrivingblocklist.size(); i++){
 				summatchingsmade6[i] = cplex.linearNumExpr();
 				for (int j = 0; j<departingblocklist.size(); j++){
+					double term = 0;
 					for (int k = 0; k<compatibledepartingblocksset[i].getCompatibleDepartingBlocks().size(); k++){
 						if (compatibledepartingblocksset[i].getCompatibleDepartingBlocks().get(k) == departingblocklist.get(j)){
-							summatchingsmade6[i].addTerm(1.0, z[i][j]);
+							term = 1;
+							break;
 						}
 					}
+					summatchingsmade6[i].addTerm(term, z[i][j]);
 				}
 			}
 
@@ -401,11 +403,16 @@ public class Matching {
 			for (int j = 0; j<departingblocklist.size(); j++){
 				summatchingsmade7[j] = cplex.linearNumExpr();
 				for (int i = 0; i<arrivingblocklist.size(); i++){
+					double term = 0;
 					for (int k = 0; k<compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().size(); k++){
 						if (compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().get(k) == arrivingblocklist.get(i)){
-							summatchingsmade7[j].addTerm(1.0,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
+							//System.out.println("j: "+j+" i: "+i+" k: "+k);
+							term = 1.0;
+							break;
 						}
+						
 					}
+					summatchingsmade7[j].addTerm(term,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
 				}
 			}
 			//expressions for constraints (8) (max blocklength)
@@ -468,24 +475,20 @@ public class Matching {
 				cplex.addLe(arrivingblocklist.get(i).getLength(),weightexpr[i]);
 			}
 
-			cplex.setParam(IloCplex.Param.Simplex.Display, 1);
+			//cplex.setParam(IloCplex.Param.Simplex.Display, 1);
 
 
 			// solve
 			if(cplex.solve()){
 				System.out.println("obj = "+cplex.getObjValue());
-				System.out.println("Z(1,4) is equal to "+cplex.getValue(z[1][4]));
-				System.out.println("Z(8,0) is equal to "+cplex.getValue(z[8][0]));
-				System.out.println("Z(0,0) is equal to "+cplex.getValue(z[0][0]));
 			}
 			else {
 				System.out.println("Model not solved");
 			}
 			for (int i=0;i<arrivingblocklist.size();i++){
 				for (int j=0;j<departingblocklist.size();j++){
-					System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
-					if (cplex.getValue(z[i][j])>0.9){
-						System.out.println("Joehoe");
+					//System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
+					if (cplex.getValue(z[i][j])==1){
 						zij[i][j] = true;
 					}
 				}
@@ -1133,8 +1136,3 @@ class CompatibleArrivingBlocks {
 //			for (int k=0;k<arrivingcompositions.size();k++){
 //
 //			}
-
-
-
-
-

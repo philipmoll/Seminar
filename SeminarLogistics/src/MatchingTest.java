@@ -138,7 +138,6 @@ public class MatchingTest implements Serializable{
 			z_test[8][0]=true;
 			z_test[7][5]=true;
 			z_test[9][7]=true;
-			System.out.println(z_test);
 			
 		} catch (IndexOutOfBoundsException | IOException e2) {
 			e2.printStackTrace();
@@ -150,14 +149,13 @@ public class MatchingTest implements Serializable{
 		try {
 			Matching matchtest = new Matching(arrivingcompositions,departingcompositions);
 			boolean[][] z_matchtest = matchtest.getZ();
-			System.out.println("hn");
 			assertEquals(15,z_matchtest.length);
 			assertEquals(13,z_matchtest[0].length);
 			
 			for (int i = 0; i<15; i++){
 				for (int j = 0; j<13; j++){
-					System.out.println("z("+i+","+j+") should be "+z_test[i][j]+" and is "+z_matchtest[i][j]);
-//					assertEquals(z_test[i][j],z_matchtest[i][j]);
+//					System.out.println("z("+i+","+j+") should be "+z_test[i][j]+" and is "+z_matchtest[i][j]);
+					assertEquals(z_test[i][j],z_matchtest[i][j]);
 				}
 			}
 			
@@ -187,7 +185,6 @@ public class MatchingTest implements Serializable{
 					}
 				}
 				assertEquals(true,check);
-				System.out.println(" ");
 			}
 			
 			
@@ -199,4 +196,3 @@ public class MatchingTest implements Serializable{
 	}
 
 }
-
