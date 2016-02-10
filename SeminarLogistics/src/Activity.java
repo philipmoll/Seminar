@@ -8,8 +8,11 @@ public class Activity {
 	private int activity;
 	private Track trackassigned;
 	private int duration;
+	private int totalduration;
 	private int ultimatetime;
 	private Track previoustrack;
+	private int movetime;
+	private final int moveduration = 2;
 
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned){
 		this.plannedtime = plannedtime;
@@ -19,6 +22,8 @@ public class Activity {
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
 		previoustrack = null;
+		movetime = 0;
+		totalduration = duration + movetime;
 	}
 	public Activity(int duration, int ultimatetime, Composition composition, int activity){
 		this.duration = duration;
@@ -28,6 +33,20 @@ public class Activity {
 		plannedtime = -1;
 		trackassigned = null;
 		previoustrack = null;
+		movetime = 0;
+		totalduration = duration + movetime;
+	}
+	public Activity(int duration, int ultimatetime, Composition composition, int activity, Track previoustrack){
+		this.duration = duration;
+		this.ultimatetime = ultimatetime;
+		this.composition = composition;
+		this.activity = activity;
+		plannedtime = -1;
+		this.trackassigned = null;
+		this.previoustrack = previoustrack;
+
+		totalduration = duration + movetime;
+		totalduration = duration + movetime;
 	}
 	
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, Track previoustrack){
@@ -37,9 +56,26 @@ public class Activity {
 		this.trackassigned = trackassigned;
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
+		
+		//Only relevant for the moving activity;
 		this.previoustrack = previoustrack;
+		if(previoustrack.equals(trackassigned)){
+			movetime = 0;
+		}
+		else{
+			movetime = moveduration;
+		}
+		totalduration = duration + movetime;
 	}
-
+	
+	public boolean differenttrack(){
+		if(previoustrack.equals(trackassigned)){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 	public double getPlannedTime(){
 		return plannedtime;
 	}
@@ -83,18 +119,25 @@ public class Activity {
 	public void removeTimes(){
 		trackassigned.removeBusyTime(this);
 		composition.removeBusyTime(this);
-		Todo.removeBusyMoveTime(this);
 	}
 	public void setUpdate(int newplannedtime, Track newtrack){
-		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!
+		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!!!
 		if(plannedtime != -1){
 			trackassigned.removeBusyTime(this);
 			composition.removeBusyTime(this);
 		}
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
+		if(previoustrack.equals(trackassigned)){
+			movetime = 0;
+		}
+		else{
+			movetime = moveduration;
+		}
+		totalduration = duration + movetime;
 		trackassigned.setBusyTime(this);
 		composition.setBusyTime(this);
+
 	}
 	//TODO: ROND DIE DIT GOED AF???
 	public int getPlannedTimeInteger(){
@@ -102,6 +145,9 @@ public class Activity {
 	}
 	public int getDurationInteger(){
 		return (int) duration;
+	}
+	public int getTotalDurationInteger(){
+		return (int) totalduration;
 	}
 	public double getUltimateTimeInteger(){
 		return (int) ultimatetime;

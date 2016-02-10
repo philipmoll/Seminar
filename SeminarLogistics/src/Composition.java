@@ -20,7 +20,6 @@ public class Composition implements Serializable{
 	private double arrivaltime;
 	private double departuretime;
 	private Activity[] busytime;
-	//private int time; Because it is not relevant anymore once the train is in our system/shunting yard
 
 	public Composition(ArrayList<Train> compositiontrains) throws IOException{
 		this.compositiontrains = compositiontrains;
@@ -584,7 +583,7 @@ public class Composition implements Serializable{
 	}
 
 	public void setBusyTime(Activity activity){
-		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			busytime[i] = activity;
 		}
 	}
