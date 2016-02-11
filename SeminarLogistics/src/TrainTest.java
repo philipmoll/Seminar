@@ -104,11 +104,6 @@ public class TrainTest {
 		assertEquals(5,a.getCarriages());
 	}
 	@Test
-	public void testToggleInterchangeable(){
-		a.toggleInterchangeable();
-		assertEquals(true,a.getInterchangeable());
-	}
-	@Test
 	public void testToggleInspecting(){
 		a.toggleInspecting();
 		assertEquals(true,a.getInspecting());
