@@ -103,17 +103,20 @@ public class Main {
 				leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i));
 			}
 
-			ArrayList<Composition> arrival1 = new ArrayList<>();
-			ArrayList<Composition> departure1 = new ArrayList<>();
-			for (int i = 0; i<6; i++){
-				arrival1.add(arrivingcompositionswitharrtime.get(i));
-			}
-			for (int j = 0; j<7; j++){
-				departure1.add(leavingcompositions.get(j));
-			}
+//			ArrayList<Composition> arrival1 = new ArrayList<>();
+//			ArrayList<Composition> departure1 = new ArrayList<>();
+//			for (int i = 0; i<6; i++){
+//				arrival1.add(arrivingcompositionswitharrtime.get(i));
+//			}
+//			for (int j = 0; j<7; j++){
+//				departure1.add(leavingcompositions.get(j));
+//			}
 			
-			Matching onzeMatching = new Matching(arrival1,departure1);
+			Matching onzeMatching = new Matching(arrivingcompositionswitharrtime,leavingcompositions);
 		
+			for (int i = 1; i<onzeMatching.getZ().length; i++){
+				
+			}
 //			System.out.println(onzeMatching.getObjectiveValue());
 //			int teller = 0;
 //			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){
