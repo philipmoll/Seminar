@@ -9,6 +9,7 @@ public class Todo {
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
 	
+	
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
 
