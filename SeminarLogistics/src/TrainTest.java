@@ -102,7 +102,7 @@ public class TrainTest {
 	@Test
 	public void testNumberCarriages(){
 		assertEquals(5,a.getCarriages());
-	}
+	} 
 	@Test
 	public void testToggleInspecting(){
 		a.toggleInspecting();
