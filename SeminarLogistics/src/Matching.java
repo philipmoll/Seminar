@@ -56,9 +56,25 @@ public class Matching {
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
+		//update arrivaltimes for FJSP
+		for (int i = 0; i<arrivingblocklist.size(); i++){
+			int decoupletime = 0;
+			if (arrivingblocklist.get(i).getCutPosition2()-arrivingblocklist.get(i).getCutPosition1() != arrivingblocklist.get(i).getOriginComposition().getSize()){
+				decoupletime = Main.decoupletime/60/24; //check if we need to decouple
+			}
+			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+Todo.moveduration/60/24+decoupletime);
+		}
 
 		//set J
 		departingblocklist = makeblocks(departingcompositions);
+		//update departuretimes for FJSP
+		int coupletime = 0;
+		for (int j = 0; j<departingblocklist.size(); j++){
+			if (departingblocklist.get(j).getCutPosition2()-departingblocklist.get(j).getCutPosition1() != departingblocklist.get(j).getOriginComposition().getSize()){
+				coupletime = Main.coupletime/60/24; //check if we need to couple
+			}
+			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+Todo.moveduration/60/24+coupletime);
+		}
 
 		//set T_a and T_d
 		//this.arrivingcompositions = arrivingcompositions;
@@ -1158,7 +1174,8 @@ class CompatibleDepartingBlocks {
 				throw new IOException("Arrival time of alldepartingblocks("+i+") in class CompatibleDepartingBlocks is "+alldepartingblocks.get(i).getArrivaltime()+" and should be -1");
 			}
 			boolean check = true;
-			if (alldepartingblocks.get(i).getDeparturetime() > arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
+			
+			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
 				for (int j = 0; j<arrivingblock.getTrainList().size(); j++){
 					if (arrivingblock.getTrainList().get(j).getSameClass(alldepartingblocks.get(i).getTrainList().get(j))== false){
 						check = false;
@@ -1235,7 +1252,8 @@ class CompatibleArrivingBlocks {
 				throw new IOException("Departure time of allarrivingblocks("+i+") in class CompatibleDepartingBlocks is "+allarrivingblocks.get(i).getDeparturetime()+" and should be -1");
 			}
 			boolean check = true;
-			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c /*+ allarrivingblocks.get(i).getTotalServiceTime()*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
+			
+			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  /*+ allarrivingblocks.get(i).getTotalServiceTime()*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
 				for (int j = 0; j<departingblock.getTrainList().size(); j++){
 					if (departingblock.getTrainList().get(j).getSameClass(allarrivingblocks.get(i).getTrainList().get(j))== false){
 						check = false;

@@ -12,7 +12,7 @@ public class TrainTest {
 	@Before
 	public void setUp() {
 		a = new Train(3,2,4,5);
-		b = new Train(2,1,false,false,true,false,true);
+		b = new Train(2,1,4);
 	}
 
 	@Test

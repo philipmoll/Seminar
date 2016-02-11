@@ -16,6 +16,9 @@ import java.util.*;
  */
 
 public class Main {
+	
+	public static final int decoupletime = 2; //MINUTES
+	public static final int coupletime = 3; //MINUTES
 	public static void main(String args[])
 	{
 
@@ -103,19 +106,32 @@ public class Main {
 				leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i));
 			}
 
-//			ArrayList<Composition> arrival1 = new ArrayList<>();
-//			ArrayList<Composition> departure1 = new ArrayList<>();
-//			for (int i = 0; i<6; i++){
-//				arrival1.add(arrivingcompositionswitharrtime.get(i));
-//			}
-//			for (int j = 0; j<7; j++){
-//				departure1.add(leavingcompositions.get(j));
-//			}
+			ArrayList<Composition> arrival1 = new ArrayList<>();
+			ArrayList<Composition> departure1 = new ArrayList<>();
+			for (int i = 0; i<6; i++){
+				arrival1.add(arrivingcompositionswitharrtime.get(i));
+			}
+			for (int j = 0; j<7; j++){
+				departure1.add(leavingcompositions.get(j));
+			}
 			
-			Matching onzeMatching = new Matching(arrivingcompositionswitharrtime,leavingcompositions);
-		
-			for (int i = 1; i<onzeMatching.getZ().length; i++){
-				
+			Matching onzeMatching = new Matching(arrival1,departure1);
+			boolean[][] z = onzeMatching.getZ();
+			ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
+			ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
+			ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
+			for (int i = 0; i<z.length; i++){
+				for (int j = 0; j<z[0].length; j++){
+					if (z[i][j]==true){
+						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get));
+						finalcompositionblocks.get(finalcompositionblocks.size()-1).setDeparturetime(departingblocks.get(j).getDeparturetime());
+						
+						//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
+						if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+Matching.c /*+finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()*/>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
+							throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
+						}	
+					}
+				}
 			}
 //			System.out.println(onzeMatching.getObjectiveValue());
 //			int teller = 0;
@@ -144,6 +160,7 @@ public class Main {
 			e.printStackTrace();
 		}
 	}
+
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1, Matrix compositiondata, Matrix compositiondata3){
 		int abcd = 0;
 		ArrayList<Composition> compositions = new ArrayList<>();
@@ -211,7 +228,7 @@ public class Main {
 								length = (int) compositiondata2.getElement(j, 5);
 							}
 						}
-						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length);
+						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2));
 						//trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length, (compositiondata.getElement(i,4)== 1.0), (compositiondata.getElement(i,5)== 1.0), (compositiondata.getElement(i,6)== 1.0), (compositiondata.getElement(i,7)== 1.0), (compositiondata.getElement(i,8)== 1.0));
 						abcd += 1;
 					}

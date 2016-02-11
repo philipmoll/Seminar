@@ -39,10 +39,71 @@ public class Train implements Serializable{
 	 * @param carriages
 	 * @param length
 	 */
+	//WE DO NOT USE THIS ONE EXCEPT FOR THE TEST CLASSEES
 	public Train(int train_ID, int type, int carriages, int length){
 		this.train_ID = train_ID;
 		this.type = type;
+		this.carriages = carriages;
+		this.composition = null;
+
+		position = -1; //If you make a new train, it is the only train in its composition
+
+		interchangeable = false;
+		inspecting = false;
+		cleaning = false;
+		repairing = false;
+		washing = false;
 		this.length = length;
+
+		if(type == 1 && carriages == 4){ //SLT 4 carr
+			inspectiontime = 24; //Minutes
+			cleaningtime = 15; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 23; //Minutes
+		}
+		else if(type == 1 && carriages == 6){ //SLT 6 carr
+			inspectiontime = 26; //Minutes
+			cleaningtime = 20; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+		}
+		else if(type == 2 && carriages == 4){ //VIRM 4 carr
+			inspectiontime = 11; //Minutes
+			cleaningtime = 37; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+		}
+		else if(type == 2 && carriages == 6){ //VIRM 6 carr
+			inspectiontime = 14; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+		}
+		else if(type == 3 && carriages == 4){ //DDZ 4 carr
+			inspectiontime = 15; //Minutes
+			cleaningtime = 49; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+		}
+		else if(type == 3 && carriages == 6){ //DDZ 6 carr
+			inspectiontime = 18; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+		}
+		else{
+			inspectiontime = -1; //Minutes
+			cleaningtime = -1; //Minutes
+			repairingtime = -1; //Minutes
+			washingtime = -1; //Minutes
+
+		}
+	}
+	
+	//THIS IS THE CONSTRUCTOR WE ARE GOING TO USE!
+	public Train(int train_ID, int type, int carriages){
+		this.train_ID = train_ID;
+		this.type = type;
 		this.carriages = carriages;
 		this.composition = null;
 
@@ -55,52 +116,57 @@ public class Train implements Serializable{
 		washing = false;
 
 		if(type == 1 && carriages == 4){ //SLT 4 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 24; //Minutes
+			cleaningtime = 15; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 23; //Minutes
+			length = 70;
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 26; //Minutes
+			cleaningtime = 20; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 101;
 		}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 11; //Minutes
+			cleaningtime = 37; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 109;
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 14; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+			length = 162;
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 15; //Minutes
+			cleaningtime = 49; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 101;
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
-			inspectiontime = 10; //Minutes
-			cleaningtime = 10; //Minutes
-			repairingtime = 10; //Minutes
-			washingtime = 10; //Minutes
+			inspectiontime = 18; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+			length = 154;
 		}
 		else{
 			inspectiontime = -1; //Minutes
 			cleaningtime = -1; //Minutes
 			repairingtime = -1; //Minutes
 			washingtime = -1; //Minutes
+			length = -1;
 
 		}
 	}
-
-
-
+	//THIS IS THE CONSTRUCTOR WE ARE GOING TO USE!
 	/**
 	 * 
 	 * @param train_ID
@@ -111,70 +177,71 @@ public class Train implements Serializable{
 	 * @param repairing
 	 * @param washing
 	 */
-	public Train(int train_ID, int type, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
+	public Train(int train_ID, int type, int carriages, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
+		this.carriages = carriages;
+		this.composition = null;
+
+		position = -1; //If you make a new train, it is the only train in its composition
+
+		this.interchangeable = interchangeable;
 		this.inspecting = inspecting;
 		this.cleaning = cleaning;
 		this.repairing = repairing;
 		this.washing = washing;
 
-		position = 1; //If you make a new train, it is the only train in its composition
-
-		switch (type){
-		case 1:length = 109; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 4;
-		break;
-		case 2:length = 162; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 6;
-		break;
-		case 3:length = 101; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 4;
-		break;
-		case 4:length = 154; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 6;
-		break;
-		case 5:length = 70; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 4;
-		break;
-		case 6:length = 101; //Meters
-		inspectiontime = 10; //Minutes
-		cleaningtime = 10; //Minutes
-		repairingtime = 10; //Minutes
-		washingtime = 20; //Minutes
-		carriages = 6;
-		break;
-		default: length = 0 ; //Meters
-		inspectiontime = 0; //Minutes
-		cleaningtime = 0; //Minutes
-		repairingtime = 0; //Minutes
-		washingtime = 0; //Minutes
-		carriages = 0;
-		break;
+		if(type == 1 && carriages == 4){ //SLT 4 carr
+			inspectiontime = 24; //Minutes
+			cleaningtime = 15; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 23; //Minutes
+			length = 70;
+		}
+		else if(type == 1 && carriages == 6){ //SLT 6 carr
+			inspectiontime = 26; //Minutes
+			cleaningtime = 20; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 101;
+		}
+		else if(type == 2 && carriages == 4){ //VIRM 4 carr
+			inspectiontime = 11; //Minutes
+			cleaningtime = 37; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 109;
+		}
+		else if(type == 2 && carriages == 6){ //VIRM 6 carr
+			inspectiontime = 14; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+			length = 162;
+		}
+		else if(type == 3 && carriages == 4){ //DDZ 4 carr
+			inspectiontime = 15; //Minutes
+			cleaningtime = 49; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 24; //Minutes
+			length = 101;
+		}
+		else if(type == 3 && carriages == 6){ //DDZ 6 carr
+			inspectiontime = 18; //Minutes
+			cleaningtime = 56; //Minutes
+			repairingtime = 0; //Minutes
+			washingtime = 26; //Minutes
+			length = 154;
+		}
+		else{
+			inspectiontime = -1; //Minutes
+			cleaningtime = -1; //Minutes
+			repairingtime = -1; //Minutes
+			washingtime = -1; //Minutes
+			length = -1;
 
 		}
 	}
-
 
 	public int getID(){
 		return train_ID;

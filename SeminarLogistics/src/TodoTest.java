@@ -33,10 +33,12 @@ public class TodoTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		t1 = new Train(1, 1, true, true, true, true, true);
-		t2 = new Train(2, 2, true, true, true, true, true);
-		t3 = new Train(3, 1, true, true, true, true, true);
-		t4 = new Train(4, 2, true, true, true, true, true);
+		t1 = new Train(1, 1, 4);
+		t2 = new Train(2, 2, 6);
+		t3 = new Train(3, 1, 6);
+		t4 = new Train(4, 3, 4);
+		t1.toggleCleaning();t1.toggleInspecting();t1.toggleWashing();
+		t2.toggleCleaning();t2.toggleInspecting();t2.toggleWashing();
 		c1 = new Composition(new ArrayList<Train>(){{add(t1);}}, 0.006, 1);
 		c2 = new Composition(new ArrayList<Train>(){{add(t2);}}, 0.2 , 0.5);
 		c3 = new Composition(new ArrayList<Train>(){{add(t3);add(t4);}}, 0, 0.8);
