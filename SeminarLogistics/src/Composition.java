@@ -36,7 +36,7 @@ public class Composition implements Serializable{
 		this.updateComposition();
 		compositiontrack = null; //default
 		locationontrack = -1; //default
-		this.arrivaltime = arrivaltime; //default
+		this.arrivaltime = arrivaltime;
 		this.departuretime = departuretime;
 		busytime = new Activity[60*24];
 	}
@@ -541,7 +541,9 @@ public class Composition implements Serializable{
 	public void setArrivaltime(double arrivaltime){
 		this.arrivaltime = arrivaltime;
 	}
-
+	public int getArrivalTimeInteger(){
+		return (int) (arrivaltime*60*24);
+	}
 	/**
 	 * This function returns the departuretime of a composition/block
 	 * 
@@ -551,7 +553,7 @@ public class Composition implements Serializable{
 		return departuretime;
 	}
 	public int getDepartureTimeInteger(){
-		return (int) departuretime*60*24;
+		return (int) (departuretime*60*24);
 	}
 
 	/**

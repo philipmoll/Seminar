@@ -6,13 +6,17 @@ public class Todo {
 	private ArrayList<Activity> activities;
 	public final static int moveduration = 2;
 
-
+	ArrayList<Composition> arrivingcompositions;
+	ArrayList<Composition> departurecompostions;
+	
+	//An activity representing any incoming/outgoing composition movement
+	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
 
 	ArrayList<Track> platforms = new ArrayList<>();
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
 
-	public Todo(ArrayList<Track> tracks){
+	public Todo(ArrayList<Track> tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions) throws IOException{
 		activities = new ArrayList<>();
 
 		for(int i=0;i<tracks.size();i++){
@@ -22,6 +26,20 @@ public class Todo {
 			if(tracks.get(i).getWashingposition()== 1){
 				washareas.add(tracks.get(i));
 			}
+		}
+		
+		this.arrivingcompositions = arrivingcompositions;
+		//this.departurecompostions = departurecompositions;
+		
+		for(int i = 0; i<arrivingcompositions.size(); i++){
+			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
+						
+			this.setBusyTimeMove(arrordepmove);
+		}
+		for(int i = 0; i<departurecompositions.size(); i++){
+			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-moveduration);
+			
+			this.setBusyTimeMove(arrordepmove);
 		}
 	}
 	/**
@@ -34,7 +52,7 @@ public class Todo {
 		int temp;
 		int temptemp;
 		int amount = 0;
-		int mintemp = (int) addedcomp.getArrivaltime()*24*60; //TODO: AFRONDEN GOED?
+		int mintemp = addedcomp.getArrivalTimeInteger(); //TODO: AFRONDEN GOED?
 		Track temp1;
 		Track temptemp1;
 		int margin1 = 2432;
@@ -48,6 +66,7 @@ public class Todo {
 		int count;
 		int acttime;
 		Track currenttrack = null;
+
 
 		//It checks for all possible activities
 		for(int j = 0; j<4; j++){
@@ -91,7 +110,7 @@ public class Todo {
 
 					//Add an activity
 
-					activities.add(new Activity(durationactivity, (int) addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j, currenttrack));
+					activities.add(new Activity(durationactivity, (int) addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
 
 
 					//We find the soonest possible time to start the activity looking at each possible track the activity can be done.
@@ -147,13 +166,12 @@ public class Todo {
 
 					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
 					this.setBusyTime(activities.get(activities.size()-1));
-					currenttrack = temp1;
 					//Minimum time to loop from must be update since inspection cannot be moved later
 					if(j == 0){	
 						mintemp += durationactivity;
-//						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-//							margin1 = activities.get(activities.size()-1).getMarginInteger();
-//						}
+						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						}
 					}
 					//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 					else if(j == 1){
@@ -174,11 +192,13 @@ public class Todo {
 						}
 						amount += 1;
 					}
+					currenttrack = temp1;
+
 				}
 
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
-					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j, currenttrack));
+					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
 
 					//Keeping track of amount of activities done except for inspection
 					amount += 1;
@@ -384,10 +404,7 @@ public class Todo {
 			}
 		}
 		
-		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)
-		
-		System.out.print(margin1 + " " + margin2 + " \n");
-		
+		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)		
 		if(margin1 >= margin2){
 			for(int i = 0; i<amount; i++){
 				this.removeBusyTime(activities.get(activities.size()-1-i));
@@ -414,6 +431,19 @@ public class Todo {
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
 			movelist[i] = activity;
 		}
+		for(int i = activity.getPlannedTimeInteger() + activity.getDurationInteger() + activity.getMoveTime(); i<activity.getPlannedTimeInteger() + activity.getDurationInteger() + activity.getMoveTime() + activity.getMoveTime2(); i++){
+			movelist[i] = activity;
+		}
+	}
+
+	public void setBusyTimeMove(Activity activity) throws IOException {
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
+			if(movelist[i] != null){
+				throw new IOException("It is impossible to have 2 trains arriving or leaving at the same time!");
+			}
+			movelist[i] = activity;
+		}
+		
 	}
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<movelist.length; i++){
@@ -426,7 +456,13 @@ public class Todo {
 
 		boolean feasible = true;
 
-		for(int i = timetobechecked; i<timetobechecked+checkmovetime; i++){
+		for(int i = timetobechecked; i<timetobechecked+activity.getMoveTime(); i++){
+			if(movelist[i]!=null){
+				feasible = false;
+				break;
+			}
+		}
+		for(int i = timetobechecked + activity.getDurationInteger() + activity.getMoveTime(); i<timetobechecked + activity.getDurationInteger() + activity.getMoveTime2() + activity.getMoveTime(); i++){
 			if(movelist[i]!=null){
 				feasible = false;
 				break;

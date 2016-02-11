@@ -12,7 +12,8 @@ public class Activity {
 	private int ultimatetime;
 	private Track previoustrack;
 	private int movetime;
-	
+	private int movetime2;
+
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned){
 		this.plannedtime = plannedtime;
 		this.composition = composition;
@@ -21,8 +22,21 @@ public class Activity {
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
 		previoustrack = null;
-		movetime = 0;
-		totalduration = duration + movetime;
+		movetime = Todo.moveduration;
+		movetime2 = Todo.moveduration;
+		totalduration = duration + movetime + movetime2;
+	}
+	public Activity(int duration, int ultimatetime, Composition composition, int activity, boolean move){
+		this.duration = duration;
+		this.ultimatetime = ultimatetime;
+		this.composition = composition;
+		this.activity = activity;
+		plannedtime = -1;
+		trackassigned = null;
+		previoustrack = null;
+		movetime = Todo.moveduration;
+		movetime2 = Todo.moveduration;
+		totalduration = duration + movetime + movetime2;
 	}
 	public Activity(int duration, int ultimatetime, Composition composition, int activity){
 		this.duration = duration;
@@ -32,40 +46,24 @@ public class Activity {
 		plannedtime = -1;
 		trackassigned = null;
 		previoustrack = null;
-		movetime = 0;
-		totalduration = duration + movetime;
+		movetime = Todo.moveduration;
+		movetime2 = Todo.moveduration;
+		totalduration = duration + movetime + movetime2;
 	}
-	public Activity(int duration, int ultimatetime, Composition composition, int activity, Track previoustrack){
-		this.duration = duration;
-		this.ultimatetime = ultimatetime;
-		this.composition = composition;
-		this.activity = activity;
-		plannedtime = -1;
-		this.trackassigned = null;
-		this.previoustrack = previoustrack;
-
-		totalduration = duration + movetime;
-	}
-	
-	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, Track previoustrack){
+	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, boolean move){
 		this.plannedtime = plannedtime;
 		this.composition = composition;
 		this.activity = activity;
 		this.trackassigned = trackassigned;
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
-		
+
 		//Only relevant for the moving activity;
-		this.previoustrack = previoustrack;
-		if(previoustrack.equals(trackassigned)){
-			movetime = 0;
-		}
-		else{
-			movetime = Todo.moveduration;
-		}
-		totalduration = duration + movetime;
+		movetime = Todo.moveduration;
+		movetime2 = Todo.moveduration;
+		totalduration = duration + movetime + movetime2;
 	}
-	
+
 	public boolean differenttrack(){
 		if(previoustrack.equals(trackassigned)){
 			return false;
@@ -86,11 +84,11 @@ public class Activity {
 	public Track getTrackAssigned(){
 		return trackassigned;
 	}
-	
+
 	public Track getPreviousTrack(){
 		return previoustrack;
 	}
-	
+
 	public double getDuration(){
 		return duration;
 	}
@@ -126,12 +124,19 @@ public class Activity {
 		}
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
-		if(previoustrack==null || !previoustrack.equals(trackassigned)){
-			movetime = Todo.moveduration;
+		totalduration = duration + movetime + movetime2;
+		trackassigned.setBusyTime(this);
+		composition.setBusyTime(this);
+	}
+	public void setUpdate(int newplannedtime, Track newtrack, Track prevtrack){
+		//TODO: THROW EXCEPTION IF NOT FEASIBLE!!!!!!!!!!!!!!!!
+		if(plannedtime != -1){
+			trackassigned.removeBusyTime(this);
+			composition.removeBusyTime(this);
 		}
-		else{
-			movetime = 0;
-		}
+		trackassigned = newtrack;
+		plannedtime = newplannedtime;
+		previoustrack = prevtrack;
 		totalduration = duration + movetime;
 		trackassigned.setBusyTime(this);
 		composition.setBusyTime(this);
@@ -154,6 +159,9 @@ public class Activity {
 	}
 	public int getMoveTime(){
 		return (int) movetime;
+	}
+	public int getMoveTime2(){
+		return (int) movetime2;
 	}
 	public void setCurrentTrack(Track abc){
 		previoustrack = abc;
