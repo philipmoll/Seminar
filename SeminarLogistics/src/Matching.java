@@ -1175,7 +1175,7 @@ class CompatibleDepartingBlocks {
 			}
 			boolean check = true;
 			
-			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
+			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()/60/24*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
 				for (int j = 0; j<arrivingblock.getTrainList().size(); j++){
 					if (arrivingblock.getTrainList().get(j).getSameClass(alldepartingblocks.get(i).getTrainList().get(j))== false){
 						check = false;
@@ -1253,7 +1253,7 @@ class CompatibleArrivingBlocks {
 			}
 			boolean check = true;
 			
-			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  /*+ allarrivingblocks.get(i).getTotalServiceTime()*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
+			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  /*+ allarrivingblocks.get(i).getTotalServiceTime()/60/24*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
 				for (int j = 0; j<departingblock.getTrainList().size(); j++){
 					if (departingblock.getTrainList().get(j).getSameClass(allarrivingblocks.get(i).getTrainList().get(j))== false){
 						check = false;
