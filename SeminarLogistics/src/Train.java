@@ -22,7 +22,7 @@ public class Train implements Serializable{
 	private final int washingtime;
 	private final int carriages;
 
-	private boolean interchangeable;
+	private int interchangeable_ID;
 	private boolean inspecting;
 	private boolean cleaning;
 	private boolean repairing;
@@ -48,7 +48,7 @@ public class Train implements Serializable{
 
 		position = -1; //If you make a new train, it is the only train in its composition
 
-		interchangeable = false;
+		interchangeable_ID = -1;
 		inspecting = false;
 		cleaning = false;
 		repairing = false;
@@ -109,7 +109,7 @@ public class Train implements Serializable{
 
 		position = -1; //If you make a new train, it is the only train in its composition
 
-		interchangeable = false;
+		interchangeable_ID = -1;
 		inspecting = false;
 		cleaning = false;
 		repairing = false;
@@ -177,7 +177,7 @@ public class Train implements Serializable{
 	 * @param repairing
 	 * @param washing
 	 */
-	public Train(int train_ID, int type, int carriages, boolean interchangeable, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
+	public Train(int train_ID, int type, int carriages, int interchangeable_ID, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
 		this.carriages = carriages;
@@ -185,7 +185,7 @@ public class Train implements Serializable{
 
 		position = -1; //If you make a new train, it is the only train in its composition
 
-		this.interchangeable = interchangeable;
+		this.interchangeable_ID = interchangeable_ID;
 		this.inspecting = inspecting;
 		this.cleaning = cleaning;
 		this.repairing = repairing;
@@ -313,8 +313,8 @@ public class Train implements Serializable{
 			return 0;
 		}
 	}
-	public boolean getInterchangeable(){
-		return interchangeable;
+	public int getInterchangeable(){
+		return interchangeable_ID;
 	}
 	public boolean getInspecting(){
 		return inspecting;
@@ -366,9 +366,6 @@ public class Train implements Serializable{
 	}
 	public Composition getComposition(){
 		return composition;
-	}
-	public void toggleInterchangeable(){
-		interchangeable = !interchangeable; 
 	}
 	public void toggleInspecting(){
 		inspecting = !inspecting; 
