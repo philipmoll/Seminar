@@ -95,10 +95,6 @@ public class Main {
 
 			ArrayList<Composition> currentcompositions = new ArrayList<>();
 
-			//while(!EventList.getEmpty() || !Todo.getEmpty()){
-
-			//}
-
 
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
 			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
@@ -134,6 +130,9 @@ public class Main {
 					}
 				}
 			}
+			
+			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+			
 //			System.out.println(onzeMatching.getObjectiveValue());
 //			int teller = 0;
 //			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){

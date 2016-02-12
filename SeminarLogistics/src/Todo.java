@@ -7,7 +7,7 @@ public class Todo {
 
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
-
+	ArrayList<FinalBlock> finalblocks;
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -16,20 +16,22 @@ public class Todo {
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
 
-	public Todo(ArrayList<Track> tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions) throws IOException{
+	public Todo(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
 		activities = new ArrayList<>();
 
-		for(int i=0;i<tracks.size();i++){
-			if (tracks.get(i).getInspectionposition() ==1){
-				platforms.add(tracks.get(i));
+		for(int i=0;i<tracks.length;i++){
+			if (tracks[i].getInspectionposition() ==1){
+				platforms.add(tracks[i]);
 			}
-			if(tracks.get(i).getWashingposition()== 1){
-				washareas.add(tracks.get(i));
+			if(tracks[i].getWashingposition()== 1){
+				washareas.add(tracks[i]);
 			}
 		}
 
 		this.arrivingcompositions = arrivingcompositions;
-		//this.departurecompostions = departurecompositions;
+		this.departurecompostions = departurecompositions;
+		
+		this.finalblocks = finalblocks;
 
 		for(int i = 0; i<arrivingcompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
@@ -40,6 +42,10 @@ public class Todo {
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
 
 			this.setBusyTimeMove(arrordepmove);
+		}
+		
+		for(int i = 0; i<finalblocks.size(); i++){
+			this.addComposition(finalblocks.get(i));
 		}
 	}
 	/**
