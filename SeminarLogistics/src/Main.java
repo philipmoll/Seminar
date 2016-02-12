@@ -1,9 +1,4 @@
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 /**
@@ -85,17 +80,7 @@ public class Main {
 
 			}
 
-			ArrayList<Block> blocklist = new ArrayList<Block>();
-			try {
-				blocklist = Matching.makeblocks(arrivingcompositionswitharrtime);
-			} catch (IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			ArrayList<Composition> currentcompositions = new ArrayList<>();
-
-
+			
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
 			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
 			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
@@ -156,7 +141,7 @@ public class Main {
 			//This is how we should write a decouple function, N.B.: with the.add function.
 			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
 
-		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | TrackNotFreeException | MisMatchException | CloneNotSupportedException e) {
+		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
 	}
