@@ -38,10 +38,12 @@ public class TodoTest {
 		t3 = new Train(3, 1, 6);
 		t4 = new Train(4, 3, 4);
 		t1.toggleCleaning();t1.toggleInspecting();t1.toggleWashing();
-		t2.toggleCleaning();t2.toggleInspecting();t2.toggleWashing();
+		t2.toggleCleaning();t2.toggleInspecting();
+		t3.toggleCleaning();t3.toggleInspecting();
+		t4.toggleCleaning();t4.toggleWashing();
 		c1 = new Composition(new ArrayList<Train>(){{add(t1);}}, 0.006, 1);
-		c2 = new Composition(new ArrayList<Train>(){{add(t2);}}, 0.2 , 0.5);
-		c3 = new Composition(new ArrayList<Train>(){{add(t3);add(t4);}}, 0, 0.8);
+		c2 = new Composition(new ArrayList<Train>(){{add(t2);}}, 0 , 0.5);
+		c3 = new Composition(new ArrayList<Train>(){{add(t3);add(t4);}}, 0.02, 0.8);
 		p1 = new Track("p1", 500, 1, 1, 1, 1, 0);
 		p2 = new Track("p2", 500, 1, 1, 1, 1, 0);
 		w1 = new Track("p3", 500, 1, 0, 0, 0, 1);

@@ -8,8 +8,8 @@ public class Todo {
 
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
-	
-	
+
+
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
 
@@ -28,18 +28,18 @@ public class Todo {
 				washareas.add(tracks.get(i));
 			}
 		}
-		
+
 		this.arrivingcompositions = arrivingcompositions;
 		//this.departurecompostions = departurecompositions;
-		
+
 		for(int i = 0; i<arrivingcompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
-						
+
 			this.setBusyTimeMove(arrordepmove);
 		}
 		for(int i = 0; i<departurecompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-moveduration);
-			
+
 			this.setBusyTimeMove(arrordepmove);
 		}
 	}
@@ -67,12 +67,14 @@ public class Todo {
 		int count;
 		int acttime;
 		Track currenttrack = null;
+		boolean feasible1 = true;
+		boolean feasible2 = true;
 
 
 		//It checks for all possible activities
 		for(int j = 0; j<4; j++){
 			temp = 12412;
-			temptemp = 12312;
+			temptemp = 12412;
 			temp1 = null;
 			temptemp1 = null;
 			durationactivity = 0;
@@ -116,49 +118,29 @@ public class Todo {
 
 					//We find the soonest possible time to start the activity looking at each possible track the activity can be done.
 					for(int k = 0; k<platforms.size(); k++){
-						if(platforms.get(k).equals(currenttrack)){
-							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
-								
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
-											temptemp = l;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
 
-											temptemp1 = platforms.get(k);
-											break;
-										}
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+										temptemp = l;
+
+										temptemp1 = platforms.get(k);
+										break;
 									}
 								}
 							}
-							//Update if we find better solution than the previous ones at a different track.
-							if(temptemp <= temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
-						}
-						else{
-							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
-
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l, moveduration)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, moveduration)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, moveduration)){
-											temptemp = l;
-
-											temptemp1 = platforms.get(k);
-											break;
-										}
-									}
-								}
-							}
-							//Update if we find better solution than the previous ones at a different track.
-							if(temptemp + moveduration < temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
 						}
 
+						if(temptemp < temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
 
+					}
 
+					if(temp == 12412){
+						feasible1 = false;
 					}
 
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
@@ -206,62 +188,46 @@ public class Todo {
 
 					//We find the soonest possible time to start the activity looking at each possible track the activity can be done.
 					for(int k = 0; k<washareas.size(); k++){
-						if(washareas.get(k).equals(currenttrack)){
-							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
 
-											temptemp = l;
-											temptemp1 = washareas.get(k);
-											break;
-										}
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+
+										temptemp = l;
+										temptemp1 = washareas.get(k);
+										break;
 									}
 								}
 							}
-							//Update if we find better solution than the previous ones at a different track.
-							if(temptemp <= temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
-						}
-						else{
-							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l, moveduration)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, moveduration)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, moveduration)){
-
-											temptemp = l;
-											temptemp1 = washareas.get(k);
-											break;
-										}
-									}
-								}
-							}
-
-							//Update if we find better solution than the previous ones at a different track.
-							if(temptemp + moveduration < temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
 						}
 
-						activities.get(activities.size()-1).setUpdate(temp, temp1);
-						currenttrack = temp1;
-
-						//Storing first solution
-						addedcomp.setBusyTime(activities.get(activities.size()-1));
-						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
-						this.setBusyTime(activities.get(activities.size()-1));
-
-						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
-						track13 = activities.get(activities.size()-1).getTrackAssigned();
-
-						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
 						}
-
 					}
+					if(temp == 12412){
+						feasible1 = false;
+					}
+					//System.out.print(temp + " " + temp1);
+					activities.get(activities.size()-1).setUpdate(temp, temp1);
+					currenttrack = temp1;
+
+					//Storing first solution
+					addedcomp.setBusyTime(activities.get(activities.size()-1));
+					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+					this.setBusyTime(activities.get(activities.size()-1));
+
+					time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
+					track13 = activities.get(activities.size()-1).getTrackAssigned();
+
+					if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+						margin1 = activities.get(activities.size()-1).getMarginInteger();
+					}
+
+
 				}
 			}
 		}
@@ -280,16 +246,13 @@ public class Todo {
 		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 		for(int j = 0; j<amount; j++){
 			activities.get(activities.size()-1-j).setCurrentTrack(currenttrack);
-			temp = 124123123;
-			temptemp = 123124;
+			temp = 12412;
+			temptemp = 12412;
 			temp1 = null;
 			temptemp1 = null;
 			if(activities.get(activities.size()-1-j).getActivity() == 3){
 
 				for(int k = 0; k<washareas.size(); k++){
-					if(washareas.get(k).equals(currenttrack)){
-
-
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
 							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
 								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
@@ -307,26 +270,10 @@ public class Todo {
 							temp = temptemp;
 							temp1 = temptemp1;
 						}
-					}
-					else{
-						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, moveduration)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, moveduration)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, moveduration)){
-
-										temptemp = l;
-										temptemp1 = washareas.get(k);
-										break;
-									}
-								}
-							}
-						}
-						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp + moveduration < temp){
-							temp = temptemp;
-							temp1 = temptemp1;
-						}
-					}
+					
+				}
+				if(temp == 12412){
+					feasible2 = false;
 				}
 
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
@@ -335,7 +282,7 @@ public class Todo {
 
 				//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
 				//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
-				
+
 
 				if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 					margin2 = activities.get(activities.size()-1-j).getMarginInteger();
@@ -344,7 +291,6 @@ public class Todo {
 			else if(activities.get(activities.size()-1-j).getActivity() == 1 || activities.get(activities.size()-1-j).getActivity() == 2){
 
 				for(int k = 0; k<platforms.size(); k++){
-					if(platforms.get(k).equals(currenttrack)){
 
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
 							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
@@ -363,26 +309,10 @@ public class Todo {
 							temp = temptemp;
 							temp1 = temptemp1;
 						}
-					}
-					else{
-						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, moveduration)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, moveduration)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l, moveduration)){
+				}
 
-										temptemp = l;
-										temptemp1 = platforms.get(k);
-										break;
-									}
-								}
-							}
-						}
-						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp + moveduration < temp){
-							temp = temptemp;
-							temp1 = temptemp1;
-						}
-					}
+				if(temp == 12412){
+					feasible2 = false;
 				}
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				currenttrack = temp1;
@@ -404,9 +334,31 @@ public class Todo {
 				}
 			}
 		}
-		
+
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)		
-		if(margin1 >= margin2){
+		if(feasible1 && feasible2){
+			if(margin1 >= margin2){
+				for(int i = 0; i<amount; i++){
+					this.removeBusyTime(activities.get(activities.size()-1-i));
+				}
+				for(int i = 0; i<amount; i++){
+					if(activities.get(activities.size()-1-i).getActivity()==1){
+						activities.get(activities.size()-1-i).setUpdate(time11, track11);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==2){
+						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==3){
+						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+				}
+
+			}
+		}
+		else if(feasible1 && ! feasible2){
 			for(int i = 0; i<amount; i++){
 				this.removeBusyTime(activities.get(activities.size()-1-i));
 			}
@@ -424,7 +376,12 @@ public class Todo {
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
 			}
+		}
+		else if(!feasible1 && feasible2){
 
+		}
+		else{
+			throw new IOException("No feasible solution found for job-shop");
 		}
 	}
 
@@ -444,7 +401,7 @@ public class Todo {
 			}
 			movelist[i] = activity;
 		}
-		
+
 	}
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<movelist.length; i++){
@@ -500,7 +457,7 @@ public class Todo {
 		}
 		return abcd;
 	}
-/*
+	/*
 	public int getLeastMargin(){
 		double temp;
 		int temp1 = -1;
@@ -519,7 +476,7 @@ public class Todo {
 		}
 		return temp1;
 	}
-*/
+	 */
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(movelist[i]!=null){
