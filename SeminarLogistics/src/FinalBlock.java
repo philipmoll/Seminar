@@ -87,5 +87,9 @@ public class FinalBlock extends Composition { //TODO: test
 	public int getCutpositiondep2() {
 		return cutpositiondep2;
 	}
+	
+	public int getShuntTime() {
+		return (int) ((departuretime - arrivaltime)*60*24);
+	}
 
 }

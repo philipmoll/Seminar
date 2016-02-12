@@ -30,7 +30,7 @@ public class Todo {
 
 		this.arrivingcompositions = arrivingcompositions;
 		this.departurecompostions = departurecompositions;
-		
+
 		this.finalblocks = finalblocks;
 
 		for(int i = 0; i<arrivingcompositions.size(); i++){
@@ -44,8 +44,19 @@ public class Todo {
 			this.setBusyTimeMove(arrordepmove);
 		}
 		
+		int k = -1;
+		int l = 0;
+		int m = 0;
+		int temp = 14124;
 		for(int i = 0; i<finalblocks.size(); i++){
-			this.addComposition(finalblocks.get(i));
+			for(int j = 0; j<finalblocks.size(); j++){
+				if(finalblocks.get(j).getShuntTime() < temp && finalblocks.get(j).getShuntTime() > m){ //TODO: WHAT IF SOME BLOCKS HAVE THE SAME SHUNT TIME?
+					temp = finalblocks.get(j).getShuntTime();
+				}
+			}
+			m = temp;
+			
+			this.addComposition(finalblocks.get(k)); //TODO: SET ORDER IN WHICH IT NEEDS TO BE ADDED!! THE LEAST FLEXIBLE ONE
 		}
 	}
 	/**
@@ -258,24 +269,24 @@ public class Todo {
 			if(activities.get(activities.size()-1-j).getActivity() == 3){
 
 				for(int k = 0; k<washareas.size(); k++){
-						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+					for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
+						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
+							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
+								if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
 
-										temptemp = l;
-										temptemp1 = washareas.get(k);
-										break;
-									}
+									temptemp = l;
+									temptemp1 = washareas.get(k);
+									break;
 								}
 							}
 						}
-						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp <= temp){
-							temp = temptemp;
-							temp1 = temptemp1;
-						}
-					
+					}
+					//Update if we find better solution than the previous ones at a different track.
+					if(temptemp <= temp){
+						temp = temptemp;
+						temp1 = temptemp1;
+					}
+
 				}
 				if(temp == 12412){
 					feasible2 = false;
@@ -297,23 +308,23 @@ public class Todo {
 
 				for(int k = 0; k<platforms.size(); k++){
 
-						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l, 0)){
+					for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
+						if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
+							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
+								if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l, 0)){
 
-										temptemp = l;
-										temptemp1 = platforms.get(k);
-										break;
-									}
+									temptemp = l;
+									temptemp1 = platforms.get(k);
+									break;
 								}
 							}
 						}
-						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp <= temp){
-							temp = temptemp;
-							temp1 = temptemp1;
-						}
+					}
+					//Update if we find better solution than the previous ones at a different track.
+					if(temptemp <= temp){
+						temp = temptemp;
+						temp1 = temptemp1;
+					}
 				}
 
 				if(temp == 12412){
