@@ -44,14 +44,17 @@ public class Todo {
 			this.setBusyTimeMove(arrordepmove);
 		}
 		
+		
+		//TODO: MAKE HARD COPY!
 		int k = -1;
-		int l = 0;
 		int m = 0;
 		int temp = 14124;
 		for(int i = 0; i<finalblocks.size(); i++){
+			temp = 14124;
 			for(int j = 0; j<finalblocks.size(); j++){
 				if(finalblocks.get(j).getShuntTime() < temp && finalblocks.get(j).getShuntTime() > m){ //TODO: WHAT IF SOME BLOCKS HAVE THE SAME SHUNT TIME?
 					temp = finalblocks.get(j).getShuntTime();
+					k = j;
 				}
 			}
 			m = temp;
