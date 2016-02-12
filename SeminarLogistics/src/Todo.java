@@ -48,7 +48,7 @@ public class Todo {
 	 * @param addedcomp
 	 * @throws IOException 
 	 */	
-	public void addComposition(Composition addedcomp) throws IOException{
+	public void addComposition(FinalBlock addedcomp) throws IOException{
 		int durationactivity;
 		int temp;
 		int temptemp;

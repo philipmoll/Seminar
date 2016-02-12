@@ -24,6 +24,10 @@ public class TodoTest {
 	private Composition c1;
 	private Composition c2;
 	private Composition c3;
+	private FinalBlock fb1;
+	private FinalBlock fb2;
+	private FinalBlock fb3;
+
 	private Todo todo;
 	private Track p1;
 	private Track p2;
@@ -49,22 +53,27 @@ public class TodoTest {
 		w1 = new Track("p3", 500, 1, 0, 0, 0, 1);
 		ArrayList<Composition> list = new ArrayList(){{add(c1);add(c2);add(c3);}};
 		todo = new Todo(new ArrayList<Track>(){{add(p1);add(p2);add(w1);}}, list, list);
+		
+		fb1 = new FinalBlock(new ArrayList<Train>(){{add(t1);}}, 0.006, 1, c1, c1, -1, -1, -1, -1);
+		fb2 = new FinalBlock(new ArrayList<Train>(){{add(t2);}}, 0, 0.5, c1, c1, -1, -1, -1, -1);
+		fb3 = new FinalBlock(new ArrayList<Train>(){{add(t3);add(t4);}}, 0.02, 0.8, c1, c1, -1, -1, -1, -1);
+
 	}
 
 	@Test
 	public void test() throws IOException {
 
-		todo.addComposition(c1);
-		todo.addComposition(c2);
-		todo.addComposition(c3);
-		System.out.print("Composition 1: ");
-		c1.printTimeLine();
+		todo.addComposition(fb1);
+		todo.addComposition(fb2);
+		todo.addComposition(fb3);
+		System.out.print("Block 1:       ");
+		fb1.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Composition 2: ");
-		c2.printTimeLine();
+		System.out.print("Block 2:       ");
+		fb2.printTimeLine();
 		System.out.print("\n");
-		System.out.print("Composition 3: ");
-		c3.printTimeLine();
+		System.out.print("Block 3:       ");
+		fb3.printTimeLine();
 		System.out.print("\n");
 		System.out.print("Platform 1:    ");
 		p1.printTimeLine();
