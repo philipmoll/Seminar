@@ -31,8 +31,6 @@ public class Todo {
 		this.arrivingcompositions = arrivingcompositions;
 		this.departurecompostions = departurecompositions;
 
-		this.finalblocks = finalblocks;
-
 		for(int i = 0; i<arrivingcompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
 
@@ -43,12 +41,24 @@ public class Todo {
 
 			this.setBusyTimeMove(arrordepmove);
 		}
-		
-		
-		//TODO: MAKE HARD COPY!
+
+		for(int i = 0; i<finalblocks.size(); i++){
+			this.finalblocks.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
+		}
+
+		int temp;
+		for(int i = 0; i<this.finalblocks.size(); i++){
+			for(int j = 0; j<this.finalblocks.size(); j++){
+				temp = 14124;
+				if(this.finalblocks.get(j).getShuntTime()<temp){
+					temp = this.finalblocks.get(j).getShuntTime();
+				}
+			}
+
+		}
+
 		int k = -1;
 		int m = 0;
-		int temp = 14124;
 		for(int i = 0; i<finalblocks.size(); i++){
 			temp = 14124;
 			for(int j = 0; j<finalblocks.size(); j++){
@@ -58,7 +68,7 @@ public class Todo {
 				}
 			}
 			m = temp;
-			
+
 			this.addComposition(finalblocks.get(k)); //TODO: SET ORDER IN WHICH IT NEEDS TO BE ADDED!! THE LEAST FLEXIBLE ONE
 		}
 	}

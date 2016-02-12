@@ -89,7 +89,7 @@ public class FinalBlock extends Composition { //TODO: test
 	}
 	
 	public int getShuntTime() {
-		return (int) ((departuretime - arrivaltime)*60*24);
+		return (int) ((this.getDeparturetime() - this.getArrivaltime())*60*24);
 	}
 
 }

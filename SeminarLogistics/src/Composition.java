@@ -17,8 +17,8 @@ public class Composition implements Serializable{
 	private ArrayList<Train> compositiontrains;
 	private Track compositiontrack;
 	private int locationontrack;
-	protected double arrivaltime;
-	protected double departuretime;
+	private double arrivaltime;
+	private double departuretime;
 	private Activity[] busytime;
 
 	public Composition(ArrayList<Train> compositiontrains) throws IOException{
