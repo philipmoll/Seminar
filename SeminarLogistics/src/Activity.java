@@ -22,8 +22,8 @@ public class Activity {
 		this.duration = duration;
 		this.ultimatetime = ultimatetime;
 		previoustrack = null;
-		movetime = Todo.moveduration;
-		movetime2 = Todo.moveduration;
+		movetime = Main.moveduration;
+		movetime2 = Main.moveduration;
 		totalduration = duration + movetime + movetime2;
 	}
 	public Activity(int duration, int ultimatetime, Composition composition, int activity, boolean move){
@@ -34,8 +34,8 @@ public class Activity {
 		plannedtime = -1;
 		trackassigned = null;
 		previoustrack = null;
-		movetime = Todo.moveduration;
-		movetime2 = Todo.moveduration;
+		movetime = Main.moveduration;
+		movetime2 = Main.moveduration;
 		totalduration = duration + movetime + movetime2;
 	}
 	public Activity(int duration, int ultimatetime, Composition composition, int activity){
@@ -46,8 +46,8 @@ public class Activity {
 		plannedtime = -1;
 		trackassigned = null;
 		previoustrack = null;
-		movetime = Todo.moveduration;
-		movetime2 = Todo.moveduration;
+		movetime = Main.moveduration;
+		movetime2 = Main.moveduration;
 		totalduration = duration + movetime + movetime2;
 	}
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned, boolean move){
@@ -59,8 +59,8 @@ public class Activity {
 		this.ultimatetime = ultimatetime;
 
 		//Only relevant for the moving activity;
-		movetime = Todo.moveduration;
-		movetime2 = Todo.moveduration;
+		movetime = Main.moveduration;
+		movetime2 = Main.moveduration;
 		totalduration = duration + movetime + movetime2;
 	}
 

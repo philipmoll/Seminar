@@ -19,6 +19,8 @@ public class Main {
 	
 	public static final int decoupletime = 2; //MINUTES
 	public static final int coupletime = 3; //MINUTES
+	public final static int moveduration = 2; //MINUTES
+
 	public static void main(String args[])
 	{
 

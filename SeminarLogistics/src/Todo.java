@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class Todo {
 
 	private ArrayList<Activity> activities;
-	public final static int moveduration = 2;
 
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
@@ -38,7 +37,7 @@ public class Todo {
 			this.setBusyTimeMove(arrordepmove);
 		}
 		for(int i = 0; i<departurecompositions.size(); i++){
-			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-moveduration);
+			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
 
 			this.setBusyTimeMove(arrordepmove);
 		}

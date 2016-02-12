@@ -62,7 +62,7 @@ public class Matching {
 			if (arrivingblocklist.get(i).getCutPosition2()-arrivingblocklist.get(i).getCutPosition1() != arrivingblocklist.get(i).getOriginComposition().getSize()){
 				decoupletime = Main.decoupletime/60/24; //check if we need to decouple
 			}
-			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+Todo.moveduration/60/24+decoupletime);
+			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+Main.moveduration/60/24+decoupletime);
 		}
 
 		//set J
@@ -73,7 +73,7 @@ public class Matching {
 			if (departingblocklist.get(j).getCutPosition2()-departingblocklist.get(j).getCutPosition1() != departingblocklist.get(j).getOriginComposition().getSize()){
 				coupletime = Main.coupletime/60/24; //check if we need to couple
 			}
-			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+Todo.moveduration/60/24+coupletime);
+			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+Main.moveduration/60/24+coupletime);
 		}
 
 		//set T_a and T_d
