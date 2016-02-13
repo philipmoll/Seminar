@@ -22,9 +22,9 @@ public class Main {
 		try {
 			//System.out.println("hier ben ik");
 			//int user = 1; //Friso
-			int user = 2; //Floor
+			//int user = 2; //Floor
 			//int user = 3; //Robin
-			//int user = 4; //Philip
+			int user = 4; //Philip
 
 			Matrix compositiondata;
 			Matrix compositiondata2;
