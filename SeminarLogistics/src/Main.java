@@ -11,10 +11,11 @@ import java.util.*;
  */
 
 public class Main {
-	
+
 	public static final int decoupletime = 2; //MINUTES
 	public static final int coupletime = 3; //MINUTES
 	public final static int moveduration = 2; //MINUTES
+	public final static double begintime = 0.33333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
 
 	public static void main(String args[])
 	{
@@ -22,9 +23,9 @@ public class Main {
 		try {
 			//System.out.println("hier ben ik");
 			//int user = 1; //Friso
-			//int user = 2; //Floor
+			int user = 2; //Floor
 			//int user = 3; //Robin
-			int user = 4; //Philip
+			//int user = 4; //Philip
 
 			Matrix compositiondata;
 			Matrix compositiondata2;
@@ -72,32 +73,39 @@ public class Main {
 			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
-			ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
+			//ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
 			for (int i = 0; i< arrivingcompositions.size();i++){
-				Composition temp = arrivingcompositions.get(i);
-				temp.setArrivaltime(arrivingtimes.get(i));
-				arrivingcompositionswitharrtime.add(temp);
-
+				if (arrivingtimes.get(i)<begintime){
+					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)+1-begintime);
+				}
+				else{
+					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
+				}
 			}
 
-			
+
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
 			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
 			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
 
 			for (int i = 0; i< leavingcompositions.size();i++){
-				leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i));
+				if (leavingtimes.get(i)<begintime){
+					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)+1-begintime);
+				}
+				else{
+					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
+				}
 			}
 
 			ArrayList<Composition> arrival1 = new ArrayList<>();
 			ArrayList<Composition> departure1 = new ArrayList<>();
-			for (int i = 0; i<6; i++){
-				arrival1.add(arrivingcompositionswitharrtime.get(i));
+			for (int i = 6; i<arrivingcompositions.size(); i++){
+				arrival1.add(arrivingcompositions.get(i));
 			}
-			for (int j = 0; j<7; j++){
+			for (int j = 7; j<leavingcompositions.size(); j++){
 				departure1.add(leavingcompositions.get(j));
 			}
-			
+
 			Matching onzeMatching = new Matching(arrival1,departure1);
 			boolean[][] z = onzeMatching.getZ();
 			ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
@@ -115,20 +123,20 @@ public class Main {
 					}
 				}
 			}
-			
-			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
-			
-//			System.out.println(onzeMatching.getObjectiveValue());
-//			int teller = 0;
-//			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){
-//				for (int j = 0; j<onzeMatching.getDepartingBlockList().size(); j++){
-//					System.out.println("z("+i+","+j+") = "+onzeMatching.getZ()[i][j]);
-//					if (onzeMatching.getZ()[i][j] == true){
-//						teller ++;
-//					}
-//				}
-//			}
-//			System.out.println("teller: "+teller);
+
+			//Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+
+			//			System.out.println(onzeMatching.getObjectiveValue());
+			//			int teller = 0;
+			//			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){
+			//				for (int j = 0; j<onzeMatching.getDepartingBlockList().size(); j++){
+			//					System.out.println("z("+i+","+j+") = "+onzeMatching.getZ()[i][j]);
+			//					if (onzeMatching.getZ()[i][j] == true){
+			//						teller ++;
+			//					}
+			//				}
+			//			}
+			//			System.out.println("teller: "+teller);
 
 
 			//This is how we should write a couple function, N.B.: with the .remove function.

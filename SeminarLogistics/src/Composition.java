@@ -633,4 +633,10 @@ public class Composition implements Serializable{
 		}
 		return abcd;
 	}
+	
+	public void printTrains(){
+		for (int i = 0; i<compositiontrains.size(); i++){
+			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
+		}
+	}
 }
