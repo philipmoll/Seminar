@@ -42,34 +42,18 @@ public class Todo {
 			this.setBusyTimeMove(arrordepmove);
 		}
 
-		for(int i = 0; i<finalblocks.size(); i++){
-			this.finalblocks.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
-		}
-
 		int temp;
+		int k;
 		for(int i = 0; i<this.finalblocks.size(); i++){
+			temp = 14124;
+			k = -1;
 			for(int j = 0; j<this.finalblocks.size(); j++){
-				temp = 14124;
 				if(this.finalblocks.get(j).getShuntTime()<temp){
 					temp = this.finalblocks.get(j).getShuntTime();
-				}
-			}
-
-		}
-
-		int k = -1;
-		int m = 0;
-		for(int i = 0; i<finalblocks.size(); i++){
-			temp = 14124;
-			for(int j = 0; j<finalblocks.size(); j++){
-				if(finalblocks.get(j).getShuntTime() < temp && finalblocks.get(j).getShuntTime() > m){ //TODO: WHAT IF SOME BLOCKS HAVE THE SAME SHUNT TIME?
-					temp = finalblocks.get(j).getShuntTime();
 					k = j;
 				}
 			}
-			m = temp;
-
-			this.addComposition(finalblocks.get(k)); //TODO: SET ORDER IN WHICH IT NEEDS TO BE ADDED!! THE LEAST FLEXIBLE ONE
+			this.addComposition(finalblocks.get(k));
 		}
 	}
 	/**
