@@ -619,7 +619,7 @@ public class Composition implements Serializable{
 				System.out.print(busytime[i].getActivity());
 			}
 			else{
-				System.out.print(7);
+				System.out.print(" ");
 			}
 		}
 	}

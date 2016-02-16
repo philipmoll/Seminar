@@ -47,7 +47,8 @@ public class Todo {
 		
 		int temp;
 		int k;
-		for(int i = 0; i<this.finalblockss.size(); i++){
+		int a = this.finalblockss.size();
+		for(int i = 0; i<a; i++){
 			temp = 14124;
 			k = -1;
 			for(int j = 0; j<this.finalblockss.size(); j++){
@@ -56,7 +57,8 @@ public class Todo {
 					k = j;
 				}
 			}
-			this.addComposition(finalblocks.get(k));
+			this.addComposition(this.finalblockss.get(k));
+			this.finalblockss.remove(k);
 		}
 		for(int i = 0; i<platforms.size(); i++){
 			System.out.print("Platform " + i + "  ");
@@ -515,7 +517,7 @@ public class Todo {
 				System.out.print(movelist[i].getActivity());
 			}
 			else{
-				System.out.print(7);
+				System.out.print(" ");
 			}
 		}
 	}
