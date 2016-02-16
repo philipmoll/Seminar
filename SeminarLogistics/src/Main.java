@@ -1,6 +1,15 @@
 import java.io.IOException;
 import java.util.*;
 
+/*
+ * TODO: BIJ MATCHING ARRIVING MOVE TIJD WEGHALEN EN KOPPELTIJD CHECKEN!
+ * 
+ * 
+ * 
+ */
+
+
+
 /**
  *
  * @author Philip Moll 431983
@@ -106,7 +115,7 @@ public class Main {
 				departure1.add(leavingcompositions.get(j));
 			}
 
-			Matching onzeMatching = new Matching(arrival1,departure1);
+			Matching onzeMatching = new Matching(arrivingcompositions,leavingcompositions);
 			boolean[][] z = onzeMatching.getZ();
 			ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
 			ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
@@ -222,7 +231,7 @@ public class Main {
 								length = (int) compositiondata2.getElement(j, 5);
 							}
 						}
-						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2)/*, (int) compositiondata.getElement(i,3), (compositiondata.getElement(i,5)==1.0), (compositiondata.getElement(i,6)==1.0), (compositiondata.getElement(i,7)==1.0), (compositiondata.getElement(i,8)==1.0)*/);
+						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), (int) compositiondata.getElement(i,3), (compositiondata.getElement(i,5)==1.0), (compositiondata.getElement(i,6)==1.0), (compositiondata.getElement(i,7)==1.0), (compositiondata.getElement(i,8)==1.0));
 						//trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length, (compositiondata.getElement(i,4)== 1.0), (compositiondata.getElement(i,5)== 1.0), (compositiondata.getElement(i,6)== 1.0), (compositiondata.getElement(i,7)== 1.0), (compositiondata.getElement(i,8)== 1.0));
 						abcd += 1;
 					}
