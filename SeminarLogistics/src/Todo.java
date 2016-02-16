@@ -7,7 +7,7 @@ public class Todo {
 
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
-	ArrayList<FinalBlock> finalblocks;
+	ArrayList<FinalBlock> finalblockss;
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -18,6 +18,7 @@ public class Todo {
 
 	public Todo(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
 		activities = new ArrayList<>();
+		finalblockss = new ArrayList<>();
 
 		for(int i=0;i<tracks.length;i++){
 			if (tracks[i].getInspectionposition() ==1){
@@ -33,28 +34,45 @@ public class Todo {
 
 		for(int i = 0; i<arrivingcompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
-
 			this.setBusyTimeMove(arrordepmove);
 		}
 		for(int i = 0; i<departurecompositions.size(); i++){
-			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
-
+			arrordepmove.setPlannedTime(departurecompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
 			this.setBusyTimeMove(arrordepmove);
+		}
+
+		for(int i = 0; i< finalblocks.size(); i++){
+			this.finalblockss.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
 		}
 
 		int temp;
 		int k;
-		for(int i = 0; i<this.finalblocks.size(); i++){
+		int a = this.finalblockss.size();
+		for(int i = 0; i<a; i++){
 			temp = 14124;
 			k = -1;
-			for(int j = 0; j<this.finalblocks.size(); j++){
-				if(this.finalblocks.get(j).getShuntTime()<temp){
-					temp = this.finalblocks.get(j).getShuntTime();
+			for(int j = 0; j<this.finalblockss.size(); j++){
+				if(this.finalblockss.get(j).getShuntTime()<temp){
+					temp = this.finalblockss.get(j).getShuntTime();
 					k = j;
 				}
 			}
-			this.addComposition(finalblocks.get(k));
+			this.addComposition(this.finalblockss.get(k));
+			this.finalblockss.remove(k);
 		}
+		for(int i = 0; i<platforms.size(); i++){
+			System.out.print("Platform " + i + "  ");
+			platforms.get(i).printTimeLine();
+			System.out.print("\n");
+		}
+		for(int i = 0; i<washareas.size(); i++){
+			System.out.print("Washarea " + i + "  ");
+			washareas.get(i).printTimeLine();
+			System.out.print("\n");
+		}
+		System.out.print("Movelist    " );
+		this.printTimeLine();
+		System.out.print("\n");
 	}
 	/**
 	 * Adds a composotion with all its required activities to the activity list.
@@ -155,7 +173,7 @@ public class Todo {
 					if(temp == 12412){
 						feasible1 = false;
 					}
-
+					else{
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
@@ -189,6 +207,7 @@ public class Todo {
 						amount += 1;
 					}
 					currenttrack = temp1;
+					}
 
 				}
 
@@ -224,6 +243,7 @@ public class Todo {
 					if(temp == 12412){
 						feasible1 = false;
 					}
+					else{
 					//System.out.print(temp + " " + temp1);
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 					currenttrack = temp1;
@@ -240,15 +260,32 @@ public class Todo {
 						margin1 = activities.get(activities.size()-1).getMarginInteger();
 					}
 
-
+					}
 				}
 			}
 		}
-
+		boolean improvement = true;
+		while(improvement){
+			improvement = false;
+			
+			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+					improvement = true;
+					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+				}
+			}
+			
+			
+		}
+			
+			
+			
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
 			activities.get(activities.size()-1-i).removeTimes();
 			this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
 		}
 		if(addedcomp.getInspection()){
 			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
@@ -288,7 +325,7 @@ public class Todo {
 				if(temp == 12412){
 					feasible2 = false;
 				}
-
+				else{
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				this.setBusyTime(activities.get(activities.size()-1-j));
 				currenttrack = temp1;
@@ -299,6 +336,7 @@ public class Todo {
 
 				if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 					margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+				}
 				}
 			}
 			else if(activities.get(activities.size()-1-j).getActivity() == 1 || activities.get(activities.size()-1-j).getActivity() == 2){
@@ -327,6 +365,7 @@ public class Todo {
 				if(temp == 12412){
 					feasible2 = false;
 				}
+				else{
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				currenttrack = temp1;
 
@@ -344,6 +383,7 @@ public class Todo {
 						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
 
 					}
+				}
 				}
 			}
 		}
@@ -396,6 +436,25 @@ public class Todo {
 		else{
 			throw new IOException("No feasible solution found for job-shop");
 		}
+		System.out.print("Composition ");
+		addedcomp.printTimeLine();
+		System.out.print("\n");
+	}
+
+	public boolean getConsecutive(Activity activity1, Activity activity2){		
+		if(activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && activity1.getTrackAssigned().getConsecutive(activity1, activity2)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public void improveActivities(Activity activity1, Activity activity2){
+		activity2.removeTimes();
+		this.removeBusyTime(activity2);
+		
+		for()
+		
 	}
 
 	public void setBusyTime(Activity activity){
@@ -496,7 +555,7 @@ public class Todo {
 				System.out.print(movelist[i].getActivity());
 			}
 			else{
-				System.out.print(7);
+				System.out.print(" ");
 			}
 		}
 	}

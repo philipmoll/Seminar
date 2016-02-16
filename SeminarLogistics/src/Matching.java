@@ -5,8 +5,8 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 public class Matching {
-	public static final double c = 0.1;
-	public static final int minplatformlength = 200;
+	public static final double c = 0;
+	public static final int minplatformlength = 200; //TODO: verschilt per yard (kan ook washing area length zijn)
 	public static final int M = 1000;
 
 	private ArrayList<Block> arrivingblocklist; //set I
@@ -56,24 +56,41 @@ public class Matching {
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
+//		for (int i = 0; i<arrivingblocklist.size(); i++){
+//			System.out.println("Arriving Block: "+i);
+//			System.out.println("Trainlist: ");
+//			arrivingblocklist.get(i).printTrains();
+//			System.out.println("Arriving time: "+arrivingblocklist.get(i).getArrivaltime());
+//		}
 		//update arrivaltimes for FJSP
 		for (int i = 0; i<arrivingblocklist.size(); i++){
-			int decoupletime = 0;
+			double decoupletime = 0;
 			if (arrivingblocklist.get(i).getCutPosition2()-arrivingblocklist.get(i).getCutPosition1() != arrivingblocklist.get(i).getOriginComposition().getSize()){
-				decoupletime = Main.decoupletime/60/24; //check if we need to decouple
+				decoupletime = ((double) Main.decoupletime)/60/24; //check if we need to decouple
 			}
-			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+Main.moveduration/60/24+decoupletime);
+//			System.out.println(i);
+//			System.out.println(arrivingblocklist.get(i).getArrivaltime());
+//			System.out.println(decoupletime);
+//			System.out.println(((double) Main.moveduration)/60/24);
+			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+((double) Main.moveduration)/60/24+decoupletime);
+//			System.out.println(arrivingblocklist.get(i).getArrivaltime());
 		}
 
 		//set J
 		departingblocklist = makeblocks(departingcompositions);
+//		for (int i = 0; i<departingblocklist.size(); i++){
+//			System.out.println("Departing Block: "+i);
+//			System.out.println("Trainlist: ");
+//			departingblocklist.get(i).printTrains();
+//			System.out.println("Departing time: "+departingblocklist.get(i).getDeparturetime());
+//		}
 		//update departuretimes for FJSP
-		int coupletime = 0;
 		for (int j = 0; j<departingblocklist.size(); j++){
+			double coupletime = 0;
 			if (departingblocklist.get(j).getCutPosition2()-departingblocklist.get(j).getCutPosition1() != departingblocklist.get(j).getOriginComposition().getSize()){
-				coupletime = Main.coupletime/60/24; //check if we need to couple
+				coupletime = ((double)Main.coupletime)/60/24; //check if we need to couple
 			}
-			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+Main.moveduration/60/24+coupletime);
+			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+((double)Main.moveduration)/60/24+coupletime);
 		}
 
 		//set T_a and T_d
@@ -358,7 +375,7 @@ public class Matching {
 			for (int i =0; i<arrivingblocklist.size(); i++){
 				weightexpr[i] = cplex.linearNumExpr();
 				weightexpr[i].setConstant(Matching.M+Matching.minplatformlength);
-				weightexpr[i].addTerm(Matching.M, u[i]);
+				weightexpr[i].addTerm(-Matching.M, u[i]);
 				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength = Matching.M+Matching.minplatformlength - Matching.M*u[i]
 			}
 
@@ -1175,7 +1192,7 @@ class CompatibleDepartingBlocks {
 			}
 			boolean check = true;
 			
-			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c /*+ arrivingblock.getTotalServiceTime()/60/24*/ && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
+			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c + arrivingblock.getTotalServiceTime()/60/24 && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
 				for (int j = 0; j<arrivingblock.getTrainList().size(); j++){
 					if (arrivingblock.getTrainList().get(j).getSameClass(alldepartingblocks.get(i).getTrainList().get(j))== false){
 						check = false;
@@ -1253,7 +1270,7 @@ class CompatibleArrivingBlocks {
 			}
 			boolean check = true;
 			
-			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  /*+ allarrivingblocks.get(i).getTotalServiceTime()/60/24*/ < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
+			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  + allarrivingblocks.get(i).getTotalServiceTime()/60/24 < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
 				for (int j = 0; j<departingblock.getTrainList().size(); j++){
 					if (departingblock.getTrainList().get(j).getSameClass(allarrivingblocks.get(i).getTrainList().get(j))== false){
 						check = false;

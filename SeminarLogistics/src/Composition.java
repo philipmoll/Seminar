@@ -598,6 +598,11 @@ public class Composition implements Serializable{
 			}
 		}
 	}
+	public void removeBusyTimeMove(Activity activity){
+		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			
+		}
+	}
 	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
@@ -619,9 +624,12 @@ public class Composition implements Serializable{
 				System.out.print(busytime[i].getActivity());
 			}
 			else{
-				System.out.print(7);
+				System.out.print(" ");
 			}
 		}
+	}
+	public Activity getActivity(int abcd){
+		return busytime[abcd];
 	}
 	public boolean getInspection(){
 		boolean abcd = false;
@@ -632,5 +640,11 @@ public class Composition implements Serializable{
 			}
 		}
 		return abcd;
+	}
+	
+	public void printTrains(){
+		for (int i = 0; i<compositiontrains.size(); i++){
+			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
+		}
 	}
 }
