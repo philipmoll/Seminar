@@ -598,6 +598,11 @@ public class Composition implements Serializable{
 			}
 		}
 	}
+	public void removeBusyTimeMove(Activity activity){
+		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			
+		}
+	}
 	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
@@ -622,6 +627,9 @@ public class Composition implements Serializable{
 				System.out.print(" ");
 			}
 		}
+	}
+	public Activity getActivity(int abcd){
+		return busytime[abcd];
 	}
 	public boolean getInspection(){
 		boolean abcd = false;

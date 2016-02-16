@@ -264,9 +264,22 @@ public class Todo {
 				}
 			}
 		}
-
-		// ACTIVITIES CONSECUTIVE
-
+		boolean improvement = true;
+		while(improvement){
+			improvement = false;
+			
+			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+					improvement = true;
+					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+				}
+			}
+			
+			
+		}
+			
+			
+			
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
 			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
@@ -435,6 +448,13 @@ public class Todo {
 		else{
 			return false;
 		}
+	}
+	public void improveActivities(Activity activity1, Activity activity2){
+		activity2.removeTimes();
+		this.removeBusyTime(activity2);
+		
+		for()
+		
 	}
 
 	public void setBusyTime(Activity activity){
