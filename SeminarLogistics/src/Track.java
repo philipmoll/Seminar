@@ -305,5 +305,28 @@ public class Track {
 			}		
 		}
 	}
+	public boolean getConsecutive(Activity activity1, Activity activity2){
+		boolean abcd;
+		
+		if(activity1.getPlannedTime() < activity2.getPlannedTime()){
+			abcd = true;
+			for(int i = activity1.getPlannedTimeInteger(); i < activity2.getPlannedTimeInteger(); i++){
+				if(busytime[i] != null && (busytime[i] != activity1 || busytime[i] != activity2)){
+					abcd = false;
+					break;
+				}
+			}
+		}
+		else{
+			abcd = true;
+			for(int i = activity2.getPlannedTimeInteger(); i < activity1.getPlannedTimeInteger(); i++){
+				if(busytime[i] != null && (busytime[i] != activity1 || busytime[i] != activity2)){
+					abcd = false;
+					break;
+				}
+			}
+		}
+		return abcd;
+	}
 
 }
