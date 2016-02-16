@@ -599,7 +599,7 @@ public class Composition implements Serializable{
 		}
 	}
 	public void removeBusyTimeMove(Activity activity) throws IOException{
-		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			if(busytime[i] != null){
 				busytime[i] = null;
 			}
@@ -652,4 +652,3 @@ public class Composition implements Serializable{
 			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
 		}
 	}
-}

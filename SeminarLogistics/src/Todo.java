@@ -271,11 +271,11 @@ public class Todo {
 			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
 				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
 					improvement = true;
+					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
+					System.out.print(i + "\n");
 					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
 				}
 			}
-			
-			
 		}
 			
 			
@@ -388,6 +388,19 @@ public class Todo {
 			}
 		}
 
+		improvement = true;
+		while(improvement){
+			improvement = false;
+			
+			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+					improvement = true;
+					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
+					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+				}
+			}
+		}
+		
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)		
 		if(feasible1 && feasible2){
 			if(margin1 >= margin2){
@@ -436,13 +449,27 @@ public class Todo {
 		else{
 			throw new IOException("No feasible solution found for job-shop");
 		}
+		
+		improvement = true;
+		while(improvement){
+			improvement = false;
+			
+			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+					improvement = true;
+					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
+					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+				}
+			}
+		}
+		
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
 		System.out.print("\n");
 	}
 
 	public boolean getConsecutive(Activity activity1, Activity activity2){		
-		if(activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && activity1.getTrackAssigned().getConsecutive(activity1, activity2) && movelist[activity2.getPlannedTimeInteger()] == activity2){
+		if(activity1!=null && activity2!=null && !activity1.equals(activity2) && activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && movelist[activity2.getPlannedTimeInteger()] == activity2 && movelist[activity2.getPlannedTimeInteger()+activity2.getTotalDurationInteger()-Main.moveduration*2] == null && movelist[activity2.getPlannedTimeInteger()+activity2.getTotalDurationInteger()-Main.moveduration*2-1] == null){
 			return true;
 		}
 		else{
@@ -455,7 +482,7 @@ public class Todo {
 		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
 		activity1.getComposition().removeBusyTimeMove(activity1);
 		this.removeBusyTimeMove(activity1);
-		activity2.setUpdate(activity2.getPlannedTimeInteger()+activity2.getDurationInteger()-Main.moveduration, activity2.getTrackAssigned());
+		activity2.setUpdate(activity1.getPlannedTimeInteger()+activity1.getTotalDurationInteger()-Main.moveduration, activity1.getTrackAssigned());
 		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
 		activity2.getComposition().removeBusyTimeMove(activity2);
 		this.removeBusyTimeMove(activity2);
@@ -506,7 +533,8 @@ public class Todo {
 	}
 	
 	public void removeBusyTimeMove(Activity activity) throws IOException{
-		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
+			System.out.print(i + "\n");
 			if(movelist[i] != null){
 				movelist[i] = null;
 			}
