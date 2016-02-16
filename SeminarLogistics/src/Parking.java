@@ -116,7 +116,7 @@ public class Parking { //TODO: test
 
 
 
-	public void arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException{
+	public void arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
 		boolean parked = false;
 		for (int j = 0; j<parkingtracks.size(); j++){
 			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
@@ -127,8 +127,7 @@ public class Parking { //TODO: test
 					//if: no compositions on track yet
 					if (parkingtracks.get(j).getCompositionlist().size() == 0){
 						//add compositions and events to track
-						parkingtracks.get(j).addCompositiontoTrackRight(arrivalevent.getEventblock());
-						parkingtracks.get(j).addEventtoTrackRight(arrivalevent);
+						arrivalASideSimple(arrivalevent, parkingtracks.get(j));
 						parked = true; //set parked to true
 						break; //go on to next arrival
 					}
@@ -137,15 +136,31 @@ public class Parking { //TODO: test
 						//if: we need to enter at the A side
 						if (arrivalevent.getSidestart() == 0){ //A side (left side)
 							//if: we need to leave via the A side
-							if (arrivalevent.getSideend() == 0){
-								//if: the eventblocks to the right do not need to leave before us via the A side
-								boolean feasible1 = true;
-								if (parkingtracks.get(j).getEventlist().get(0)){
-									
+							if (arrivalevent.getSideend() == 0){ //A side (left side)
+								//if: the eventblock to the right leaves via the A side
+								if (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0){ //A side (left side)
+									//if: the eventblock to the right leaves after arrivalblock
+									if (parkingtracks.get(j).getEventlist().get(0).getEndtime() >= arrivalevent.getEndtime()){
+										//add compositions and events to track
+										arrivalASideSimple(arrivalevent, parkingtracks.get(j));
+										parked = true; //set parked to true
+										break; //go on to next arrival
+									}
+								}
+								//else if: the eventblock to the right leaves via the B side
+								else if (parkingtracks.get(j).getEventlist().get(0).getSideend() ==1){ //B side (right side)
+									//add compositions and events to track
+									arrivalASideSimple(arrivalevent, parkingtracks.get(j));
+									parked = true; //set parked to true
+									break; //go on to next arrival
+								}
+								//else: IOException
+								else{
+									throw new IOException("Eventblock at A side of track "+parkingtracks.get(j).getLabel()+" has side end "+parkingtracks.get(j).getEventlist().get(0).getSideend()+" and should be 0 (A side) or 1 (B side)");
 								}
 							}
 							//else if: we need to leave via the B side
-							if (arrivalevent.getSideend()==1){
+							else if (arrivalevent.getSideend()==1){
 								
 							}
 							//else: IOException
@@ -155,7 +170,7 @@ public class Parking { //TODO: test
 						}
 						//else if: we need to enter at the B side
 						if (arrivalevent.getSidestart()==1){ //B side (right side)
-							
+
 						}
 						//else: IOException
 						else{
@@ -170,11 +185,21 @@ public class Parking { //TODO: test
 			throw new MethodFailException("Arrival "+i+" cannot be parked");
 		}
 	}
+	
+	public void arrivalASideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
+		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
+		parkingtrack.addEventtoTrackLeft(arrivalevent);
+	}
+	
+	public void arrivalBSideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
+		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
+		parkingtrack.addEventtoTrackRight(arrivalevent);
+	}
 
 	public void departure(Event departureevent, int i) throws MethodFailException, TrackNotFreeException, IOException{
 		//reverse leave
 		//not reverse leave
-		
+
 		//if we leave in reverse
 		if (departureevent.getReverseLeave() == 1){
 			reverseDeparture(departureevent, i);
@@ -186,7 +211,7 @@ public class Parking { //TODO: test
 			throw new IOException("GetReverseLeave for event "+i+" not equal to 0 or 1");
 		}
 	}
-	
+
 	public void reverseDeparture(Event departureevent, int i) throws MethodFailException, IOException, TrackNotFreeException{
 		//throw exception if free track needed is false (we leave in reverse, so free track should be toggled)
 		if (freetracktimes.size() == 0){
@@ -205,7 +230,7 @@ public class Parking { //TODO: test
 				throw new MethodFailException("Freetracktime is not defined for event "+i+" at departuretime "+departureevent.getTime());
 			}
 		}
-		
+
 		//throw exception if no free track available or if it is the only event on the track
 		if (departureevent.getEventTrack().getCompositionlist().size() == 0){
 			throw new MethodFailException("We require event "+i+" to leave in reverse, but it is the only event on the track");
@@ -240,10 +265,10 @@ public class Parking { //TODO: test
 
 		//we can leave in reverse, now actually leave
 		//remove event from track, remove composition from track
-		departureevent.getEventTrack().removeEventfromTrack(departureevent);
-		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
+		departureevent.getEventTrack().removeEventfromTrack(departureevent.getRelatedEvent());
+		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getRelatedEvent().getEventblock());
 	}
-	
+
 	public void normalDeparture(Event departureevent, int i) throws MethodFailException, IOException, TrackNotFreeException{		
 		//throw exception if composition not at the right side
 		if (departureevent.getSideend() == 0){ //if we leave via A side
