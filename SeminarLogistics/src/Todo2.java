@@ -981,7 +981,7 @@ public class Todo2 {
 
 
 
-		//check if feasible solution exist, if so, update with the best solution
+		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
 			if (bestmargin != margin6){
 				for(int i = 0; i<amount; i++){
