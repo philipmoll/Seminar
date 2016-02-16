@@ -785,7 +785,7 @@ public class Todo2 {
 					currenttrack = temp1;
 
 					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+					//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 					time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
 					track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
