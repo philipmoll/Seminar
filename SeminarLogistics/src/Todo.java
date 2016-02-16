@@ -7,7 +7,7 @@ public class Todo {
 
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
-	ArrayList<FinalBlock> finalblocks;
+	ArrayList<FinalBlock> finalblockss;
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -18,6 +18,7 @@ public class Todo {
 
 	public Todo(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
 		activities = new ArrayList<>();
+		finalblockss = new ArrayList<>();
 
 		for(int i=0;i<tracks.length;i++){
 			if (tracks[i].getInspectionposition() ==1){
@@ -40,19 +41,36 @@ public class Todo {
 			this.setBusyTimeMove(arrordepmove);
 		}
 
+		for(int i = 0; i< finalblocks.size(); i++){
+			this.finalblockss.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
+		}
+		
 		int temp;
 		int k;
-		for(int i = 0; i<this.finalblocks.size(); i++){
+		for(int i = 0; i<this.finalblockss.size(); i++){
 			temp = 14124;
 			k = -1;
-			for(int j = 0; j<this.finalblocks.size(); j++){
-				if(this.finalblocks.get(j).getShuntTime()<temp){
-					temp = this.finalblocks.get(j).getShuntTime();
+			for(int j = 0; j<this.finalblockss.size(); j++){
+				if(this.finalblockss.get(j).getShuntTime()<temp){
+					temp = this.finalblockss.get(j).getShuntTime();
 					k = j;
 				}
 			}
 			this.addComposition(finalblocks.get(k));
 		}
+		for(int i = 0; i<platforms.size(); i++){
+			System.out.print("Platform " + i + "  ");
+			platforms.get(i).printTimeLine();
+			System.out.print("\n");
+		}
+		for(int i = 0; i<washareas.size(); i++){
+			System.out.print("Washarea " + i + "  ");
+			washareas.get(i).printTimeLine();
+			System.out.print("\n");
+		}
+		System.out.print("Movelist    " );
+		this.printTimeLine();
+		System.out.print("\n");
 	}
 	/**
 	 * Adds a composotion with all its required activities to the activity list.
@@ -394,6 +412,9 @@ public class Todo {
 		else{
 			throw new IOException("No feasible solution found for job-shop");
 		}
+		System.out.print("Composition ");
+		addedcomp.printTimeLine();
+		System.out.print("\n");
 	}
 
 	public void setBusyTime(Activity activity){
