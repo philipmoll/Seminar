@@ -161,6 +161,7 @@ public class Parking { //TODO: test
 						else{
 							throw new IOException("Side start of event "+i+" is "+arrivalevent.getSidestart()+" and should be 0 (A side) or 1 (B side)");
 						}
+						//
 					}
 				}
 			}
