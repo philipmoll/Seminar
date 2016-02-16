@@ -423,17 +423,17 @@ public class Todo {
 			throw new IOException("No feasible solution found for job-shop");
 		}
 		
-		boolean improvement = true;
-		while(improvement){
-			improvement = false;
-			
-			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
-				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
-					improvement = true;
-					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
-				}
-			}
-		}
+//		boolean improvement = true;
+//		while(improvement){
+//			improvement = false;
+//			
+//			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+//				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+//					improvement = true;
+//					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+//				}
+//			}
+//		}
 		
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
@@ -448,11 +448,11 @@ public class Todo {
 			return false;
 		}
 	}
-	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
-
-		this.removeBusyTimeMoveLeave(activity1);
-		this.removeBusyTimeMoveArrive(activity2);
-		
+//	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
+//
+//		this.removeBusyTimeMoveLeave(activity1);
+//		this.removeBusyTimeMoveArrive(activity2);
+//		
 //		activity2.removeTimes();
 //		this.removeBusyTime(activity2);
 //		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
@@ -463,7 +463,7 @@ public class Todo {
 //		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
 //		activity2.getComposition().removeBusyTimeMove(activity2);
 //		this.removeBusyTimeMove(activity2);
-	}
+//	}
 
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
