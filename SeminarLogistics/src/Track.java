@@ -333,11 +333,16 @@ public class Track {
 		}
 	}
 	public void removeBusyTimeMove(Activity activity) throws IOException{
-		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
+			//System.out.print(busytime[i]);
 			if(busytime[i] != null){
 				busytime[i] = null;
+				//System.out.print(activity.getPlannedTimeInteger() +" " + activity.getDurationInteger() + " " + i +" \n" );
+
 			}
 			else{
+				//System.out.print(activity.getPlannedTimeInteger() +" " + activity.getDurationInteger() + " " + i +" \n" );
+				
 				throw new IOException("Cannot remove busytime if it does not exist.");
 			}
 		}
