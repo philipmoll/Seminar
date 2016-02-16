@@ -652,3 +652,4 @@ public class Composition implements Serializable{
 			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
 		}
 	}
+}
