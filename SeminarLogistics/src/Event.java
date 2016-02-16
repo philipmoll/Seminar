@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  *
@@ -15,14 +14,16 @@ public class Event { //TODO: test
 	private FinalBlock eventblock;
 	private int time;
 	private int typeevent; //0: arrival, 1: departure
-	private int finaltypeevent; //0: if it is an overall arrival of a composition, 1: departure
+	private int finaltypeevent; //1: if it is an overall arrival/departure of a composition, 0: if not
 	private int starttime;
 	private int endtime;
-	private int sidestart; //0: a
-	private int sideend; //1: b
+	private int sidestart; //0: a (left), 1: b (right)
+	private int sideend; //0: a (left), 1: b (right)
 	private int reverseleave; //1: it will leave in reverse via a free track, 0 otherwise
+	private Track eventtrack;
+	private Event relatedevent;
 
-	public Event(FinalBlock eventblock, int typeevent, int finaltypeevent, int starttime, int endtime, int sidestart, int sideend) {
+	public Event(FinalBlock eventblock, int typeevent, int finaltypeevent, int starttime, int endtime, int sidestart, int sideend, Event relatedevent) {
 		this.eventblock = eventblock;
 		this.typeevent = typeevent;
 		this.starttime = starttime;
@@ -35,7 +36,8 @@ public class Event { //TODO: test
 		}
 		this.sidestart = sidestart;
 		this.sideend = sideend;
-		setReverseLeave(0);
+		reverseleave = 0;
+		this.relatedevent = relatedevent;
 	}
 
 	/**
@@ -45,6 +47,23 @@ public class Event { //TODO: test
 	 */
 	public FinalBlock getEventblock() {
 		return eventblock;
+	}
+	
+	/**
+	 * Sets the eventtrack of an event and its related event
+	 */
+	public void setEventTrack(Track eventtrack) {
+		this.eventtrack = eventtrack;
+		relatedevent.setEventTrack(eventtrack);
+	}
+	
+	/**
+	 * Returns the eventtrack of an event
+	 * 
+	 * @return the eventtrack
+	 */
+	public Track getEventTrack(){
+		return eventtrack;
 	}
 	
 	/**
@@ -130,6 +149,15 @@ public class Event { //TODO: test
 			throw new IOException("Reverseleave should be 0 or 1 in method setReverseLeave() in class Event, but is "+reverseleave);
 		}
 		this.reverseleave = reverseleave;
+	}
+	
+	/**
+	 * Returns related event
+	 * 
+	 * @return relatedevent
+	 */
+	public Event getRelatedEvent(){
+		return relatedevent;
 	}
 
 }

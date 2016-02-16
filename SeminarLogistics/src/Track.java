@@ -24,6 +24,7 @@ public class Track {
 
 	private int[] occupation;
 	private ArrayList<Composition> compositionlist;
+	private ArrayList<Event> eventlist;
 
 	public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition, int maxdrivebacklength ) {
 		this.label = label;
@@ -37,6 +38,7 @@ public class Track {
 		tracktype = 0;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
+		eventlist = new ArrayList<Event>();
 		busytime = new Activity[60*24];
 	}
 
@@ -52,6 +54,7 @@ public class Track {
 		maxdrivebacklength = 10000; //default
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
+		eventlist = new ArrayList<Event>();
 		busytime = new Activity[60*24];
 	}
 
@@ -123,6 +126,10 @@ public class Track {
 	public ArrayList<Composition> getCompositionlist(){
 		return compositionlist;
 	}
+	
+	public ArrayList<Event> getEventlist(){
+		return eventlist;
+	}
 
 	public void addCompositiontoTrackLeft(Composition composition) throws TrackNotFreeException{ //LEFT: links op de map, index 0 
 		int compositionslength = this.getCompositionLengthOnTrack();
@@ -138,7 +145,45 @@ public class Track {
 		if (compositionslength+composition.getLength()>tracklength){
 			throw new TrackNotFreeException("Track "+label+" has no room for a composition of length "+composition.getLength()+" (function addCompositionToTrackRight)");
 		}
-		this.compositionlist.add(compositionlist.size(),composition);
+		this.compositionlist.add(composition);
+	}
+
+	public void addEventtoTrackLeft(Event event) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+		int compositionslength = this.getCompositionLengthOnTrack();
+		if (compositionslength+event.getEventblock().getLength()>tracklength){
+			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
+		}
+		this.eventlist.add(0,event);
+	}
+	
+	public void addEventtoTrackRight(Event event) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+		int compositionslength = this.getCompositionLengthOnTrack();
+		if (compositionslength+event.getEventblock().getLength()>tracklength){
+			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
+		}
+		this.eventlist.add(event);
+	}
+	
+//	public void addEventtoTrack(Event event) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+//		int compositionslength = this.getCompositionLengthOnTrack();
+//		if (compositionslength+event.getEventblock().getLength()>tracklength){
+//			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
+//		}
+//		this.eventlist.add(event);
+//	}
+	
+	public void removeEventfromTrack(Event event) throws TrackNotFreeException, IOException{
+		boolean removed = this.eventlist.remove(event);
+		if (removed == false){
+			throw new IOException("Event cannot be removed from track as it was never present on this track ("+label+")");
+		}
+	}
+	
+	public void removeCompositionfromTrack(Composition composition) throws TrackNotFreeException, IOException{
+		boolean removed = this.compositionlist.remove(composition);
+		if (removed == false){
+			throw new IOException("Composition cannot be removed from track as it was never present on this track ("+label+")");
+		}
 	}
 
 	public void addCompositiontoTrack(Composition composition, int positionontrack) throws IndexOutOfBoundsException {
