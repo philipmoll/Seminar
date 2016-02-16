@@ -3,7 +3,7 @@ import java.util.*;
 
 /*
  * TODO: BIJ MATCHING ARRIVING MOVE TIJD WEGHALEN EN KOPPELTIJD CHECKEN!
- * 
+ * TODO: maxdrivebacklength inlezen
  * 
  * 
  */
