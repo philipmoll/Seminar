@@ -43,7 +43,14 @@ public class Event { //TODO: test
 		return eventblock;
 	}
 	
-	
+	/**
+	 * Returns the time that is linked to the event
+	 * 
+	 * @return the time
+	 */
+	public int getTime() {
+		return time;
+	}
 
 	/**
 	 * Returns the start time of an event
