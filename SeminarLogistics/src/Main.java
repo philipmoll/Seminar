@@ -15,7 +15,7 @@ public class Main {
 	public static final int decoupletime = 2; //MINUTES
 	public static final int coupletime = 3; //MINUTES
 	public final static int moveduration = 2; //MINUTES
-	public final static double begintime = 0.33333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
+	public final static double begintime = .33333333333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
 
 	public static void main(String args[])
 	{
@@ -124,7 +124,7 @@ public class Main {
 				}
 			}
 
-			//Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;

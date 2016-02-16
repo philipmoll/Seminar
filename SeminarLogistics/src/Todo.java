@@ -33,12 +33,10 @@ public class Todo {
 
 		for(int i = 0; i<arrivingcompositions.size(); i++){
 			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getArrivalTimeInteger());
-
 			this.setBusyTimeMove(arrordepmove);
 		}
 		for(int i = 0; i<departurecompositions.size(); i++){
-			arrordepmove.setPlannedTime(arrivingcompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
-
+			arrordepmove.setPlannedTime(departurecompositions.get(i).getDepartureTimeInteger()-Main.moveduration);
 			this.setBusyTimeMove(arrordepmove);
 		}
 
