@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,12 +15,14 @@ public class Event { //TODO: test
 	private FinalBlock eventblock;
 	private int time;
 	private int typeevent; //0: arrival, 1: departure
+	private int finaltypeevent; //0: if it is an overall arrival of a composition, 1: departure
 	private int starttime;
 	private int endtime;
 	private int sidestart; //0: a
 	private int sideend; //1: b
+	private int reverseleave; //1: it will leave in reverse via a free track, 0 otherwise
 
-	public Event(FinalBlock eventblock, int typeevent, int starttime, int endtime, int sidestart, int sideend) {
+	public Event(FinalBlock eventblock, int typeevent, int finaltypeevent, int starttime, int endtime, int sidestart, int sideend) {
 		this.eventblock = eventblock;
 		this.typeevent = typeevent;
 		this.starttime = starttime;
@@ -32,6 +35,7 @@ public class Event { //TODO: test
 		}
 		this.sidestart = sidestart;
 		this.sideend = sideend;
+		setReverseLeave(0);
 	}
 
 	/**
@@ -59,6 +63,15 @@ public class Event { //TODO: test
 	 */
 	public int getType() {
 		return typeevent;
+	}
+	
+	/**
+	 * Returns if an event is an overall arrival of departure in shunting yard
+	 * 
+	 * @return the finaltypeevent, 0 if false, 1 if true
+	 */
+	public int getFinalType() {
+		return finaltypeevent;
 	}
 
 	/**
@@ -95,6 +108,28 @@ public class Event { //TODO: test
 	 */
 	public int getSideend() {
 		return sideend;
+	}
+
+	/**
+	 * Returns whether a block leaves in reverse
+	 * 
+	 * @return the reverseleave
+	 */
+	public int getReverseLeave() {
+		return reverseleave;
+	}
+
+	/**
+	 * Sets a block to reverseleave
+	 * 
+	 * @param reverseleave the reverseleave to set
+	 * @throws IOException 
+	 */
+	public void setReverseLeave(int reverseleave) throws IOException {
+		if (reverseleave != 0 && reverseleave != 1){
+			throw new IOException("Reverseleave should be 0 or 1 in method setReverseLeave() in class Event, but is "+reverseleave);
+		}
+		this.reverseleave = reverseleave;
 	}
 
 }
