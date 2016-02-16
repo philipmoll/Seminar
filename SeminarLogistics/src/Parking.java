@@ -9,7 +9,7 @@ import java.util.ArrayList;
  *
  */
 public class Parking { //TODO: test
-	
+
 	private Track[] parkingtracks;
 	private int[][] parkingpositions;
 	private ArrayList<Parking> previousparkings;
@@ -17,8 +17,8 @@ public class Parking { //TODO: test
 
 	public Parking(ArrayList<Event> eventlist, Track[] tracks) {
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan
-		
-		//sort eventlist into timeline of events
+
+		//sort eventlist into timeline
 		timeline = new ArrayList<Event>();
 		timeline.add(eventlist.get(0));
 		if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
@@ -29,14 +29,24 @@ public class Parking { //TODO: test
 		}
 		for (int i = 2; i<= eventlist.size(); i++){
 			if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
-				
+				timeline.add(0,eventlist.get(i));
 			}
-			for (int j = 1; j< timeline.size()-1; j++){
-				if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
-					timeline.add(j+1,eventlist.get(i));
-					break;
+			else if (eventlist.get(i).getTime()>=timeline.get(timeline.size()).getTime()){
+				timeline.add(eventlist.get(i));
+			}
+			else{
+				for (int j = 1; j< timeline.size()-1; j++){
+					if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
+						timeline.add(j+1,eventlist.get(i));
+						break;
+					}
 				}
 			}
+
+		}
+		
+		for (int i = 0; i< timeline.size(); i++){
+			
 		}
 	}
 

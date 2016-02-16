@@ -20,11 +20,12 @@ public class Track {
 	private final int washingposition;
 	private int tracktype;
 	private Activity[] busytime;
+	private final int maxdrivebacklength;
 
 	private int[] occupation;
 	private ArrayList<Composition> compositionlist;
 
-	public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition, int tracktype ) {
+	public Track(String label, int tracklength, int parktrain, int inspectionposition,  int cleaningposition, int repairingposition, int washingposition, int maxdrivebacklength ) {
 		this.label = label;
 		this.tracklength = tracklength;
 		this.parktrain = parktrain;
@@ -32,7 +33,8 @@ public class Track {
 		this.cleaningposition = cleaningposition;
 		this.repairingposition = repairingposition;
 		this.washingposition = washingposition;
-		this.tracktype = tracktype;
+		this.maxdrivebacklength = maxdrivebacklength;
+		tracktype = 0;
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
 		busytime = new Activity[60*24];
@@ -47,11 +49,15 @@ public class Track {
 		this.repairingposition = repairingposition;
 		this.washingposition = washingposition;
 		tracktype = 0;
+		maxdrivebacklength = 10000; //default
 		occupation = new int[tracklength];
 		compositionlist = new ArrayList<Composition>();
 		busytime = new Activity[60*24];
 	}
 
+	public int getMaxDriveBackLength(){
+		return maxdrivebacklength;
+	}
 
 	public String getLabel(){
 		return label;
@@ -267,13 +273,13 @@ public class Track {
 
 		return partialcompositionlist;
 	} 
-	
+
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			busytime[i] = activity;
 		}
 	}
-	
+
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<busytime.length; i++){
 			if(busytime[i] != null && busytime[i].equals(activity)){
@@ -281,7 +287,7 @@ public class Track {
 			}
 		}
 	}
-	
+
 	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
@@ -294,7 +300,7 @@ public class Track {
 
 		return feasible;
 	}
-	
+
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(busytime[i]!=null){
@@ -307,7 +313,7 @@ public class Track {
 	}
 	public boolean getConsecutive(Activity activity1, Activity activity2){
 		boolean abcd;
-		
+
 		if(activity1.getPlannedTime() < activity2.getPlannedTime()){
 			abcd = true;
 			for(int i = activity1.getPlannedTimeInteger(); i < activity2.getPlannedTimeInteger(); i++){
