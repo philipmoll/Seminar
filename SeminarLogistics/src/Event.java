@@ -51,13 +51,22 @@ public class Event { //TODO: test
 	public int getTime() {
 		return time;
 	}
+	
+	/**
+	 * Returns the type that is linked to the event
+	 * 
+	 * @return the typeevent, 0 if arrival, 1 if departure
+	 */
+	public int getType() {
+		return typeevent;
+	}
 
 	/**
 	 * Returns the start time of an event
 	 * 
 	 * @return the starttime
 	 */
-	public double getStarttime() {
+	public int getStarttime() {
 		return starttime;
 	}
 
@@ -66,25 +75,25 @@ public class Event { //TODO: test
 	 * 
 	 * @return the endtime
 	 */
-	public double getEndtime() {
+	public int getEndtime() {
 		return endtime;
 	}
 
 	/**
 	 * Returns the side where the composition comes from (A/B)
 	 * 
-	 * @return the sidestart
+	 * @return the sidestart 0 if A, 1 if B
 	 */
-	public String getSidestart() {
+	public int getSidestart() {
 		return sidestart;
 	}
 
 	/**
 	 * Returns the side where the composition goes to (A/B)
 	 * 
-	 * @return the sideend
+	 * @return the sideend 0 if A, 1 if B
 	 */
-	public String getSideend() {
+	public int getSideend() {
 		return sideend;
 	}
 
