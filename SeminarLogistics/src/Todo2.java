@@ -277,6 +277,8 @@ public class Todo2 {
 					}
 				}
 			}
+			
+		}
 
 			if (feasible1==false){
 				margin1 = -1;

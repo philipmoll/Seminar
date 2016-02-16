@@ -263,19 +263,7 @@ public class Todo {
 					}
 				}
 			}
-		}
-		boolean improvement = true;
-		while(improvement){
-			improvement = false;
-			
-			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
-				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
-					improvement = true;
-					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
-				}
-			}
-		}
-			
+		}	
 			
 			
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
@@ -385,19 +373,6 @@ public class Todo {
 				}
 			}
 		}
-
-		improvement = true;
-		while(improvement){
-			improvement = false;
-			
-			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
-				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
-					improvement = true;
-					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
-					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
-				}
-			}
-		}
 		
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)		
 		if(feasible1 && feasible2){
@@ -448,14 +423,13 @@ public class Todo {
 			throw new IOException("No feasible solution found for job-shop");
 		}
 		
-		improvement = true;
+		boolean improvement = true;
 		while(improvement){
 			improvement = false;
 			
 			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
 				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
 					improvement = true;
-					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
 					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
 				}
 			}
