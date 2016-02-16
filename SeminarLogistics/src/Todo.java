@@ -442,19 +442,23 @@ public class Todo {
 	}
 
 	public boolean getConsecutive(Activity activity1, Activity activity2){		
-		if(activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && activity1.getTrackAssigned().getConsecutive(activity1, activity2)){
+		if(activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && activity1.getTrackAssigned().getConsecutive(activity1, activity2) && movelist[activity2.getPlannedTimeInteger()] == activity2){
 			return true;
 		}
 		else{
 			return false;
 		}
 	}
-	public void improveActivities(Activity activity1, Activity activity2){
+	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
 		activity2.removeTimes();
 		this.removeBusyTime(activity2);
-		
-		for()
-		
+		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
+		activity1.getComposition().removeBusyTimeMove(activity1);
+		this.removeBusyTimeMove(activity1);
+		activity2.setUpdate(activity2.getPlannedTimeInteger()+activity2.getDurationInteger()-Main.moveduration, activity2.getTrackAssigned());
+		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
+		activity2.getComposition().removeBusyTimeMove(activity2);
+		this.removeBusyTimeMove(activity2);
 	}
 
 	public void setBusyTime(Activity activity){
@@ -499,6 +503,17 @@ public class Todo {
 			}
 		}
 		return feasible;
+	}
+	
+	public void removeBusyTimeMove(Activity activity) throws IOException{
+		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			if(movelist[i] != null){
+				movelist[i] = null;
+			}
+			else{
+				throw new IOException("Cannot remove busytime if it does not exist.");
+			}
+		}
 	}
 	public static ArrayList<int[]> getTODO(Train[] trainlist){
 		ArrayList<int[]> temp = new ArrayList<>();

@@ -287,7 +287,17 @@ public class Track {
 			}
 		}
 	}
-
+	public void removeBusyTimeMove(Activity activity) throws IOException{
+		for(int i = activity.getPlannedTimeInteger()+activity.getDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getDurationInteger(); i++){
+			if(busytime[i] != null){
+				busytime[i] = null;
+			}
+			else{
+				throw new IOException("Cannot remove busytime if it does not exist.");
+			}
+		}
+	}
+ 
 	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
 
 		boolean feasible = true;
