@@ -271,8 +271,6 @@ public class Todo {
 			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
 				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
 					improvement = true;
-					//System.out.print(addedcomp.getActivity(i) + " " + addedcomp.getActivity(i+1) + "\n");
-					System.out.print(i + "\n");
 					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
 				}
 			}
@@ -477,15 +475,20 @@ public class Todo {
 		}
 	}
 	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
-		activity2.removeTimes();
-		this.removeBusyTime(activity2);
-		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
-		activity1.getComposition().removeBusyTimeMove(activity1);
-		this.removeBusyTimeMove(activity1);
-		activity2.setUpdate(activity1.getPlannedTimeInteger()+activity1.getTotalDurationInteger()-Main.moveduration, activity1.getTrackAssigned());
-		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
-		activity2.getComposition().removeBusyTimeMove(activity2);
-		this.removeBusyTimeMove(activity2);
+
+		this.removeBusyTimeMoveLeave(activity1);
+		this.removeBusyTimeMoveArrive(activity2);
+		
+//		activity2.removeTimes();
+//		this.removeBusyTime(activity2);
+//		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
+//		activity1.getComposition().removeBusyTimeMove(activity1);
+//		this.removeBusyTimeMove(activity1);
+//		activity2.setUpdate(activity1.getPlannedTimeInteger()+activity1.getTotalDurationInteger()-Main.moveduration, activity1.getTrackAssigned());
+//		this.setBusyTime(activity2);
+//		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
+//		activity2.getComposition().removeBusyTimeMove(activity2);
+//		this.removeBusyTimeMove(activity2);
 	}
 
 	public void setBusyTime(Activity activity){
@@ -532,15 +535,14 @@ public class Todo {
 		return feasible;
 	}
 	
-	public void removeBusyTimeMove(Activity activity) throws IOException{
-		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
-			System.out.print(i + "\n");
-			if(movelist[i] != null){
+	public void removeBusyTimeMoveLeave(Activity activity){
+		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){			
 				movelist[i] = null;
-			}
-			else{
-				throw new IOException("Cannot remove busytime if it does not exist.");
-			}
+		}
+	}
+	public void removeBusyTimeMoveArrive(Activity activity){
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+Main.moveduration; i++){
+				movelist[i] = null;
 		}
 	}
 	public static ArrayList<int[]> getTODO(Train[] trainlist){
@@ -572,26 +574,6 @@ public class Todo {
 		}
 		return abcd;
 	}
-	/*
-	public int getLeastMargin(){
-		double temp;
-		int temp1 = -1;
-
-		for(int i = 0; i< 20; i++){
-			temp = 1123;
-			temp1 = -1;
-			for(int j = 0; j< activities.size(); j++){
-
-				if(activities.get(i).getMargin() < temp){
-					temp = activities.get(i).getMargin();
-					temp1 = j;
-				}
-
-			}
-		}
-		return temp1;
-	}
-	 */
 	public void printTimeLine(){
 		for(int i = 0; i<60*24; i++){
 			if(movelist[i]!=null){
@@ -602,82 +584,6 @@ public class Todo {
 			}
 		}
 	}
-	/*public int[] getMaxMargin(double timespan, int amount, int currentactivity){
-		double[] temptimes = new double[plannedtimes.size()];
-		for(int i = 0; i<temptimes.length; i++){
-			temptimes[i] = plannedtimes.get(i);
-		}
-		int[] indices = new int[amount];
-		int index = -1;
-		double temp = 0;
-		for(int j = 0; j<amount; j++){
-			index = -1;
-			temp = 0;
-			for(int i = 0; i<temptimes.length; i++){
-				if(plannedtimes.get(currentactivity)-plannedtimes.get(i)<=timespan && plannedtimes.get(currentactivity)-plannedtimes.get(i)>0){
-					if(temptimes[i]>temp){
-						temp = temptimes[i];
-						index = i;
-					}
-				}
-			}
-			temptimes[index] = 0;
-			indices[j] = index;
-		}
-		return indices;
-	}*/
-
-	/*
-	 * Arrival of train with the current activity must be before the swapped activity time
-	 * Inspection must remain the first activity to be done
-	 * If current activity has a longer duration than the swapped activity, than we must shift all activities later of the swapped activity to a later time. Then check if all activities later remain feasible and check their margins.
-	 * If current activity has a shorter duration than the swapped activity, than we must shift all activities later earlier. We must check if this is possible due to arrival times.
-	 */
-	/*
-	public boolean getFeasibilitySwap(int activity1, int activity2){
-		boolean feasible = true;
-		//INCLUDE OVERLAP WITH DIFFERENT ACTIVITY AND INSPECTION AVAILABILITY (TRIANGLE APPROACH???)
-		if(activities.get(activity1).getComposition().getArrivaltime() > activities.get(activity2).getPlannedTime()){
-			feasible = false;
-		}
-		else if(activities.get(activity1).getPlannedTime()+activities.get(activity2).getDuration() > activities.get(activity2).getComposition().getDeparturetime()){
-			feasible = false;
-		}
-		else if(activities.get(activity1).getDuration() == activities.get(activity2).getDuration()){
-		}
-		else if(activities.get(activity1).getDuration() > activities.get(activity2).getDuration()){
-			for(int i = 0; i<activities.size(); i++){
-				if(activities.get(i).getTrackAssigned() == activities.get(activity2).getTrackAssigned()){
-					if(activities.get(i).getPlannedTime() > activities.get(activity2).getPlannedTime()){
-						if(activities.get(i).getPlannedTime()+(activities.get(activity1).getDuration()-activities.get(activity2).getDuration())>activities.get(i).getUltimateTime()){
-							feasible = false;
-							break;
-						}
-					}
-				}
-			}
-		}
-		else if(activities.get(activity1).getDuration() < activities.get(activity2).getDuration()){
-			for(int i = 0; i<activities.size(); i++){
-				if(activities.get(i).getTrackAssigned() == activities.get(activity1).getTrackAssigned()){
-					if(activities.get(i).getPlannedTime() > activities.get(activity1).getPlannedTime()){
-						if(activities.get(i).getPlannedTime()+(activities.get(activity2).getDuration()-activities.get(activity1).getDuration())>activities.get(i).getUltimateTime()){
-							feasible = false;
-							break;
-						}
-					}
-				}
-			}
-		}
-		return feasible;
-	}
-	public void swapActivities(int activity1, int activity2){
-	}
-	public void improveTODO(){
-		int temp1;
-		for(int i = 0; i< 20; i++){
-			temp1 = this.getLeastMargin();
-		}
-	}
-	 */
+	
 }
+	
