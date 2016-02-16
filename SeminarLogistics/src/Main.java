@@ -115,8 +115,15 @@ public class Main {
 				departure1.add(leavingcompositions.get(j));
 			}
 
+//			for (int i = 0; i<arrivingcompositions.size(); i++){
+//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
+//			}
 			Matching onzeMatching = new Matching(arrivingcompositions,leavingcompositions);
+//			for (int i = 0; i<arrivingcompositions.size(); i++){
+//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
+//			}
 			boolean[][] z = onzeMatching.getZ();
+
 			ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
 			ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
 			ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
@@ -126,6 +133,7 @@ public class Main {
 					if (z[i][j]==true){
 						//System.out.println("hoi");
 						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+						System.out.println(arrivingblocks.get(i).getArrivaltime());
 						//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
 						if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+Matching.c /*+finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()*/>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
 							throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");

@@ -44,7 +44,7 @@ public class Todo {
 		for(int i = 0; i< finalblocks.size(); i++){
 			this.finalblockss.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
 		}
-		
+
 		int temp;
 		int k;
 		int a = this.finalblockss.size();
@@ -263,6 +263,8 @@ public class Todo {
 			}
 		}
 
+		// ACTIVITIES CONSECUTIVE
+
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
 			activities.get(activities.size()-1-i).removeTimes();
@@ -417,6 +419,15 @@ public class Todo {
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
 		System.out.print("\n");
+	}
+
+	public boolean getConsecutive(Activity activity1, Activity activity2){		
+		if(activity1.getTrackAssigned().equals(activity2.getTrackAssigned()) && activity1.getTrackAssigned().getConsecutive(activity1, activity2)){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public void setBusyTime(Activity activity){

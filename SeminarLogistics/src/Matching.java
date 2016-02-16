@@ -64,11 +64,16 @@ public class Matching {
 //		}
 		//update arrivaltimes for FJSP
 		for (int i = 0; i<arrivingblocklist.size(); i++){
-			int decoupletime = 0;
+			double decoupletime = 0;
 			if (arrivingblocklist.get(i).getCutPosition2()-arrivingblocklist.get(i).getCutPosition1() != arrivingblocklist.get(i).getOriginComposition().getSize()){
-				decoupletime = Main.decoupletime/60/24; //check if we need to decouple
+				decoupletime = ((double) Main.decoupletime)/60/24; //check if we need to decouple
 			}
-			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+Main.moveduration/60/24+decoupletime);
+//			System.out.println(i);
+//			System.out.println(arrivingblocklist.get(i).getArrivaltime());
+//			System.out.println(decoupletime);
+//			System.out.println(((double) Main.moveduration)/60/24);
+			arrivingblocklist.get(i).setArrivaltime(arrivingblocklist.get(i).getArrivaltime()+((double) Main.moveduration)/60/24+decoupletime);
+//			System.out.println(arrivingblocklist.get(i).getArrivaltime());
 		}
 
 		//set J
@@ -80,12 +85,12 @@ public class Matching {
 //			System.out.println("Departing time: "+departingblocklist.get(i).getDeparturetime());
 //		}
 		//update departuretimes for FJSP
-		int coupletime = 0;
 		for (int j = 0; j<departingblocklist.size(); j++){
+			double coupletime = 0;
 			if (departingblocklist.get(j).getCutPosition2()-departingblocklist.get(j).getCutPosition1() != departingblocklist.get(j).getOriginComposition().getSize()){
-				coupletime = Main.coupletime/60/24; //check if we need to couple
+				coupletime = ((double)Main.coupletime)/60/24; //check if we need to couple
 			}
-			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+Main.moveduration/60/24+coupletime);
+			departingblocklist.get(j).setDeparturetime(departingblocklist.get(j).getDeparturetime()+((double)Main.moveduration)/60/24+coupletime);
 		}
 
 		//set T_a and T_d
