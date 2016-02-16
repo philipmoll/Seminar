@@ -28,8 +28,14 @@ public class Parking { //TODO: test
 			timeline.add(0,eventlist.get(1));
 		}
 		for (int i = 2; i<= eventlist.size(); i++){
-			for (int j = 0; j<= timeline.size(); j++){
-				//sort if in between 
+			if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
+				
+			}
+			for (int j = 1; j< timeline.size()-1; j++){
+				if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
+					timeline.add(j+1,eventlist.get(i));
+					break;
+				}
 			}
 		}
 	}
