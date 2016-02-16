@@ -173,7 +173,7 @@ public class Todo {
 					if(temp == 12412){
 						feasible1 = false;
 					}
-
+					else{
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 
 					addedcomp.setBusyTime(activities.get(activities.size()-1));
@@ -207,6 +207,7 @@ public class Todo {
 						amount += 1;
 					}
 					currenttrack = temp1;
+					}
 
 				}
 
@@ -242,6 +243,7 @@ public class Todo {
 					if(temp == 12412){
 						feasible1 = false;
 					}
+					else{
 					//System.out.print(temp + " " + temp1);
 					activities.get(activities.size()-1).setUpdate(temp, temp1);
 					currenttrack = temp1;
@@ -258,7 +260,7 @@ public class Todo {
 						margin1 = activities.get(activities.size()-1).getMarginInteger();
 					}
 
-
+					}
 				}
 			}
 		}
@@ -267,8 +269,10 @@ public class Todo {
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
 			activities.get(activities.size()-1-i).removeTimes();
 			this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
 		}
 		if(addedcomp.getInspection()){
 			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
@@ -308,7 +312,7 @@ public class Todo {
 				if(temp == 12412){
 					feasible2 = false;
 				}
-
+				else{
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				this.setBusyTime(activities.get(activities.size()-1-j));
 				currenttrack = temp1;
@@ -319,6 +323,7 @@ public class Todo {
 
 				if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 					margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+				}
 				}
 			}
 			else if(activities.get(activities.size()-1-j).getActivity() == 1 || activities.get(activities.size()-1-j).getActivity() == 2){
@@ -347,6 +352,7 @@ public class Todo {
 				if(temp == 12412){
 					feasible2 = false;
 				}
+				else{
 				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
 				currenttrack = temp1;
 
@@ -364,6 +370,7 @@ public class Todo {
 						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
 
 					}
+				}
 				}
 			}
 		}
