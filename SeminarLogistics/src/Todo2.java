@@ -100,6 +100,11 @@ public class Todo2 {
 		boolean feasible6 = true;
 
 
+		//reset the sequence array
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = null;
+		}
+
 		//It checks for all possible activities
 		for(int j = 0; j<4; j++){
 			temp = 12412;
@@ -172,40 +177,42 @@ public class Todo2 {
 						feasible1 = false;
 					}
 
-					activities.get(activities.size()-1).setUpdate(temp, temp1);
+					else{
+						activities.get(activities.size()-1).setUpdate(temp, temp1);
 
-					addedcomp.setBusyTime(activities.get(activities.size()-1));
+						addedcomp.setBusyTime(activities.get(activities.size()-1));
 
-					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1));
-					//Minimum time to loop from must be update since inspection cannot be moved later
-					if(j == 0){	
-						mintemp += durationactivity;
-						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1));
+						//Minimum time to loop from must be update since inspection cannot be moved later
+						if(j == 0){	
+							mintemp += durationactivity;
+							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+								margin1 = activities.get(activities.size()-1).getMarginInteger();
+							}
 						}
-					}
-					//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
-					else if(j == 1){
-						time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
-						track11 = activities.get(activities.size()-1).getTrackAssigned();
-						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
+						else if(j == 1){
+							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
+							track11 = activities.get(activities.size()-1).getTrackAssigned();
+							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+								margin1 = activities.get(activities.size()-1).getMarginInteger();
+							}
+							amount += 1;
 						}
-						amount += 1;
-					}
 
-					//Storing the first solution ............. see above.
-					else if(j == 2){
-						time12 = activities.get(activities.size()-1).getPlannedTimeInteger();
-						track12 = activities.get(activities.size()-1).getTrackAssigned();
-						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						//Storing the first solution ............. see above.
+						else if(j == 2){
+							time12 = activities.get(activities.size()-1).getPlannedTimeInteger();
+							track12 = activities.get(activities.size()-1).getTrackAssigned();
+							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+								margin1 = activities.get(activities.size()-1).getMarginInteger();
+							}
+							amount += 1;
 						}
-						amount += 1;
-					}
-					currenttrack = temp1;
+						currenttrack = temp1;
 
+					}
 				}
 
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
@@ -240,23 +247,25 @@ public class Todo2 {
 					if(temp == 12412){
 						feasible1 = false;
 					}
-					//System.out.print(temp + " " + temp1);
-					activities.get(activities.size()-1).setUpdate(temp, temp1);
-					currenttrack = temp1;
 
-					//Storing first solution
-					addedcomp.setBusyTime(activities.get(activities.size()-1));
-					temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1));
+					else{
+						//System.out.print(temp + " " + temp1);
+						activities.get(activities.size()-1).setUpdate(temp, temp1);
+						currenttrack = temp1;
 
-					time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
-					track13 = activities.get(activities.size()-1).getTrackAssigned();
+						//Storing first solution
+						addedcomp.setBusyTime(activities.get(activities.size()-1));
+						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1));
 
-					if(activities.get(activities.size()-1).getMarginInteger()<margin1){
-						margin1 = activities.get(activities.size()-1).getMarginInteger();
+						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
+						track13 = activities.get(activities.size()-1).getTrackAssigned();
+
+						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+							margin1 = activities.get(activities.size()-1).getMarginInteger();
+						}
+
 					}
-
-
 				}
 			}
 		}
@@ -265,6 +274,7 @@ public class Todo2 {
 			margin1 = -1;
 		}
 		bestmargin = margin1;
+
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
 			activities.get(activities.size()-1-i).removeTimes();
@@ -276,6 +286,7 @@ public class Todo2 {
 		else{
 			currenttrack = null;
 		}
+
 		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 		for(int j = 0; j<amount; j++){
 			activities.get(activities.size()-1-j).setCurrentTrack(currenttrack);
@@ -309,18 +320,20 @@ public class Todo2 {
 					feasible2 = false;
 				}
 
-				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
-				this.setBusyTime(activities.get(activities.size()-1-j));
-				currenttrack = temp1;
-				time23 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
-				track23 = activities.get(activities.size()-1-j).getTrackAssigned();
+				else {
+					activities.get(activities.size()-1-j).setUpdate(temp, temp1);
+					this.setBusyTime(activities.get(activities.size()-1-j));
+					currenttrack = temp1;
+					time23 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
+					track23 = activities.get(activities.size()-1-j).getTrackAssigned();
 
-				//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-				//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
-				if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
-					margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
+						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+					}
 				}
 			}
 			else if(activities.get(activities.size()-1-j).getActivity() == 1 || activities.get(activities.size()-1-j).getActivity() == 2){
@@ -349,25 +362,28 @@ public class Todo2 {
 				if(temp == 12412){
 					feasible2 = false;
 				}
-				activities.get(activities.size()-1-j).setUpdate(temp, temp1);
-				currenttrack = temp1;
 
-				addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-				temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
-				this.setBusyTime(activities.get(activities.size()-1-j));
-				if(j == 1){
-					time21 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
-					track21 = activities.get(activities.size()-1-j).getTrackAssigned();
-					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
-						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+				else{
+					activities.get(activities.size()-1-j).setUpdate(temp, temp1);
+					currenttrack = temp1;
+
+					addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+					temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+					this.setBusyTime(activities.get(activities.size()-1-j));
+					if(j == 1){
+						time21 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
+						track21 = activities.get(activities.size()-1-j).getTrackAssigned();
+						if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
+							margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+						}
 					}
-				}
-				else if(j == 2){
-					time22 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
-					track22 = activities.get(activities.size()-1-j).getTrackAssigned();
-					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
-						margin2 = activities.get(activities.size()-1-j).getMarginInteger();
+					else if(j == 2){
+						time22 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
+						track22 = activities.get(activities.size()-1-j).getTrackAssigned();
+						if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
+							margin2 = activities.get(activities.size()-1-j).getMarginInteger();
 
+						}
 					}
 				}
 			}
@@ -449,24 +465,27 @@ public class Todo2 {
 					if(temp == 12412){
 						feasible3 = false;
 					}
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					currenttrack = temp1;
 
-					addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					if(sequence[i] == 1){
-						time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
-							margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						if(sequence[i] == 1){
+							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
+								margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+							}
 						}
-					}
-					else if(sequence[i] == 2){
-						time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
-							margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						else if(sequence[i] == 2){
+							time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
+								margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+							}
 						}
 					}
 
@@ -498,17 +517,19 @@ public class Todo2 {
 						feasible3 = false;
 					}
 
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					currenttrack = temp1;
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						currenttrack = temp1;
 
-					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
-					time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-					track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-					if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
-						margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin3){
+							margin3 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						}
 					}
 				}
 			}
@@ -590,27 +611,29 @@ public class Todo2 {
 					if(temp == 12412){
 						feasible4 = false;
 					}
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					currenttrack = temp1;
 
-					addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					if(sequence[i] == 1){
-						time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
-							margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
-						}
-					}
-					else if(sequence[i] == 2){
-						time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
-							margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
-						}
-					}
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						currenttrack = temp1;
 
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						if(sequence[i] == 1){
+							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
+								margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+							}
+						}
+						else if(sequence[i] == 2){
+							time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
+								margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+							}
+						}		
+					}
 				}
 
 				else if(activities.get(activities.size()-1-sequence[i]).getActivity() == 3){
@@ -639,17 +662,19 @@ public class Todo2 {
 						feasible4 = false;
 					}
 
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					currenttrack = temp1;
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						currenttrack = temp1;
 
-					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
-					time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-					track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-					if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
-						margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin4){
+							margin4 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						}
 					}
 				}
 			}
@@ -731,27 +756,29 @@ public class Todo2 {
 					if(temp == 12412){
 						feasible5 = false;
 					}
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					currenttrack = temp1;
 
-					addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					if(sequence[i] == 1){
-						time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
-							margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						if(sequence[i] == 1){
+							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
+								margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+							}
+						}
+						else if(sequence[i] == 2){
+							time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
+								margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+							}
 						}
 					}
-					else if(sequence[i] == 2){
-						time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
-							margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
-						}
-					}
-
 				}
 
 				else if(activities.get(activities.size()-1-sequence[i]).getActivity() == 3){
@@ -780,17 +807,19 @@ public class Todo2 {
 						feasible5 = false;
 					}
 
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					currenttrack = temp1;
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						currenttrack = temp1;
 
-					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
-					time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-					track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-					if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
-						margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin5){
+							margin5 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						}
 					}
 				}
 			}
@@ -872,24 +901,27 @@ public class Todo2 {
 					if(temp == 12412){
 						feasible6 = false;
 					}
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					currenttrack = temp1;
 
-					addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					if(sequence[i] == 1){
-						time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
-							margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						if(sequence[i] == 1){
+							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
+								margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+							}
 						}
-					}
-					else if(sequence[i] == 2){
-						time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
-							margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						else if(sequence[i] == 2){
+							time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
+								margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+							}
 						}
 					}
 
@@ -921,17 +953,19 @@ public class Todo2 {
 						feasible6 = false;
 					}
 
-					activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-					this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-					currenttrack = temp1;
+					else{
+						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+						currenttrack = temp1;
 
-					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
-					time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-					track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-					if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
-						margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin6){
+							margin6 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+						}
 					}
 				}
 			}
@@ -942,12 +976,6 @@ public class Todo2 {
 		}
 
 		if (margin6 > bestmargin){
-			time11 = time21;
-			time12 = time22;
-			time13 = time23;
-			track11 = track21;
-			track12 = track22;
-			track13 = track23;
 			bestmargin = margin6;
 		}
 
