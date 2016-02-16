@@ -56,12 +56,12 @@ public class Matching {
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
-		for (int i = 0; i<arrivingblocklist.size(); i++){
-			System.out.println("Arriving Block: "+i);
-			System.out.println("Trainlist: ");
-			arrivingblocklist.get(i).printTrains();
-			System.out.println("Arriving time: "+arrivingblocklist.get(i).getArrivaltime());
-		}
+//		for (int i = 0; i<arrivingblocklist.size(); i++){
+//			System.out.println("Arriving Block: "+i);
+//			System.out.println("Trainlist: ");
+//			arrivingblocklist.get(i).printTrains();
+//			System.out.println("Arriving time: "+arrivingblocklist.get(i).getArrivaltime());
+//		}
 		//update arrivaltimes for FJSP
 		for (int i = 0; i<arrivingblocklist.size(); i++){
 			int decoupletime = 0;
@@ -73,12 +73,12 @@ public class Matching {
 
 		//set J
 		departingblocklist = makeblocks(departingcompositions);
-		for (int i = 0; i<departingblocklist.size(); i++){
-			System.out.println("Departing Block: "+i);
-			System.out.println("Trainlist: ");
-			departingblocklist.get(i).printTrains();
-			System.out.println("Departing time: "+departingblocklist.get(i).getDeparturetime());
-		}
+//		for (int i = 0; i<departingblocklist.size(); i++){
+//			System.out.println("Departing Block: "+i);
+//			System.out.println("Trainlist: ");
+//			departingblocklist.get(i).printTrains();
+//			System.out.println("Departing time: "+departingblocklist.get(i).getDeparturetime());
+//		}
 		//update departuretimes for FJSP
 		int coupletime = 0;
 		for (int j = 0; j<departingblocklist.size(); j++){
