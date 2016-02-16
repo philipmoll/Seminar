@@ -12,15 +12,24 @@ import java.util.ArrayList;
 public class Event { //TODO: test
 	
 	private FinalBlock eventblock;
-	private double starttime;
-	private double endtime;
-	private String sidestart;
-	private String sideend;
+	private int time;
+	private int typeevent; //0: arrival, 1: departure
+	private int starttime;
+	private int endtime;
+	private int sidestart; //0: a
+	private int sideend; //1: b
 
-	public Event(FinalBlock eventblock, double starttime, double endtime, String sidestart, String sideend) {
+	public Event(FinalBlock eventblock, int typeevent, int starttime, int endtime, int sidestart, int sideend) {
 		this.eventblock = eventblock;
+		this.typeevent = typeevent;
 		this.starttime = starttime;
 		this.endtime = endtime;
+		if (typeevent == 0){
+			time = starttime;
+		}
+		else{
+			time = endtime;
+		}
 		this.sidestart = sidestart;
 		this.sideend = sideend;
 	}
@@ -33,6 +42,8 @@ public class Event { //TODO: test
 	public FinalBlock getEventblock() {
 		return eventblock;
 	}
+	
+	
 
 	/**
 	 * Returns the start time of an event

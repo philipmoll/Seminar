@@ -13,9 +13,12 @@ public class Parking { //TODO: test
 	private Track[] parkingtracks;
 	private int[][] parkingpositions;
 	private ArrayList<Parking> previousparkings;
+	private Event[] timeline;
 
-	public Parking(ArrayList<Event> eventlist) {
+	public Parking(ArrayList<Event> eventlist, Track[] tracks) {
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan
+		timeline = new Event[2*eventlist.size()];
+		for (int i = 0; i<= timeline)
 	}
 
 }
