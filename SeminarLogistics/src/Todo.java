@@ -46,7 +46,7 @@ public class Todo {
 				
 			arrordepmove.setPlannedTime(finalblockss.get(i).getOrigincomposition().getArrivalTimeInteger());
 			finalblockss.get(i).setBusyTimeMove(arrordepmove);
-			arrordepmove.setPlannedTime(finalblockss.get(i).getDestinationcomposition().getDepartureTimeInteger());
+			arrordepmove.setPlannedTime(finalblockss.get(i).getDestinationcomposition().getDepartureTimeInteger()-Main.moveduration);
 			finalblockss.get(i).setBusyTimeMove(arrordepmove);
 		}
 
