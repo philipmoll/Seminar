@@ -142,7 +142,7 @@ public class Main {
 				}
 			}
 
-			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;
