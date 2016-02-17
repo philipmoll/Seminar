@@ -153,10 +153,15 @@ public class Track {
 		if (compositionslength+event.getEventblock().getLength()>tracklength){
 			System.out.println("Compositionlength: "+compositionslength);
 			for (int i = 0; i<compositionlist.size(); i++){
-				
+				System.out.println("a");
+				System.out.println(compositionlist.get(i));
+			}
+			for (int i = 0; i<eventlist.size(); i++){
+				System.out.println("b");
+				System.out.println(eventlist.get(i));
 			}
 			System.out.println("event.getEventblock().getLength()"+event.getEventblock().getLength());
-			System.out.println("tracklength: "+tracklength);s
+			System.out.println("tracklength: "+tracklength);
 			System.out.println(event);
 			System.out.println(event.getType());
 			System.out.println(event.getFinalType());
@@ -184,7 +189,7 @@ public class Track {
 	public void removeEventfromTrack(Event event) throws TrackNotFreeException, IOException{ //TODO: test
 		boolean removed = this.eventlist.remove(event);
 		if (removed == false){
-			throw new IOException("Event cannot be removed from track as it was never present on this track ("+label+")");
+			throw new IOException("Event "+event+" cannot be removed from track +"+this.getLabel()+" as it was never present on this track ("+label+")");
 		}
 	}
 	

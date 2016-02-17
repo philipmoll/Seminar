@@ -276,16 +276,16 @@ public class Parking { //TODO: test
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
-		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 		parkingtrack.addEventtoTrackLeft(arrivalevent);
+		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 	}
 
 	public void arrivalBSideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
-		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 		parkingtrack.addEventtoTrackRight(arrivalevent);
+		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 	}
 
 	public void departure(Event departureevent, int i) throws MethodFailException, TrackNotFreeException, IOException{
@@ -390,7 +390,7 @@ public class Parking { //TODO: test
 		//we can leave, now actually leave
 		//remove event from track, remove composition from track
 		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
-		departureevent.getEventTrack().removeEventfromTrack(departureevent);		
+		departureevent.getRelatedEvent().getEventTrack().removeEventfromTrack(departureevent.getRelatedEvent());		
 	}
 
 	
