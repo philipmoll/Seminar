@@ -560,4 +560,31 @@ public class Todo {
 			}
 		}
 	}
+	
+	public ArrayList<Event> getEvents(){
+		ArrayList<Event> abcd = new ArrayList<>();
+		boolean first = true;
+		for(int i = 0; i<finalblockss.size(); i++){
+			for(int j = 0; j<60*24; j++){
+				if(finalblockss.get(i).getActivity(j) == movelist[j]){
+					if(first){
+						abcd.add(new Event(finalblockss.get(i), finalblockss.get(i).getActivity(j).getActivity(), j, j, j, j, j, null));
+						first = false;
+						j += Main.moveduration;
+					}
+					else{
+						abcd.add(new Event(finalblockss.get(i), j, j, j, j, j, j, abcd.get(abcd.size()-1)));
+						abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
+						first = true;
+						j += Main.moveduration;
+					}
+				}
+				
+				
+			}
+		}
+		
+		
+		return abcd;
+	}
 }
