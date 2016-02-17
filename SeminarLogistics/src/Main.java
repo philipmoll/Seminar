@@ -18,7 +18,6 @@ import java.util.*;
  * @author Floor Wolfhagen 362063
  *
  */
-
 public class Main {
 
 	public static final int decoupletime = 2; //MINUTES
@@ -90,6 +89,7 @@ public class Main {
 				else{
 					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
 				}
+				arrivingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
 			}
 
 
@@ -104,6 +104,7 @@ public class Main {
 				else{
 					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
 				}
+				arrivingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
 			}
 
 			ArrayList<Composition> arrival1 = new ArrayList<>();

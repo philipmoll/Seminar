@@ -680,5 +680,7 @@ public class Composition implements Serializable{
 	public int getArrivalDepartureSide(){
 		return arrivaldepartureside;
 	}
-	
+	public void setArrivalDepartureSide(int input){
+		arrivaldepartureside = input;
+	}
 }
