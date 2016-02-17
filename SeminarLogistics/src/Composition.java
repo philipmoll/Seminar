@@ -20,6 +20,7 @@ public class Composition implements Serializable{
 	private double arrivaltime;
 	private double departuretime;
 	private Activity[] busytime;
+	private int arrivaldepartureside; //0 104 (A side), 1 906 (B side)
 
 	public Composition(ArrayList<Train> compositiontrains) throws IOException{
 		this.compositiontrains = compositiontrains;
@@ -39,12 +40,27 @@ public class Composition implements Serializable{
 		this.arrivaltime = arrivaltime;
 		this.departuretime = departuretime;
 		busytime = new Activity[60*24];
+		arrivaldepartureside = -1;
+	}
+	
+	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime, int arrivaldepartureside) throws IOException{
+		this.compositiontrains = compositiontrains;
+		this.updateComposition();
+		compositiontrack = null; //default
+		locationontrack = -1; //default
+		this.arrivaltime = arrivaltime;
+		this.departuretime = departuretime;
+		busytime = new Activity[60*24];
+		this.arrivaldepartureside = arrivaldepartureside;
+		if (arrivaldepartureside != 0 && arrivaldepartureside != 1){
+			throw new IOException("Arrivaldepartureside should be 0 (A) or 1 (B) and is "+arrivaldepartureside);
+		}
 	}
 
 	public Composition(ArrayList<Train> compositiontrains, Track compositiontrack, int locationontrack) throws IndexOutOfBoundsException, TrackNotFreeException, IOException{
 		this.compositiontrains = compositiontrains;
 		busytime = new Activity[60*24];
-
+		arrivaldepartureside = -1;
 		//add composition to compositiontrack
 		this.compositiontrack = compositiontrack;
 		this.locationontrack = locationontrack;
@@ -659,6 +675,10 @@ public class Composition implements Serializable{
 			busytime[i] = activity;
 			}
 		}
-
 	}
+	
+	public int getArrivalDepartureSide(){
+		return arrivaldepartureside;
+	}
+	
 }

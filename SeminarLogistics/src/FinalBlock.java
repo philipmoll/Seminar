@@ -14,8 +14,8 @@ public class FinalBlock extends Composition { //TODO: test
 
 	private Composition origincomposition;
 	private Composition destinationcomposition;
-	private Track arrivaltrack;
-	private Track departuretrack;
+	private int arrivalside;
+	private int departureside;
 	private int cutpositionarr1;
 	private int cutpositionarr2;
 	private int cutpositiondep1;
@@ -35,7 +35,7 @@ public class FinalBlock extends Composition { //TODO: test
 	 * @throws IOException
 	 */
 	public FinalBlock(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime,
-			Composition origincomposition, Composition destinationcomposition, Track arrivaltrack, Track departuretrack, int cutpositionarr1, int cutpositionarr2, int cutpositiondep1, int cutpositiondep2) throws IOException {
+			Composition origincomposition, Composition destinationcomposition, int arrivalside, int departureside, int cutpositionarr1, int cutpositionarr2, int cutpositiondep1, int cutpositiondep2) throws IOException {
 		super(compositiontrains, arrivaltime, departuretime);
 		if (origincomposition.getArrivaltime() == -1){
 			throw new IOException("Origincomposition should be arrivingcomposition with arrivaltime not equal to -1");
@@ -48,8 +48,8 @@ public class FinalBlock extends Composition { //TODO: test
 		if (cutpositionarr2-cutpositionarr1 != cutpositiondep2-cutpositiondep1){
 			throw new IOException("Length of two cuts should be the same");
 		}
-		this.arrivaltrack = arrivaltrack;
-		this.departuretrack = departuretrack;
+		this.arrivalside = arrivalside;
+		this.departureside = departureside;
 		if (cutpositionarr1 <-1 || cutpositionarr2 < -1 || cutpositionarr1 > origincomposition.getSize()-1 || cutpositionarr2 > origincomposition.getSize()-1 || cutpositionarr1 >= cutpositionarr2){
 			throw new IOException("Cutpositions arrivals are out of bounds or cutpositionarr1>cutpositionarr2");
 		}
@@ -106,8 +106,28 @@ public class FinalBlock extends Composition { //TODO: test
 		return cutpositiondep2;
 	}
 	
+	/**
+	 * 
+	 * @return shunt time
+	 */
 	public int getShuntTime() {
 		return (int) ((this.getDeparturetime() - this.getArrivaltime())*60*24);
+	}
+	
+	/**
+	 * Returns arrivalside
+	 * @return the arrivalside
+	 */
+	public int getArrivalSide(){
+		return arrivalside;
+	}
+	
+	/**
+	 * Returns departureside
+	 * @return the departureside
+	 */
+	public int getDepartureSide(){
+		return departureside;
 	}
 
 }
