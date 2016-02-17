@@ -608,11 +608,11 @@ public class Composition implements Serializable{
 			}
 		}
 	}
-	public boolean checkFeasibility(Activity activity, int timetobechecked, int checkmovetime){
+	public boolean checkFeasibility(Activity activity, int timetobechecked){
 
 		boolean feasible = true;
 
-		for(int i = timetobechecked; i<timetobechecked+activity.getDuration()+checkmovetime; i++){
+		for(int i = timetobechecked; i<timetobechecked+activity.getTotalDurationInteger(); i++){
 			if(busytime[i]!=null){
 				feasible = false;
 				break;
