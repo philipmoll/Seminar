@@ -148,7 +148,7 @@ public class Track {
 		this.compositionlist.add(composition);
 	}
 
-	public void addEventtoTrackLeft(Event event) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+	public void addEventtoTrackLeft(Event event) throws TrackNotFreeException{ //TODO: test
 		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+event.getEventblock().getLength()>tracklength){
 			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
@@ -156,7 +156,7 @@ public class Track {
 		this.eventlist.add(0,event);
 	}
 	
-	public void addEventtoTrackRight(Event event) throws TrackNotFreeException{ //RIGHT: rechts op de map, index max lengte arraylist
+	public void addEventtoTrackRight(Event event) throws TrackNotFreeException{ //TODO: test
 		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+event.getEventblock().getLength()>tracklength){
 			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
@@ -172,14 +172,14 @@ public class Track {
 //		this.eventlist.add(event);
 //	}
 	
-	public void removeEventfromTrack(Event event) throws TrackNotFreeException, IOException{
+	public void removeEventfromTrack(Event event) throws TrackNotFreeException, IOException{ //TODO: test
 		boolean removed = this.eventlist.remove(event);
 		if (removed == false){
 			throw new IOException("Event cannot be removed from track as it was never present on this track ("+label+")");
 		}
 	}
 	
-	public void removeCompositionfromTrack(Composition composition) throws TrackNotFreeException, IOException{
+	public void removeCompositionfromTrack(Composition composition) throws TrackNotFreeException, IOException{ //TODO: test
 		boolean removed = this.compositionlist.remove(composition);
 		if (removed == false){
 			throw new IOException("Composition cannot be removed from track as it was never present on this track ("+label+")");
