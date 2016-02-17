@@ -649,4 +649,16 @@ public class Composition implements Serializable{
 			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
 		}
 	}
+	
+	public void setBusyTimeMove(Activity activity) throws IOException {
+		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
+			if(busytime[i] != null){
+				throw new IOException("It is impossible to have 2 trains arriving or leaving at the same time!");
+			}
+			else{
+			busytime[i] = activity;
+			}
+		}
+
+	}
 }
