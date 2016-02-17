@@ -142,7 +142,12 @@ public class Main {
 				}
 			}
 
-			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+			ArrayList<Event> events = JobShop.getEvents();
+			
+			for(int i = 0; i<events.size(); i++){
+				System.out.print(events.get(i).getStarttime() + " " + events.get(i).getEndtime() + " " + events.get(i).getEventblock() + " " + events.get(i).getType() + " " + events.get(i).getRelatedEvent() + " " + events.get(i) + "\n");
+			}
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;

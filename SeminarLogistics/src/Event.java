@@ -103,6 +103,9 @@ public class Event { //TODO: test
 	public int getStarttime() {
 		return starttime;
 	}
+	public void setStartTime(int input){
+		starttime = input;
+	}
 
 	/**
 	 * Returns the end time of an event
@@ -112,7 +115,9 @@ public class Event { //TODO: test
 	public int getEndtime() {
 		return endtime;
 	}
-
+	public void setEndTime(int input){
+		endtime = input;
+	}
 	/**
 	 * Returns the side where the composition comes from (A/B)
 	 * 
