@@ -8,6 +8,7 @@ public class Todo {
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
 	ArrayList<FinalBlock> finalblockss;
+	ArrayList<FinalBlock> finalblockssshallow;
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -19,6 +20,7 @@ public class Todo {
 	public Todo(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
+		finalblockssshallow = new ArrayList<>();
 
 		for(int i=0;i<tracks.length;i++){
 			if (tracks[i].getInspectionposition() ==1){
@@ -43,7 +45,7 @@ public class Todo {
 
 		for(int i = 0; i< finalblocks.size(); i++){
 			this.finalblockss.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
-				
+			
 			arrordepmove.setPlannedTime(finalblockss.get(i).getOrigincomposition().getArrivalTimeInteger());
 			finalblockss.get(i).setBusyTimeMove(arrordepmove);
 			arrordepmove.setPlannedTime(finalblockss.get(i).getDestinationcomposition().getDepartureTimeInteger()-Main.moveduration);
@@ -63,8 +65,13 @@ public class Todo {
 				}
 			}
 			this.addComposition(this.finalblockss.get(k));
+			finalblockssshallow.add(this.finalblockss.get(k));
 			this.finalblockss.remove(k);
 		}
+		
+		
+		
+		
 		for(int i = 0; i<platforms.size(); i++){
 			System.out.print("Platform " + i + "  ");
 			platforms.get(i).printTimeLine();
@@ -568,26 +575,37 @@ public class Todo {
 		}
 	}
 
+	/*
+	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
+	 */
 	public ArrayList<Event> getEvents(){
 		ArrayList<Event> abcd = new ArrayList<>();
 		boolean first = true;
-		for(int i = 0; i<finalblockss.size(); i++){
-			finalblockss.get(i).getOrigincomposition().getArrivalTimeInteger();
+		for(int i = 0; i<finalblockssshallow.size(); i++){
+			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
 			for(int j = 0; j<60*24; j++){
-				if(finalblockss.get(i).getActivity(j) == movelist[j]){
+				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
+					System.out.print("hallo " + finalblockssshallow.get(i).getActivity(j).getActivity());
 					if(first){
-						abcd.add(new Event(finalblockss.get(i), 1, 0, j+Main.moveduration, -1, j, j, null));
+						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
+							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalTrack(), j, null));
+							first = false;
+							j += 1;
+						}
+						else{
+							
+						}
+						abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, j, null));
 						first = false;
-						j += Main.moveduration;
+						j += 1;
 					}
 					else{
-						abcd.add(new Event(finalblockss.get(i), 0, 0, abcd.get(abcd.size()-1).getStarttime(), j, j, j, abcd.get(abcd.size()-1)));
+						abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, j, j, abcd.get(abcd.size()-1)));
 						abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
-						abcd.get(abcd.size()-2).setStartTime(j);
+						abcd.get(abcd.size()-2).setEndTime(j);
 						first = true;
-						j += Main.moveduration;
+						j += 1;
 					}
-				System.out.print(abcd.get(abcd.size()-1).getStarttime() + " " + abcd.get(abcd.size()-1).getEndtime() + " " + abcd.get(abcd.size()-1).getEventblock() + " " + abcd.get(abcd.size()-1).getType() + " " + abcd.get(abcd.size()-1).getRelatedEvent() + " " + abcd.get(abcd.size()-1) + "\n");
 				}
 
 
