@@ -142,8 +142,8 @@ public class Main {
 				}
 			}
 
-			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
-			ArrayList<Event> events = JobShop.getEvents();
+			Todo3 JobShop = new Todo3(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+			//ArrayList<Event> events = JobShop.getEvents();
 			
 //			for(int i = 0; i<events.size(); i++){
 //				System.out.print(" Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
