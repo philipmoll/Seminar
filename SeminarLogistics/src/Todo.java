@@ -151,9 +151,9 @@ public class Todo {
 					for(int k = 0; k<platforms.size(); k++){
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
 
-							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 										temptemp = l;
 
 										temptemp1 = platforms.get(k);
@@ -222,9 +222,9 @@ public class Todo {
 					for(int k = 0; k<washareas.size(); k++){
 
 						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
-							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 										temptemp = l;
 										temptemp1 = washareas.get(k);
@@ -290,9 +290,9 @@ public class Todo {
 
 				for(int k = 0; k<washareas.size(); k++){
 					for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l)){
+							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l)){
+								if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 									temptemp = l;
 									temptemp1 = washareas.get(k);
@@ -330,9 +330,9 @@ public class Todo {
 				for(int k = 0; k<platforms.size(); k++){
 
 					for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-						if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l, 0)){
+						if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l)){
+							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l)){
+								if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l)){
 
 									temptemp = l;
 									temptemp1 = platforms.get(k);
@@ -423,17 +423,17 @@ public class Todo {
 			throw new IOException("No feasible solution found for job-shop");
 		}
 		
-//		boolean improvement = true;
-//		while(improvement){
-//			improvement = false;
-//			
-//			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
-//				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
-//					improvement = true;
-//					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
-//				}
-//			}
-//		}
+		boolean improvement = true;
+		while(improvement){
+			improvement = false;
+			
+			for(int i = addedcomp.getArrivalTimeInteger(); i<addedcomp.getDepartureTimeInteger()-1; i++){
+				if(this.getConsecutive(addedcomp.getActivity(i), addedcomp.getActivity(i+1))){
+					improvement = true;
+					this.improveActivities(addedcomp.getActivity(i), addedcomp.getActivity(i+1));
+				}
+			}
+		}
 		
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
@@ -448,10 +448,10 @@ public class Todo {
 			return false;
 		}
 	}
-//	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
-//
-//		this.removeBusyTimeMoveLeave(activity1);
-//		this.removeBusyTimeMoveArrive(activity2);
+	public void improveActivities(Activity activity1, Activity activity2) throws IOException{
+
+		this.removeBusyTimeMoveLeave(activity1);
+		this.removeBusyTimeMoveArrive(activity2);
 //		
 //		activity2.removeTimes();
 //		this.removeBusyTime(activity2);
@@ -463,7 +463,7 @@ public class Todo {
 //		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
 //		activity2.getComposition().removeBusyTimeMove(activity2);
 //		this.removeBusyTimeMove(activity2);
-//	}
+	}
 
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
@@ -490,7 +490,7 @@ public class Todo {
 			}
 		}
 	}
-	public boolean checkFeasibilityMove(Activity activity, int timetobechecked, int checkmovetime){
+	public boolean checkFeasibilityMove(Activity activity, int timetobechecked){
 
 		boolean feasible = true;
 
