@@ -19,6 +19,7 @@ public class Event { //TODO: test
 	private int endtime;
 	private int sidestart; //0: a (left), 1: b (right)
 	private int sideend; //0: a (left), 1: b (right)
+	private int reversearrive; //1: it will arrive in reverse via a free track, 0 otherwise
 	private int reverseleave; //1: it will leave in reverse via a free track, 0 otherwise
 	private Track eventtrack;
 	private Event relatedevent;
@@ -37,6 +38,7 @@ public class Event { //TODO: test
 		this.sidestart = sidestart;
 		this.sideend = sideend;
 		reverseleave = 0;
+		reversearrive = 0;
 		this.relatedevent = relatedevent;
 	}
 

@@ -35,9 +35,18 @@ public class FinalBlock extends Composition { //TODO: test
 	public FinalBlock(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime,
 			Composition origincomposition, Composition destinationcomposition, int cutpositionarr1, int cutpositionarr2, int cutpositiondep1, int cutpositiondep2) throws IOException {
 		super(compositiontrains, arrivaltime, departuretime);
-	
+		if (origincomposition.getArrivaltime() == -1){
+			throw new IOException("Origincomposition should be arrivingcomposition with arrivaltime not equal to -1");
+		}
 		this.origincomposition = origincomposition;
+		if (destinationcomposition.getDeparturetime()==-1){
+			throw new IOException("Destinationcomposition should be departingcomposition with departuretime not equal to -1");			
+		}
 		this.destinationcomposition = destinationcomposition;
+		if (cutpositionarr2-cutpositionarr1 != cutpositiondep2-cutpositiondep1){
+			throw new IOException("Length of two cuts should be the same");
+		}
+		if (cutpositionarr1 <-1 || cutpositionarr2 < -1 || cutpositionarr1 > origincomposition.getSize()-1 || cutpositionarr2 > origincomposition.getSize()-1 || cutpositionarr1 >= cutpositionarr2)
 		this.cutpositionarr1 = cutpositionarr1;
 		this.cutpositionarr2 = cutpositionarr2;
 		this.cutpositiondep1 = cutpositiondep1;
