@@ -162,9 +162,9 @@ public class Todo2 {
 						for(int k = 0; k<platforms.size(); k++){
 							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
 
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 											temptemp = l;
 
 											temptemp1 = platforms.get(k);
@@ -234,9 +234,9 @@ public class Todo2 {
 						for(int k = 0; k<washareas.size(); k++){
 
 							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTime(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 											temptemp = l;
 											temptemp1 = washareas.get(k);
@@ -308,9 +308,9 @@ public class Todo2 {
 
 					for(int k = 0; k<washareas.size(); k++){
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 										temptemp = l;
 										temptemp1 = washareas.get(k);
@@ -351,9 +351,9 @@ public class Todo2 {
 					for(int k = 0; k<platforms.size(); k++){
 
 						for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
-							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l, 0)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l, 0)){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-j), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l)){
 
 										temptemp = l;
 										temptemp1 = platforms.get(k);
@@ -454,9 +454,9 @@ public class Todo2 {
 						for(int k = 0; k<platforms.size(); k++){
 
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l, 0)){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
 											temptemp = l;
 											temptemp1 = platforms.get(k);
@@ -505,9 +505,9 @@ public class Todo2 {
 
 						for(int k = 0; k<washareas.size(); k++){
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 											temptemp = l;
 											temptemp1 = washareas.get(k);
@@ -600,9 +600,9 @@ public class Todo2 {
 						for(int k = 0; k<platforms.size(); k++){
 
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l, 0)){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
 											temptemp = l;
 											temptemp1 = platforms.get(k);
@@ -650,9 +650,9 @@ public class Todo2 {
 
 						for(int k = 0; k<washareas.size(); k++){
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 											temptemp = l;
 											temptemp1 = washareas.get(k);
@@ -745,9 +745,9 @@ public class Todo2 {
 						for(int k = 0; k<platforms.size(); k++){
 
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l, 0)){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
 											temptemp = l;
 											temptemp1 = platforms.get(k);
@@ -795,9 +795,9 @@ public class Todo2 {
 
 						for(int k = 0; k<washareas.size(); k++){
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 											temptemp = l;
 											temptemp1 = washareas.get(k);
@@ -890,9 +890,9 @@ public class Todo2 {
 						for(int k = 0; k<platforms.size(); k++){
 
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l, 0)){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
 											temptemp = l;
 											temptemp1 = platforms.get(k);
@@ -941,9 +941,9 @@ public class Todo2 {
 
 						for(int k = 0; k<washareas.size(); k++){
 							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l, 0)){
-										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l, 0)){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 
 											temptemp = l;
 											temptemp1 = washareas.get(k);
@@ -1044,7 +1044,7 @@ public class Todo2 {
 				}
 			}
 		}
-		public boolean checkFeasibilityMove(Activity activity, int timetobechecked, int checkmovetime){
+		public boolean checkFeasibilityMove(Activity activity, int timetobechecked){
 
 			boolean feasible = true;
 
