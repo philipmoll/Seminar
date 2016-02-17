@@ -161,5 +161,12 @@ public class Event { //TODO: test
 	public Event getRelatedEvent(){
 		return relatedevent;
 	}
+	
+	/**
+	 * Sets related event
+	 */
+	public void setRelatedEvent(Event relatedevent){
+		this.relatedevent=relatedevent;
+	}
 
 }

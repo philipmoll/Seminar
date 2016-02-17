@@ -46,9 +46,14 @@ public class FinalBlock extends Composition { //TODO: test
 		if (cutpositionarr2-cutpositionarr1 != cutpositiondep2-cutpositiondep1){
 			throw new IOException("Length of two cuts should be the same");
 		}
-		if (cutpositionarr1 <-1 || cutpositionarr2 < -1 || cutpositionarr1 > origincomposition.getSize()-1 || cutpositionarr2 > origincomposition.getSize()-1 || cutpositionarr1 >= cutpositionarr2)
+		if (cutpositionarr1 <-1 || cutpositionarr2 < -1 || cutpositionarr1 > origincomposition.getSize()-1 || cutpositionarr2 > origincomposition.getSize()-1 || cutpositionarr1 >= cutpositionarr2){
+			throw new IOException("Cutpositions arrivals are out of bounds or cutpositionarr1>cutpositionarr2");
+		}
 		this.cutpositionarr1 = cutpositionarr1;
 		this.cutpositionarr2 = cutpositionarr2;
+		if (cutpositiondep1 <-1 || cutpositiondep2 < -1 || cutpositiondep1 > destinationcomposition.getSize()-1 || cutpositionarr2 > origincomposition.getSize()-1 || cutpositionarr1 >= cutpositionarr2){
+			throw new IOException("Cutpositions arrivals are out of bounds or cutpositionarr1>cutpositionarr2");
+		}
 		this.cutpositiondep1 = cutpositiondep1;
 		this.cutpositiondep2 = cutpositiondep2;
 	}
