@@ -292,7 +292,7 @@ public class Todo {
 					for(int l = mintemp; l<activities.get(activities.size()-1-j).getUltimateTimeInteger(); l++){
 						if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-j), l)){
 							if(addedcomp.checkFeasibility(activities.get(activities.size()-1-j), l)){
-								if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+								if(this.checkFeasibilityMove(activities.get(activities.size()-1-j),l)){
 
 									temptemp = l;
 									temptemp1 = washareas.get(k);
@@ -568,12 +568,12 @@ public class Todo {
 			for(int j = 0; j<60*24; j++){
 				if(finalblockss.get(i).getActivity(j) == movelist[j]){
 					if(first){
-						abcd.add(new Event(finalblockss.get(i), finalblockss.get(i).getActivity(j).getActivity(), j, j, j, j, j, null));
+						abcd.add(new Event(finalblockss.get(i), 1, 0, j+Main.moveduration, j, j, j, null));
 						first = false;
 						j += Main.moveduration;
 					}
 					else{
-						abcd.add(new Event(finalblockss.get(i), j, j, j, j, j, j, abcd.get(abcd.size()-1)));
+						abcd.add(new Event(finalblockss.get(i), 0, 0, j, j, j, j, abcd.get(abcd.size()-1)));
 						abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
 						first = true;
 						j += Main.moveduration;

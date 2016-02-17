@@ -194,42 +194,42 @@ public class Train implements Serializable{
 		if(type == 1 && carriages == 4){ //SLT 4 carr
 			inspectiontime = 24; //Minutes
 			cleaningtime = 15; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 23; //Minutes
 			length = 70;
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
 			inspectiontime = 26; //Minutes
 			cleaningtime = 20; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 24; //Minutes
 			length = 101;
 		}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
 			inspectiontime = 11; //Minutes
 			cleaningtime = 37; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 24; //Minutes
 			length = 109;
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
 			inspectiontime = 14; //Minutes
 			cleaningtime = 56; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 26; //Minutes
 			length = 162;
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
 			inspectiontime = 15; //Minutes
 			cleaningtime = 49; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 24; //Minutes
 			length = 101;
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
 			inspectiontime = 18; //Minutes
 			cleaningtime = 56; //Minutes
-			repairingtime = 70; //Minutes
+			repairingtime = 90; //Minutes
 			washingtime = 26; //Minutes
 			length = 154;
 		}
