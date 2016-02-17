@@ -452,7 +452,9 @@ public class Todo {
 
 		this.removeBusyTimeMoveLeave(activity1);
 		this.removeBusyTimeMoveArrive(activity2);
-//		
+		
+		
+		
 //		activity2.removeTimes();
 //		this.removeBusyTime(activity2);
 //		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
