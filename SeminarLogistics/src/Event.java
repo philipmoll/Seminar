@@ -166,6 +166,9 @@ public class Event { //TODO: test
 	public Event getRelatedEvent(){
 		return relatedevent;
 	}
+	public void setSideEnd(int input){
+		sideend = input;
+	}
 	
 	/**
 	 * Sets related event

@@ -585,26 +585,36 @@ public class Todo {
 			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
 			for(int j = 0; j<60*24; j++){
 				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
-					System.out.print("hallo " + finalblockssshallow.get(i).getActivity(j).getActivity());
 					if(first){
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
-							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalTrack(), j, null));
+							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
 							first = false;
-							j += 1;
+							j += Main.moveduration;
 						}
 						else{
-							
+							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
+							first = false;
+							j += Main.moveduration;
 						}
-						abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, j, null));
-						first = false;
-						j += 1;
 					}
 					else{
-						abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, j, j, abcd.get(abcd.size()-1)));
-						abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
-						abcd.get(abcd.size()-2).setEndTime(j);
-						first = true;
-						j += 1;
+						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
+							abcd.add(new Event(finalblockssshallow.get(i), 1, 1, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), finalblockssshallow.get(i).getDepartureSide(), abcd.get(abcd.size()-1)));
+							abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
+							abcd.get(abcd.size()-2).setEndTime(j);
+							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
+							first = true;
+							j += Main.moveduration;
+						}
+						else{
+							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
+							abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
+							abcd.get(abcd.size()-2).setEndTime(j);
+							abcd.get(abcd.size()-2).setSideEnd(0);
+							first = true;
+							j += Main.moveduration;
+						}
+						
 					}
 				}
 

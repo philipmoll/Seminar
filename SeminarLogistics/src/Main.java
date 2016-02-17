@@ -145,9 +145,9 @@ public class Main {
 			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
 			ArrayList<Event> events = JobShop.getEvents();
 			
-			for(int i = 0; i<events.size(); i++){
-				System.out.print(events.get(i).getStarttime() + " " + events.get(i).getEndtime() + " " + events.get(i).getEventblock() + " " + events.get(i).getType() + " " + events.get(i).getRelatedEvent() + " " + events.get(i) + "\n");
-			}
+//			for(int i = 0; i<events.size(); i++){
+//				System.out.print(" Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
+//			}
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;
@@ -175,7 +175,7 @@ public class Main {
 		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-	}
+	} 
 
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1, Matrix compositiondata, Matrix compositiondata3){
 		int abcd = 0;
