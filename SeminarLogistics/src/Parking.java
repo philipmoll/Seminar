@@ -34,6 +34,7 @@ public class Parking { //TODO: test
 
 		freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
+			System.out.println("event "+i);
 			if (timeline.get(i).getType()==1){ //if it is a departure
 				departure(timeline.get(i), i);
 			}
@@ -274,6 +275,7 @@ public class Parking { //TODO: test
 	public void arrivalASideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
+		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
 		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 		parkingtrack.addEventtoTrackLeft(arrivalevent);
 	}
@@ -281,6 +283,7 @@ public class Parking { //TODO: test
 	public void arrivalBSideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
+		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
 		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 		parkingtrack.addEventtoTrackRight(arrivalevent);
 	}
@@ -386,8 +389,8 @@ public class Parking { //TODO: test
 
 		//we can leave, now actually leave
 		//remove event from track, remove composition from track
-		departureevent.getEventTrack().removeEventfromTrack(departureevent);
 		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
+		departureevent.getEventTrack().removeEventfromTrack(departureevent);		
 	}
 
 	

@@ -100,11 +100,6 @@ public class TrackTest {
 		assertEquals(i.getWashingposition(),0);
 	}
 
-	@Test
-	public void testGetTracktype(){
-		assertEquals(h.getTracktype(),1);
-		assertEquals(i.getTracktype(),2);
-	}
 
 	@Test
 	public void testGetSetOccupiedFree(){	
@@ -189,6 +184,20 @@ public class TrackTest {
 			assertEquals(h.getCompositionlist(),test1);
 		} catch (TrackNotFreeException e1) {
 			e1.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testRemoveCompositionfromTrack() throws IOException{
+		try {
+			h.addCompositiontoTrackLeft(e);
+			h.addCompositiontoTrackLeft(f);
+			h.removeCompositionfromTrack(e);
+			assertEquals(1,h.getCompositionlist().size());
+			assertEquals(f,h.getCompositionlist().get(0));
+			
+		} catch (TrackNotFreeException e) {
+			e.printStackTrace();
 		}
 	}
 
