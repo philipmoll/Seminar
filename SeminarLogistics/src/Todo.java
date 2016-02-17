@@ -370,12 +370,13 @@ public class Todo {
 					addedcomp.setBusyTime(activities.get(activities.size()-1-j));
 					temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 					this.setBusyTime(activities.get(activities.size()-1-j));
-					if(j == 1){
+					if(activities.get(activities.size()-1-j).getActivity() == 1){
 
 						if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
+							margin2 = activities.get(activities.size()-1-j).getMarginInteger();
 						}
 					}
-					else if(j == 2){
+					else if(activities.get(activities.size()-1-j).getActivity() == 2){
 
 						if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
 							margin2 = activities.get(activities.size()-1-j).getMarginInteger();
