@@ -151,6 +151,10 @@ public class Track {
 	public void addEventtoTrackLeft(Event event) throws TrackNotFreeException{ //TODO: test
 		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+event.getEventblock().getLength()>tracklength){
+			System.out.println(event);
+			System.out.println(event.getType());
+			System.out.println(event.getFinalType());
+			System.out.println(compositionslength);
 			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackRight)");
 		}
 		this.eventlist.add(0,event);

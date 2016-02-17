@@ -28,19 +28,22 @@ public class Parking { //TODO: test
 		//sort eventlist into timeline
 		timeline = new ArrayList<Event>();
 		sortEvents(eventlist);
+		for (int i = 0; i<timeline.size(); i++){
+			System.out.println(timeline.get(i));
+		}
 
 		freetracktimes = new ArrayList<>();
-//		for (int i = 0; i< timeline.size(); i++){
-//			if (timeline.get(i).getType()==1){ //if it is a departure
-//				departure(timeline.get(i), i);
-//			}
-//			else if (timeline.get(i).getType()==0) { //if it is an arrival
-//				arrival(timeline.get(i), i);
-//			}
-//			else{
-//				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
-//			}
-//		}
+		for (int i = 0; i< timeline.size(); i++){
+			if (timeline.get(i).getType()==1){ //if it is a departure
+				departure(timeline.get(i), i);
+			}
+			else if (timeline.get(i).getType()==0) { //if it is an arrival
+				arrival(timeline.get(i), i);
+			}
+			else{
+				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
+			}
+		}
 	}
 
 	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
@@ -59,7 +62,7 @@ public class Parking { //TODO: test
 				timeline.add(eventlist.get(i));
 			}
 			else{
-				for (int j = 1; j< timeline.size()-1; j++){
+				for (int j = 0; j< timeline.size()-1; j++){
 					if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
 						timeline.add(j+1,eventlist.get(i));
 						break;
@@ -69,6 +72,7 @@ public class Parking { //TODO: test
 		}
 		//throw exception if timeline ordered incorrectly
 		for (int i = 0; i<timeline.size()-1; i++){
+//			System.out.println(timeline.get(i));
 			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
 				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
 			}
@@ -104,7 +108,7 @@ public class Parking { //TODO: test
 					parkingtracks.add(tracks[i]);
 				}
 				else{
-					for (int j = 1; j< parkingtracks.size()-1; j++){
+					for (int j = 0; j< parkingtracks.size()-1; j++){
 						if (tracks[i].getMaxDriveBackLength()>=parkingtracks.get(j).getMaxDriveBackLength() && tracks[i].getMaxDriveBackLength()<parkingtracks.get(j+1).getMaxDriveBackLength()){
 							parkingtracks.add(j+1,tracks[i]);
 							break;
@@ -380,7 +384,7 @@ public class Parking { //TODO: test
 			throw new IOException("Sideend of event "+i+" is "+timeline.get(i).getSideend()+" and should be 0 or 1");
 		}
 
-		//we can leave in reverse, now actually leave
+		//we can leave, now actually leave
 		//remove event from track, remove composition from track
 		departureevent.getEventTrack().removeEventfromTrack(departureevent);
 		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
