@@ -22,6 +22,61 @@ public class Parking { //TODO: test
 
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
+		sortTracks(tracks);
+
+
+		//sort eventlist into timeline
+		timeline = new ArrayList<Event>();
+		sortEvents(eventlist);
+
+		freetracktimes = new ArrayList<>();
+//		for (int i = 0; i< timeline.size(); i++){
+//			if (timeline.get(i).getType()==1){ //if it is a departure
+//				departure(timeline.get(i), i);
+//			}
+//			else if (timeline.get(i).getType()==0) { //if it is an arrival
+//				arrival(timeline.get(i), i);
+//			}
+//			else{
+//				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
+//			}
+//		}
+	}
+
+	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
+		timeline.add(eventlist.get(0));
+		if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
+			timeline.add(eventlist.get(1));
+		}
+		else {
+			timeline.add(0,eventlist.get(1));
+		}
+		for (int i = 2; i< eventlist.size(); i++){
+			if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
+				timeline.add(0,eventlist.get(i));
+			}
+			else if (eventlist.get(i).getTime()>=timeline.get(timeline.size()-1).getTime()){
+				timeline.add(eventlist.get(i));
+			}
+			else{
+				for (int j = 1; j< timeline.size()-1; j++){
+					if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
+						timeline.add(j+1,eventlist.get(i));
+						break;
+					}
+				}
+			}
+		}
+		//throw exception if timeline ordered incorrectly
+		for (int i = 0; i<timeline.size()-1; i++){
+			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
+				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
+			}
+		}
+	}
+
+
+	public void sortTracks(Track[] tracks) throws MethodFailException{
 		int count = 0;
 		for (int i = 0; i<tracks.length; i++){
 			if (tracks[i].getParktrain()==1){
@@ -64,57 +119,7 @@ public class Parking { //TODO: test
 				throw new MethodFailException("Parkingtracks ordering in Parking constructor failed at position i = "+i+": parkingtracks.get(i).getMaxDriveBackLength() = "+parkingtracks.get(i).getMaxDriveBackLength()+" and parkingtracks.get(i+1).getMaxDriveBackLength() = "+parkingtracks.get(i+1).getMaxDriveBackLength());
 			}
 		}
-
-
-		//sort eventlist into timeline
-		timeline = new ArrayList<Event>();
-		timeline.add(eventlist.get(0));
-		if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
-			timeline.add(eventlist.get(1));
-		}
-		else {
-			timeline.add(0,eventlist.get(1));
-		}
-		for (int i = 2; i< eventlist.size(); i++){
-			if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
-				timeline.add(0,eventlist.get(i));
-			}
-			else if (eventlist.get(i).getTime()>=timeline.get(timeline.size()-1).getTime()){
-				timeline.add(eventlist.get(i));
-			}
-			else{
-				for (int j = 1; j< timeline.size()-1; j++){
-					if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
-						timeline.add(j+1,eventlist.get(i));
-						break;
-					}
-				}
-			}
-		}
-		//throw exception if timeline ordered incorrectly
-		for (int i = 0; i<timeline.size()-1; i++){
-			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
-				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
-			}
-		}
-
-		freetracktimes = new ArrayList<>();
-		for (int i = 0; i< timeline.size(); i++){
-			if (timeline.get(i).getType()==1){ //if it is a departure
-				departure(timeline.get(i), i);
-			}
-			else if (timeline.get(i).getType()==0) { //if it is an arrival
-				arrival(timeline.get(i), i);
-			}
-			else{
-				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
-			}
-		}
 	}
-
-
-
-
 
 	public void arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
 		boolean parked = arrivalNormal(arrivalevent, i);
@@ -379,5 +384,14 @@ public class Parking { //TODO: test
 		//remove event from track, remove composition from track
 		departureevent.getEventTrack().removeEventfromTrack(departureevent);
 		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
+	}
+
+	
+	public ArrayList<Track> getParkingTracks(){
+		return parkingtracks;
+	}
+	
+	public ArrayList<Event> getTimeline(){
+		return timeline;
 	}
 }
