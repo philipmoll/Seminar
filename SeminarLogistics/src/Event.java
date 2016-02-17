@@ -56,7 +56,7 @@ public class Event { //TODO: test
 	 */
 	public void setEventTrack(Track eventtrack) {
 		this.eventtrack = eventtrack;
-		relatedevent.setEventTrack(eventtrack);
+		//relatedevent.setEventTrack(eventtrack);
 	}
 	
 	/**
