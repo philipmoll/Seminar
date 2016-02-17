@@ -587,6 +587,7 @@ public class Todo {
 						first = true;
 						j += Main.moveduration;
 					}
+				System.out.print(abcd.get(abcd.size()-1).getStarttime() + " " + abcd.get(abcd.size()-1).getEndtime() + " " + abcd.get(abcd.size()-1).getEventblock() + " " + abcd.get(abcd.size()-1).getType() + " " + abcd.get(abcd.size()-1).getRelatedEvent() + " " + abcd.get(abcd.size()-1) + "\n");
 				}
 
 
