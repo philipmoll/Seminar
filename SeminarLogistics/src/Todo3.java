@@ -191,7 +191,7 @@ public class Todo3 {
 								}
 							}
 						}
-						if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+						if (platforms.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -272,7 +272,7 @@ public class Todo3 {
 						}
 
 						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+						if (washareas.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -352,7 +352,7 @@ public class Todo3 {
 						}
 					}
 					//Update if we find better solution than the previous ones at a different track.
-					if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+					if (washareas.get(k).equals(currenttrack)){
 
 						if(temptemp <= temp){
 							temp = temptemp;
@@ -403,7 +403,7 @@ public class Todo3 {
 						}
 					}
 					//Update if we find better solution than the previous ones at a different track.
-					if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+					if (platforms.get(k).equals(currenttrack)){
 
 						if(temptemp <= temp){
 							temp = temptemp;
@@ -515,7 +515,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+						if (platforms.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -575,7 +575,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+						if (washareas.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -679,7 +679,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+						if (platforms.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -739,7 +739,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+						if (washareas.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -843,7 +843,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+						if (platforms.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -903,7 +903,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+						if (washareas.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -1007,7 +1007,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (platforms.get(k).getLabel()==currenttrack.getLabel()){
+						if (platforms.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
@@ -1067,7 +1067,7 @@ public class Todo3 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).getLabel()==currenttrack.getLabel()){
+						if (washareas.get(k).equals(currenttrack)){
 
 							if(temptemp <= temp){
 								temp = temptemp;
