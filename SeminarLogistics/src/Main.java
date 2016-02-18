@@ -89,7 +89,7 @@ public class Main {
 				else{
 					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
 				}
-				arrivingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
+				//arrivingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
 			}
 
 
@@ -104,7 +104,7 @@ public class Main {
 				else{
 					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
 				}
-				arrivingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
+				//leavingcompositions.get(i).setArrivalDepartureSide((int) compositiondata3.getElement(i,3));
 			}
 
 			ArrayList<Composition> arrival1 = new ArrayList<>();
