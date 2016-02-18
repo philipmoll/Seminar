@@ -1175,6 +1175,7 @@ public class Todo3 {
 
 
 		//		activity2.removeTimes();
+		
 		//		this.removeBusyTime(activity2);
 		//		activity1.getTrackAssigned().removeBusyTimeMove(activity1);
 		//		activity1.getComposition().removeBusyTimeMove(activity1);
