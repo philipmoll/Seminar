@@ -30,6 +30,18 @@ public class Composition implements Serializable{
 		arrivaltime = -1; //default
 		departuretime = -1; //default
 		busytime = new Activity[60*24];
+		this.arrivaldepartureside = -1;
+	}
+	
+	public Composition(ArrayList<Train> compositiontrains, int arrivaldepartureside) throws IOException{
+		this.compositiontrains = compositiontrains;
+		this.updateComposition();
+		compositiontrack = null; //default
+		locationontrack = -1; //default
+		arrivaltime = -1; //default
+		departuretime = -1; //default
+		busytime = new Activity[60*24];
+		this.arrivaldepartureside = arrivaldepartureside;
 	}
 
 	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime) throws IOException{
