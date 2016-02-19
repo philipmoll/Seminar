@@ -213,7 +213,7 @@ public class Parking { //TODO: test
 							}
 						}
 						//else if: we need to enter at the B side
-						if (arrivalevent.getSidestart()==1){ //B side (right side)
+						else if (arrivalevent.getSidestart()==1){ //B side (right side)
 							//if: we need to leave via the B side
 							if (arrivalevent.getSideend() == 1){ //B side (right side)
 								//if: the eventblock to the left leaves via the B side (either directly or in reverse)
