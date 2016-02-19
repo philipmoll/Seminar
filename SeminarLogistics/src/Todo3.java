@@ -8,6 +8,7 @@ public class Todo3 {
 	ArrayList<Composition> arrivingcompositions;
 	ArrayList<Composition> departurecompostions;
 	ArrayList<FinalBlock> finalblockss;
+	ArrayList<FinalBlock> finalblockssshallow;
 	Integer[] sequence = new Integer[3];
 
 	//An activity representing any incoming/outgoing composition movement
@@ -20,6 +21,7 @@ public class Todo3 {
 	public Todo3(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
+		finalblockssshallow = new ArrayList<>();
 
 		for(int i=0;i<tracks.length;i++){
 			if (tracks[i].getInspectionposition() ==1){
@@ -44,6 +46,11 @@ public class Todo3 {
 
 		for(int i = 0; i< finalblocks.size(); i++){
 			this.finalblockss.add((FinalBlock) DeepCopy.copy(finalblocks.get(i)));
+			
+			arrordepmove.setPlannedTime(finalblockss.get(i).getOrigincomposition().getArrivalTimeInteger());
+			finalblockss.get(i).setBusyTimeMove(arrordepmove);
+			arrordepmove.setPlannedTime(finalblockss.get(i).getDestinationcomposition().getDepartureTimeInteger()-Main.moveduration);
+			finalblockss.get(i).setBusyTimeMove(arrordepmove);
 		}
 
 		int temp;
@@ -59,8 +66,10 @@ public class Todo3 {
 				}
 			}
 			this.addComposition(this.finalblockss.get(k));
+			finalblockssshallow.add(this.finalblockss.get(k));
 			this.finalblockss.remove(k);
 		}
+		
 		for(int i = 0; i<platforms.size(); i++){
 			System.out.print("Platform " + i + "  ");
 			platforms.get(i).printTimeLine();
@@ -215,7 +224,7 @@ public class Todo3 {
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
 
-						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1)); 
 						this.setBusyTime(activities.get(activities.size()-1));
 						//Minimum time to loop from must be update since inspection cannot be moved later
 						if(j == 0){	
@@ -296,7 +305,7 @@ public class Todo3 {
 
 						//Storing first solution
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
-						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1)); 
 						this.setBusyTime(activities.get(activities.size()-1));
 
 						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
@@ -378,7 +387,7 @@ public class Todo3 {
 					track23 = activities.get(activities.size()-1-j).getTrackAssigned();
 
 					//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+					//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 
 					if(activities.get(activities.size()-1-j).getMarginInteger()<margin2){
@@ -427,7 +436,7 @@ public class Todo3 {
 					currenttrack = temp1;
 
 					addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-					temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+					temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 					this.setBusyTime(activities.get(activities.size()-1-j));
 					if(activities.get(activities.size()-1-j).getActivity() == 1){
 						time21 = activities.get(activities.size()-1-j).getPlannedTimeInteger();
@@ -539,7 +548,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
@@ -600,7 +609,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
@@ -703,7 +712,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
@@ -764,7 +773,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
@@ -867,7 +876,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
@@ -928,7 +937,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
@@ -1031,7 +1040,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
@@ -1092,7 +1101,7 @@ public class Todo3 {
 						currenttrack = temp1;
 
 						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
 
 						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
@@ -1279,5 +1288,56 @@ public class Todo3 {
 				System.out.print(" ");
 			}
 		}
+	}
+	
+	/*
+	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
+	 */
+	public ArrayList<Event> getEvents(){
+		ArrayList<Event> abcd = new ArrayList<>();
+		boolean first = true;
+		for(int i = 0; i<finalblockssshallow.size(); i++){
+			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
+			for(int j = 0; j<60*24; j++){
+				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
+					if(first){
+						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
+							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
+							first = false;
+							j += Main.moveduration;
+						}
+						else{
+							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
+							first = false;
+							j += Main.moveduration;
+						}
+					}
+					else{
+						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
+							abcd.add(new Event(finalblockssshallow.get(i), 1, 1, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), finalblockssshallow.get(i).getDepartureSide(), abcd.get(abcd.size()-1)));
+							abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
+							abcd.get(abcd.size()-2).setEndTime(j);
+							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
+							first = true;
+							j += Main.moveduration;
+						}
+						else{
+							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
+							abcd.get(abcd.size()-2).setRelatedEvent(abcd.get(abcd.size()-1));
+							abcd.get(abcd.size()-2).setEndTime(j);
+							abcd.get(abcd.size()-2).setSideEnd(0);
+							first = true;
+							j += Main.moveduration;
+						}
+						
+					}
+				}
+
+
+			}
+		}
+
+
+		return abcd;
 	}
 }
