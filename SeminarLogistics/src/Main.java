@@ -73,6 +73,9 @@ public class Main {
 			}
 
 			Track[] tracks =  readInTracks(trackdata);
+			for (int i = 0; i<tracks.length; i++){
+				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
+			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
@@ -132,8 +135,8 @@ public class Main {
 					//System.out.println("z("+i+","+j+") = "+z[i][j]);
 					if (z[i][j]==true){
 						//System.out.println("hoi");
-						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getArrivalDepartureSide(), departingblocks.get(j).getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
-						System.out.println(arrivingblocks.get(i).getArrivaltime());
+						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+//						System.out.println(arrivingblocks.get(i).getArrivaltime());
 						//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
 						if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+Matching.c /*+finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()*/>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
 							throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");

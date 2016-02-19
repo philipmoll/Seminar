@@ -20,16 +20,20 @@ public class Parking { //TODO: test
 	public Parking(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
 
+		
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
 
+		for (int i = 0; i<parkingtracks.size(); i++){
+			System.out.println("Label: "+parkingtracks.get(i).getLabel()+" and length: "+parkingtracks.get(i).getTracklength()+" and maxbackward: "+parkingtracks.get(i).getMaxDriveBackLength());
+		}
 
 		//sort eventlist into timeline
 		timeline = new ArrayList<Event>();
 		sortEvents(eventlist);
 		for (int i = 0; i<timeline.size(); i++){
-			System.out.println(timeline.get(i));
+			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 		}
 		System.out.println();
 
@@ -82,7 +86,6 @@ public class Parking { //TODO: test
 		}
 		//throw exception if timeline ordered incorrectly
 		for (int i = 0; i<timeline.size()-1; i++){
-			//			System.out.println(timeline.get(i));
 			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
 				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
 			}
@@ -116,12 +119,10 @@ public class Parking { //TODO: test
 		}
 		//throw exception if sortedtracks ordered incorrectly
 		for (int i = 0; i<sortedtracks.size()-1; i++){
-			System.out.println(sortedtracks.get(i).getLabel());
 			if (sortedtracks.get(i).getCompositionlist().size() < sortedtracks.get(i+1).getCompositionlist().size()){
 				throw new MethodFailException("Occupied track ordering in parking failed at position i = "+i+": sortedtracks.get(i).getCompositionlist().size() = "+sortedtracks.get(i).getCompositionlist().size()+" and sortedtracks.get(i+1).getCompositionlist().size() = "+sortedtracks.get(i+1).getCompositionlist().size());
 			}
 		}
-		System.out.println(sortedtracks.get(sortedtracks.size()-1).getLabel());
 		if (sortedtracks.size() != tracks.size()){
 			throw new MethodFailException("Tracks contains a different number of elements than sorted tracks in function sortTracksOccupied in Parking");
 		}
@@ -131,6 +132,7 @@ public class Parking { //TODO: test
 
 	public void sortTracks(Track[] tracks) throws MethodFailException{
 		int count = 0;
+		int x = 0;
 		for (int i = 0; i<tracks.length; i++){
 			if (tracks[i].getParktrain()==1){
 				if (count ==0){
@@ -143,12 +145,13 @@ public class Parking { //TODO: test
 					else {
 						parkingtracks.add(tracks[i]);
 					}
+					x=i;
 					break;
 				}
 				count++;
 			} 
 		}
-		for (int i = 2; i<tracks.length ; i++){
+		for (int i = x+1; i<tracks.length ; i++){
 			if(tracks[i].getParktrain() == 1){
 				if (tracks[i].getMaxDriveBackLength()<parkingtracks.get(0).getMaxDriveBackLength()){
 					parkingtracks.add(0,tracks[i]);
@@ -434,13 +437,17 @@ public class Parking { //TODO: test
 		if (departureevent.getSideend() == 0){ //if we leave via A side
 			//throw exception if eventblock not at the A side of the track
 			if (departureevent.getEventTrack().getCompositionlist().get(0) != departureevent.getEventblock()){
-				throw new MethodFailException("Event "+i+" must leave via A side, but is not at the A side");
+				System.out.println("Event track: "+departureevent.getEventTrack().getLabel());
+				for (int j = 0; j<departureevent.getEventTrack().getCompositionlist().size(); j++){
+					System.out.println(departureevent.getEventTrack().getCompositionlist().get(j));
+				}
+				throw new MethodFailException("Event "+i+" with eventblock "+departureevent.getEventblock()+" must leave via A side at track "+departureevent.getEventTrack().getLabel()+", but is not at the A side");
 			}
 		}
 		else if (departureevent.getSideend() == 1){ //if we leave via B side
 			//throw exception if eventblock not at the B side of the track
 			if (departureevent.getEventTrack().getCompositionlist().get(departureevent.getEventTrack().getCompositionlist().size()-1) != departureevent.getEventblock()){
-				throw new MethodFailException("Event "+i+" must leave via B side, but is not at the B side");
+				throw new MethodFailException("Event "+i+" must leave via B side at track "+departureevent.getEventTrack().getLabel()+", but is not at the B side");
 			}
 		}
 		else { //sideend is neither 0 nor 1, IOException!
