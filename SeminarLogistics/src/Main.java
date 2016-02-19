@@ -107,17 +107,17 @@ public class Main {
 
 			ArrayList<Composition> arrival1 = new ArrayList<>();
 			ArrayList<Composition> departure1 = new ArrayList<>();
-			for (int i = 6; i<arrivingcompositions.size(); i++){
+			for (int i = 0; i<6; i++){
 				arrival1.add(arrivingcompositions.get(i));
 			}
-			for (int j = 7; j<leavingcompositions.size(); j++){
+			for (int j = 0; j<7; j++){
 				departure1.add(leavingcompositions.get(j));
 			}
 
 //			for (int i = 0; i<arrivingcompositions.size(); i++){
 //				System.out.println(arrivingcompositions.get(i).getArrivaltime());
 //			}
-			Matching onzeMatching = new Matching(arrivingcompositions,leavingcompositions);
+			Matching onzeMatching = new Matching(arrival1, departure1);
 //			for (int i = 0; i<arrivingcompositions.size(); i++){
 //				System.out.println(arrivingcompositions.get(i).getArrivaltime());
 //			}
@@ -141,9 +141,10 @@ public class Main {
 				}
 			}
 
-			Todo3 JobShop = new Todo3(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
-			//ArrayList<Event> events = JobShop.getEvents();
+			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+			ArrayList<Event> events = JobShop.getEvents();
 			
+			Parking ourparking = new Parking(events, tracks);
 //			for(int i = 0; i<events.size(); i++){
 //				System.out.print(" Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
 //			}
@@ -171,7 +172,7 @@ public class Main {
 			//This is how we should write a decouple function, N.B.: with the.add function.
 			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
 
-		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException e) {
+		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
 		}
 	} 
