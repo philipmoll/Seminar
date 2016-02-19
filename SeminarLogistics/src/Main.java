@@ -78,6 +78,11 @@ public class Main {
 
 
 			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
+			
+			for(int i = 0; i<arrivingcompositions.size(); i++){
+				System.out.print(arrivingcompositions.get(i).getArrivalDepartureSide());
+			}
+			
 			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
