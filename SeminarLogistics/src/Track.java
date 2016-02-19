@@ -151,20 +151,20 @@ public class Track {
 	public void addEventtoTrackLeft(Event event) throws TrackNotFreeException{ //TODO: test
 		int compositionslength = this.getCompositionLengthOnTrack();
 		if (compositionslength+event.getEventblock().getLength()>tracklength){
-			System.out.println("Compositionlength: "+compositionslength);
-			for (int i = 0; i<compositionlist.size(); i++){
-				System.out.println("a");
-				System.out.println(compositionlist.get(i));
-			}
-			for (int i = 0; i<eventlist.size(); i++){
-				System.out.println("b");
-				System.out.println(eventlist.get(i));
-			}
-			System.out.println("event.getEventblock().getLength()"+event.getEventblock().getLength());
-			System.out.println("tracklength: "+tracklength);
-			System.out.println(event);
-			System.out.println(event.getType());
-			System.out.println(event.getFinalType());
+//			System.out.println("Compositionlength: "+compositionslength);
+//			for (int i = 0; i<compositionlist.size(); i++){
+//				System.out.println("a");
+//				System.out.println(compositionlist.get(i));
+//			}
+//			for (int i = 0; i<eventlist.size(); i++){
+//				System.out.println("b");
+//				System.out.println(eventlist.get(i));
+//			}
+//			System.out.println("event.getEventblock().getLength()"+event.getEventblock().getLength());
+//			System.out.println("tracklength: "+tracklength);
+//			System.out.println(event);
+//			System.out.println(event.getType());
+//			System.out.println(event.getFinalType());
 			throw new TrackNotFreeException("Track "+label+" has no room for an eventblock of length "+event.getEventblock().getLength()+" (function addEventtoTrackLeft)");
 		}
 		this.eventlist.add(0,event);

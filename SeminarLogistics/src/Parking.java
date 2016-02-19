@@ -31,15 +31,24 @@ public class Parking { //TODO: test
 		for (int i = 0; i<timeline.size(); i++){
 			System.out.println(timeline.get(i));
 		}
+		System.out.println();
 
 		freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
-			System.out.println("event "+i);
+			System.out.println("event "+i+ " "+timeline.get(i));
 			if (timeline.get(i).getType()==1){ //if it is a departure
 				departure(timeline.get(i), i);
+				System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel());
+				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
+					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
+				}
 			}
 			else if (timeline.get(i).getType()==0) { //if it is an arrival
 				arrival(timeline.get(i), i);
+				System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
+				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
+					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
+				}
 			}
 			else{
 				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
@@ -155,8 +164,8 @@ public class Parking { //TODO: test
 						if (arrivalevent.getSidestart() == 0){ //A side (left side)
 							//if: we need to leave via the A side
 							if (arrivalevent.getSideend() == 0){ //A side (left side)
-								//if: the eventblock to the right leaves via the A side
-								if (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0){ //A side (left side)
+								//if: the eventblock to the right leaves via the A side (either directly or in reverse)
+								if ((parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0) || (parkingtracks.get(j).getEventlist().get(0).getSideend() == 1 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){ //A side (left side)
 									//if: the eventblock to the right leaves after arrivalblock
 									if (parkingtracks.get(j).getEventlist().get(0).getEndtime() >= arrivalevent.getEndtime()){
 										//add compositions and events to track
@@ -165,8 +174,8 @@ public class Parking { //TODO: test
 										break; //go on to next arrival
 									}
 								}
-								//else if: the eventblock to the right leaves via the B side
-								else if (parkingtracks.get(j).getEventlist().get(0).getSideend() ==1){ //B side (right side)
+								//else if: the eventblock to the right leaves via the B side (either directly or in reverse
+								else if ((parkingtracks.get(j).getEventlist().get(0).getSideend() ==1&& parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0)|| (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
 									//add compositions and events to track
 									arrivalASideSimple(arrivalevent, parkingtracks.get(j));
 									parked = true; //set parked to true
@@ -180,11 +189,11 @@ public class Parking { //TODO: test
 							//else if: we need to leave via the B side
 							else if (arrivalevent.getSideend()==1){ //B side (right side)
 								//if: the eventblock to the right leaves via the A side (NB: A side not possible here, earlier or later)
-								if (parkingtracks.get(j).getEventlist().get(0).getSideend()==0){
+								if ((parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0) || (parkingtracks.get(j).getEventlist().get(0).getSideend() == 1 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){
 									//cannot park here!
 								}
-								//else if: the eventblock to the right leaves via the B side
-								else if (parkingtracks.get(j).getEventlist().get(0).getSideend()==1){
+								//else if: the eventblock to the right leaves via the B side (either directly or in reverse)
+								else if ((parkingtracks.get(j).getEventlist().get(0).getSideend() ==1&& parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0)|| (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
 									//if: the eventblock to the right leaves before arrivalblock
 									if (parkingtracks.get(j).getEventlist().get(0).getEndtime() <= arrivalevent.getEndtime()){
 										//add compositions and events to track
@@ -207,8 +216,8 @@ public class Parking { //TODO: test
 						if (arrivalevent.getSidestart()==1){ //B side (right side)
 							//if: we need to leave via the B side
 							if (arrivalevent.getSideend() == 1){ //B side (right side)
-								//if: the eventblock to the left leaves via the B side
-								if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getSideend() == 1){ //B side (right side)
+								//if: the eventblock to the left leaves via the B side (either directly or in reverse)
+								if ((parkingtracks.get(j).getEventlist().get(0).getSideend() ==1&& parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0)|| (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
 									//if: the eventblock to the left leaves after arrivalblock
 									if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getEndtime() >= arrivalevent.getEndtime()){
 										//add compositions and events to track
@@ -217,8 +226,8 @@ public class Parking { //TODO: test
 										break; //go on to next arrival
 									}
 								}
-								//else if: the eventblock to the left leaves via the A side
-								else if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getSideend() ==0){ //A side (left side)
+								//else if: the eventblock to the left leaves via the A side (either directly or in reverse)
+								else if ((parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0) || (parkingtracks.get(j).getEventlist().get(0).getSideend() == 1 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){
 									//add compositions and events to track
 									arrivalBSideSimple(arrivalevent, parkingtracks.get(j));
 									parked = true; //set parked to true
@@ -231,12 +240,12 @@ public class Parking { //TODO: test
 							}
 							//else if: we need to leave via the A side
 							else if (arrivalevent.getSideend()==0){ //A side (left side)
-								//if: the eventblock to the right leaves via the B side (NB: B side not possible here, earlier or later)
-								if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getSideend()==1){
+								//if: the eventblock to the right leaves via the B side (either directly or in reverse) (NB: B side not possible here, earlier or later)
+								if ((parkingtracks.get(j).getEventlist().get(0).getSideend() ==1&& parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0)|| (parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
 									//cannot park here!
 								}
-								//else if: the eventblock to the right leaves via the A side
-								else if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getSideend()==0){
+								//else if: the eventblock to the right leaves via the A side (either directly or in reverse)
+								else if ((parkingtracks.get(j).getEventlist().get(0).getSideend() == 0 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() == 0) || (parkingtracks.get(j).getEventlist().get(0).getSideend() == 1 && parkingtracks.get(j).getEventlist().get(0).getReverseLeave() ==1)){
 									//if: the eventblock to the right leaves before arrivalblock
 									if (parkingtracks.get(j).getEventlist().get(parkingtracks.get(j).getEventlist().size()-1).getEndtime() <= arrivalevent.getEndtime()){
 										//add compositions and events to track
@@ -275,7 +284,6 @@ public class Parking { //TODO: test
 	public void arrivalASideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
-		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
 		parkingtrack.addEventtoTrackLeft(arrivalevent);
 		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 	}
@@ -283,7 +291,6 @@ public class Parking { //TODO: test
 	public void arrivalBSideSimple(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
 		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
-		System.out.println(arrivalevent.getRelatedEvent().getEventTrack().getLabel());
 		parkingtrack.addEventtoTrackRight(arrivalevent);
 		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 	}

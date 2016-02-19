@@ -92,7 +92,7 @@ public class ParkingTest {
 			event8 = new Event(fblock2, 1, 1, event7.getStarttime(), event7.getEndtime(), event7.getSidestart(), event7.getSideend(), event7);
 			event7.setRelatedEvent(event8);
 			
-			eventlist = new ArrayList<Event>(){{add(event1);add(event2);/*add(event3);add(event4);/*add(event5);add(event6);add(event7);add(event8);*/}};
+			eventlist = new ArrayList<Event>(){{add(event1);add(event2);add(event3);add(event4);add(event5);add(event6);add(event7);add(event8);}};
 			
 			park1 = new Parking(eventlist, alltracks);
 //			ArrayList<Event> timeline = park1.getTimeline();
@@ -108,25 +108,24 @@ public class ParkingTest {
 
 	@Test
 	public void testSortTracks() {
-		assertEquals(1,1);
-//		assertEquals(3,park1.getParkingTracks().size());
-//		assertEquals(track3,park1.getParkingTracks().get(0));
-//		assertEquals(track1,park1.getParkingTracks().get(1));
-//		assertEquals(track2,park1.getParkingTracks().get(2));
+		assertEquals(3,park1.getParkingTracks().size());
+		assertEquals(track3,park1.getParkingTracks().get(0));
+		assertEquals(track1,park1.getParkingTracks().get(1));
+		assertEquals(track2,park1.getParkingTracks().get(2));
 	}
 	
-//	@Test
-//	public void testSortEvents() {
-//		assertEquals(8,park1.getTimeline().size());
-//		assertEquals(event1,park1.getTimeline().get(0));
-//		assertEquals(event5,park1.getTimeline().get(1));
-//		assertEquals(event6,park1.getTimeline().get(2));
-//		assertEquals(event2,park1.getTimeline().get(3));
-//		assertEquals(event7,park1.getTimeline().get(4));
-//		assertEquals(event3,park1.getTimeline().get(5));
-//		assertEquals(event8,park1.getTimeline().get(6));
-//		assertEquals(event4,park1.getTimeline().get(7));
-//	}
+	@Test
+	public void testSortEvents() {
+		assertEquals(8,park1.getTimeline().size());
+		assertEquals(event1,park1.getTimeline().get(0));
+		assertEquals(event5,park1.getTimeline().get(1));
+		assertEquals(event6,park1.getTimeline().get(2));
+		assertEquals(event2,park1.getTimeline().get(3));
+		assertEquals(event7,park1.getTimeline().get(4));
+		assertEquals(event3,park1.getTimeline().get(5));
+		assertEquals(event8,park1.getTimeline().get(6));
+		assertEquals(event4,park1.getTimeline().get(7));
+	}
 //	
 //	@Test
 //	public void testArrivalASideSimple() {
