@@ -5,7 +5,6 @@ import java.util.*;
  * TODO: BIJ MATCHING ARRIVING MOVE TIJD WEGHALEN EN KOPPELTIJD CHECKEN!
  * TODO: maxdrivebacklength inlezen
  * 
- * 
  */
 
 
@@ -29,7 +28,6 @@ public class Main {
 	{
 
 		try {
-			//System.out.println("hier ben ik");
 			//int user = 1; //Friso
 			int user = 2; //Floor
 			//int user = 3; //Robin
@@ -79,9 +77,10 @@ public class Main {
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
+			Schedule schedule = new Schedule(trainsarr);
 
-			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
-			
+			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, schedule.getTrains(), compositiondata, compositiondata3);
+
 			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 

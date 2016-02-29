@@ -27,6 +27,11 @@ public class Train implements Serializable{
 	private boolean cleaning;
 	private boolean repairing;
 	private boolean washing;
+	
+	private double inspprob;
+	private double cleanprob;
+	private double washprob;
+	private double repprob;
 
 	private int position;
 	private Composition composition;
@@ -60,42 +65,70 @@ public class Train implements Serializable{
 			cleaningtime = 15; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 23; //Minutes
+			inspprob = 1;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
 			inspectiontime = 26; //Minutes
 			cleaningtime = 20; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 24; //Minutes
-		}
+			inspprob = 1;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
+			}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
 			inspectiontime = 11; //Minutes
 			cleaningtime = 37; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 24; //Minutes
+			inspprob = 0.8;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
 			inspectiontime = 14; //Minutes
 			cleaningtime = 56; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 26; //Minutes
+			inspprob = 0.8;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
 			inspectiontime = 15; //Minutes
 			cleaningtime = 49; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 24; //Minutes
+			inspprob = 0.8;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
 			inspectiontime = 18; //Minutes
 			cleaningtime = 56; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 26; //Minutes
+			inspprob = 0.8;	//probability
+			cleanprob = 1;	//probability
+			washprob = 0.1;	//probability
+			repprob = 0.1;	//probability
 		}
 		else{
 			inspectiontime = -1; //Minutes
 			cleaningtime = -1; //Minutes
 			repairingtime = -1; //Minutes
 			washingtime = -1; //Minutes
+			inspprob = 0;	//probability
+			cleanprob = 0;	//probability
+			washprob = 0;	//probability
+			repprob = 0;	//probability
 
 		}
 	}
@@ -367,23 +400,35 @@ public class Train implements Serializable{
 	public Composition getComposition(){
 		return composition;
 	}
-	public void toggleInspecting(){
-		inspecting = !inspecting; 
+	public void setInspecting(boolean a){
+		inspecting = a; 
 	}
-	public void toggleCleaning(){
-		cleaning = !cleaning; 
+	public void setCleaning(boolean a){
+		cleaning = a; 
 	}
-	public void toggleRepairing(){
-		repairing = !repairing; 
+	public void setRepairing(boolean a){
+		repairing = a; 
 	}
-	public void toggleWashing(){
-		washing = !washing; 
+	public void setWashing(boolean a){
+		washing = a; 
 	}
 	public void setPosition(int newposition){
 		this.position = newposition;
 	}
 	public void setComposition(Composition newcomposition){
 		this.composition = newcomposition;
+	}
+	public double getInspprob(){
+		return inspprob;
+	}
+	public double getWashprob(){
+		return washprob;
+	}
+	public double getCleanprob(){
+		return cleanprob;
+	}
+	public double getRepprob(){
+		return repprob;
 	}
 	/**
 	 * Returns true if a train is of the same class and same number of carriages
