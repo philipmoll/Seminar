@@ -672,6 +672,28 @@ public class Composition implements Serializable{
 		return abcd;
 	}
 	
+	public boolean getCleaning(){
+		boolean abcd = false;
+		for(int i = 0; i<compositiontrains.size(); i++){
+			if(compositiontrains.get(i).getCleaning()){
+				abcd = true;
+				break;
+			}
+		}
+		return abcd;
+	}
+	
+	public boolean getRepairing(){
+		boolean abcd = false;
+		for(int i = 0; i<compositiontrains.size(); i++){
+			if(compositiontrains.get(i).getRepairing()){
+				abcd = true;
+				break;
+			}
+		}
+		return abcd;
+	}
+	
 	public void printTrains(){
 		for (int i = 0; i<compositiontrains.size(); i++){
 			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
