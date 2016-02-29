@@ -79,7 +79,7 @@ public class Main {
 
 			Schedule schedule = new Schedule(trainsarr);
 
-			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, schedule.getTrains(), compositiondata, compositiondata3);
+			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
 
 			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);

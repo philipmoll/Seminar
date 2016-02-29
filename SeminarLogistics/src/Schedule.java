@@ -6,10 +6,10 @@ import java.util.*;
 public class Schedule {
 
 	public Train[] trains;
-	private double additionalinspprob = 0;
-	private double additionalrepprob = 0;
-	private double additionalwashprob = 0;
-	private double additionalcleanprob = 0;
+	private double additionalinspprob = 0.0;
+	private double additionalrepprob = 0.0;
+	private double additionalwashprob = 0.0;
+	private double additionalcleanprob = 0.0;
 
 	public Schedule(Train[] trains) throws IOException{
 		this.trains = trains;
@@ -26,6 +26,7 @@ public class Schedule {
 				b = false;
 			}
 			trains[i].setInspecting(b);
+			
 			a = randomGenerator.nextDouble();
 			if(a <= trains[i].getCleanprob()+additionalcleanprob){
 				b = true;
@@ -34,6 +35,7 @@ public class Schedule {
 				b = false;
 			}
 			trains[i].setCleaning(b);
+			
 			a = randomGenerator.nextDouble();
 			if(a <= trains[i].getWashprob()+additionalwashprob){
 				b = true;
@@ -42,6 +44,7 @@ public class Schedule {
 				b = false;
 			}
 			trains[i].setWashing(b);
+			
 			a = randomGenerator.nextDouble();
 			if(a <= trains[i].getRepprob()+additionalrepprob){
 				b = true;
