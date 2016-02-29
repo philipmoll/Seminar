@@ -588,9 +588,7 @@ public class Todo {
 				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
 					if(first){
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
-							System.out.println(" hoi hoi");
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
-							System.out.println(abcd.get(abcd.size()-1).getFinalType());
 							first = false;
 							j += Main.moveduration;
 						}
