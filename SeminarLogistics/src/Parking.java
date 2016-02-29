@@ -36,7 +36,8 @@ public class Parking { //TODO: test
 			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 		}
 		System.out.println();
-
+//		System.out.println(timeline.get(2).getEventblock().getCutpositionarr1());
+//		System.out.println(timeline.get(3).getEventblock().getCutpositionarr1());
 		freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
 			System.out.println("event "+i+ " "+timeline.get(i));
@@ -51,10 +52,10 @@ public class Parking { //TODO: test
 				int nrincomposition = 1;
 				ArrayList<Event> finalevents = new ArrayList<>();
 				if (timeline.get(i).getFinalType()==1){ //if it is a final arrival
-					System.out.println("Final event");
 					finalevents.add(timeline.get(i));
 					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
-						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() && timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()){ //if they are the same final arrivingcomposition
+//						System.out.println("j: "+j+" finaltype: "+timeline.get(i+j).getFinalType()+" time_i: "+timeline.get(i).getTime()+" time_i+j: "+timeline.get(i+j).getTime()+" origin_i: "+timeline.get(i).getEventblock().getOrigincomposition()+" origin_i+j: "+timeline.get(i+j).getEventblock().getOrigincomposition());
+						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
 							nrincomposition++;
 							finalevents.add(timeline.get(i+j));
 						}
@@ -64,11 +65,10 @@ public class Parking { //TODO: test
 					}
 				}
 				if (nrincomposition>1){ //final and nr greater than 1
-					System.out.println("nr composition > 1");
 					arrival(finalevents, i, nrincomposition);
+					i = i+(nrincomposition-1); //skip all that have already been added
 				}
 				else{
-					System.out.println("nr composition <=1");
 					arrival(timeline.get(i), i);
 					System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
 				}
@@ -79,6 +79,7 @@ public class Parking { //TODO: test
 			else{
 				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
 			}
+			
 		}
 	}
 
@@ -366,7 +367,6 @@ public class Parking { //TODO: test
 	}
 	
 	public boolean arrivalNormal(ArrayList<Event> arrivalevents1, int i, int nrevents) throws TrackNotFreeException, IOException, MethodFailException{
-		System.out.println("hoi"+nrevents);
 		boolean parked = false;
 		int totallength = 0;
 		for (int j = 0; j<nrevents; j++){
@@ -455,6 +455,10 @@ public class Parking { //TODO: test
 		//else methodfail exception
 		else{
 			throw new MethodFailException("Sidestart of event is "+arrivalevents1.get(0)+" and can only be 0 or 1 (A or B, respectively)");
+		}
+		
+		for (int j = 0; j<arrivalevents.size();j++){
+			System.out.println(arrivalevents.get(j));
 		}
 		for (int j = 0; j<parkingtracks.size(); j++){
 			//check for the first track with maxdrivebacklength > size block if it fits on the correct side

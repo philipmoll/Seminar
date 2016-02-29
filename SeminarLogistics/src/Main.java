@@ -132,7 +132,7 @@ public class Main {
 			for (int i = 0; i<z.length; i++){
 				for (int j = 0; j<z[0].length; j++){
 					if (z[i][j]==true){
-//						System.out.println("z("+i+","+j+") = "+z[i][j]);
+						System.out.println("z("+i+","+j+") = "+z[i][j]);
 						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
 //						System.out.println(arrivingblocks.get(i).getArrivaltime());
 						//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
