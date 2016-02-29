@@ -20,7 +20,7 @@ public class Parking { //TODO: test
 	public Parking(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
 
-		
+
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
@@ -33,7 +33,7 @@ public class Parking { //TODO: test
 		timeline = new ArrayList<Event>();
 		sortEvents(eventlist);
 		for (int i = 0; i<timeline.size(); i++){
-			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
+			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 		}
 		System.out.println();
 
@@ -48,8 +48,30 @@ public class Parking { //TODO: test
 				}
 			}
 			else if (timeline.get(i).getType()==0) { //if it is an arrival
-				arrival(timeline.get(i), i);
-				System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
+				int nrincomposition = 1;
+				ArrayList<Event> finalevents = new ArrayList<>();
+				if (timeline.get(i).getFinalType()==1){ //if it is a final arrival
+					System.out.println("Final event");
+					finalevents.add(timeline.get(i));
+					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
+						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() && timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()){ //if they are the same final arrivingcomposition
+							nrincomposition++;
+							finalevents.add(timeline.get(i+j));
+						}
+						else{
+							break;
+						}
+					}
+				}
+				if (nrincomposition>1){ //final and nr greater than 1
+					System.out.println("nr composition > 1");
+					arrival(finalevents, i, nrincomposition);
+				}
+				else{
+					System.out.println("nr composition <=1");
+					arrival(timeline.get(i), i);
+					System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
+				}
 				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
 					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
 				}
@@ -176,15 +198,14 @@ public class Parking { //TODO: test
 			}
 		}
 	}
-
+	
 	public void arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
 		boolean parked = arrivalNormal(arrivalevent, i);
 		if (parked == false){
 			//TODO: try arrival reverse, only possible if not only one track free left and track need not to be free at time of event, and of 
 		}
-
 	}
-
+	
 	public boolean arrivalNormal(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
 		boolean parked = false;
 		for (int j = 0; j<parkingtracks.size(); j++){
@@ -217,7 +238,7 @@ public class Parking { //TODO: test
 		}
 		return parked;
 	}
-
+	
 	public boolean simplePark(Event arrivalevent, Track parkingtrack, int i) throws TrackNotFreeException, IOException{
 		boolean parked = false;
 		//if: enough room on track
@@ -333,6 +354,159 @@ public class Parking { //TODO: test
 					throw new IOException("Side start of event "+i+" is "+arrivalevent.getSidestart()+" and should be 0 (A side) or 1 (B side)");
 				}
 			}
+		}
+		return parked;
+	}
+	
+	public void arrival(ArrayList<Event> arrivalevents, int i, int nrevents) throws TrackNotFreeException, IOException, MethodFailException{ //for final arrival
+		boolean parked = arrivalNormal(arrivalevents, i, nrevents);
+		if (parked == false){
+			//TODO: try arrival reverse, only possible if not only one track free left and track need not to be free at time of event, and of 
+		}
+	}
+	
+	public boolean arrivalNormal(ArrayList<Event> arrivalevents1, int i, int nrevents) throws TrackNotFreeException, IOException, MethodFailException{
+		System.out.println("hoi"+nrevents);
+		boolean parked = false;
+		int totallength = 0;
+		for (int j = 0; j<nrevents; j++){
+			totallength += arrivalevents1.get(j).getEventblock().getLength();
+		}
+		ArrayList<Event> arrivalevents = new ArrayList<>();
+		//if A side arrival, sort from end to beginning
+		if (arrivalevents1.get(0).getSidestart()==0){
+			if (nrevents == 2){
+				if (arrivalevents1.get(1).getSidestart()!= 0){
+					throw new MethodFailException("Sidestart is not 0, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 0");
+				}
+				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()<arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(1));
+					arrivalevents.add(arrivalevents1.get(0));
+				}
+				else{
+					arrivalevents.add(arrivalevents1.get(0));
+					arrivalevents.add(arrivalevents1.get(1));
+				}
+			}
+			else if (nrevents == 3){
+				if (arrivalevents1.get(1).getSidestart()!=0 || arrivalevents1.get(2).getSidestart()!=0){
+					throw new MethodFailException("Sidestart is not 0, but "+ arrivalevents1.get(1).getSidestart()+" and "+ arrivalevents1.get(2).getSidestart()+" and should be, since it arrives in a composition that arrives at side 0");
+				}
+				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()<arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(1));
+					arrivalevents.add(arrivalevents1.get(0));
+				}
+				else{
+					arrivalevents.add(arrivalevents1.get(0));
+					arrivalevents.add(arrivalevents1.get(1));
+				}
+				if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()>arrivalevents.get(0).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(0,arrivalevents1.get(2));
+				}
+				else if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()<arrivalevents.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(2));
+				}
+				else {
+					arrivalevents.add(1,arrivalevents1.get(2));
+				}
+			}
+			else{
+				throw new MethodFailException("Nrevents is "+nrevents+" and can only be 2 or 3 (i = "+i+")");
+			}
+		}
+		//else if B side arrival, sort from beginning to end
+		else if (arrivalevents1.get(0).getSidestart()==1){
+			if (nrevents == 2){
+				if (arrivalevents1.get(1).getSidestart()!= 1){
+					throw new MethodFailException("Sidestart is not 1, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 1");
+				}
+				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()>arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(1));
+					arrivalevents.add(arrivalevents1.get(0));
+				}
+				else{
+					arrivalevents.add(arrivalevents1.get(0));
+					arrivalevents.add(arrivalevents1.get(1));
+				}
+			}
+			else if (nrevents == 3){
+				if (arrivalevents1.get(1).getSidestart()!=1 || arrivalevents1.get(2).getSidestart()!=1){
+					throw new MethodFailException("Sidestart is not 1, but "+ arrivalevents1.get(1).getSidestart()+" and "+ arrivalevents1.get(2).getSidestart()+" and should be, since it arrives in a composition that arrives at side 1");
+				}
+				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()>arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(1));
+					arrivalevents.add(arrivalevents1.get(0));
+				}
+				else{
+					arrivalevents.add(arrivalevents1.get(0));
+					arrivalevents.add(arrivalevents1.get(1));
+				}
+				if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()<arrivalevents.get(0).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(0,arrivalevents1.get(2));
+				}
+				else if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()>arrivalevents.get(1).getEventblock().getCutpositionarr1()){
+					arrivalevents.add(arrivalevents1.get(2));
+				}
+				else {
+					arrivalevents.add(1,arrivalevents1.get(2));
+				}
+			}
+		}
+		//else methodfail exception
+		else{
+			throw new MethodFailException("Sidestart of event is "+arrivalevents1.get(0)+" and can only be 0 or 1 (A or B, respectively)");
+		}
+		for (int j = 0; j<parkingtracks.size(); j++){
+			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
+			//if: entire composition can drive back at track
+			if (parkingtracks.get(j).getMaxDriveBackLength()>=totallength){
+				for (int k = 0; k < nrevents; k++){
+					parked = simplePark(arrivalevents.get(k), parkingtracks.get(j), i);
+					//if one of them cannot be parked, remove previous actions
+					if (parked == false){
+						for (int l = 0; l<k; l++){
+							arrivalevents.get(l).setEventTrack(null);
+							arrivalevents.get(l).getRelatedEvent().setEventTrack(null);
+							parkingtracks.get(j).removeEventfromTrack(arrivalevents.get(l));
+							parkingtracks.get(j).removeCompositionfromTrack(arrivalevents.get(l).getEventblock());			
+						}
+						break; //continue on to next track
+					}
+				}
+			}
+			if (parked == true){
+				break;
+			}
+		}
+		//if: parking failed, try to park at the most occupied track that we cannot drive back on
+		if (!parked){
+			ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
+			for (int j = 0; j<trackssortedoccupied.size(); j++){
+				if (trackssortedoccupied.get(j).getMaxDriveBackLength()<totallength){
+					for (int k = 0; k < nrevents; k++){
+						parked = simplePark(arrivalevents.get(k), parkingtracks.get(j), i);
+						if (parked == false){
+							//if one of them cannot be parked, remove previous actions
+							for (int l = 0; l<k; l++){
+								arrivalevents.get(l).setEventTrack(null);
+								arrivalevents.get(l).getRelatedEvent().setEventTrack(null);
+								parkingtracks.get(j).removeEventfromTrack(arrivalevents.get(l));
+								parkingtracks.get(j).removeCompositionfromTrack(arrivalevents.get(l).getEventblock());			
+							}
+							break; //continue on to next track
+						}
+					}
+				}
+				if (parked == true){
+					break;
+				}
+			}
+		}
+		if (!parked){
+			System.out.println("Arrival "+i+" and associated finals cannot be parked simply");
+		}
+		else {
+			System.out.println("Event "+i+" and associated finals are parked at track "+arrivalevents.get(0).getEventTrack().getLabel());
 		}
 		return parked;
 	}

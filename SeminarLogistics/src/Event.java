@@ -27,6 +27,7 @@ public class Event { //TODO: test
 	public Event(FinalBlock eventblock, int typeevent, int finaltypeevent, int starttime, int endtime, int sidestart, int sideend, Event relatedevent) {
 		this.eventblock = eventblock;
 		this.typeevent = typeevent;
+		this.finaltypeevent = finaltypeevent;
 		this.starttime = starttime;
 		this.endtime = endtime;
 		if (typeevent == 0){
