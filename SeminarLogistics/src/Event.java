@@ -138,6 +138,28 @@ public class Event { //TODO: test
 	}
 
 	/**
+	 * Returns whether a block arrives in reverse
+	 * 
+	 * @return the reversearrive
+	 */
+	public int getReverseArrive() {
+		return reversearrive;
+	}
+
+	/**
+	 * Sets a block to reversearrive
+	 * 
+	 * @param reverseleave the reversearrive to set
+	 * @throws IOException 
+	 */
+	public void setReverseArrive(int reversearrive) throws IOException {
+		if (reversearrive != 0 && reversearrive != 1){
+			throw new IOException("Reversearrive should be 0 or 1 in method setReverseArrive() in class Event, but is "+reversearrive);
+		}
+		this.reversearrive = reversearrive;
+	}
+	
+	/**
 	 * Returns whether a block leaves in reverse
 	 * 
 	 * @return the reverseleave
