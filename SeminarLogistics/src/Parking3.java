@@ -1,4 +1,4 @@
-//SIMPLEST FORM!!!!!!!! NO REVERSE, NO COUPLE/DECOUPLE
+//NEW, COMPLETELY CHANGED
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Floor Wolfhagen 362063
  *
  */
-public class Parking2 implements Serializable{ //TODO: test
+public class Parking3 implements Serializable{ //TODO: test
 
 	private ArrayList<Track> parkingtracks;
 	//private int[][] parkingpositions;
@@ -20,7 +20,7 @@ public class Parking2 implements Serializable{ //TODO: test
 	private ArrayList<Event> timeline;
 	//private ArrayList<int[]> freetracktimes;
 
-	public Parking2(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
+	public Parking3(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
 
 		//take parktracks out of tracks and order by maxbackwardlength

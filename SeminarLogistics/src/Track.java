@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * @author Floor Wolfhagen 362063
  *
  */
-public class Track {
+public class Track implements Serializable {
 	private final String label;
 	private final int tracklength;
 	private final int parktrain;
