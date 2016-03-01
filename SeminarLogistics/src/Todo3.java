@@ -1218,167 +1218,167 @@ public class Todo3 {
 
 		//OPTION 7: determine the right sequence of how the activities should be planned, in this case: 5 (=0 and 1), 2, 3.
 		if (addedcomp.getInspection() && addedcomp.getCleaning()){
-			
-		currenttrack = null;
-		activities.get(activities.size()-1-amount).removeTimes();
-		this.removeBusyTime(activities.get(activities.size()-1-amount));
-		
-		for (int j = 0; j<amount; j++){
-			for(int i = 1; i<9; i++){
-				if (activities.get(activities.size()-1-j).getActivity() == i){			
-					if (i == 5){
-						sequence[0] = j;
+
+			currenttrack = null;
+			activities.get(activities.size()-1-amount).removeTimes();
+			this.removeBusyTime(activities.get(activities.size()-1-amount));
+
+			for (int j = 0; j<amount; j++){
+				for(int i = 1; i<9; i++){
+					if (activities.get(activities.size()-1-j).getActivity() == i){			
+						if (i == 5){
+							sequence[0] = j;
+						}
+						else if (i == 2){
+							sequence[1] = j;
+						}
+						else if (i == 3){
+							sequence[2] = j;
+						}
+						break;
 					}
-					else if (i == 2){
-						sequence[1] = j;
-					}
-					else if (i == 3){
-						sequence[2] = j;
-					}
-					break;
 				}
 			}
-		}
 
-		for (int i = 0; i<sequence.length; i++){
-			if (sequence[i]!=null){
-				activities.get(activities.size()-1-sequence[i]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
-				temp1 = null;
-				temptemp1 = null;
-				if (activities.get(activities.size()-1-sequence[i]).getActivity()==5 || activities.get(activities.size()-1-sequence[i]).getActivity()==2){
-					for(int k = 0; k<platforms.size(); k++){
+			for (int i = 0; i<sequence.length; i++){
+				if (sequence[i]!=null){
+					activities.get(activities.size()-1-sequence[i]).setCurrentTrack(currenttrack);
+					temp = 12412;
+					temptemp = 12412;
+					temp1 = null;
+					temptemp1 = null;
+					if (activities.get(activities.size()-1-sequence[i]).getActivity()==5 || activities.get(activities.size()-1-sequence[i]).getActivity()==2){
+						for(int k = 0; k<platforms.size(); k++){
 
-						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
+							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
-										temptemp = l;
-										temptemp1 = platforms.get(k);
-										break;
+											temptemp = l;
+											temptemp1 = platforms.get(k);
+											break;
+										}
 									}
 								}
 							}
-						}
-						//Update if we find better solution than the previous ones at a different track.
-						if (platforms.get(k).equals(currenttrack)){
+							//Update if we find better solution than the previous ones at a different track.
+							if (platforms.get(k).equals(currenttrack)){
 
-							if(temptemp <= temp){
-								temp = temptemp;
-								temp1 = temptemp1;
+								if(temptemp <= temp){
+									temp = temptemp;
+									temp1 = temptemp1;
+								}
+							}
+							else {
+								if(temptemp < temp){
+									temp = temptemp;
+									temp1 = temptemp1;
+								}
 							}
 						}
-						else {
-							if(temptemp < temp){
-								temp = temptemp;
-								temp1 = temptemp1;
+
+						if(temp == 12412){
+							feasible7 = false;
+						}
+
+						else{
+							activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+							currenttrack = temp1;
+
+							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+							this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+							if(activities.get(activities.size()-1-sequence[i]).getActivity() == 5){
+								time20 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+								track20 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+								if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
+									margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+								}
+							}
+							else if(activities.get(activities.size()-1-sequence[i]).getActivity()== 2){
+								time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+								track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+								if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
+									margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
+								}
 							}
 						}
+
 					}
 
-					if(temp == 12412){
-						feasible7 = false;
-					}
+					else if(activities.get(activities.size()-1-sequence[i]).getActivity() == 3){
 
-					else{
-						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-						currenttrack = temp1;
+						for(int k = 0; k<washareas.size(); k++){
+							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
 
-						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 5){
-							time20 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-							track20 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
-								margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
+											temptemp = l;
+											temptemp1 = washareas.get(k);
+											break;
+										}
+									}
+								}
 							}
+							//Update if we find better solution than the previous ones at a different track.
+							if (washareas.get(k).equals(currenttrack)){
+
+								if(temptemp <= temp){
+									temp = temptemp;
+									temp1 = temptemp1;
+								}
+							}
+							else {
+								if(temptemp < temp){
+									temp = temptemp;
+									temp1 = temptemp1;
+								}
+							}
+
 						}
-						else if(activities.get(activities.size()-1-sequence[i]).getActivity()== 2){
-							time22 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-							track22 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(temp == 12412){
+							feasible7 = false;
+						}
+
+						else{
+							activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
+							this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
+							currenttrack = temp1;
+
+							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+							//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
+
+							time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
 							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
 								margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
 							}
 						}
 					}
-
-				}
-
-				else if(activities.get(activities.size()-1-sequence[i]).getActivity() == 3){
-
-					for(int k = 0; k<washareas.size(); k++){
-						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[i]).getUltimateTimeInteger(); l++){
-							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
-								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[i]), l)){
-									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[i]),l)){
-
-										temptemp = l;
-										temptemp1 = washareas.get(k);
-										break;
-									}
-								}
-							}
-						}
-						//Update if we find better solution than the previous ones at a different track.
-						if (washareas.get(k).equals(currenttrack)){
-
-							if(temptemp <= temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
-						}
-						else {
-							if(temptemp < temp){
-								temp = temptemp;
-								temp1 = temptemp1;
-							}
-						}
-
-					}
-					if(temp == 12412){
-						feasible7 = false;
-					}
-
-					else{
-						activities.get(activities.size()-1-sequence[i]).setUpdate(temp, temp1);
-						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						currenttrack = temp1;
-
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); 
-
-						time23 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-						track23 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
-						if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
-							margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();
-						}
-					}
 				}
 			}
-		}
-		
-		if (feasible7 == false){
-			margin7 = -1;
+
+			if (feasible7 == false){
+				margin7 = -1;
+			}
+
+			if (margin7 > bestmargin){
+				time10 = time20;
+				time11 = -1;
+				time12 = time22;
+				time13 = time23;
+				track10 = track20;
+				track11 = null;
+				track12 = track22;
+				track13 = track23;
+				bestmargin = margin7;
+			}
+
 		}
 
-		if (margin7 > bestmargin){
-			time10 = time20;
-			time11 = -1;
-			time12 = time22;
-			time13 = time23;
-			track10 = track20;
-			track11 = null;
-			track12 = track22;
-			track13 = track23;
-			bestmargin = margin7;
-		}
-		
-		}
-		
-		
+
 
 
 		//check if feasible solution exist, if so, then update with the best solution
@@ -1391,18 +1391,37 @@ public class Todo3 {
 					this.removeBusyTime(activities.get(activities.size()-1-amount));
 				}
 			}
-			for(int i = 0; i<amount; i++){
-				if(activities.get(activities.size()-1-i).getActivity()==1){
-					activities.get(activities.size()-1-i).setUpdate(time11, track11);
-					this.setBusyTime(activities.get(activities.size()-1-i));
+
+			if (bestmargin == margin7){
+				for(int i = 0; i<amount; i++){
+					if(activities.get(activities.size()-1-i).getActivity()==5){
+						activities.get(activities.size()-1-i).setUpdate(time10, track10);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==2){
+						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==3){
+						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
 				}
-				if(activities.get(activities.size()-1-i).getActivity()==2){
-					activities.get(activities.size()-1-i).setUpdate(time12, track12);
-					this.setBusyTime(activities.get(activities.size()-1-i));
-				}
-				if(activities.get(activities.size()-1-i).getActivity()==3){
-					activities.get(activities.size()-1-i).setUpdate(time13, track13);
-					this.setBusyTime(activities.get(activities.size()-1-i));
+			}
+			else{
+				for(int i = 0; i<amount; i++){
+					if(activities.get(activities.size()-1-i).getActivity()==1){
+						activities.get(activities.size()-1-i).setUpdate(time11, track11);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==2){
+						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==3){
+						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
 				}
 			}
 		}
@@ -1453,7 +1472,7 @@ public class Todo3 {
 				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
 			}
 			if (comp1.getTrain(i).getActivity(act2)){
-				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act2);
 			}
 			if (acttimepertrain>maxduration){
 				maxduration = acttimepertrain;
