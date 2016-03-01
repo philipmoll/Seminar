@@ -26,7 +26,6 @@ public class Main {
 
 	public static void main(String args[])
 	{
-
 		try {
 			//int user = 1; //Friso
 			int user = 2; //Floor
