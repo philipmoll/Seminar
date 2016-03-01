@@ -520,14 +520,12 @@ public class Parking2 implements Serializable{ //TODO: test
 
 	public void arrivalASide(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
-		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		parkingtrack.addEventtoTrackLeft(arrivalevent);
 		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 	}
 
 	public void arrivalBSide(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
-		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		parkingtrack.addEventtoTrackRight(arrivalevent);
 		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 	}

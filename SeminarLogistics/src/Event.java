@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 
 public class Event { //TODO: test
-	
+
 	private FinalBlock eventblock;
 	private int time;
 	private int typeevent; //0: arrival, 1: departure
@@ -51,15 +51,17 @@ public class Event { //TODO: test
 	public FinalBlock getEventblock() {
 		return eventblock;
 	}
-	
+
 	/**
 	 * Sets the eventtrack of an event and its related event
 	 */
 	public void setEventTrack(Track eventtrack) {
 		this.eventtrack = eventtrack;
-		//relatedevent.setEventTrack(eventtrack);
+		if (relatedevent.getEventTrack()!=eventtrack){
+			relatedevent.setEventTrack(eventtrack);
+		}
 	}
-	
+
 	/**
 	 * Returns the eventtrack of an event
 	 * 
@@ -68,7 +70,7 @@ public class Event { //TODO: test
 	public Track getEventTrack(){
 		return eventtrack;
 	}
-	
+
 	/**
 	 * Returns the time that is linked to the event
 	 * 
@@ -77,7 +79,7 @@ public class Event { //TODO: test
 	public int getTime() {
 		return time;
 	}
-	
+
 	/**
 	 * Returns the type that is linked to the event
 	 * 
@@ -86,7 +88,7 @@ public class Event { //TODO: test
 	public int getType() {
 		return typeevent;
 	}
-	
+
 	/**
 	 * Returns if an event is an overall arrival of departure in shunting yard
 	 * 
@@ -157,8 +159,11 @@ public class Event { //TODO: test
 			throw new IOException("Reversearrive should be 0 or 1 in method setReverseArrive() in class Event, but is "+reversearrive);
 		}
 		this.reversearrive = reversearrive;
+		if (relatedevent.getReverseArrive() != reversearrive){
+			relatedevent.setReverseArrive(reversearrive);
+		}
 	}
-	
+
 	/**
 	 * Returns whether a block leaves in reverse
 	 * 
@@ -179,8 +184,11 @@ public class Event { //TODO: test
 			throw new IOException("Reverseleave should be 0 or 1 in method setReverseLeave() in class Event, but is "+reverseleave);
 		}
 		this.reverseleave = reverseleave;
+		if (relatedevent.getReverseLeave()!=reverseleave){
+			relatedevent.setReverseLeave(reverseleave);
+		}
 	}
-	
+
 	/**
 	 * Returns related event
 	 * 
@@ -192,12 +200,72 @@ public class Event { //TODO: test
 	public void setSideEnd(int input){
 		sideend = input;
 	}
-	
+
 	/**
 	 * Sets related event
 	 */
 	public void setRelatedEvent(Event relatedevent){
 		this.relatedevent=relatedevent;
+	}
+
+	public int getArrivalSide(){
+		int arrivalside = 2;
+		if (sidestart == 0){
+			if (reversearrive == 0){
+				arrivalside = 0;
+			}
+			else if (reversearrive == 1){
+				arrivalside = 1;
+			}
+		}
+		else if (sidestart == 1){
+			if (reversearrive == 0){
+				arrivalside = 1;
+			}
+			else if (reversearrive == 1){
+				arrivalside = 0;
+			}
+		}
+		return arrivalside;
+	}
+
+	public int getDepartureSide(){
+		int departureside = 2;
+		if (sideend == 0){
+			if (reverseleave == 0){
+				departureside = 0;
+			}
+			else if (reverseleave == 1){
+				departureside = 1;
+			}
+		}
+		else if (sideend == 1){
+			if (reverseleave == 0){
+				departureside = 1;
+			}
+			else if (reverseleave == 1){
+				departureside = 0;
+			}
+		}
+		return departureside;
+	}
+
+	public void toggleReverseArrival() throws IOException{
+		if (reversearrive == 0){
+			this.setReverseArrive(1);
+		}
+		else if (reversearrive == 1){
+			this.setReverseArrive(0);
+		}
+	}
+
+	public void toggleReverseDeparture() throws IOException{
+		if (reverseleave == 0){
+			this.setReverseLeave(1);
+		}
+		else if (reverseleave == 1){
+			this.setReverseLeave(0);
+		}
 	}
 
 }

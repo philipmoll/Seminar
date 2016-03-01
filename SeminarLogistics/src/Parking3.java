@@ -204,19 +204,145 @@ public class Parking3 implements Serializable{ //TODO: test!
 	}
 
 
-	public boolean park1(Event arrivalevent, Track parkingtrack){
+	public boolean park1(Event arrivalevent, Track parkingtrack, int x) throws MethodFailException{
 		boolean parked = false;
 		//if: A side arrival
-		if ((arrivalevent.getSidestart() == 0 && arrivalevent.getReverseArrive() == 0) || (arrivalevent.getSidestart() == 1 && arrivalevent.getReverseArrive() == 1)){
-			
+		if (arrivalevent.getArrivalSide() == 0){
+			//if: A side departure
+			if (arrivalevent.getDepartureSide()==0){
+				//check if we can park it
+				boolean feasible = checkFeasibleAA();
+				//if: we can park it directly
+				if (feasible){
+					//TODO: PARK!
+					parked = true;
+				}
+				//else: we cannot park it directly
+				else{
+					//check if we can toggle the adjacent
+					boolean toggle = togglecheck(parkingtrack.getEventlist().get(0));
+					//if: we can toggle adjacent
+					if (toggle){
+						//toggle, and check if feasible
+						parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+						feasible = checkFeasibleAA();
+						//if: we can park it
+						if (feasible){
+							//TODO: PARK!
+							parked = true;
+						}
+						//else: undo toggle
+						else{
+							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+						}
+					}
+				}
+			}
+			//else if: B side departure
+			else if (arrivalevent.getDepartureSide()==1){
+				//check if we can park it
+				boolean feasible = checkFeasibleAB();
+				//if: we can park it directly
+				if (feasible){
+					//TODO: PARK!
+					parked = true;
+				}
+				//else: we cannot park it directly
+				else{
+					//check if we can toggle the adjacent
+					boolean toggle = togglecheck(parkingtrack.getEventlist().get(0));
+					//if: we can toggle adjacent
+					if (toggle){
+						//toggle, and check if feasible
+						parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+						feasible = checkFeasibleAB();
+						//if: we can park it
+						if (feasible){
+							//TODO: PARK!
+							parked = true;
+						}
+						//else: undo toggle
+						else{
+							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+						}
+					}
+				}
+			}
+			//else: methodfail
+			else{
+				throw new MethodFailException("Event "+x+": departureside is "+arrivalevent.getDepartureSide()+", and should both be 0 or 1");
+			}
 		}
 		//else if: B side arrival
-		else if ((arrivalevent.getSidestart() == 1 && arrivalevent.getReverseArrive() == 0) || (arrivalevent.getSidestart() == 0 && arrivalevent.getReverseArrive() == 1)){
-			
+		else if (arrivalevent.getArrivalSide() == 1){
+			//if: A side departure
+			if (arrivalevent.getDepartureSide()==0){
+				//check if we can park it
+				boolean feasible = checkFeasibleBA();
+				//if: we can park it directly
+				if (feasible){
+					//TODO: PARK!
+					parked = true;
+				}
+				//else: we cannot park it directly
+				else{
+					//check if we can toggle the adjacent
+					boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1));
+					//if: we can toggle adjacent
+					if (toggle){
+						//toggle, and check if feasible
+						parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+						feasible = checkFeasibleBA();
+						//if: we can park it
+						if (feasible){
+							//TODO: PARK!
+							parked = true;
+						}
+						//else: undo toggle
+						else{
+							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+						}
+					}
+				}
+			}
+			//else if: B side departure
+			else if (arrivalevent.getDepartureSide()==1){
+				//check if we can park it
+				boolean feasible = checkFeasibleBB();
+				//if: we can park it directly
+				if (feasible){
+					//TODO: PARK!
+					parked = true;
+				}
+				//else: we cannot park it directly
+				else{
+					//check if we can toggle the adjacent
+					boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1));
+					//if: we can toggle adjacent
+					if (toggle){
+						//toggle, and check if feasible
+						parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+						feasible = checkFeasibleBB();
+						//if: we can park it
+						if (feasible){
+							//TODO: PARK!
+							parked = true;
+						}
+						//else: undo toggle
+						else{
+							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+						}
+					}
+				}
+			}
+			//else: methodfail
+			else{
+				throw new MethodFailException("Event "+x+": departureside is "+arrivalevent.getDepartureSide()+", and should both be 0 or 1");
+			}
 		}
 		//else: methodfail
 		else{
-			throw new Exception; //TODO
+			throw new MethodFailException("Event "+x+": arrivalside is "+arrivalevent.getArrivalSide()+", and should both be 0 or 1");
 		}
 		return parked;
 	}
@@ -224,14 +350,12 @@ public class Parking3 implements Serializable{ //TODO: test!
 
 	public void arrivalASide(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
-		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		parkingtrack.addEventtoTrackLeft(arrivalevent);
 		parkingtrack.addCompositiontoTrackLeft(arrivalevent.getEventblock());
 	}
 
 	public void arrivalBSide(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
-		arrivalevent.getRelatedEvent().setEventTrack(parkingtrack);
 		parkingtrack.addEventtoTrackRight(arrivalevent);
 		parkingtrack.addCompositiontoTrackRight(arrivalevent.getEventblock());
 	}
