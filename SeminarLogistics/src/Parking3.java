@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Floor Wolfhagen 362063
  *
  */
-public class Parking3 implements Serializable{ //TODO: test
+public class Parking3 implements Serializable{ //TODO: test!
 
 	private ArrayList<Track> parkingtracks;
 	//private int[][] parkingpositions;
