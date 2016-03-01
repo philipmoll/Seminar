@@ -277,7 +277,7 @@ public class Todo3 {
 					}
 
 				}
-				
+
 				// add the merged activity 5 which consists of activities 0 and 1. 
 				else if(j==5){
 					if (addedcomp.getInspection() && addedcomp.getCleaning()){
@@ -285,7 +285,7 @@ public class Todo3 {
 						amount += 1;
 					}
 				}
-				
+
 				// add the merged activity 6 which consists of activities 1 and 2. 
 				else if(j==6){
 					if (addedcomp.getCleaning() && addedcomp.getRepairing()){
@@ -293,7 +293,7 @@ public class Todo3 {
 						amount += 1;
 					}
 				}
-				
+
 				// add the merged activity 7 which consists of activities 0 and 2. 
 				else if(j==7){
 					if (addedcomp.getInspection() && addedcomp.getRepairing()){
@@ -301,7 +301,7 @@ public class Todo3 {
 						amount += 1;
 					}
 				}
-				
+
 				// add the merged activity 6 which consists of activities 1 and 2. 
 				else if(j==8){
 					if (addedcomp.getInspection() && addedcomp.getCleaning() && addedcomp.getRepairing()){
@@ -309,7 +309,7 @@ public class Todo3 {
 						amount += 1;
 					}
 				}
-				
+
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
 					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
@@ -541,16 +541,16 @@ public class Todo3 {
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
 				if (activities.get(activities.size()-1-j).getActivity() == i){			
-				if (i == 1){
-					sequence[0] = j;
-				}
-				else if (i == 3){
-					sequence[1] = j;
-				}
-				else if (i == 2){
-					sequence[2] = j;
-				}
-				break;
+					if (i == 1){
+						sequence[0] = j;
+					}
+					else if (i == 3){
+						sequence[1] = j;
+					}
+					else if (i == 2){
+						sequence[2] = j;
+					}
+					break;
 				}
 			}
 		}
@@ -701,26 +701,26 @@ public class Todo3 {
 			currenttrack = null;
 		}
 
-		
+
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = null;
-				}
-				
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = null;
+		}
+
 		//determine the right sequence of how the activities should be planned, in this case: 2, 1, 3.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
 				if (activities.get(activities.size()-1-j).getActivity() == i){			
-				if (i == 2){
-					sequence[0] = j;
-				}
-				else if (i == 1){
-					sequence[1] = j;
-				}
-				else if (i == 3){
-					sequence[2] = j;
-				}
-				break;
+					if (i == 2){
+						sequence[0] = j;
+					}
+					else if (i == 1){
+						sequence[1] = j;
+					}
+					else if (i == 3){
+						sequence[2] = j;
+					}
+					break;
 				}
 			}
 		}
@@ -871,26 +871,26 @@ public class Todo3 {
 			currenttrack = null;
 		}
 
-		
+
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = null;
-				}
-				
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = null;
+		}
+
 		//OPTION 5: determine the right sequence of how the activities should be planned, in this case: 2, 3, 1.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
 				if (activities.get(activities.size()-1-j).getActivity() == i){			
-				if (i == 2){
-					sequence[0] = j;
-				}
-				else if (i == 3){
-					sequence[1] = j;
-				}
-				else if (i == 1){
-					sequence[2] = j;
-				}
-				break;
+					if (i == 2){
+						sequence[0] = j;
+					}
+					else if (i == 3){
+						sequence[1] = j;
+					}
+					else if (i == 1){
+						sequence[2] = j;
+					}
+					break;
 				}
 			}
 		}
@@ -1042,24 +1042,24 @@ public class Todo3 {
 		}
 
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = null;
-				}
-				
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = null;
+		}
+
 		//OPTION 6: determine the right sequence of how the activities should be planned, in this case: 3, 1, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
 				if (activities.get(activities.size()-1-j).getActivity() == i){			
-				if (i == 3){
-					sequence[0] = j;
-				}
-				else if (i == 1){
-					sequence[1] = j;
-				}
-				else if (i == 2){
-					sequence[2] = j;
-				}
-				break;
+					if (i == 3){
+						sequence[0] = j;
+					}
+					else if (i == 1){
+						sequence[1] = j;
+					}
+					else if (i == 2){
+						sequence[2] = j;
+					}
+					break;
 				}
 			}
 		}
@@ -1200,43 +1200,46 @@ public class Todo3 {
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
-			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
-				activities.get(activities.size()-1-i).removeTimes();
-				this.removeBusyTime(activities.get(activities.size()-1-i));
-			}
+			activities.get(activities.size()-1-i).removeTimes();
+			this.removeBusyTime(activities.get(activities.size()-1-i));
 		}
-		if(addedcomp.getInspection() && addedcomp.getCleaning()){
-			if(activities.get(activities.size()-1-amount).getTrackAssigned()!= null){
-				activities.get(activities.size()-1-amount).removeTimes();
-				this.removeBusyTime(activities.get(activities.size()-1-amount));
-			}
+		if(addedcomp.getInspection()){
+			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
 		}
-		currenttrack = null;
+		else{
+			currenttrack = null;
+		}
 
-		
+
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = null;
-				}
-				
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = null;
+		}
+
 		//OPTION 7: determine the right sequence of how the activities should be planned, in this case: 5 (=0 and 1), 2, 3.
+		if (addedcomp.getInspection() && addedcomp.getCleaning()){
+			
+		currenttrack = null;
+		activities.get(activities.size()-1-amount).removeTimes();
+		this.removeBusyTime(activities.get(activities.size()-1-amount));
+		
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<9; i++){
 				if (activities.get(activities.size()-1-j).getActivity() == i){			
-				if (i == 5){
-					sequence[0] = j;
-				}
-				else if (i == 2){
-					sequence[1] = j;
-				}
-				else if (i == 3){
-					sequence[2] = j;
-				}
-				break;
+					if (i == 5){
+						sequence[0] = j;
+					}
+					else if (i == 2){
+						sequence[1] = j;
+					}
+					else if (i == 3){
+						sequence[2] = j;
+					}
+					break;
 				}
 			}
 		}
-		
+
 		for (int i = 0; i<sequence.length; i++){
 			if (sequence[i]!=null){
 				activities.get(activities.size()-1-sequence[i]).setCurrentTrack(currenttrack);
@@ -1286,9 +1289,9 @@ public class Todo3 {
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						temp1.setBusyTime(activities.get(activities.size()-1-sequence[i]));
 						this.setBusyTime(activities.get(activities.size()-1-sequence[i]));
-						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 1){
-							time21 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
-							track21 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
+						if(activities.get(activities.size()-1-sequence[i]).getActivity() == 5){
+							time20 = activities.get(activities.size()-1-sequence[i]).getPlannedTimeInteger();
+							track20 = activities.get(activities.size()-1-sequence[i]).getTrackAssigned();
 							if(activities.get(activities.size()-1-sequence[i]).getMarginInteger()<margin7){
 								margin7 = activities.get(activities.size()-1-sequence[i]).getMarginInteger();	
 							}
@@ -1357,11 +1360,36 @@ public class Todo3 {
 			}
 		}
 		
+		if (feasible7 == false){
+			margin7 = -1;
+		}
+
+		if (margin7 > bestmargin){
+			time10 = time20;
+			time11 = -1;
+			time12 = time22;
+			time13 = time23;
+			track10 = track20;
+			track11 = null;
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin7;
+		}
+		
+		}
+		
+		
+
 
 		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
 			for(int i = 0; i<amount; i++){
+				activities.get(activities.size()-1-i).removeTimes();
 				this.removeBusyTime(activities.get(activities.size()-1-i));
+				if (addedcomp.getInspection()){
+					activities.get(activities.size()-1-amount).removeTimes();
+					this.removeBusyTime(activities.get(activities.size()-1-amount));
+				}
 			}
 			for(int i = 0; i<amount; i++){
 				if(activities.get(activities.size()-1-i).getActivity()==1){
