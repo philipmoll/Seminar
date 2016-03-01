@@ -45,6 +45,7 @@ public class Parking { //TODO: test
 		//TODO: optional
 		//freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
+			System.gc();
 			System.out.println("event "+i+ " "+timeline.get(i));
 			if (timeline.get(i).getType()==1){ //if it is a departure
 				departure(timeline.get(i), i);

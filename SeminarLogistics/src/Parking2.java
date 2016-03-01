@@ -41,6 +41,7 @@ public class Parking2 { //TODO: test
 		//TODO: optional
 		//freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
+			System.gc();
 			System.out.println("event "+i+ " "+timeline.get(i));
 			if (timeline.get(i).getType()==1){ //if it is a departure
 				departure(timeline.get(i), i);
@@ -96,41 +97,41 @@ public class Parking2 { //TODO: test
 	}
 
 	//order from most occupied to least occupied
-	public ArrayList<Track> sortTracksOccupied(ArrayList<Track> tracks) throws MethodFailException{
-		ArrayList<Track> sortedtracks = new ArrayList<Track>();
-		sortedtracks.add(tracks.get(0));
-		if (tracks.get(1).getCompositionlist().size()<= sortedtracks.get(0).getCompositionlist().size()){
-			sortedtracks.add(tracks.get(1));
-		}
-		else {
-			sortedtracks.add(0,tracks.get(1));
-		}
-		for (int i = 2; i<tracks.size(); i++){
-			if (tracks.get(i).getCompositionlist().size()>sortedtracks.get(0).getCompositionlist().size()){
-				sortedtracks.add(0,tracks.get(i));
-			}
-			else if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(sortedtracks.size()-1).getCompositionlist().size()){
-				sortedtracks.add(tracks.get(i));
-			}
-			else{
-				for (int k = 0; k<sortedtracks.size()-1; k++){
-					if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(k).getCompositionlist().size() && tracks.get(i).getCompositionlist().size()>sortedtracks.get(k+1).getCompositionlist().size()){
-						sortedtracks.add(k+1,tracks.get(i));
-					}
-				}
-			}
-		}
-		//throw exception if sortedtracks ordered incorrectly
-		for (int i = 0; i<sortedtracks.size()-1; i++){
-			if (sortedtracks.get(i).getCompositionlist().size() < sortedtracks.get(i+1).getCompositionlist().size()){
-				throw new MethodFailException("Occupied track ordering in parking failed at position i = "+i+": sortedtracks.get(i).getCompositionlist().size() = "+sortedtracks.get(i).getCompositionlist().size()+" and sortedtracks.get(i+1).getCompositionlist().size() = "+sortedtracks.get(i+1).getCompositionlist().size());
-			}
-		}
-		if (sortedtracks.size() != tracks.size()){
-			throw new MethodFailException("Tracks contains a different number of elements than sorted tracks in function sortTracksOccupied in Parking");
-		}
-		return sortedtracks;		
-	}
+	//	public ArrayList<Track> sortTracksOccupied(ArrayList<Track> tracks) throws MethodFailException{
+	//		ArrayList<Track> sortedtracks = new ArrayList<Track>();
+	//		sortedtracks.add(tracks.get(0));
+	//		if (tracks.get(1).getCompositionlist().size()<= sortedtracks.get(0).getCompositionlist().size()){
+	//			sortedtracks.add(tracks.get(1));
+	//		}
+	//		else {
+	//			sortedtracks.add(0,tracks.get(1));
+	//		}
+	//		for (int i = 2; i<tracks.size(); i++){
+	//			if (tracks.get(i).getCompositionlist().size()>sortedtracks.get(0).getCompositionlist().size()){
+	//				sortedtracks.add(0,tracks.get(i));
+	//			}
+	//			else if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(sortedtracks.size()-1).getCompositionlist().size()){
+	//				sortedtracks.add(tracks.get(i));
+	//			}
+	//			else{
+	//				for (int k = 0; k<sortedtracks.size()-1; k++){
+	//					if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(k).getCompositionlist().size() && tracks.get(i).getCompositionlist().size()>sortedtracks.get(k+1).getCompositionlist().size()){
+	//						sortedtracks.add(k+1,tracks.get(i));
+	//					}
+	//				}
+	//			}
+	//		}
+	//		//throw exception if sortedtracks ordered incorrectly
+	//		for (int i = 0; i<sortedtracks.size()-1; i++){
+	//			if (sortedtracks.get(i).getCompositionlist().size() < sortedtracks.get(i+1).getCompositionlist().size()){
+	//				throw new MethodFailException("Occupied track ordering in parking failed at position i = "+i+": sortedtracks.get(i).getCompositionlist().size() = "+sortedtracks.get(i).getCompositionlist().size()+" and sortedtracks.get(i+1).getCompositionlist().size() = "+sortedtracks.get(i+1).getCompositionlist().size());
+	//			}
+	//		}
+	//		if (sortedtracks.size() != tracks.size()){
+	//			throw new MethodFailException("Tracks contains a different number of elements than sorted tracks in function sortTracksOccupied in Parking");
+	//		}
+	//		return sortedtracks;		
+	//	}
 
 	public void sortTracks(Track[] tracks) throws MethodFailException{
 		int count = 0;
@@ -201,24 +202,30 @@ public class Parking2 { //TODO: test
 		}
 		//if: parking failed, try to park at the most occupied track that we cannot drive back on
 		if (!parked){
-			ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
-			for (int j = 0; j<trackssortedoccupied.size(); j++){
-				if (trackssortedoccupied.get(j).getMaxDriveBackLength()<arrivalevent.getEventblock().getLength()){
-					parked = simplePark(arrivalevent, trackssortedoccupied.get(j), i);
+			//			ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
+			//			for (int j = 0; j<trackssortedoccupied.size(); j++){
+			//			if (trackssortedoccupied.get(j).getMaxDriveBackLength()<arrivalevent.getEventblock().getLength()){
+			//				parked = simplePark(arrivalevent, trackssortedoccupied.get(j), i);
+			//			}
+			for (int j = 0; j<parkingtracks.size(); j++){
+				if (parkingtracks.get(j).getMaxDriveBackLength()<arrivalevent.getEventblock().getLength()){
+					parked = simplePark(arrivalevent, parkingtracks.get(j), i);
 				}
 				if (parked == true){
 					break;
 				}
 			}
-		}
-		if (!parked){
-			System.out.println("Arrival "+i+" cannot be parked simply");
-		}
-		else {
-			System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+
+			if (!parked){
+				System.out.println("Arrival "+i+" cannot be parked simply");
+			}
+			else {
+				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+			}
 		}
 		return parked;
 	}
+
 
 
 	public boolean simplePark(Event arrivalevent, Track parkingtrack, int i) throws TrackNotFreeException, IOException{
@@ -470,9 +477,9 @@ public class Parking2 { //TODO: test
 		}
 		//if: parking failed, try to park at the most occupied track that we cannot drive back on
 		if (!parked){
-			ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
-			for (int j = 0; j<trackssortedoccupied.size(); j++){
-				if (trackssortedoccupied.get(j).getMaxDriveBackLength()<totallength){
+			//ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
+			for (int j = 0; j<parkingtracks.size(); j++){
+				if (parkingtracks.get(j).getMaxDriveBackLength()<totallength){
 					for (int k = 0; k < nrevents; k++){
 						parked = simplePark(arrivalevents.get(k), parkingtracks.get(j), i);
 						if (parked == false){

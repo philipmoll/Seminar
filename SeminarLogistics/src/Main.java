@@ -143,14 +143,14 @@ public class Main {
 			}
 
 			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
-			//ArrayList<Event> events = JobShop.getEvents();
-			
+			ArrayList<Event> events = JobShop.getEvents();
+			System.gc();
 //			for(int i = 0; i<events.size(); i++){
 //				System.out.println(" Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
 //			}
 			
 			//Parking ourparking = new Parking(events, tracks);
-			//Parking2 ourparking2 = new Parking2(events, tracks);
+			Parking2 ourparking2 = new Parking2(events, tracks);
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;
@@ -175,7 +175,7 @@ public class Main {
 			//This is how we should write a decouple function, N.B.: with the.add function.
 			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
 
-		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException /*| MethodFailException*/ e) {
+		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
 		}
 	} 
