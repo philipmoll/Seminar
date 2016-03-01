@@ -150,7 +150,8 @@ public class Main {
 //			}
 			
 			//Parking ourparking = new Parking(events, tracks);
-			Parking2 ourparking2 = new Parking2(events, tracks);
+			//Parking2 ourparking2 = new Parking2(events, tracks);
+			Parking3 ourparking3 = new Parking3(events, tracks);
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;

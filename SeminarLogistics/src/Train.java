@@ -85,7 +85,6 @@ public class Train implements Serializable{
 			cleaningtime = 37; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 24; //Minutes
-			inspprob = 0.8;	//probability
 			cleanprob = 1;	//probability
 			washprob = 0.1;	//probability
 			repprob = 0.1;	//probability
@@ -95,7 +94,7 @@ public class Train implements Serializable{
 			cleaningtime = 56; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 26; //Minutes
-			inspprob = 0.8;	//probability
+			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
 			washprob = 0.1;	//probability
 			repprob = 0.1;	//probability
@@ -105,7 +104,7 @@ public class Train implements Serializable{
 			cleaningtime = 49; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 24; //Minutes
-			inspprob = 0.8;	//probability
+			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
 			washprob = 0.1;	//probability
 			repprob = 0.1;	//probability
@@ -115,7 +114,7 @@ public class Train implements Serializable{
 			cleaningtime = 56; //Minutes
 			repairingtime = 0; //Minutes
 			washingtime = 26; //Minutes
-			inspprob = 0.8;	//probability
+			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
 			washprob = 0.1;	//probability
 			repprob = 0.1;	//probability
@@ -156,7 +155,7 @@ public class Train implements Serializable{
 			length = 70;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
@@ -167,7 +166,7 @@ public class Train implements Serializable{
 			length = 101;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
@@ -178,7 +177,7 @@ public class Train implements Serializable{
 			length = 109;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
@@ -189,7 +188,7 @@ public class Train implements Serializable{
 			length = 162;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
@@ -200,7 +199,7 @@ public class Train implements Serializable{
 			length = 101;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
@@ -211,7 +210,7 @@ public class Train implements Serializable{
 			length = 154;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else{
@@ -260,7 +259,7 @@ public class Train implements Serializable{
 			length = 70;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 1 && carriages == 6){ //SLT 6 carr
@@ -271,7 +270,7 @@ public class Train implements Serializable{
 			length = 101;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 2 && carriages == 4){ //VIRM 4 carr
@@ -282,7 +281,7 @@ public class Train implements Serializable{
 			length = 109;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 2 && carriages == 6){ //VIRM 6 carr
@@ -293,7 +292,7 @@ public class Train implements Serializable{
 			length = 162;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 3 && carriages == 4){ //DDZ 4 carr
@@ -304,7 +303,7 @@ public class Train implements Serializable{
 			length = 101;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else if(type == 3 && carriages == 6){ //DDZ 6 carr
@@ -315,7 +314,7 @@ public class Train implements Serializable{
 			length = 154;
 			inspprob = 1;	//probability
 			cleanprob = 1;	//probability
-			washprob = 0.05;	//probability
+			washprob = 0.15;	//probability
 			repprob = 0.05;	//probability
 		}
 		else{
