@@ -26,17 +26,6 @@ public class Parking3 implements Serializable{ //TODO: test!
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
-		
-		//TODO: zetuit!!!
-		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
-		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
-		parkingtracks.add(0,parkingtracks2.get(0));
-		parkingtracks.add(0,parkingtracks2.get(1));
-//		parkingtracks.add(0,parkingtracks2.get(2));
-		
-		//		for (int i = 0; i<parkingtracks.size(); i++){
-		//			System.out.println("Label: "+parkingtracks.get(i).getLabel()+" and length: "+parkingtracks.get(i).getTracklength()+" and maxbackward: "+parkingtracks.get(i).getMaxDriveBackLength());
-		//		}
 
 		//sort eventlist into timeline
 		timeline = new ArrayList<Event>();
@@ -48,8 +37,6 @@ public class Parking3 implements Serializable{ //TODO: test!
 		//		System.out.println(timeline.get(2).getEventblock().getCutpositionarr1());
 		//		System.out.println(timeline.get(3).getEventblock().getCutpositionarr1());
 
-		//TODO: optional
-		//freetracktimes = new ArrayList<>();
 		for (int i = 0; i< timeline.size(); i++){
 			System.gc();
 			System.out.println("event "+i+ " "+timeline.get(i));
@@ -61,7 +48,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 				}
 			}
 			else if (timeline.get(i).getType()==0) { //if it is an arrival
-				arrival(timeline.get(i), i);
+				boolean parked = arrival(timeline.get(i), i);
 				System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
 				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
 					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
@@ -105,43 +92,6 @@ public class Parking3 implements Serializable{ //TODO: test!
 			}
 		}
 	}
-
-	//order from most occupied to least occupied
-	//	public ArrayList<Track> sortTracksOccupied(ArrayList<Track> tracks) throws MethodFailException{
-	//		ArrayList<Track> sortedtracks = new ArrayList<Track>();
-	//		sortedtracks.add(tracks.get(0));
-	//		if (tracks.get(1).getCompositionlist().size()<= sortedtracks.get(0).getCompositionlist().size()){
-	//			sortedtracks.add(tracks.get(1));
-	//		}
-	//		else {
-	//			sortedtracks.add(0,tracks.get(1));
-	//		}
-	//		for (int i = 2; i<tracks.size(); i++){
-	//			if (tracks.get(i).getCompositionlist().size()>sortedtracks.get(0).getCompositionlist().size()){
-	//				sortedtracks.add(0,tracks.get(i));
-	//			}
-	//			else if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(sortedtracks.size()-1).getCompositionlist().size()){
-	//				sortedtracks.add(tracks.get(i));
-	//			}
-	//			else{
-	//				for (int k = 0; k<sortedtracks.size()-1; k++){
-	//					if (tracks.get(i).getCompositionlist().size()<=sortedtracks.get(k).getCompositionlist().size() && tracks.get(i).getCompositionlist().size()>sortedtracks.get(k+1).getCompositionlist().size()){
-	//						sortedtracks.add(k+1,tracks.get(i));
-	//					}
-	//				}
-	//			}
-	//		}
-	//		//throw exception if sortedtracks ordered incorrectly
-	//		for (int i = 0; i<sortedtracks.size()-1; i++){
-	//			if (sortedtracks.get(i).getCompositionlist().size() < sortedtracks.get(i+1).getCompositionlist().size()){
-	//				throw new MethodFailException("Occupied track ordering in parking failed at position i = "+i+": sortedtracks.get(i).getCompositionlist().size() = "+sortedtracks.get(i).getCompositionlist().size()+" and sortedtracks.get(i+1).getCompositionlist().size() = "+sortedtracks.get(i+1).getCompositionlist().size());
-	//			}
-	//		}
-	//		if (sortedtracks.size() != tracks.size()){
-	//			throw new MethodFailException("Tracks contains a different number of elements than sorted tracks in function sortTracksOccupied in Parking");
-	//		}
-	//		return sortedtracks;		
-	//	}
 
 	public void sortTracks(Track[] tracks) throws MethodFailException{
 		int count = 0;
@@ -190,12 +140,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 		}
 	}
 
-	public void arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
+	public boolean arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
 		boolean parked = arrivalNormal(arrivalevent, i);
-		if (parked == false){
-			//			parked = arrivalReverse(arrivalevent, i);
-			//			//TODO: try arrival reverse, only possible if not only one track free left and track need not to be free at time of event, and of 
-		}
+		return parked;
 	}
 
 	public boolean arrivalNormal(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
@@ -242,281 +189,38 @@ public class Parking3 implements Serializable{ //TODO: test!
 		boolean parked = false;
 		//if: enough room on track
 		if (parkingtrack.getTracklength() - parkingtrack.getCompositionLengthOnTrack()>=arrivalevent.getEventblock().getLength()){
-			//if: no compositions on track yet
-			if (parkingtrack.getCompositionlist().size() == 0){
-				//add compositions and events to track
-				arrivalASide(arrivalevent, parkingtrack);
-				parked = true; //set parked to true
-			}
-			//else: track not empty
-			else{
-				//if: we need to enter at the A side
-				if (arrivalevent.getSidestart() == 0){ //A side (left side)
-					//if: we need to leave via the A side
-					if (arrivalevent.getSideend() == 0){ //A side (left side)
-						//if: the eventblock to the right leaves via the A side (either directly or in reverse)
-						if ((parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() == 0) || (parkingtrack.getEventlist().get(0).getSideend() == 1 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){ //A side (left side)
-							//if: the eventblock to the right leaves after arrivalblock
-							if (parkingtrack.getEventlist().get(0).getEndtime() > arrivalevent.getEndtime()){
-								//add compositions and events to track
-								arrivalASide(arrivalevent, parkingtrack);
-								parked = true; //set parked to true
-							}
-							//else: the eventblock to the right leaves before arrivalblock --> not possible
-							else{
-							}
-						}
-						//else if: the eventblock to the right leaves via the B side (either directly or in reverse)
-						else if ((parkingtrack.getEventlist().get(0).getSideend() ==1&& parkingtrack.getEventlist().get(0).getReverseLeave() == 0)|| (parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
-							//add compositions and events to track
-							arrivalASide(arrivalevent, parkingtrack);
-							parked = true; //set parked to true
-						}
-						//else: IOException
-						else{
-							throw new IOException("Eventblock at A side of track "+parkingtrack.getLabel()+" has side end "+parkingtrack.getEventlist().get(0).getSideend()+" and should be 0 (A side) or 1 (B side)");
-						}
+			parked = park1(arrivalevent, parkingtrack, i); //no reverse arrival/departure itself
+			if (!parked){
+				parked = park2(arrivalevent,parkingtrack, i);//reverse arrival
+				if (!parked){
+					parked = park3(arrivalevent,parkingtrack,i);//reverse departure
+					if (!parked){
+						parked = park4(arrivalevent,parkingtrack,i);//reverse arrival and departure
 					}
-					//else if: we need to leave via the B side
-					else if (arrivalevent.getSideend()==1){ //B side (right side)
-						//if: the eventblock to the right leaves via the A side (NB: A side not possible here, earlier or later)
-						if ((parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() == 0) || (parkingtrack.getEventlist().get(0).getSideend() == 1 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){
-						}
-						//else if: the eventblock to the right leaves via the B side (either directly or in reverse)
-						else if ((parkingtrack.getEventlist().get(0).getSideend() ==1&& parkingtrack.getEventlist().get(0).getReverseLeave() == 0)|| (parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
-							//if: the eventblock to the right leaves before arrivalblock
-							if (parkingtrack.getEventlist().get(0).getEndtime() < arrivalevent.getEndtime()){
-								//add compositions and events to track
-								arrivalASide(arrivalevent, parkingtrack);
-								parked = true; //set parked to true
-							}
-						}
-						//else: IOException
-						else{
-							throw new IOException("Eventblock at A side of track "+parkingtrack.getLabel()+" has side end "+parkingtrack.getEventlist().get(0).getSideend()+" and should be 0 (A side) or 1 (B side)");
-						}
-					}
-					//else: IOException
-					else {
-						throw new IOException("Side end of event "+i+" is "+arrivalevent.getSideend()+ " and should be 0 (A side) or 1 (B side)");
-					}
-				}
-				//else if: we need to enter at the B side
-				else if (arrivalevent.getSidestart()==1){ //B side (right side)
-					//if: we need to leave via the B side
-					if (arrivalevent.getSideend() == 1){ //B side (right side)
-						//if: the eventblock to the left leaves via the B side (either directly or in reverse)
-						if ((parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getSideend() ==1&& parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getReverseLeave() == 0)|| (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getSideend() == 0 && parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getReverseLeave() ==1)){ //B side (right side)
-							//if: the eventblock to the left leaves after arrivalblock
-							if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime() > arrivalevent.getEndtime()){
-								//add compositions and events to track
-								arrivalBSide(arrivalevent, parkingtrack);
-								parked = true; //set parked to true
-							}
-							//else: the eventblock to the left leaves before arrivalblcok --> no parking possible
-							else{
-							}
-						}
-						//else if: the eventblock to the left leaves via the A side (either directly or in reverse)
-						else if ((parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() == 0) || (parkingtrack.getEventlist().get(0).getSideend() == 1 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){
-							//add compositions and events to track
-							arrivalBSide(arrivalevent, parkingtrack);
-							parked = true; //set parked to true
-						}
-						//else: IOException
-						else{
-							throw new IOException("Eventblock at B side of track "+parkingtrack.getLabel()+" has side end "+parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getSideend()+" and should be 0 (A side) or 1 (B side)");
-						}
-					}
-					//else if: we need to leave via the A side
-					else if (arrivalevent.getSideend()==0){ //A side (left side)
-						//if: the eventblock to the right leaves via the B side (either directly or in reverse) (NB: B side not possible here, earlier or later)
-						if ((parkingtrack.getEventlist().get(0).getSideend() ==1&& parkingtrack.getEventlist().get(0).getReverseLeave() == 0)|| (parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){ //B side (right side)
-							//cannot park here!
-						}
-						//else if: the eventblock to the right leaves via the A side (either directly or in reverse)
-						else if ((parkingtrack.getEventlist().get(0).getSideend() == 0 && parkingtrack.getEventlist().get(0).getReverseLeave() == 0) || (parkingtrack.getEventlist().get(0).getSideend() == 1 && parkingtrack.getEventlist().get(0).getReverseLeave() ==1)){
-							//if: the eventblock to the right leaves before arrivalblock
-							if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime() < arrivalevent.getEndtime()){
-								//add compositions and events to track
-								arrivalBSide(arrivalevent, parkingtrack);
-								parked = true; //set parked to true
-							}
-						}
-						//else: IOException
-						else{
-							throw new IOException("Eventblock at B side of track "+parkingtrack.getLabel()+" has side end "+parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getSideend()+" and should be 0 (A side) or 1 (B side)");
-						}
-					}
-					//else: IOException
-					else {
-						throw new IOException("Side end of event "+i+" is "+arrivalevent.getSideend()+ " and should be 0 (A side) or 1 (B side)");
-					}
-				}
-				//else: IOException
-				else{
-					throw new IOException("Side start of event "+i+" is "+arrivalevent.getSidestart()+" and should be 0 (A side) or 1 (B side)");
 				}
 			}
 		}
 		return parked;
 	}
 
-	public void arrival(ArrayList<Event> arrivalevents, int i, int nrevents) throws TrackNotFreeException, IOException, MethodFailException{ //for final arrival
-		boolean parked = arrivalNormal(arrivalevents, i, nrevents);
-		if (parked == false){
-			//TODO: try arrival reverse, only possible if not only one track free left and track need not to be free at time of event, and of 
-		}
-	}
 
-	public boolean arrivalNormal(ArrayList<Event> arrivalevents1, int i, int nrevents) throws TrackNotFreeException, IOException, MethodFailException{
+	public boolean park1(Event arrivalevent, Track parkingtrack){
 		boolean parked = false;
-		int totallength = 0;
-		for (int j = 0; j<nrevents; j++){
-			totallength += arrivalevents1.get(j).getEventblock().getLength();
+		//if: A side arrival
+		if ((arrivalevent.getSidestart() == 0 && arrivalevent.getReverseArrive() == 0) || (arrivalevent.getSidestart() == 1 && arrivalevent.getReverseArrive() == 1)){
+			
 		}
-		ArrayList<Event> arrivalevents = new ArrayList<>();
-		//if A side arrival, sort from end to beginning
-		if (arrivalevents1.get(0).getSidestart()==0){
-			if (nrevents == 2){
-				if (arrivalevents1.get(1).getSidestart()!= 0){
-					throw new MethodFailException("Sidestart is not 0, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 0");
-				}
-				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()<arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(1));
-					arrivalevents.add(arrivalevents1.get(0));
-				}
-				else{
-					arrivalevents.add(arrivalevents1.get(0));
-					arrivalevents.add(arrivalevents1.get(1));
-				}
-			}
-			else if (nrevents == 3){
-				if (arrivalevents1.get(1).getSidestart()!=0 || arrivalevents1.get(2).getSidestart()!=0){
-					throw new MethodFailException("Sidestart is not 0, but "+ arrivalevents1.get(1).getSidestart()+" and "+ arrivalevents1.get(2).getSidestart()+" and should be, since it arrives in a composition that arrives at side 0");
-				}
-				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()<arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(1));
-					arrivalevents.add(arrivalevents1.get(0));
-				}
-				else{
-					arrivalevents.add(arrivalevents1.get(0));
-					arrivalevents.add(arrivalevents1.get(1));
-				}
-				if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()>arrivalevents.get(0).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(0,arrivalevents1.get(2));
-				}
-				else if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()<arrivalevents.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(2));
-				}
-				else {
-					arrivalevents.add(1,arrivalevents1.get(2));
-				}
-			}
-			else{
-				throw new MethodFailException("Nrevents is "+nrevents+" and can only be 2 or 3 (i = "+i+")");
-			}
+		//else if: B side arrival
+		else if ((arrivalevent.getSidestart() == 1 && arrivalevent.getReverseArrive() == 0) || (arrivalevent.getSidestart() == 0 && arrivalevent.getReverseArrive() == 1)){
+			
 		}
-		//else if B side arrival, sort from beginning to end
-		else if (arrivalevents1.get(0).getSidestart()==1){
-			if (nrevents == 2){
-				if (arrivalevents1.get(1).getSidestart()!= 1){
-					throw new MethodFailException("Sidestart is not 1, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 1");
-				}
-				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()>arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(1));
-					arrivalevents.add(arrivalevents1.get(0));
-				}
-				else{
-					arrivalevents.add(arrivalevents1.get(0));
-					arrivalevents.add(arrivalevents1.get(1));
-				}
-			}
-			else if (nrevents == 3){
-				if (arrivalevents1.get(1).getSidestart()!=1 || arrivalevents1.get(2).getSidestart()!=1){
-					throw new MethodFailException("Sidestart is not 1, but "+ arrivalevents1.get(1).getSidestart()+" and "+ arrivalevents1.get(2).getSidestart()+" and should be, since it arrives in a composition that arrives at side 1");
-				}
-				if (arrivalevents1.get(0).getEventblock().getCutpositionarr1()>arrivalevents1.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(1));
-					arrivalevents.add(arrivalevents1.get(0));
-				}
-				else{
-					arrivalevents.add(arrivalevents1.get(0));
-					arrivalevents.add(arrivalevents1.get(1));
-				}
-				if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()<arrivalevents.get(0).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(0,arrivalevents1.get(2));
-				}
-				else if (arrivalevents1.get(2).getEventblock().getCutpositionarr1()>arrivalevents.get(1).getEventblock().getCutpositionarr1()){
-					arrivalevents.add(arrivalevents1.get(2));
-				}
-				else {
-					arrivalevents.add(1,arrivalevents1.get(2));
-				}
-			}
-		}
-		//else methodfail exception
+		//else: methodfail
 		else{
-			throw new MethodFailException("Sidestart of event is "+arrivalevents1.get(0)+" and can only be 0 or 1 (A or B, respectively)");
-		}
-
-		for (int j = 0; j<arrivalevents.size();j++){
-			System.out.println(arrivalevents.get(j));
-		}
-		for (int j = 0; j<parkingtracks.size(); j++){
-			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
-			//if: entire composition can drive back at track
-			if (parkingtracks.get(j).getMaxDriveBackLength()>=totallength){
-				for (int k = 0; k < nrevents; k++){
-					parked = simplePark(arrivalevents.get(k), parkingtracks.get(j), i);
-					//if one of them cannot be parked, remove previous actions
-					if (parked == false){
-						for (int l = 0; l<k; l++){
-							arrivalevents.get(l).setEventTrack(null);
-							arrivalevents.get(l).getRelatedEvent().setEventTrack(null);
-							parkingtracks.get(j).removeEventfromTrack(arrivalevents.get(l));
-							parkingtracks.get(j).removeCompositionfromTrack(arrivalevents.get(l).getEventblock());			
-						}
-						break; //continue on to next track
-					}
-				}
-			}
-			if (parked == true){
-				break;
-			}
-		}
-		//if: parking failed, try to park at the most occupied track that we cannot drive back on
-		if (!parked){
-			//ArrayList<Track> trackssortedoccupied = sortTracksOccupied(parkingtracks);
-			for (int j = 0; j<parkingtracks.size(); j++){
-				if (parkingtracks.get(j).getMaxDriveBackLength()<totallength){
-					for (int k = 0; k < nrevents; k++){
-						parked = simplePark(arrivalevents.get(k), parkingtracks.get(j), i);
-						if (parked == false){
-							//if one of them cannot be parked, remove previous actions
-							for (int l = 0; l<k; l++){
-								arrivalevents.get(l).setEventTrack(null);
-								arrivalevents.get(l).getRelatedEvent().setEventTrack(null);
-								parkingtracks.get(j).removeEventfromTrack(arrivalevents.get(l));
-								parkingtracks.get(j).removeCompositionfromTrack(arrivalevents.get(l).getEventblock());			
-							}
-							break; //continue on to next track
-						}
-					}
-				}
-				if (parked == true){
-					break;
-				}
-			}
-		}
-		if (!parked){
-			System.out.println("Arrival "+i+" and associated finals cannot be parked simply");
-		}
-		else {
-			System.out.println("Event "+i+" and associated finals are parked at track "+arrivalevents.get(0).getEventTrack().getLabel());
+			throw new Exception; //TODO
 		}
 		return parked;
 	}
+
 
 	public void arrivalASide(Event arrivalevent, Track parkingtrack) throws TrackNotFreeException{
 		arrivalevent.setEventTrack(parkingtrack);
@@ -538,110 +242,16 @@ public class Parking3 implements Serializable{ //TODO: test!
 
 		//if we leave in reverse
 		if (departureevent.getReverseLeave() == 1){
-			reverseDeparture(departureevent, i);
+			//reverseDeparture(departureevent, i);
 		}
 		else if (departureevent.getReverseLeave() == 0){
-			normalDeparture(departureevent, i);
+			//normalDeparture(departureevent, i);
 		}
 		else{
 			throw new IOException("GetReverseLeave for event "+i+" not equal to 0 or 1");
 		}
 	}
-
-	public void reverseDeparture(Event departureevent, int i) throws MethodFailException, IOException, TrackNotFreeException{
-		//TODO: check if we still want to work with freetrack time arraylist
-
-		//		//throw exception if free track needed is false (we leave in reverse, so free track should be toggled)
-		//		if (freetracktimes.size() == 0){
-		//			throw new MethodFailException("Freetracktime is empty for event "+i+" but we require it to leave in reverse so should be larger than 1");
-		//		}
-		//		else{
-		//			boolean check = false;
-		//			for (int j = 0; j<freetracktimes.size(); j++){
-		//				if (departureevent.getTime() == freetracktimes.get(j)[1]){ //if departure time coincides with freetracktime //TODO: check for final events!!!!!!
-		//					check = true;
-		//					freetracktimes.remove(j);
-		//					break;
-		//				}
-		//			}
-		//			if (!check){
-		//				throw new MethodFailException("Freetracktime is not defined for event "+i+" at departuretime "+departureevent.getTime());
-		//			}
-		//		}
-		//
-		//		//throw exception if no free track available or if it is the only event on the track
-		//		if (departureevent.getEventTrack().getCompositionlist().size() == 0){
-		//			throw new MethodFailException("We require event "+i+" to leave in reverse, but it is the only event on the track");
-		//		}
-		//		boolean available = false; //set correct freetrack available to false
-		//		for (int k = 0; k<parkingtracks.size(); k++){
-		//			if (parkingtracks.get(k).getCompositionlist().size() == 0){//free track available
-		//				//if the free track is at a lower position
-		//				if (parkingtracks.get(k).getMaxDriveBackLength()>=departureevent.getEventTrack().getMaxDriveBackLength()){
-		//					available = true;
-		//					break;
-		//				}
-		//				//if the free track is higher, but has enough max drive back length
-		//				else if (parkingtracks.get(k).getMaxDriveBackLength()>= departureevent.getEventblock().getLength()){
-		//					available = true;
-		//					break;
-		//				}
-		//			}
-		//		}
-		//		if (available == false){ // if no appropriate free track available, throw exception
-		//			throw new MethodFailException("No free track available and event "+i+" must leave in reverse");
-		//		}
-
-		//throw exception if composition not at the right side
-		if (departureevent.getSideend() == 0){ //if we leave via A side, but reverse, so B side
-			//throw exception if eventblock not at the B side of the track
-			if (departureevent.getEventTrack().getCompositionlist().get(departureevent.getEventTrack().getCompositionlist().size()-1) != departureevent.getEventblock()){
-				throw new MethodFailException("Event "+i+" must leave via B side (A side reverse), but is not at the B side");
-			}
-		}
-		else if (departureevent.getSideend() == 1){ //if we leave via B side, but reverse, so A side
-			//throw exception if eventblock not at the B side of the track
-			if (departureevent.getEventTrack().getCompositionlist().get(0) != departureevent.getEventblock()){
-				throw new MethodFailException("Event "+i+" must leave via A side (B side reverse), but is not at the A side");
-			}
-		}
-		else { //sideend is neither 0 nor 1, IOException!
-			throw new IOException("Sideend of event "+i+" is "+timeline.get(i).getSideend()+" and should be 0 or 1");
-		}
-
-		//we can leave in reverse, now actually leave
-		//remove event from track, remove composition from track
-		departureevent.getEventTrack().removeEventfromTrack(departureevent.getRelatedEvent());
-		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getRelatedEvent().getEventblock());
-	}
-
-	public void normalDeparture(Event departureevent, int i) throws MethodFailException, IOException, TrackNotFreeException{		
-		//throw exception if composition not at the right side
-		if (departureevent.getSideend() == 0){ //if we leave via A side
-			//throw exception if eventblock not at the A side of the track
-			if (departureevent.getEventTrack().getCompositionlist().get(0) != departureevent.getEventblock()){
-				System.out.println("Event track: "+departureevent.getEventTrack().getLabel());
-				for (int j = 0; j<departureevent.getEventTrack().getCompositionlist().size(); j++){
-					System.out.println(departureevent.getEventTrack().getCompositionlist().get(j));
-				}
-				throw new MethodFailException("Event "+i+" with eventblock "+departureevent.getEventblock()+" must leave via A side at track "+departureevent.getEventTrack().getLabel()+", but is not at the A side");
-			}
-		}
-		else if (departureevent.getSideend() == 1){ //if we leave via B side
-			//throw exception if eventblock not at the B side of the track
-			if (departureevent.getEventTrack().getCompositionlist().get(departureevent.getEventTrack().getCompositionlist().size()-1) != departureevent.getEventblock()){
-				throw new MethodFailException("Event "+i+" must leave via B side at track "+departureevent.getEventTrack().getLabel()+", but is not at the B side");
-			}
-		}
-		else { //sideend is neither 0 nor 1, IOException!
-			throw new IOException("Sideend of event "+i+" is "+timeline.get(i).getSideend()+" and should be 0 or 1");
-		}
-
-		//we can leave, now actually leave
-		//remove event from track, remove composition from track
-		departureevent.getEventTrack().removeCompositionfromTrack(departureevent.getEventblock());
-		departureevent.getRelatedEvent().getEventTrack().removeEventfromTrack(departureevent.getRelatedEvent());		
-	}
+	
 
 	public ArrayList<Track> getParkingTracks(){
 		return parkingtracks;
@@ -652,50 +262,3 @@ public class Parking3 implements Serializable{ //TODO: test!
 	}
 }
 
-/*
-//if: enough room for eventblock to the left to drive back
-if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEventblock().getLength() <= parkingtrack.getMaxDriveBackLength()){
-	//if: eventblock to the left can leave via the A side in reverse because it is the only eventblock on the track
-	if (parkingtrack.getEventlist().size()<=1){
-		if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getReverseLeave() == 0) {
-			parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).setReverseLeave(1);
-		}
-		else {
-			parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).setReverseLeave(0);
-		}
-		arrivalBSide(arrivalevent,parkingtrack);
-		arrivalevent.setReverseArrive(1);
-	}
-	//else: it is not the only eventblock on the track
-	else {
-		boolean feasible = false;
-		for (int j = 0; j<parkingtrack.getEventlist().size()-1; i++){
-			//if other eventblocks on the track leave via the B side, feasible is false
-			if ((parkingtrack.getEventlist().get(j).getSideend() == 1 && parkingtrack.getEventlist().get(j).getReverseLeave()==0)||((parkingtrack.getEventlist().get(j).getSideend() == 0 && parkingtrack.getEventlist().get(j).getReverseLeave()==1))){
-				feasible = false;
-				break;
-			}
-			//else if other eventblocks on the track leave via the A side, but later than the eventblock to the left
-			else{
-				if (parkingtrack.getEventlist().get(j).getEndtime()<=parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime()){
-					feasible = true;
-				}
-				else{
-					feasible = false;
-				}
-			}
-		}
-		//if possible, set event to the left and current on reverse
-		if (feasible == true){
-			if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getReverseLeave() == 0) {
-				parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).setReverseLeave(1);
-			}
-			else {
-				parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).setReverseLeave(0);
-			}
-			arrivalBSide(arrivalevent,parkingtrack);
-			arrivalevent.setReverseArrive(1);
-		}
-	}
-}
- */

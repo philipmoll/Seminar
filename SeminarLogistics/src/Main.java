@@ -142,7 +142,7 @@ public class Main {
 				}
 			}
 
-			Todo JobShop = new Todo(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+			Todo3 JobShop = new Todo3(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
 			ArrayList<Event> events = JobShop.getEvents();
 			System.gc();
 //			for(int i = 0; i<events.size(); i++){

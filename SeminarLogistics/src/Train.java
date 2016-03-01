@@ -155,7 +155,7 @@ public class Train implements Serializable{
 			washingtime = 23; //Minutes
 			length = 70;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -166,7 +166,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 101;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -177,7 +177,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 109;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -188,7 +188,7 @@ public class Train implements Serializable{
 			washingtime = 26; //Minutes
 			length = 162;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -199,7 +199,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 101;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -210,7 +210,7 @@ public class Train implements Serializable{
 			washingtime = 26; //Minutes
 			length = 154;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -259,7 +259,7 @@ public class Train implements Serializable{
 			washingtime = 23; //Minutes
 			length = 70;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -270,7 +270,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 101;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -281,7 +281,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 109;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -292,7 +292,7 @@ public class Train implements Serializable{
 			washingtime = 26; //Minutes
 			length = 162;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -303,7 +303,7 @@ public class Train implements Serializable{
 			washingtime = 24; //Minutes
 			length = 101;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -314,7 +314,7 @@ public class Train implements Serializable{
 			washingtime = 26; //Minutes
 			length = 154;
 			inspprob = 1;	//probability
-			cleanprob = 0.5;	//probability
+			cleanprob = 1;	//probability
 			washprob = 0.05;	//probability
 			repprob = 0.05;	//probability
 		}
@@ -426,7 +426,7 @@ public class Train implements Serializable{
 	 * @throws IOException : when activitynumber is not 0, 1, 2, 3 or 4
 	 */
 	public boolean getActivity(int activitynumber)throws IOException { //TODO: testfunctie
-		if (activitynumber < 0 || activitynumber > 3){
+		if (activitynumber < 0 || activitynumber > 8){
 			throw new IOException("Activity number can only be 0, 1, 2, 3 or 4 in function getActivity, and is "+activitynumber);
 		}
 		if(activitynumber == 0){
