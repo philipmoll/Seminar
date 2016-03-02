@@ -155,7 +155,7 @@ public class Activity {
 		return (int) ultimatetime;
 	}
 	public int getMarginInteger(){
-		return (int) (ultimatetime - plannedtime - movetime);
+		return (int) (ultimatetime - plannedtime - movetime-movetime2);
 	}
 	public int getMoveTime(){
 		return (int) movetime;
