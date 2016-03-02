@@ -103,24 +103,43 @@ public class Todo4 {
 		int margin4 = 2432;
 		int margin5 = 2432;
 		int margin6 = 2432;
+		int margin7 = 2432;
+		int margin8 = 2432;
+		int margin9 = 2432;
 		int bestoption = -1;
 		int bestmargin = -1;
 		int time10 = -1;
 		int time11 = -1;
 		int time12 = -1;
 		int time13 = -1;
+		int time15 = -1;
+		int time16 = -1;
+		int time17 = -1;
+		int time18 = -1;
 		int time20 = -1;
 		int time21 = -1;
 		int time22 = -1;
 		int time23 = -1;
+		int time25 = -1;
+		int time26 = -1;
+		int time27 = -1;
+		int time28 = -1;
 		Track track10 = null;
 		Track track11 = null;
 		Track track12 = null;
 		Track track13 = null;
+		Track track15 = null;
+		Track track16 = null;
+		Track track17 = null;
+		Track track18 = null;
 		Track track20 = null;
 		Track track21 = null;
 		Track track22 = null;
 		Track track23 = null;
+		Track track25 = null;
+		Track track26 = null;
+		Track track27 = null;
+		Track track28 = null;
 		int count;
 		int acttime;
 		Track currenttrack = null;
@@ -130,7 +149,14 @@ public class Todo4 {
 		boolean feasible4 = true;
 		boolean feasible5 = true;
 		boolean feasible6 = true;
- 
+		boolean feasible7 = true;
+		boolean feasible8 = true;
+		boolean feasible9 = true;
+		boolean feasible10 = true;
+		boolean feasible11 = true;
+		boolean feasible12 = true;
+		boolean feasible13 = true;
+
 
 
 		//reset the sequence array
@@ -232,8 +258,8 @@ public class Todo4 {
 						if(j == 0){	
 							time10 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track10 = activities.get(activities.size()-1).getTrackAssigned();
-							
-							
+
+
 							mintemp = time10 + durationactivity;
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
@@ -243,8 +269,8 @@ public class Todo4 {
 						else if(j == 1){
 							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track11 = activities.get(activities.size()-1).getTrackAssigned();
-							
-							
+
+
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
@@ -266,7 +292,7 @@ public class Todo4 {
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
 					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
-					
+
 					//Keeping track of amount of activities done except for inspection
 					amount += 1;
 
@@ -319,7 +345,7 @@ public class Todo4 {
 			margin1 = -1;
 		}
 		bestmargin = margin1;
-		
+
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
@@ -339,7 +365,7 @@ public class Todo4 {
 		for (int i = 0; i<sequence.length; i++){
 			sequence[i] = -1;
 		}
-		
+
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -464,7 +490,7 @@ public class Todo4 {
 				}
 			}
 		}
-		
+
 		if(feasible2 == false){
 			margin2 = -1;
 		}
@@ -493,10 +519,10 @@ public class Todo4 {
 		}
 
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = -1;
-				}
-		
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = -1;
+		}
+
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -651,11 +677,11 @@ public class Todo4 {
 		else{
 			currenttrack = null;
 		}
-		
+
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = -1;
-				}
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = -1;
+		}
 
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
@@ -813,10 +839,10 @@ public class Todo4 {
 		}
 
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = -1;
-				}
-		
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = -1;
+		}
+
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -971,11 +997,11 @@ public class Todo4 {
 		else{
 			currenttrack = null;
 		}
-		
+
 		//reset the sequence array
-				for (int i = 0; i<sequence.length; i++){
-					sequence[i] = -1;
-				}
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = -1;
+		}
 
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
@@ -1117,19 +1143,189 @@ public class Todo4 {
 		}
 
 
-		
-		
-		
-		
-		
-		//ADDING OPTION 7!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		
-		
+		//ADDING THE INSPECTION ACTIVITY
 		if(addedcomp.getInspection()){
 			amount += 1;
 		}
-		
+
+
+
+
+
+
+
+
+
+
+		//ADDING OPTION 7!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
+
+
+		if(addedcomp.getInspection() && addedcomp.getCleaning()){
+			//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
+			for(int i = 0; i<amount; i++){
+				if(activities.get(activities.size()-1-i).getTrackAssigned()!=null){
+					activities.get(activities.size()-1-i).removeTimes();
+					this.removeBusyTime(activities.get(activities.size()-1-i));
+				}
+			}
+			if(addedcomp.getInspection()){
+				currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+			}
+			else{
+				currenttrack = null;
+			}
+
+			//reset the sequence array
+			for (int i = 0; i<sequence.length; i++){
+				sequence[i] = -1;
+			}
+
+			mintemp = addedcomp.getArrivalTimeInteger();
+
+			// add the merged activity 5 which consists of activities 0 and 1. 
+			activities.add(this.mergeActivities(addedcomp, 0, 1, 5));
+			amount += 1;
+
+			for (int j = 0; j<amount; j++){
+				for(int i = 0; i<9; i++){
+					if (activities.get(activities.size()-1-j).getActivity() == i){			
+						if (i == 5){
+							sequence[0] = j;
+						}
+						else if (i == 2){
+							sequence[1] = j;
+						}
+						else if (i == 3){
+							sequence[2] = j;
+						}
+						break;
+					}
+				}
+			}
+
+			//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
+			for(int j = 0; j<sequence.length; j++){
+				if (sequence[j]!=-1){
+					activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
+					temp = 1440;
+					temptemp = 1440;
+					temp1 = null;
+					temptemp1 = null;
+					if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
+
+						for(int k = 0; k<washareas.size(); k++){
+							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+								if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+											temptemp = l;
+											temptemp1 = washareas.get(k);
+											break;
+										}
+									}
+								}
+							}
+							//Update if we find better solution than the previous ones at a different track.
+							if(temptemp <= temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}
+
+						}
+						if(temp == 1440){
+							feasible7 = false;
+						}
+						else{
+							activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+							currenttrack = temp1;
+							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+
+
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
+								margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+							}
+						}
+					}
+					else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+
+						for(int k = 0; k<platforms.size(); k++){
+
+							for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+								if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+										if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+											temptemp = l;
+											temptemp1 = platforms.get(k);
+											break;
+										}
+									}
+								}
+							}
+							//Update if we find better solution than the previous ones at a different track.
+							if(temptemp <= temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}
+						}
+
+						if(temp == 1440){
+							feasible7 = false;
+						}
+						else{
+							activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+							currenttrack = temp1;
+
+							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5){
+								time25 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+								track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
+									margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+								}
+							}
+							else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+								time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+								track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
+									margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+
+								}
+							}
+						}
+					}
+				}
+			}
+			if(feasible7 == false){
+				margin7 = -1;
+			}
+			else if(margin7 > bestmargin){
+				time11 = time21;
+				time12 = time22;
+				time13 = time23;
+				track11 = track21;
+				track12 = track22;
+				track13 = track23;
+				bestmargin = margin7;
+			}
+
+		}
+
+
 		//		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
 			for(int i = 0; i<amount; i++){
@@ -1267,6 +1463,45 @@ public class Todo4 {
 		//		activity2.getTrackAssigned().removeBusyTimeMove(activity2);
 		//		activity2.getComposition().removeBusyTimeMove(activity2);
 		//		this.removeBusyTimeMove(activity2);
+	}
+
+	public Activity mergeActivities(Composition comp1, int act1, int act2, int actnr) throws IOException{
+		int acttimepertrain = 0;
+		int maxduration = -1;
+		for (int i=0; i<comp1.getSize(); i++){
+			if (comp1.getTrain(i).getActivity(act1)){
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
+			}
+			if (comp1.getTrain(i).getActivity(act2)){
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act2);
+			}
+			if (acttimepertrain>maxduration){
+				maxduration = acttimepertrain;
+			}
+		}
+		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration+2*Main.moveduration),comp1, actnr);
+		return merged;
+	}
+
+	public Activity mergeActivities(Composition comp1, int act1, int act2, int act3, int actnr) throws IOException{
+		int acttimepertrain = 0;
+		int maxduration = -1;
+		for (int i=0; i<comp1.getSize(); i++){
+			if (comp1.getTrain(i).getActivity(act1)){
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
+			}
+			if (comp1.getTrain(i).getActivity(act2)){
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act2);
+			}
+			if (comp1.getTrain(i).getActivity(act3)){
+				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act3);
+			}
+			if (acttimepertrain>maxduration){
+				maxduration = acttimepertrain;
+			}
+		}
+		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration+2*Main.moveduration),comp1, actnr);
+		return merged;
 	}
 
 	public void setBusyTime(Activity activity){
