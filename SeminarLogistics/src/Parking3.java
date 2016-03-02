@@ -44,8 +44,6 @@ public class Parking3 implements Serializable{ //TODO: test!
 				for (int i = 0; i<timeline.size(); i++){
 					//System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 
-					timeline.get(i).getRelatedEvent().getStarttime();//TODO: not correctly constructed!!!!!
-					timeline.get(i).getRelatedEvent().getEndtime(); //TODO: not correctly constructead!!!
 					System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 
 
@@ -67,8 +65,13 @@ public class Parking3 implements Serializable{ //TODO: test!
 					else if (timeline.get(i).getType()==0) { //if it is an arrival
 						boolean parked = arrival(timeline.get(i), i);
 						System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
+						if (parked){
 						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
 							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getDepartureSide()+" dep time: "+timeline.get(i).getEndtime());
+						}
+						}
+						else {
+							System.out.println("WARNING: Event "+i+", "+timeline.get(i)+" cannot be parked");
 						}
 					}
 					else{
@@ -267,7 +270,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 						if (toggle){
 							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
+							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleAA(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
@@ -279,6 +284,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 							else{
 								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -306,7 +312,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 						if (toggle){
 							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
+							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleAB(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
@@ -318,6 +326,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 							else{
 								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(0).toggleReverseDeparture();
+								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -347,7 +356,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 					if (parkingtrack.getEventlist().size() > 0){
 						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
+						System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
+						System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						//if: we can toggle adjacent
 						if (toggle){
 							System.out.println("Toggle feasible");
@@ -364,6 +375,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 							else{
 								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -386,7 +398,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 					if (parkingtrack.getEventlist().size() > 0){
 						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
+						System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
+						System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						//if: we can toggle adjacent
 						if (toggle){
 							System.out.println("Toggle feasible");
@@ -403,6 +417,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 							else{
 								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
