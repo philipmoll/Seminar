@@ -1198,9 +1198,14 @@ public class Todo4 {
 
 			mintemp = addedcomp.getArrivalTimeInteger();
 
+			
+			
 			// add the merged activity 5 which consists of activities 0 and 1. 
 			activities.add(this.mergeActivities(addedcomp, 0, 1, 5));
 			amount += 1;
+			
+			//System.out.println(addedcomp.getTrain(0).getActivityTimeInteger(0) + " " + addedcomp.getTrain(0).getActivityTimeInteger(1) + " " + activities.get(activities.size()-1).getTotalDurationInteger());
+
 
 			for (int j = 0; j<amount; j++){
 				for(int i = 0; i<9; i++){
@@ -1219,7 +1224,7 @@ public class Todo4 {
 				}
 			}
 			
-			System.out.println(sequence[0] + " " + sequence[1] + " " + sequence[2]);
+			//System.out.println(sequence[0] + " " + sequence[1] + " " + sequence[2]);
 
 			//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 			for(int j = 0; j<sequence.length; j++){
@@ -1294,10 +1299,10 @@ public class Todo4 {
 
 						if(temp == 1440){
 							feasible7 = false;
-							System.out.println("IM NOT FEASIBLE" + feasible7);
+							//System.out.println("IM NOT FEASIBLE" + feasible7);
 						}
 						else{
-							System.out.println("IM FEASIBLE" + feasible7);
+							//System.out.println("IM FEASIBLE" + feasible7);
 							activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
 							currenttrack = temp1;
 
@@ -1305,9 +1310,14 @@ public class Todo4 {
 							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5){
-								System.out.println("JOEHOEEEE");
+								//System.out.println("JOEHOEEEE");
+								
 								time25 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 								track25 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+								
+								mintemp = time25 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+
+								
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
 									margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 								}
@@ -1324,6 +1334,8 @@ public class Todo4 {
 					}
 				}
 			}
+			//System.out.println(margin7 + " " + bestmargin);
+
 			if(feasible7 == false){
 				margin7 = -1;
 			}
@@ -1490,7 +1502,7 @@ public class Todo4 {
 				maxduration = acttimepertrain;
 			}
 		}
-		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration+2*Main.moveduration),comp1, actnr);
+		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration),comp1, actnr);
 		return merged;
 	}
 
@@ -1511,7 +1523,7 @@ public class Todo4 {
 				maxduration = acttimepertrain;
 			}
 		}
-		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration+2*Main.moveduration),comp1, actnr);
+		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration),comp1, actnr);
 		return merged;
 	}
 
