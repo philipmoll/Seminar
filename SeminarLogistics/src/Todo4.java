@@ -99,6 +99,10 @@ public class Todo4 {
 		Track temptemp1;
 		int margin1 = 2432;
 		int margin2 = 2432;
+		int margin3 = 2432;
+		int margin4 = 2432;
+		int margin5 = 2432;
+		int margin6 = 2432;
 		int bestoption = -1;
 		int bestmargin = -1;
 		int time10 = -1;
@@ -122,6 +126,11 @@ public class Todo4 {
 		Track currenttrack = null;
 		boolean feasible1 = true;
 		boolean feasible2 = true;
+		boolean feasible3 = true;
+		boolean feasible4 = true;
+		boolean feasible5 = true;
+		boolean feasible6 = true;
+
 
 
 		//reset the sequence array
@@ -340,6 +349,16 @@ public class Todo4 {
 			}
 		}
 
+
+
+
+
+		//ADDING OPTION 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
 		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
@@ -440,129 +459,756 @@ public class Todo4 {
 				}
 			}
 		}
-			if(feasible2 == false){
-				margin2 = -1;
-			}
-			else if(margin2 > bestmargin){
-				time11 = time21;
-				time12 = time22;
-				time13 = time23;
-				track11 = track21;
-				//System.out.print(time11 + " " + track11 + " 2 \n");
+		if(feasible2 == false){
+			margin2 = -1;
+		}
+		else if(margin2 > bestmargin){
+			time11 = time21;
+			time12 = time22;
+			time13 = time23;
+			track11 = track21;
+			//System.out.print(time11 + " " + track11 + " 2 \n");
 
-				track12 = track22;
-				track13 = track23;
-				bestmargin = margin2;
-			}
-			
-			
-			//		//check if feasible solution exist, if so, then update with the best solution
-			if (bestmargin != -1){
-				for(int i = 0; i<amount; i++){
-					if(activities.get(activities.size()-1-i).getTrackAssigned()!=null){
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin2;
+		}
 
-						activities.get(activities.size()-1-i).removeTimes();
-						this.removeBusyTime(activities.get(activities.size()-1-i));
-//						if (addedcomp.getInspection()){
-//							activities.get(activities.size()-1-amount).removeTimes();
-//							this.removeBusyTime(activities.get(activities.size()-1-amount));
-//						}
+		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
+		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
+				activities.get(activities.size()-1-i).removeTimes();
+				this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
+		}
+		if(addedcomp.getInspection()){
+			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+		}
+		else{
+			currenttrack = null;
+		}
+
+		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
+		for (int j = 0; j<amount; j++){
+			for(int i = 1; i<4; i++){
+				if (activities.get(activities.size()-1-j).getActivity() == i){
+					if (i == 3){
+						sequence[0] = j;
+					}
+					else if (i == 1){
+						sequence[1] = j;
+					}
+					else if (i == 2){
+						sequence[2] = j;
+					}
+					break;
+				}
+			}
+		}
+
+
+
+
+		//ADDING OPTION 3!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
+		for(int j = 0; j<sequence.length; j++){
+			if (sequence[j]!=-1){
+				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
+				temp = 12412;
+				temptemp = 12412;
+				temp1 = null;
+				temptemp1 = null;
+				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
+
+					for(int k = 0; k<washareas.size(); k++){
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = washareas.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+
+					}
+					if(temp == 12412){
+						feasible3 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						currenttrack = temp1;
+						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+
+
+						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
+							margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+						}
 					}
 				}
+				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
 
-				//					if (bestmargin == margin7){
-				//						for(int i = 0; i<amount; i++){
-				//							if(activities.get(activities.size()-1-i).getActivity()==5){
-				//								activities.get(activities.size()-1-i).setUpdate(time10, track10);
-				//								this.setBusyTime(activities.get(activities.size()-1-i));
-				//							}
-				//							if(activities.get(activities.size()-1-i).getActivity()==2){
-				//								activities.get(activities.size()-1-i).setUpdate(time12, track12);
-				//								this.setBusyTime(activities.get(activities.size()-1-i));
-				//							}
-				//							if(activities.get(activities.size()-1-i).getActivity()==3){
-				//								activities.get(activities.size()-1-i).setUpdate(time13, track13);
-				//								this.setBusyTime(activities.get(activities.size()-1-i));
-				//							}
-				//						}
+					for(int k = 0; k<platforms.size(); k++){
+
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = platforms.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+
+					if(temp == 12412){
+						feasible3 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
+							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
+								margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+							}
+						}
+						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
+								margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+
+							}
+						}
+					}
+				}
+			}
+		}
+		if(feasible3 == false){
+			margin3 = -1;
+		}
+		else if(margin3 > bestmargin){
+			time11 = time21;
+			time12 = time22;
+			time13 = time23;
+			track11 = track21;
+			//System.out.print(time11 + " " + track11 + " 2 \n");
+
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin3;
+		}
+
+
+		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
+		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
+				activities.get(activities.size()-1-i).removeTimes();
+				this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
+		}
+		if(addedcomp.getInspection()){
+			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+		}
+		else{
+			currenttrack = null;
+		}
+
+		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
+		for (int j = 0; j<amount; j++){
+			for(int i = 1; i<4; i++){
+				if (activities.get(activities.size()-1-j).getActivity() == i){
+					if (i == 1){
+						sequence[0] = j;
+					}
+					else if (i == 3){
+						sequence[1] = j;
+					}
+					else if (i == 2){
+						sequence[2] = j;
+					}
+					break;
+				}
+			}
+		}
+
+
+
+
+		//ADDING OPTION 4!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
+		for(int j = 0; j<sequence.length; j++){
+			if (sequence[j]!=-1){
+				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
+				temp = 12412;
+				temptemp = 12412;
+				temp1 = null;
+				temptemp1 = null;
+				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
+
+					for(int k = 0; k<washareas.size(); k++){
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = washareas.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+
+					}
+					if(temp == 12412){
+						feasible4 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						currenttrack = temp1;
+						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+
+
+						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
+							margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+						}
+					}
+				}
+				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+
+					for(int k = 0; k<platforms.size(); k++){
+
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = platforms.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+
+					if(temp == 12412){
+						feasible4 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
+							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
+								margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+							}
+						}
+						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
+								margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+
+							}
+						}
+					}
+				}
+			}
+		}
+		if(feasible4 == false){
+			margin4 = -1;
+		}
+		else if(margin4 > bestmargin){
+			time11 = time21;
+			time12 = time22;
+			time13 = time23;
+			track11 = track21;
+			//System.out.print(time11 + " " + track11 + " 2 \n");
+
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin4;
+		}
+
+
+
+		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
+		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
+				activities.get(activities.size()-1-i).removeTimes();
+				this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
+		}
+		if(addedcomp.getInspection()){
+			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+		}
+		else{
+			currenttrack = null;
+		}
+
+		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
+		for (int j = 0; j<amount; j++){
+			for(int i = 1; i<4; i++){
+				if (activities.get(activities.size()-1-j).getActivity() == i){
+					if (i == 2){
+						sequence[0] = j;
+					}
+					else if (i == 1){
+						sequence[1] = j;
+					}
+					else if (i == 3){
+						sequence[2] = j;
+					}
+					break;
+				}
+			}
+		}
+
+
+
+
+		//ADDING OPTION 5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
+		for(int j = 0; j<sequence.length; j++){
+			if (sequence[j]!=-1){
+				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
+				temp = 12412;
+				temptemp = 12412;
+				temp1 = null;
+				temptemp1 = null;
+				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
+
+					for(int k = 0; k<washareas.size(); k++){
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = washareas.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+
+					}
+					if(temp == 12412){
+						feasible5 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						currenttrack = temp1;
+						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+
+
+						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin5){
+							margin5 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+						}
+					}
+				}
+				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+
+					for(int k = 0; k<platforms.size(); k++){
+
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = platforms.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+
+					if(temp == 12412){
+						feasible5 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
+							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin5){
+								margin5 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+							}
+						}
+						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin5){
+								margin5 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+
+							}
+						}
+					}
+				}
+			}
+		}
+		if(feasible5 == false){
+			margin5 = -1;
+		}
+		else if(margin5 > bestmargin){
+			time11 = time21;
+			time12 = time22;
+			time13 = time23;
+			track11 = track21;
+			//System.out.print(time11 + " " + track11 + " 2 \n");
+
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin5;
+		}
+
+
+
+		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
+		for(int i = 0; i<amount; i++){
+			if(activities.get(activities.size()-1-i).getTrackAssigned()!= null){
+				activities.get(activities.size()-1-i).removeTimes();
+				this.removeBusyTime(activities.get(activities.size()-1-i));
+			}
+		}
+		if(addedcomp.getInspection()){
+			currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+		}
+		else{
+			currenttrack = null;
+		}
+
+		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
+		for (int j = 0; j<amount; j++){
+			for(int i = 1; i<4; i++){
+				if (activities.get(activities.size()-1-j).getActivity() == i){
+					if (i == 2){
+						sequence[0] = j;
+					}
+					else if (i == 3){
+						sequence[1] = j;
+					}
+					else if (i == 1){
+						sequence[2] = j;
+					}
+					break;
+				}
+			}
+		}
+
+
+
+
+		//ADDING OPTION 6!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+		//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
+		for(int j = 0; j<sequence.length; j++){
+			if (sequence[j]!=-1){
+				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
+				temp = 12412;
+				temptemp = 12412;
+				temp1 = null;
+				temptemp1 = null;
+				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
+
+					for(int k = 0; k<washareas.size(); k++){
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(washareas.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = washareas.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+
+					}
+					if(temp == 12412){
+						feasible6 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						currenttrack = temp1;
+						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
+						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+
+
+						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin6){
+							margin6 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+						}
+					}
+				}
+				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+
+					for(int k = 0; k<platforms.size(); k++){
+
+						for(int l = mintemp; l<activities.get(activities.size()-1-sequence[j]).getUltimateTimeInteger(); l++){
+							if(platforms.get(k).checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+								if(addedcomp.checkFeasibility(activities.get(activities.size()-1-sequence[j]), l)){
+									if(this.checkFeasibilityMove(activities.get(activities.size()-1-sequence[j]),l)){
+
+										temptemp = l;
+										temptemp1 = platforms.get(k);
+										break;
+									}
+								}
+							}
+						}
+						//Update if we find better solution than the previous ones at a different track.
+						if(temptemp <= temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}
+					}
+
+					if(temp == 12412){
+						feasible6 = false;
+					}
+					else{
+						activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
+						currenttrack = temp1;
+
+						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
+						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
+							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin6){
+								margin6 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+							}
+						}
+						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
+							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
+							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin6){
+								margin6 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
+
+							}
+						}
+					}
+				}
+			}
+		}
+		if(feasible6 == false){
+			margin6 = -1;
+		}
+		else if(margin6 > bestmargin){
+			time11 = time21;
+			time12 = time22;
+			time13 = time23;
+			track11 = track21;
+			//System.out.print(time11 + " " + track11 + " 2 \n");
+
+			track12 = track22;
+			track13 = track23;
+			bestmargin = margin6;
+		}
+
+
+
+		//		//check if feasible solution exist, if so, then update with the best solution
+		if (bestmargin != -1){
+			for(int i = 0; i<amount; i++){
+				if(activities.get(activities.size()-1-i).getTrackAssigned()!=null){
+
+					activities.get(activities.size()-1-i).removeTimes();
+					this.removeBusyTime(activities.get(activities.size()-1-i));
+					//						if (addedcomp.getInspection()){
+					//							activities.get(activities.size()-1-amount).removeTimes();
+					//							this.removeBusyTime(activities.get(activities.size()-1-amount));
+					//						}
+				}
+			}
+
+			//					if (bestmargin == margin7){
+			//						for(int i = 0; i<amount; i++){
+			//							if(activities.get(activities.size()-1-i).getActivity()==5){
+			//								activities.get(activities.size()-1-i).setUpdate(time10, track10);
+			//								this.setBusyTime(activities.get(activities.size()-1-i));
+			//							}
+			//							if(activities.get(activities.size()-1-i).getActivity()==2){
+			//								activities.get(activities.size()-1-i).setUpdate(time12, track12);
+			//								this.setBusyTime(activities.get(activities.size()-1-i));
+			//							}
+			//							if(activities.get(activities.size()-1-i).getActivity()==3){
+			//								activities.get(activities.size()-1-i).setUpdate(time13, track13);
+			//								this.setBusyTime(activities.get(activities.size()-1-i));
+			//							}
+			//						}
+			//					}
+			//					else{
+			for(int i = 0; i<=amount; i++){
+				//					if(activities.get(activities.size()-1-i).getActivity()==0){
+				//						activities.get(activities.size()-1-i).setUpdate(time10, track10);
+				//						this.setBusyTime(activities.get(activities.size()-1-i));
 				//					}
-				//					else{
-				for(int i = 0; i<=amount; i++){
-//					if(activities.get(activities.size()-1-i).getActivity()==0){
-//						activities.get(activities.size()-1-i).setUpdate(time10, track10);
-//						this.setBusyTime(activities.get(activities.size()-1-i));
-//					}
-					if(activities.get(activities.size()-1-i).getActivity()==1){
-						//System.out.print(time11 + " " + track11 + "\n" );
-						activities.get(activities.size()-1-i).setUpdate(time11, track11);
-						this.setBusyTime(activities.get(activities.size()-1-i));
-					}
-					else if(activities.get(activities.size()-1-i).getActivity()==2){
-						activities.get(activities.size()-1-i).setUpdate(time12, track12);
-						this.setBusyTime(activities.get(activities.size()-1-i));
-					}
-					else if(activities.get(activities.size()-1-i).getActivity()==3){
-						activities.get(activities.size()-1-i).setUpdate(time13, track13);
-						this.setBusyTime(activities.get(activities.size()-1-i));
-					}
+				if(activities.get(activities.size()-1-i).getActivity()==1){
+					//System.out.print(time11 + " " + track11 + "\n" );
+					activities.get(activities.size()-1-i).setUpdate(time11, track11);
+					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
-				//}
+				else if(activities.get(activities.size()-1-i).getActivity()==2){
+					activities.get(activities.size()-1-i).setUpdate(time12, track12);
+					this.setBusyTime(activities.get(activities.size()-1-i));
+				}
+				else if(activities.get(activities.size()-1-i).getActivity()==3){
+					activities.get(activities.size()-1-i).setUpdate(time13, track13);
+					this.setBusyTime(activities.get(activities.size()-1-i));
+				}
 			}
-			else{
-				throw new IOException("No feasible solution found for job-shop");
-			}
-			
-			
-		
+			//}
+		}
+		else{
+			throw new IOException("No feasible solution found for job-shop");
+		}
+
+
+
 
 		//If the first solution is better, we use the first solution. We choose the first solution because it is more likely that it will not need to be moved to another track (saving time)		
-//		if(feasible1 && feasible2){
-//			if(margin1 >= margin2){
-//				for(int i = 0; i<amount; i++){
-//					this.removeBusyTime(activities.get(activities.size()-1-i));
-//				}
-//				for(int i = 0; i<amount; i++){
-//					if(activities.get(activities.size()-1-i).getActivity()==1){
-//						activities.get(activities.size()-1-i).setUpdate(time11, track11);
-//						this.setBusyTime(activities.get(activities.size()-1-i));
-//					}
-//					if(activities.get(activities.size()-1-i).getActivity()==2){
-//						activities.get(activities.size()-1-i).setUpdate(time12, track12);
-//						this.setBusyTime(activities.get(activities.size()-1-i));
-//					}
-//					if(activities.get(activities.size()-1-i).getActivity()==3){
-//						activities.get(activities.size()-1-i).setUpdate(time13, track13);
-//						this.setBusyTime(activities.get(activities.size()-1-i));
-//					}
-//				}
-//
-//			}
-//		}
-//		else if(feasible1 && ! feasible2){
-//			for(int i = 0; i<amount; i++){
-//				this.removeBusyTime(activities.get(activities.size()-1-i));
-//			}
-//			for(int i = 0; i<amount; i++){
-//				if(activities.get(activities.size()-1-i).getActivity()==1){
-//					activities.get(activities.size()-1-i).setUpdate(time11, track11);
-//					this.setBusyTime(activities.get(activities.size()-1-i));
-//				}
-//				if(activities.get(activities.size()-1-i).getActivity()==2){
-//					activities.get(activities.size()-1-i).setUpdate(time12, track12);
-//					this.setBusyTime(activities.get(activities.size()-1-i));
-//				}
-//				if(activities.get(activities.size()-1-i).getActivity()==3){
-//					activities.get(activities.size()-1-i).setUpdate(time13, track13);
-//					this.setBusyTime(activities.get(activities.size()-1-i));
-//				}
-//			}
-//		}
-//		else if(!feasible1 && feasible2){
-//
-//		}
-//		else{
-//			throw new IOException("No feasible solution found for job-shop");
-//		}
+		//		if(feasible1 && feasible2){
+		//			if(margin1 >= margin2){
+		//				for(int i = 0; i<amount; i++){
+		//					this.removeBusyTime(activities.get(activities.size()-1-i));
+		//				}
+		//				for(int i = 0; i<amount; i++){
+		//					if(activities.get(activities.size()-1-i).getActivity()==1){
+		//						activities.get(activities.size()-1-i).setUpdate(time11, track11);
+		//						this.setBusyTime(activities.get(activities.size()-1-i));
+		//					}
+		//					if(activities.get(activities.size()-1-i).getActivity()==2){
+		//						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+		//						this.setBusyTime(activities.get(activities.size()-1-i));
+		//					}
+		//					if(activities.get(activities.size()-1-i).getActivity()==3){
+		//						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+		//						this.setBusyTime(activities.get(activities.size()-1-i));
+		//					}
+		//				}
+		//
+		//			}
+		//		}
+		//		else if(feasible1 && ! feasible2){
+		//			for(int i = 0; i<amount; i++){
+		//				this.removeBusyTime(activities.get(activities.size()-1-i));
+		//			}
+		//			for(int i = 0; i<amount; i++){
+		//				if(activities.get(activities.size()-1-i).getActivity()==1){
+		//					activities.get(activities.size()-1-i).setUpdate(time11, track11);
+		//					this.setBusyTime(activities.get(activities.size()-1-i));
+		//				}
+		//				if(activities.get(activities.size()-1-i).getActivity()==2){
+		//					activities.get(activities.size()-1-i).setUpdate(time12, track12);
+		//					this.setBusyTime(activities.get(activities.size()-1-i));
+		//				}
+		//				if(activities.get(activities.size()-1-i).getActivity()==3){
+		//					activities.get(activities.size()-1-i).setUpdate(time13, track13);
+		//					this.setBusyTime(activities.get(activities.size()-1-i));
+		//				}
+		//			}
+		//		}
+		//		else if(!feasible1 && feasible2){
+		//
+		//		}
+		//		else{
+		//			throw new IOException("No feasible solution found for job-shop");
+		//		}
 
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
