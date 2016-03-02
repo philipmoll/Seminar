@@ -1093,18 +1093,27 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			//System.out.print(time11 + " " + track11 + " 2 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin6;
 		}
 
 
+		
+		
+		
+		
+		
+		//ADDING OPTION 7!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		
+		
+		
 
 		//		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
-			for(int i = 0; i<amount; i++){
+			for(int i = 0; i<amount+1; i++){
 				if(activities.get(activities.size()-1-i).getTrackAssigned()!=null){
 
 					activities.get(activities.size()-1-i).removeTimes();
@@ -1133,13 +1142,12 @@ public class Todo4 {
 			//						}
 			//					}
 			//					else{
-			for(int i = 0; i<=amount; i++){
-				//					if(activities.get(activities.size()-1-i).getActivity()==0){
-				//						activities.get(activities.size()-1-i).setUpdate(time10, track10);
-				//						this.setBusyTime(activities.get(activities.size()-1-i));
-				//					}
-				if(activities.get(activities.size()-1-i).getActivity()==1){
-					//System.out.print(time11 + " " + track11 + "\n" );
+			for(int i = 0; i<amount+1; i++){
+				if(activities.get(activities.size()-1-i).getActivity()==0){
+					activities.get(activities.size()-1-i).setUpdate(time10, track10);
+					this.setBusyTime(activities.get(activities.size()-1-i));
+				}
+				else if(activities.get(activities.size()-1-i).getActivity()==1){
 					activities.get(activities.size()-1-i).setUpdate(time11, track11);
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
