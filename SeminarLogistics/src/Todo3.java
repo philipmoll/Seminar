@@ -151,7 +151,7 @@ public class Todo3 {
 		}
 
 		//It checks for all possible activities
-		for(int j = 0; j<9; j++){
+		for(int j = 0; j<4; j++){
 			temp = 12412;
 			temptemp = 12412;
 			temp1 = null;
@@ -194,10 +194,6 @@ public class Todo3 {
 						}
 					}
 				}
-			}
-
-			if (j==5 || j==6 || j==7 || j==8){
-				durationactivity = 1;
 			}
 
 			//Only if the activity must really be done
@@ -284,39 +280,6 @@ public class Todo3 {
 
 				}
 
-				// add the merged activity 5 which consists of activities 0 and 1. 
-				else if(j==5){
-
-
-					if (addedcomp.getInspection() && addedcomp.getCleaning()){
-						activities.add(this.mergeActivities(addedcomp, 0, 1, 5));
-						amount += 1;
-					}
-				}
-
-				// add the merged activity 6 which consists of activities 1 and 2. 
-				else if(j==6){
-					if (addedcomp.getCleaning() && addedcomp.getRepairing()){
-						activities.add(this.mergeActivities(addedcomp, 1, 2, 6));
-						amount += 1;
-					}
-				}
-
-				// add the merged activity 7 which consists of activities 0 and 2. 
-				else if(j==7){
-					if (addedcomp.getInspection() && addedcomp.getRepairing()){
-						activities.add(this.mergeActivities(addedcomp, 0, 2, 7));
-						amount += 1;
-					}
-				}
-
-				// add the merged activity 6 which consists of activities 1 and 2. 
-				else if(j==8){
-					if (addedcomp.getInspection() && addedcomp.getCleaning() && addedcomp.getRepairing()){
-						activities.add(this.mergeActivities(addedcomp, 0, 1, 2, 8));
-						amount += 1;
-					}
-				}
 
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
@@ -1236,17 +1199,23 @@ public class Todo3 {
 		}
 
 		//OPTION 7: determine the right sequence of how the activities should be planned, in this case: 5 (=0 and 1), 2, 3.
-		mintemp = addedcomp.getArrivalTimeInteger();
+		
 		if (addedcomp.getInspection() && addedcomp.getCleaning()){
+			
+			mintemp = addedcomp.getArrivalTimeInteger();
+			
+			// add the merged activity 5 which consists of activities 0 and 1. 
+			activities.add(this.mergeActivities(addedcomp, 0, 1, 5));
+			amount += 1;
 
 			currenttrack = null;
 			if(activities.get(activities.size()-1-amount).getTrackAssigned()!=null){
 				activities.get(activities.size()-1-amount).removeTimes();
 				this.removeBusyTime(activities.get(activities.size()-1-amount));
 			}
-		
+
 			for (int j = 0; j<amount; j++){
-				for(int i = 1; i<9; i++){
+				for(int i = 0; i<9; i++){
 					if (activities.get(activities.size()-1-j).getActivity() == i){			
 						if (i == 5){
 							sequence[0] = j;
@@ -1663,7 +1632,7 @@ public class Todo3 {
 							first = true;
 							j += Main.moveduration;
 						}
-						
+
 					}
 				}
 
