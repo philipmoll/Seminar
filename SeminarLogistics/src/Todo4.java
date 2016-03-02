@@ -220,6 +220,7 @@ public class Todo4 {
 						feasible1 = false;
 					}
 					else{
+						System.out.println(temp + " he hallo " + temp1);
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
@@ -230,6 +231,7 @@ public class Todo4 {
 						if(j == 0){	
 							time10 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track10 = activities.get(activities.size()-1).getTrackAssigned();
+							
 							mintemp = time10 + durationactivity;
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
@@ -237,9 +239,13 @@ public class Todo4 {
 						}
 						//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 						else if(j == 1){
-							System.out.print(activities.get(activities.size()-1).getPlannedTimeInteger());
+							System.out.println(activities.get(activities.size()-1).getPlannedTimeInteger() + " 1 " + activities.get(activities.size()-1).getTrackAssigned());
 							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track11 = activities.get(activities.size()-1).getTrackAssigned();
+							
+							System.out.println(time11 + " he hallo2 " + track11);
+
+							
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
@@ -469,11 +475,12 @@ public class Todo4 {
 			margin2 = -1;
 		}
 		else if(margin2 > bestmargin){
+			System.out.println(time11 + " " + track11 + " 1 \n");
 			time11 = time21;
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			//System.out.print(time11 + " " + track11 + " 2 \n");
+			System.out.println(time11 + " " + track11 + " 1 \n");
 
 			track12 = track22;
 			track13 = track23;
@@ -634,7 +641,7 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			//System.out.print(time11 + " " + track11 + " 2 \n");
+			System.out.println(time11 + " " + track11 + " 2 \n");
 
 			track12 = track22;
 			track13 = track23;
@@ -795,7 +802,7 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			//System.out.print(time11 + " " + track11 + " 2 \n");
+			System.out.println(time11 + " " + track11 + " 3 \n");
 
 			track12 = track22;
 			track13 = track23;
@@ -957,7 +964,7 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			//System.out.print(time11 + " " + track11 + " 2 \n");
+			System.out.println(time11 + " " + track11 + " 4 \n");
 
 			track12 = track22;
 			track13 = track23;
@@ -1119,6 +1126,8 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
+			System.out.println(time11 + " " + track11 + " 5 \n");
+
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin6;
@@ -1175,6 +1184,7 @@ public class Todo4 {
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
 				else if(activities.get(activities.size()-1-i).getActivity()==1){
+					System.out.print(time11 + " safjdfas " + track11);
 					activities.get(activities.size()-1-i).setUpdate(time11, track11);
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
