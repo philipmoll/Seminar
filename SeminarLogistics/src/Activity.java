@@ -125,6 +125,7 @@ public class Activity {
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
 		totalduration = duration + movetime + movetime2;
+		System.out.println(trackassigned + " " + composition + " " + this);
 		trackassigned.setBusyTime(this);
 		composition.setBusyTime(this);
 	}

@@ -46,7 +46,7 @@ public class Schedule {
 			trains[i].setWashing(b);
 			
 			a = randomGenerator.nextDouble();
-			if(a <= trains[i].getRepprob()+additionalrepprob){
+			if(trains[i].getInspecting() && a <= trains[i].getRepprob()+additionalrepprob){
 				b = true;
 			}
 			else{

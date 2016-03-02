@@ -151,7 +151,7 @@ public class Main {
 			
 			//Parking ourparking = new Parking(events, tracks);
 			//Parking2 ourparking2 = new Parking2(events, tracks);
-			Parking3 ourparking3 = new Parking3(events, tracks);
+			//Parking3 ourparking3 = new Parking3(events, tracks);
 
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;
@@ -176,7 +176,7 @@ public class Main {
 			//This is how we should write a decouple function, N.B.: with the.add function.
 			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
 
-		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
+		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException /*| MethodFailException*/ e) {
 			e.printStackTrace();
 		}
 	} 

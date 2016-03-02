@@ -59,7 +59,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 						departure(timeline.get(i), i);
 						System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getDepartureSide()+" arr time: "+timeline.get(i).getStarttime()+" dep time: "+timeline.get(i).getEndtime());
+							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" arr time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getStarttime()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
 						}
 					}
 					else if (timeline.get(i).getType()==0) { //if it is an arrival
@@ -67,7 +67,7 @@ public class Parking3 implements Serializable{ //TODO: test!
 						System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 						if (parked){
 						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getDepartureSide()+" dep time: "+timeline.get(i).getEndtime());
+							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
 						}
 						}
 						else {

@@ -237,6 +237,7 @@ public class Todo4 {
 						}
 						//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 						else if(j == 1){
+							System.out.print(activities.get(activities.size()-1).getPlannedTimeInteger());
 							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track11 = activities.get(activities.size()-1).getTrackAssigned();
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
@@ -1133,12 +1134,13 @@ public class Todo4 {
 		
 		
 		
+		if(addedcomp.getInspection()){
+			amount += 1;
+		}
 		
-		
-
 		//		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
-			for(int i = 0; i<amount+1; i++){
+			for(int i = 0; i<amount; i++){
 				if(activities.get(activities.size()-1-i).getTrackAssigned()!=null){
 
 					activities.get(activities.size()-1-i).removeTimes();
@@ -1167,7 +1169,7 @@ public class Todo4 {
 			//						}
 			//					}
 			//					else{
-			for(int i = 0; i<amount+1; i++){
+			for(int i = 0; i<amount; i++){
 				if(activities.get(activities.size()-1-i).getActivity()==0){
 					activities.get(activities.size()-1-i).setUpdate(time10, track10);
 					this.setBusyTime(activities.get(activities.size()-1-i));
