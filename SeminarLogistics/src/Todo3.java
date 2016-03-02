@@ -1629,8 +1629,8 @@ public class Todo3 {
 	 */
 	public ArrayList<Event> getEvents(){
 		ArrayList<Event> abcd = new ArrayList<>();
-		boolean first = true;
 		for(int i = 0; i<finalblockssshallow.size(); i++){
+			boolean first = true;
 			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
 			for(int j = 0; j<60*24; j++){
 				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
@@ -1663,7 +1663,7 @@ public class Todo3 {
 							first = true;
 							j += Main.moveduration;
 						}
-
+						
 					}
 				}
 
