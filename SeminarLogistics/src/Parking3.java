@@ -26,52 +26,56 @@ public class Parking3 implements Serializable{ //TODO: test!
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
-		
+
 		//TODO: zetuit!!!
-				ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
-				parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
-				parkingtracks.add(0,parkingtracks2.get(0));
-//				parkingtracks.add(0,parkingtracks2.get(1));
-//				parkingtracks.add(0,parkingtracks2.get(2))
+		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
+		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
+		parkingtracks.add(0,parkingtracks2.get(0));
+		//				parkingtracks.add(0,parkingtracks2.get(1));
+		//				parkingtracks.add(0,parkingtracks2.get(2))
 
-		//sort eventlist into timeline
-		timeline = new ArrayList<Event>();
-		sortEvents(eventlist);
-		for (int i = 0; i<timeline.size(); i++){
-			//System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
-			
-			timeline.get(i).getRelatedEvent().getStarttime();//TODO: not correctly constructed!!!!!
-			timeline.get(i).getRelatedEvent().getEndtime(); //TODO: not correctly constructead!!!
-			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
-			
-		
+
+		for (int i = 0; i<parkingtracks.size(); i++){
+			System.out.println("track: "+parkingtracks.get(i).getLabel()+" maxbackwardlength: "+parkingtracks.get(i).getMaxDriveBackLength()+" length: "+parkingtracks.get(i).getTracklength());
 		}
-		System.out.println();
-		//		System.out.println(timeline.get(2).getEventblock().getCutpositionarr1());
-		//		System.out.println(timeline.get(3).getEventblock().getCutpositionarr1());
+			//sort eventlist into timeline
+			timeline = new ArrayList<Event>();
+				sortEvents(eventlist);
+				for (int i = 0; i<timeline.size(); i++){
+					//System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 
-		for (int i = 0; i< timeline.size(); i++){
-			System.gc();
-			System.out.println("event "+i+ " "+timeline.get(i));
-			if (timeline.get(i).getType()==1){ //if it is a departure
-				departure(timeline.get(i), i);
-				System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel());
-				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
-				}
-			}
-			else if (timeline.get(i).getType()==0) { //if it is an arrival
-				boolean parked = arrival(timeline.get(i), i);
-				System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
-				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x));
-				}
-			}
-			else{
-				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
-			}
+					timeline.get(i).getRelatedEvent().getStarttime();//TODO: not correctly constructed!!!!!
+					timeline.get(i).getRelatedEvent().getEndtime(); //TODO: not correctly constructead!!!
+					System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 
-		}
+
+				}
+				System.out.println();
+				//		System.out.println(timeline.get(2).getEventblock().getCutpositionarr1());
+				//		System.out.println(timeline.get(3).getEventblock().getCutpositionarr1());
+
+				for (int i = 0; i< timeline.size(); i++){
+					System.gc();
+					System.out.println("event "+i+ " "+timeline.get(i));
+					if (timeline.get(i).getType()==1){ //if it is a departure
+						departure(timeline.get(i), i);
+						System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel());
+						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
+							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getDepartureSide()+" dep time: "+timeline.get(i).getEndtime());
+						}
+					}
+					else if (timeline.get(i).getType()==0) { //if it is an arrival
+						boolean parked = arrival(timeline.get(i), i);
+						System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel());
+						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
+							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getDepartureSide()+" dep time: "+timeline.get(i).getEndtime());
+						}
+					}
+					else{
+						throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
+					}
+
+				}
 	}
 
 	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
@@ -329,18 +333,18 @@ public class Parking3 implements Serializable{ //TODO: test!
 			//if: A side departure
 			if (arrivalevent.getDepartureSide()==0){
 				System.out.println("BA");
-					//check if we can park it
-					boolean feasible = checkFeasibleBA(arrivalevent, parkingtrack);
-					//if: we can park it directly
-					if (feasible){
-						System.out.println("Succeeded directly");
-						arrivalBSide(arrivalevent,parkingtrack);
-						parked = true;
-					}
-					//else: we cannot park it directly
-					else{
-						//if: there is at least one on track
-						if (parkingtrack.getEventlist().size() > 0){
+				//check if we can park it
+				boolean feasible = checkFeasibleBA(arrivalevent, parkingtrack);
+				//if: we can park it directly
+				if (feasible){
+					System.out.println("Succeeded directly");
+					arrivalBSide(arrivalevent,parkingtrack);
+					parked = true;
+				}
+				//else: we cannot park it directly
+				else{
+					//if: there is at least one on track
+					if (parkingtrack.getEventlist().size() > 0){
 						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);

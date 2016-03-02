@@ -142,11 +142,11 @@ public class Main {
 				}
 			}
 
-			Todo3 JobShop = new Todo3(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+			Todo4 JobShop = new Todo4(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
 			ArrayList<Event> events = JobShop.getEvents();
 			System.gc();
 //			for(int i = 0; i<events.size(); i++){
-//				System.out.println(" Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
+//				System.out.println("Event: " + events.get(i) + " Relatedevent: " + events.get(i).getRelatedEvent() + " Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
 //			}
 			
 			//Parking ourparking = new Parking(events, tracks);
