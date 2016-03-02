@@ -33,7 +33,7 @@ public class Event { //TODO: test
 		if (typeevent == 0){
 			time = starttime;
 		}
-		else{
+		else if (typeevent ==1){
 			time = endtime;
 		}
 		this.sidestart = sidestart;
