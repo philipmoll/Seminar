@@ -30,8 +30,8 @@ public class Parking3 implements Serializable{ //TODO: test!
 		//TODO: zetuit!!!
 		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
 		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
-		parkingtracks.add(0,parkingtracks2.get(0));
-		//				parkingtracks.add(0,parkingtracks2.get(1));
+		parkingtracks.add(parkingtracks2.get(0));
+		parkingtracks.add(parkingtracks2.get(1));
 		//				parkingtracks.add(0,parkingtracks2.get(2))
 
 
@@ -239,6 +239,9 @@ public class Parking3 implements Serializable{ //TODO: test!
 					}
 				}
 			}
+		}
+		else{
+			System.out.println("Not enough room available on track "+parkingtrack.getLabel());
 		}
 		return parked;
 	}
