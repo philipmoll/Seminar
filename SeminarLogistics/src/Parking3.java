@@ -356,14 +356,14 @@ public class Parking3 implements Serializable{ //TODO: test!
 					if (parkingtrack.getEventlist().size() > 0){
 						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
-						System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
-						System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						//if: we can toggle adjacent
 						if (toggle){
 							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
+							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleBA(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
@@ -398,14 +398,14 @@ public class Parking3 implements Serializable{ //TODO: test!
 					if (parkingtrack.getEventlist().size() > 0){
 						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
-						System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
-						System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 						//if: we can toggle adjacent
 						if (toggle){
 							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
+							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
+							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleBB(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
