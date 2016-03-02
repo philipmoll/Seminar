@@ -141,8 +141,8 @@ public class Todo4 {
 
 		//It checks for all possible activities
 		for(int j = 0; j<4; j++){
-			temp = 12412;
-			temptemp = 12412;
+			temp = 1440;
+			temptemp = 1440;
 			temp1 = null;
 			temptemp1 = null;
 			durationactivity = 0;
@@ -191,7 +191,9 @@ public class Todo4 {
 					//Add an activity
 
 					activities.add(new Activity(durationactivity, (int) addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
-
+					if (j==1 || j==2){
+						amount += 1;
+					}
 
 					//We find the soonest possible time to start the activity looking at each possible track the activity can be done.
 					for(int k = 0; k<platforms.size(); k++){
@@ -216,11 +218,10 @@ public class Todo4 {
 
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible1 = false;
 					}
 					else{
-						System.out.println(temp + " he hallo " + temp1);
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
@@ -232,6 +233,7 @@ public class Todo4 {
 							time10 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track10 = activities.get(activities.size()-1).getTrackAssigned();
 							
+							
 							mintemp = time10 + durationactivity;
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
@@ -239,17 +241,13 @@ public class Todo4 {
 						}
 						//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 						else if(j == 1){
-							System.out.println(activities.get(activities.size()-1).getPlannedTimeInteger() + " 1 " + activities.get(activities.size()-1).getTrackAssigned());
 							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track11 = activities.get(activities.size()-1).getTrackAssigned();
 							
-							System.out.println(time11 + " he hallo2 " + track11);
-
 							
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
-							amount += 1;
 						}
 
 						//Storing the first solution ............. see above.
@@ -259,7 +257,6 @@ public class Todo4 {
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
-							amount += 1;
 						}
 						currenttrack = temp1;
 					}
@@ -269,7 +266,7 @@ public class Todo4 {
 				//If activity is washing, we have to look at other tracks, i.e. wash areas.
 				else if(j == 3){
 					activities.add(new Activity(durationactivity, addedcomp.getDepartureTimeInteger()-durationactivity, addedcomp, j));
-
+					
 					//Keeping track of amount of activities done except for inspection
 					amount += 1;
 
@@ -295,11 +292,10 @@ public class Todo4 {
 							temp1 = temptemp1;
 						}
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible1 = false;
 					}
 					else{
-						//System.out.print(temp + " " + temp1);
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
 						currenttrack = temp1;
 
@@ -323,6 +319,7 @@ public class Todo4 {
 			margin1 = -1;
 		}
 		bestmargin = margin1;
+		
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
@@ -361,10 +358,6 @@ public class Todo4 {
 			}
 		}
 
-
-
-
-
 		//ADDING OPTION 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -375,8 +368,8 @@ public class Todo4 {
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
 				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
+				temp = 1440;
+				temptemp = 1440;
 				temp1 = null;
 				temptemp1 = null;
 				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
@@ -395,13 +388,13 @@ public class Todo4 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp <= temp){
+						if(temptemp < temp){
 							temp = temptemp;
 							temp1 = temptemp1;
 						}
 
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible2 = false;
 					}
 					else{
@@ -436,13 +429,13 @@ public class Todo4 {
 							}
 						}
 						//Update if we find better solution than the previous ones at a different track.
-						if(temptemp <= temp){
+						if(temptemp < temp){
 							temp = temptemp;
 							temp1 = temptemp1;
 						}
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible2 = false;
 					}
 					else{
@@ -471,17 +464,15 @@ public class Todo4 {
 				}
 			}
 		}
+		
 		if(feasible2 == false){
 			margin2 = -1;
 		}
 		else if(margin2 > bestmargin){
-			System.out.println(time11 + " " + track11 + " 1 \n");
 			time11 = time21;
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			System.out.println(time11 + " " + track11 + " 1 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin2;
@@ -537,8 +528,8 @@ public class Todo4 {
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
 				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
+				temp = 1440;
+				temptemp = 1440;
 				temp1 = null;
 				temptemp1 = null;
 				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
@@ -563,7 +554,7 @@ public class Todo4 {
 						}
 
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible3 = false;
 					}
 					else{
@@ -604,7 +595,7 @@ public class Todo4 {
 						}
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible3 = false;
 					}
 					else{
@@ -641,8 +632,6 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			System.out.println(time11 + " " + track11 + " 2 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin3;
@@ -698,8 +687,8 @@ public class Todo4 {
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
 				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
+				temp = 1440;
+				temptemp = 1440;
 				temp1 = null;
 				temptemp1 = null;
 				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
@@ -724,7 +713,7 @@ public class Todo4 {
 						}
 
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible4 = false;
 					}
 					else{
@@ -765,7 +754,7 @@ public class Todo4 {
 						}
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible4 = false;
 					}
 					else{
@@ -802,8 +791,6 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			System.out.println(time11 + " " + track11 + " 3 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin4;
@@ -860,8 +847,8 @@ public class Todo4 {
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
 				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
+				temp = 1440;
+				temptemp = 1440;
 				temp1 = null;
 				temptemp1 = null;
 				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
@@ -886,7 +873,7 @@ public class Todo4 {
 						}
 
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible5 = false;
 					}
 					else{
@@ -927,7 +914,7 @@ public class Todo4 {
 						}
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible5 = false;
 					}
 					else{
@@ -964,8 +951,6 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			System.out.println(time11 + " " + track11 + " 4 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin5;
@@ -1022,8 +1007,8 @@ public class Todo4 {
 		for(int j = 0; j<sequence.length; j++){
 			if (sequence[j]!=-1){
 				activities.get(activities.size()-1-sequence[j]).setCurrentTrack(currenttrack);
-				temp = 12412;
-				temptemp = 12412;
+				temp = 1440;
+				temptemp = 1440;
 				temp1 = null;
 				temptemp1 = null;
 				if(activities.get(activities.size()-1-sequence[j]).getActivity() == 3){
@@ -1048,7 +1033,7 @@ public class Todo4 {
 						}
 
 					}
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible6 = false;
 					}
 					else{
@@ -1089,7 +1074,7 @@ public class Todo4 {
 						}
 					}
 
-					if(temp == 12412){
+					if(temp == 1440){
 						feasible6 = false;
 					}
 					else{
@@ -1126,8 +1111,6 @@ public class Todo4 {
 			time12 = time22;
 			time13 = time23;
 			track11 = track21;
-			System.out.println(time11 + " " + track11 + " 5 \n");
-
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin6;
@@ -1184,7 +1167,6 @@ public class Todo4 {
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
 				else if(activities.get(activities.size()-1-i).getActivity()==1){
-					System.out.print(time11 + " safjdfas " + track11);
 					activities.get(activities.size()-1-i).setUpdate(time11, track11);
 					this.setBusyTime(activities.get(activities.size()-1-i));
 				}
