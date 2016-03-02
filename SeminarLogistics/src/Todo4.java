@@ -130,7 +130,7 @@ public class Todo4 {
 		boolean feasible4 = true;
 		boolean feasible5 = true;
 		boolean feasible6 = true;
-
+ 
 
 
 		//reset the sequence array
