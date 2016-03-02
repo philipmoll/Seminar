@@ -30,8 +30,8 @@ public class Train implements Serializable{
 	
 	private double inspprob = 1;
 	private double cleanprob = 1;
-	private double washprob = 0.01;
-	private double repprob = 0.01;
+	private double washprob = 0.1;
+	private double repprob = 0.0;
 
 	private int position;
 	private Composition composition;
