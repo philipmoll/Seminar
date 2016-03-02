@@ -331,6 +331,11 @@ public class Todo4 {
 			currenttrack = null;
 		}
 
+		//reset the sequence array
+		for (int i = 0; i<sequence.length; i++){
+			sequence[i] = -1;
+		}
+		
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -488,6 +493,11 @@ public class Todo4 {
 			currenttrack = null;
 		}
 
+		//reset the sequence array
+				for (int i = 0; i<sequence.length; i++){
+					sequence[i] = -1;
+				}
+		
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -644,6 +654,11 @@ public class Todo4 {
 		else{
 			currenttrack = null;
 		}
+		
+		//reset the sequence array
+				for (int i = 0; i<sequence.length; i++){
+					sequence[i] = -1;
+				}
 
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
@@ -802,6 +817,11 @@ public class Todo4 {
 			currenttrack = null;
 		}
 
+		//reset the sequence array
+				for (int i = 0; i<sequence.length; i++){
+					sequence[i] = -1;
+				}
+		
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
 			for(int i = 1; i<4; i++){
@@ -958,6 +978,11 @@ public class Todo4 {
 		else{
 			currenttrack = null;
 		}
+		
+		//reset the sequence array
+				for (int i = 0; i<sequence.length; i++){
+					sequence[i] = -1;
+				}
 
 		//determine the right sequence of how the activities should be planned, in this case: 1, 3, 2.
 		for (int j = 0; j<amount; j++){
