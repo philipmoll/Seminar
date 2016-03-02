@@ -125,7 +125,6 @@ public class Activity {
 		trackassigned = newtrack;
 		plannedtime = newplannedtime;
 		totalduration = duration + movetime + movetime2;
-		System.out.println(trackassigned + " " + composition + " " + this);
 		trackassigned.setBusyTime(this);
 		composition.setBusyTime(this);
 	}
@@ -156,7 +155,7 @@ public class Activity {
 		return (int) ultimatetime;
 	}
 	public int getMarginInteger(){
-		return (int) ultimatetime - plannedtime - movetime;
+		return (int) (ultimatetime - plannedtime - movetime);
 	}
 	public int getMoveTime(){
 		return (int) movetime;
