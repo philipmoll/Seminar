@@ -344,7 +344,11 @@ public class Todo4 {
 		if(feasible1 == false){
 			margin1 = -1;
 		}
+		else{
+			bestoption = 1;
+		}
 		bestmargin = margin1;
+		
 
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
@@ -502,6 +506,7 @@ public class Todo4 {
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin2;
+			bestoption = 2;
 		}
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
@@ -661,6 +666,7 @@ public class Todo4 {
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin3;
+			bestoption = 3;
 		}
 
 
@@ -820,6 +826,7 @@ public class Todo4 {
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin4;
+			bestoption = 4;
 		}
 
 
@@ -980,6 +987,7 @@ public class Todo4 {
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin5;
+			bestoption = 5;
 		}
 
 
@@ -1140,6 +1148,7 @@ public class Todo4 {
 			track12 = track22;
 			track13 = track23;
 			bestmargin = margin6;
+			bestoption = 6;
 		}
 
 
@@ -1176,7 +1185,7 @@ public class Todo4 {
 				}
 			}
 			if(addedcomp.getInspection()){
-				currenttrack = activities.get(activities.size()-1-amount).getTrackAssigned();
+				currenttrack = activities.get(activities.size()-amount).getTrackAssigned();
 			}
 			else{
 				currenttrack = null;
@@ -1209,6 +1218,8 @@ public class Todo4 {
 					}
 				}
 			}
+			
+			System.out.println(sequence[0] + " " + sequence[1] + " " + sequence[2]);
 
 			//Same system as above, yet the order of activities is different! We look now backwards from 3 to 2 to 1. 0 remains untouched
 			for(int j = 0; j<sequence.length; j++){
@@ -1283,8 +1294,10 @@ public class Todo4 {
 
 						if(temp == 1440){
 							feasible7 = false;
+							System.out.println("IM NOT FEASIBLE" + feasible7);
 						}
 						else{
+							System.out.println("IM FEASIBLE" + feasible7);
 							activities.get(activities.size()-1-sequence[j]).setUpdate(temp, temp1);
 							currenttrack = temp1;
 
@@ -1292,8 +1305,9 @@ public class Todo4 {
 							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5){
+								System.out.println("JOEHOEEEE");
 								time25 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
-								track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+								track25 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
 									margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 								}
@@ -1313,14 +1327,15 @@ public class Todo4 {
 			if(feasible7 == false){
 				margin7 = -1;
 			}
-			else if(margin7 > bestmargin){
-				time11 = time21;
+			else if(margin7 >= bestmargin){
+				time15 = time25;
 				time12 = time22;
 				time13 = time23;
-				track11 = track21;
+				track15 = track25;
 				track12 = track22;
 				track13 = track23;
 				bestmargin = margin7;
+				bestoption = 7;
 			}
 
 		}
@@ -1333,49 +1348,45 @@ public class Todo4 {
 
 					activities.get(activities.size()-1-i).removeTimes();
 					this.removeBusyTime(activities.get(activities.size()-1-i));
-					//						if (addedcomp.getInspection()){
-					//							activities.get(activities.size()-1-amount).removeTimes();
-					//							this.removeBusyTime(activities.get(activities.size()-1-amount));
-					//						}
 				}
 			}
 
-			//					if (bestmargin == margin7){
-			//						for(int i = 0; i<amount; i++){
-			//							if(activities.get(activities.size()-1-i).getActivity()==5){
-			//								activities.get(activities.size()-1-i).setUpdate(time10, track10);
-			//								this.setBusyTime(activities.get(activities.size()-1-i));
-			//							}
-			//							if(activities.get(activities.size()-1-i).getActivity()==2){
-			//								activities.get(activities.size()-1-i).setUpdate(time12, track12);
-			//								this.setBusyTime(activities.get(activities.size()-1-i));
-			//							}
-			//							if(activities.get(activities.size()-1-i).getActivity()==3){
-			//								activities.get(activities.size()-1-i).setUpdate(time13, track13);
-			//								this.setBusyTime(activities.get(activities.size()-1-i));
-			//							}
-			//						}
-			//					}
-			//					else{
-			for(int i = 0; i<amount; i++){
-				if(activities.get(activities.size()-1-i).getActivity()==0){
-					activities.get(activities.size()-1-i).setUpdate(time10, track10);
-					this.setBusyTime(activities.get(activities.size()-1-i));
-				}
-				else if(activities.get(activities.size()-1-i).getActivity()==1){
-					activities.get(activities.size()-1-i).setUpdate(time11, track11);
-					this.setBusyTime(activities.get(activities.size()-1-i));
-				}
-				else if(activities.get(activities.size()-1-i).getActivity()==2){
-					activities.get(activities.size()-1-i).setUpdate(time12, track12);
-					this.setBusyTime(activities.get(activities.size()-1-i));
-				}
-				else if(activities.get(activities.size()-1-i).getActivity()==3){
-					activities.get(activities.size()-1-i).setUpdate(time13, track13);
-					this.setBusyTime(activities.get(activities.size()-1-i));
+			if (bestmargin == margin7){
+				for(int i = 0; i<amount; i++){
+					if(activities.get(activities.size()-1-i).getActivity()==5){
+						activities.get(activities.size()-1-i).setUpdate(time15, track15);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==2){
+						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					if(activities.get(activities.size()-1-i).getActivity()==3){
+						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
 				}
 			}
-			//}
+			else{
+				for(int i = 0; i<amount; i++){
+					if(activities.get(activities.size()-1-i).getActivity()==0){
+						activities.get(activities.size()-1-i).setUpdate(time10, track10);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					else if(activities.get(activities.size()-1-i).getActivity()==1){
+						activities.get(activities.size()-1-i).setUpdate(time11, track11);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					else if(activities.get(activities.size()-1-i).getActivity()==2){
+						activities.get(activities.size()-1-i).setUpdate(time12, track12);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+					else if(activities.get(activities.size()-1-i).getActivity()==3){
+						activities.get(activities.size()-1-i).setUpdate(time13, track13);
+						this.setBusyTime(activities.get(activities.size()-1-i));
+					}
+				}
+			}
 		}
 		else{
 			throw new IOException("No feasible solution found for job-shop");
