@@ -274,7 +274,7 @@ public class Todo5 {
 						if (trackfree == false){
 							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
 
-								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger()); l++){
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
 
 									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
