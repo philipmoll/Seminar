@@ -1,5 +1,7 @@
 //PARKING 3 WITH COUPLE DECOUPLE IMPLEMENTATION--> reordered
+//DOES NOT THROW ERROR WHEN NOT PARKED, SIMPLY RETURNS THE NUMBER NOT PARKED
 //FINAL FORM
+//USE EXTRA TRACKS AS PARKTRACK
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,22 +18,29 @@ import java.util.ArrayList;
 public class Parking5 implements Serializable{ //TODO: test!
 	private int CHOICE = 1; //MAXDRIVEBACKORDER
 	private ArrayList<Track> parkingtracks;
+	private ArrayList<Track> lifotracks;
 	//private int[][] parkingpositions;
 	//private ArrayList<Parking> previousparkings;
 	private ArrayList<Event> timeline;
 	//private ArrayList<int[]> freetracktimes;
+	private int notparked;
+	private Track[] tracks;
 
 	public Parking5(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
-
+		this.tracks = tracks;
+		notparked = 0;
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
 
+		lifotracks = new ArrayList<Track>();
+		sortTracks2(tracks);
+
 		//TODO: zetuit!!!
 		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
 		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
-		parkingtracks.add(parkingtracks2.get(0));
+		//parkingtracks.add(parkingtracks2.get(0));
 		//parkingtracks.add(parkingtracks2.get(1));
 		//				parkingtracks.add(0,parkingtracks2.get(2))
 
@@ -44,14 +53,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 		sortEvents(eventlist);
 		for (int i = 0; i<timeline.size(); i++){
 			//System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
-
 			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime()+" time: "+timeline.get(i).getTime());
 			//if final type == 1, reorder a little
+			int nrevents = 0;
 			if (timeline.get(i).getFinalType() == 1){
 				if (timeline.get(i).getType() == 0){
 					ArrayList<Event> finalevents = new ArrayList<>();
 					finalevents.add(timeline.get(i));
-					int nrevents = 1;
+					nrevents++;
 					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
 						if (i+j<timeline.size()){
 							if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
@@ -72,7 +81,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 				if (timeline.get(i).getType() == 1){
 					ArrayList<Event> finalevents = new ArrayList<>();
 					finalevents.add(timeline.get(i));
-					int nrevents = 1;
+					nrevents++;
 					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
 						if(i+j<timeline.size()){
 							if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
@@ -91,7 +100,9 @@ public class Parking5 implements Serializable{ //TODO: test!
 					}
 
 				}
+
 			}
+			//i=i+nrevents;
 		}
 		System.out.println();
 		//		System.out.println(timeline.get(2).getEventblock().getCutpositionarr1());
@@ -100,27 +111,39 @@ public class Parking5 implements Serializable{ //TODO: test!
 		for (int i = 0; i< timeline.size(); i++){
 			System.gc();
 			System.out.println("event "+i+ " "+timeline.get(i));
-			if (timeline.get(i).getType()==1){ //if it is a departure
-				departure(timeline.get(i), i);
-				System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
-				for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-					System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" arr time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getStarttime()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
+			boolean skip = false;
+			if (i != timeline.size()-1){
+				if (timeline.get(i+1)== timeline.get(i).getRelatedEvent()){
+					System.out.println("SKIP EVENT "+i+" and "+(i+1));
+					skip = true;
+					i = i+1;
 				}
 			}
-			else if (timeline.get(i).getType()==0) { //if it is an arrival
-				boolean parked = arrival(timeline.get(i), i);
-				if (parked){
+			if (!skip){
+				if (timeline.get(i).getType()==1){ //if it is a departure
+					departure(timeline.get(i), i);
+					System.out.println("Departure from track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 					for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
-						System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
+						System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" arr time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getStarttime()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
 					}
-					System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 				}
-				else {
-					System.out.println("WARNING: Event "+i+", "+timeline.get(i)+" cannot be parked");
+				else if (timeline.get(i).getType()==0) { //if it is an arrival
+					boolean parked = arrival(timeline.get(i), i);
+					if (parked){
+						for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
+							System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
+						}
+						System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
+					}
+					else {
+						System.out.println("WARNING: Event "+i+", "+timeline.get(i)+" cannot be parked");
+						notparked++;
+						//timeline.remove(timeline.get(i).getRelatedEvent());
+					}
 				}
-			}
-			else{
-				throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
+				else{
+					throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
+				}
 			}
 
 		}
@@ -235,35 +258,82 @@ public class Parking5 implements Serializable{ //TODO: test!
 
 	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
 		if (eventlist.size()>0){
-		timeline.add(eventlist.get(0));
-		if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
-			timeline.add(eventlist.get(1));
-		}
-		else {
-			timeline.add(0,eventlist.get(1));
-		}
-		for (int i = 2; i< eventlist.size(); i++){
-			if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
-				timeline.add(0,eventlist.get(i));
+			timeline.add(eventlist.get(0));
+			if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
+				timeline.add(eventlist.get(1));
 			}
-			else if (eventlist.get(i).getTime()>=timeline.get(timeline.size()-1).getTime()){
-				timeline.add(eventlist.get(i));
+			else {
+				timeline.add(0,eventlist.get(1));
 			}
-			else{
-				for (int j = 0; j< timeline.size()-1; j++){
-					if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
-						timeline.add(j+1,eventlist.get(i));
-						break;
+			for (int i = 2; i< eventlist.size(); i++){
+				if (eventlist.get(i).getTime()<timeline.get(0).getTime()){
+					timeline.add(0,eventlist.get(i));
+				}
+				else if (eventlist.get(i).getTime()>=timeline.get(timeline.size()-1).getTime()){
+					timeline.add(eventlist.get(i));
+				}
+				else{
+					for (int j = 0; j< timeline.size()-1; j++){
+						if (eventlist.get(i).getTime()>=timeline.get(j).getTime() && eventlist.get(i).getTime() < timeline.get(j+1).getTime()){
+							timeline.add(j+1,eventlist.get(i));
+							break;
+						}
+					}
+				}
+			}
+			//throw exception if timeline ordered incorrectly
+			for (int i = 0; i<timeline.size()-1; i++){
+				if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
+					throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
+				}
+			}
+		}
+	}
+
+	public void sortTracks2(Track[] tracks) throws MethodFailException{
+		int count = 0;
+		int x = 0;
+		for (int i = 0; i<tracks.length; i++){
+			if (tracks[i].getParktrain()==-1){
+				if (count ==0){
+					lifotracks.add(tracks[i]);
+				}
+				else if (count ==1){
+					if (tracks[i].getTotalBusyTime()<lifotracks.get(0).getTotalBusyTime()){
+						lifotracks.add(0,tracks[i]);
+					}
+					else {
+						lifotracks.add(tracks[i]);
+					}
+					x=i;
+					break;
+				}
+				count++;
+			}
+		}
+		for (int i = x+1; i<tracks.length ; i++){
+			if(tracks[i].getParktrain() == -1){
+				if (tracks[i].getTotalBusyTime()<lifotracks.get(0).getTotalBusyTime()){
+					lifotracks.add(0,tracks[i]);
+				}
+				else if (tracks[i].getTotalBusyTime()>=lifotracks.get(lifotracks.size()-1).getTotalBusyTime()){
+					lifotracks.add(tracks[i]);
+				}
+				else{
+					for (int j = 0; j< lifotracks.size()-1; j++){
+						if (tracks[i].getTotalBusyTime()>=lifotracks.get(j).getTotalBusyTime() && tracks[i].getTotalBusyTime()<lifotracks.get(j+1).getTotalBusyTime()){
+							lifotracks.add(j+1,tracks[i]);
+							break;
+						}
 					}
 				}
 			}
 		}
-		//throw exception if timeline ordered incorrectly
-		for (int i = 0; i<timeline.size()-1; i++){
-			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
-				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
+		//throw exception if parkingtracks ordered incorrectly
+		for (int i = 0; i<lifotracks.size()-1; i++){
+			if (lifotracks.get(i).getTotalBusyTime() > lifotracks.get(i+1).getTotalBusyTime()){
+				throw new MethodFailException("Lifotracks ordering in Parking constructor failed at position i = "+i+": lifotracks.get(i).getTotalBusyTime() = "+lifotracks.get(i).getTotalBusyTime()+" and lifotracks.get(i+1).getTotalBusyTime() = "+lifotracks.get(i+1).getTotalBusyTime());
 			}
-		}
 		}
 	}
 
@@ -316,8 +386,25 @@ public class Parking5 implements Serializable{ //TODO: test!
 
 	public boolean arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
 		boolean parked = false;
-		if (CHOICE ==1){
-			parked = arrivalMaxDriveBackOrder(arrivalevent, i);
+		if(!parked){
+			if (CHOICE ==1){
+				parked = arrivalMaxDriveBackOrder(arrivalevent, i);
+			}
+		}
+		if (!parked){
+			System.out.println("IK BEN HIER");
+			for (int j = 0; j<lifotracks.size(); j++){
+				parked = lifoPark(arrivalevent, lifotracks.get(j),i);
+				if (parked == true){
+					break;
+				}
+			}
+			if (parked == true){
+				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+			}
+			else {
+				System.out.println("Arrival "+i+" cannot be parked simply");
+			}
 		}
 		return parked;
 	}
@@ -331,6 +418,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 				parked = simplePark(arrivalevent, parkingtracks.get(j), i);
 			}
 			if (parked == true){
+				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
 				break;
 			}
 		}
@@ -348,7 +436,6 @@ public class Parking5 implements Serializable{ //TODO: test!
 					break;
 				}
 			}
-
 			if (!parked){
 				System.out.println("Arrival "+i+" cannot be parked simply");
 			}
@@ -399,6 +486,38 @@ public class Parking5 implements Serializable{ //TODO: test!
 		}
 		else{
 			System.out.println("Not enough room available on track "+parkingtrack.getLabel());
+		}
+		return parked;
+	}
+
+	//TODO: IMPORTANT, WE ASSUME THAT ALL LIFO TRACKS CAN ONLY BE ENTERED FROM THE B (RIGHT) SIDE (INTERPRETATION)
+	public boolean lifoPark(Event arrivalevent, Track parkingtrack, int i) throws TrackNotFreeException{
+		boolean parked = false;
+		if (parkingtrack.getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() <= parkingtrack.getTracklength()){
+			//if: feasible with other blocks
+			boolean feasibleblocks = false;
+			if (parkingtrack.getEventlist().size() == 0){
+				feasibleblocks = true;
+			}
+			else{
+				if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime()<= arrivalevent.getEndtime()){
+					feasibleblocks = true;
+				}
+			}
+			if(feasibleblocks == true){
+				//if: feasible with busytime
+				boolean feasiblebusytime = true;
+				for (int j = arrivalevent.getStarttime(); j<= arrivalevent.getEndtime(); j++){
+					if (parkingtrack.getBusyArray()[j] == 1){
+						feasiblebusytime = false;
+						break;
+					}
+				}
+				if (feasiblebusytime = true){
+					parked = true;
+					arrivalBSide(arrivalevent, parkingtrack);
+				}
+			}
 		}
 		return parked;
 	}
@@ -843,19 +962,26 @@ public class Parking5 implements Serializable{ //TODO: test!
 		//reverse leave
 		//not reverse leave
 
-		//if we leave in reverse
-		if (departureevent.getDepartureSide() == 0){
-			if (departureevent.getEventTrack().getEventlist().get(0)==departureevent.getRelatedEvent()){
-				departure(departureevent);
-			}
+		//if: departure from lifotrack
+		if (departureevent.getEventTrack().getParktrain() == -1){
+			departure(departureevent);
 		}
-		else if (departureevent.getDepartureSide() == 1){
-			if (departureevent.getEventTrack().getEventlist().get(departureevent.getEventTrack().getEventlist().size()-1)==departureevent.getRelatedEvent()){
-				departure(departureevent);
-			}
-		}
+		//else: departure from 'normal' track
 		else{
-			throw new MethodFailException("GetDepartureSide for event "+i+" not equal to 0 or 1, but "+departureevent.getDepartureSide());
+			//if: we leave in reverse
+			if (departureevent.getDepartureSide() == 0){
+				if (departureevent.getEventTrack().getEventlist().get(0)==departureevent.getRelatedEvent()){
+					departure(departureevent);
+				}
+			}
+			else if (departureevent.getDepartureSide() == 1){
+				if (departureevent.getEventTrack().getEventlist().get(departureevent.getEventTrack().getEventlist().size()-1)==departureevent.getRelatedEvent()){
+					departure(departureevent);
+				}
+			}
+			else{
+				throw new MethodFailException("GetDepartureSide for event "+i+" not equal to 0 or 1, but "+departureevent.getDepartureSide());
+			}
 		}
 	}
 
@@ -871,6 +997,10 @@ public class Parking5 implements Serializable{ //TODO: test!
 
 	public ArrayList<Event> getTimeline(){
 		return timeline;
+	}
+
+	public int getNotParked(){
+		return notparked;
 	}
 }
 

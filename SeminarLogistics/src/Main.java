@@ -70,9 +70,9 @@ public class Main {
 			}
 
 			Track[] tracks =  readInTracks(trackdata);
-//			for (int i = 0; i<tracks.length; i++){
-//				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
-//			}
+			for (int i = 0; i<tracks.length; i++){
+				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
+			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
@@ -81,7 +81,7 @@ public class Main {
 			while (feas == false){
 				counter++;
 				System.out.println("while loop iteration "+counter);
-				Schedule schedule = new Schedule(trainsarr);
+				new Schedule(trainsarr);
 
 				ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
 
@@ -145,7 +145,7 @@ public class Main {
 					}
 				}
 
-				Todo4 JobShop = new Todo4(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+				Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
 				ArrayList<Event> events = JobShop.getEvents();
 				System.gc();
 
@@ -155,6 +155,7 @@ public class Main {
 
 				//Parking3 ourparking3 = new Parking3(events, tracks);
 				Parking5 ourparking5 = new Parking5(events,tracks);
+				System.out.println("Did not park: "+ourparking5.getNotParked());
 			}
 
 			//			for (int i = 0; i<arrivingcompositions.size(); i++){

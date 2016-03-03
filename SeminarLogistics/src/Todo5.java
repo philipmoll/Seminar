@@ -68,7 +68,7 @@ public class Todo5 {
 				}
 			}
 			//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
-			System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
+			//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
 			this.addComposition(this.finalblockss.get(k));
 			finalblockssshallow.add(this.finalblockss.get(k));
 			this.finalblockss.remove(k);
@@ -1368,7 +1368,7 @@ public class Todo5 {
 							if (trackfree == false){
 								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
 
-									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger()); l++){
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
 
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){

@@ -355,6 +355,30 @@ public class Track implements Serializable {
 			return true;
 		}
 	}
+	
+	public int[] getBusyArray(){
+		int[] busyarray = new int[60*24];
+		for (int i = 0; i<60*24; i++){
+			if (this.getBusy(i) == true){
+				busyarray[i]=0;
+			}
+			else{
+				busyarray[i]=1;
+			}
+		}
+		return busyarray;
+	}
+	
+	public int getTotalBusyTime(){
+		int totalbusytime=0;
+		for (int i = 0; i<this.getBusyArray().length; i++){
+			if (this.getBusyArray()[i]==1){
+				totalbusytime++;
+			}
+		}
+		return totalbusytime;
+	}
+	
 	public void removeBusyTimeMove(Activity activity) throws IOException{
 		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			//System.out.print(busytime[i]);
