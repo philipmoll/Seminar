@@ -5,7 +5,7 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 public class Matching {
-	public static final double c = Main.moveduration/60/24;
+	public static final double c = 3*Main.moveduration/60/24;
 	public static final int minplatformlength = 200; //TODO: verschilt per yard (kan ook washing area length zijn)
 	public static final int M = 1000;
 
