@@ -5,7 +5,7 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 public class Matching {
-	public static final double c = 3*Main.moveduration/60/24;
+	public static final double c = 20*(double)Main.moveduration/60/24;
 	public static final int minplatformlength = 200; //TODO: verschilt per yard (kan ook washing area length zijn)
 	public static final int M = 1000;
 
@@ -13,6 +13,7 @@ public class Matching {
 	private ArrayList<Block> departingblocklist; //set J
 	private boolean[][] z_ij; //matchings i and j
 	private double objectivevalue; //objectivevalue
+	private boolean solved;
 
 	//private ArrayList<Composition> arrivingcompositions;
 	//private ArrayList<Composition> departingcompositions;
@@ -54,6 +55,7 @@ public class Matching {
 	 * @throws CloneNotSupportedException
 	 */
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
+		System.out.println(c);
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
 //		for (int i = 0; i<arrivingblocklist.size(); i++){
@@ -436,8 +438,10 @@ public class Matching {
 			// solve
 			if(cplex.solve()){
 				System.out.println("obj = "+cplex.getObjValue());
+				solved = true;
 			}
 			else {
+				solved = false;
 				System.out.println("Model not solved");
 			}
 			for (int i=0;i<arrivingblocklist.size();i++){
@@ -547,238 +551,10 @@ public class Matching {
 		}
 		return blocklist;
 	}
-
-	//	/**
-	//	* CPLEX model that calculates the optimal matching
-	//	* 
-	//	* @return z[i][j]
-	//	*/
-	//	private boolean[][] model1(){
-	//		int Q = 1; //Penalty for splitting
-	//		boolean[][] zij = new boolean[arrivingblocklist.size()][departingblocklist.size()];
-	//		try {	
-	//			// define new model
-	//			IloCplex cplex = new IloCplex();
-	//
-	//			// variables
-	//			IloNumVar[] u = cplex.boolVarArray(arrivingblocklist.size());
-	//			IloNumVar[] v = cplex.boolVarArray(departingblocklist.size());
-	//
-	//			IloNumVar[][] z = new IloNumVar[arrivingblocklist.size()][];
-	//			for (int i = 0; i<arrivingblocklist.size(); i++){
-	//				z[i] = cplex.boolVarArray(departingblocklist.size());
-	//			}
-	//
-	//			//expressions for constraints(1)
-	//			IloLinearNumExpr[] arcsoutoforigin1 = new IloLinearNumExpr[arrivingcompositions.size()];
-	//			for (int t = 0; t<arrivingcompositions.size(); t++){
-	//				arcsoutoforigin1[t]=cplex.linearNumExpr();
-	//				for (int i = 0; i<arrivingblocklist.size(); i++){
-	//					int count = 0;
-	//					for (int b = 0; b<arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length; b++){
-	//						if (arcsoutofnodearrivingcompositionsset[t][0].getBlocks()[b] == arrivingblocklist.get(i)){
-	//							arcsoutoforigin1[t].addTerm(1.0, u[i]);
-	//							count ++;
-	//						}
-	//					}
-	//					if (count >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length){
-	//						break;
-	//					}
-	//				}
-	//			}
-	//
-	//			//expressions for constraints(2)
-	//			IloLinearNumExpr[][] intermediatearcs1 = new IloLinearNumExpr[arrivingcompositions.size()][2];
-	//			for (int t = 0; t<arrivingcompositions.size(); t++){
-	//				for (int h = 0; h < intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++){ 
-	//					intermediatearcs1[t][h]=cplex.linearNumExpr();
-	//					for (int i = 0; i<arrivingblocklist.size(); i++){
-	//						int count1 = 0;
-	//						int count2 = 0;
-	//						for (int b1 = 0; b1<arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks().length; b1++){
-	//							if (arcsoutofnodearrivingcompositionsset[t][h+1].getBlocks()[b1] == arrivingblocklist.get(i)){
-	//								intermediatearcs1[t][h].addTerm(1.0, u[i]);
-	//								count1 ++;
-	//							}
-	//						}
-	//						for (int b2 = 0; b2<arcsintonodearrivingcompositionsset[t][h].getBlocks().length; b2++){
-	//							if (arcsintonodearrivingcompositionsset[t][h].getBlocks()[b2] == arrivingblocklist.get(i)){
-	//								intermediatearcs1[t][h].addTerm(-1.0, u[i]);
-	//								count2 ++;
-	//							}
-	//						}
-	//						if (count1 >= arcsoutofnodearrivingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodearrivingcompositionsset[t][0].getBlocks().length){
-	//							break;
-	//						}
-	//					}
-	//				}
-	//			}
-	//
-	//			//expressions for constraints(4)
-	//			IloLinearNumExpr[] arcsoutoforigin2 = new IloLinearNumExpr[departingcompositions.size()];
-	//			for (int t = 0; t<departingcompositions.size(); t++){
-	//				arcsoutoforigin2[t]=cplex.linearNumExpr();
-	//				for (int i = 0; i<departingblocklist.size(); i++){
-	//					int count = 0;
-	//					for (int b = 0; b<arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length; b++){
-	//						if (arcsoutofnodedepartingcompositionsset[t][0].getBlocks()[b] == departingblocklist.get(i)){
-	//							arcsoutoforigin2[t].addTerm(1.0, v[i]);
-	//							count ++;
-	//						}
-	//					}
-	//					if (count >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length){
-	//						break;
-	//					}
-	//				}
-	//			}
-	//
-	//			//expressions for constraints(5)
-	//			IloLinearNumExpr[][] intermediatearcs2 = new IloLinearNumExpr[departingcompositions.size()][2];
-	//			for (int t = 0; t<departingcompositions.size(); t++){
-	//				for (int h = 0; h < intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++){
-	//					intermediatearcs2[t][h]=cplex.linearNumExpr();
-	//					for (int i = 0; i<departingblocklist.size(); i++){
-	//						int count1 = 0;
-	//						int count2 = 0;
-	//						for (int b1 = 0; b1<arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks().length; b1++){
-	//							if (arcsoutofnodedepartingcompositionsset[t][h+1].getBlocks()[b1] == departingblocklist.get(i)){
-	//								intermediatearcs2[t][h].addTerm(1.0, v[i]);
-	//								count1 ++;
-	//							}
-	//						}
-	//						for (int b2 = 0; b2<arcsintonodedepartingcompositionsset[t][h].getBlocks().length; b2++){
-	//							if (arcsintonodedepartingcompositionsset[t][h].getBlocks()[b2] == departingblocklist.get(i)){
-	//								intermediatearcs2[t][h].addTerm(-1.0, v[i]);
-	//								count2 ++;
-	//							}
-	//						}
-	//						if (count1 >= arcsoutofnodedepartingcompositionsset[t][0].getBlocks().length && count2>=arcsintonodedepartingcompositionsset[t][0].getBlocks().length){
-	//							break;
-	//						}
-	//					}
-	//				}
-	//			}
-	//
-	//			//expressions for constraints (6)
-	//			IloLinearNumExpr[] summatchingsmade6 = new IloLinearNumExpr[arrivingblocklist.size()];
-	//			for (int i = 0; i<arrivingblocklist.size(); i++){
-	//				summatchingsmade6[i] = cplex.linearNumExpr();
-	//				for (int j = 0; j<departingblocklist.size(); j++){
-	//					double term = 0;
-	//					for (int k = 0; k<compatibledepartingblocksset[i].getCompatibleDepartingBlocks().size(); k++){
-	//						if (compatibledepartingblocksset[i].getCompatibleDepartingBlocks().get(k) == departingblocklist.get(j)){
-	//							term = 1;
-	//							break;
-	//						}
-	//					}
-	//					summatchingsmade6[i].addTerm(term, z[i][j]);
-	//				}
-	//			}
-	//
-	//
-	//			//expressions for constraints (7)
-	//			IloLinearNumExpr[] summatchingsmade7 = new IloLinearNumExpr[departingblocklist.size()];
-	//			for (int j = 0; j<departingblocklist.size(); j++){
-	//				summatchingsmade7[j] = cplex.linearNumExpr();
-	//				for (int i = 0; i<arrivingblocklist.size(); i++){
-	//					double term = 0;
-	//					for (int k = 0; k<compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().size(); k++){
-	//						if (compatiblearrivingblocksset[j].getCompatibleArrivingBlocks().get(k) == arrivingblocklist.get(i)){
-	//							//System.out.println("j: "+j+" i: "+i+" k: "+k);
-	//							term = 1.0;
-	//							break;
-	//						}
-	//						
-	//					}
-	//					summatchingsmade7[j].addTerm(term,z[i][j]); //only add z(i,j) if i is in the compatiblearrivingblocksset of j
-	//				}
-	//			}
-	//			//expressions for constraints (8) (max blocklength)
-	//			IloLinearNumExpr[] weightexpr = new IloLinearNumExpr[arrivingblocklist.size()];
-	//			for (int i =0; i<arrivingblocklist.size(); i++){
-	//				weightexpr[i] = cplex.linearNumExpr();
-	//				weightexpr[i].setConstant(Matching.M+Matching.minplatformlength);
-	//				weightexpr[i].addTerm(Matching.M, u[i]);
-	//				//weightexpr[i] = Matching.M*(1-u[i])+Matching.minplatformlength = Matching.M+Matching.minplatformlength - Matching.M*u[i]
-	//			}
-	//
-	//			IloLinearNumExpr objective = cplex.linearNumExpr();
-	//			for (int i = 1; i<arrivingblocklist.size(); i++){
-	//				objective.addTerm(Q, u[i]);
-	//			}
-	//
-	//
-	//			// define objective 
-	//			cplex.addMinimize(objective);
-	//
-	//
-	//			//constraints (1)
-	//			for (int t=0; t<arrivingcompositions.size();t++){
-	//				cplex.addEq(arcsoutoforigin1[t], 1);
-	//			}
-	//
-	//			//constraints (2)
-	//			for (int t=0; t<arrivingcompositions.size();t++){
-	//				for (int h = 0; h<intermediatenodesarrivingcompositionsset[t].getIntermediateNodes().length; h++)
-	//				{
-	//					cplex.addEq(intermediatearcs1[t][h], 0);
-	//				}
-	//			}
-	//
-	//			//constraints (4)
-	//			for (int t=0; t<departingcompositions.size();t++){
-	//				cplex.addEq(arcsoutoforigin2[t], 1);
-	//			}
-	//
-	//			//constraints (5)
-	//			for (int t=0; t<departingcompositions.size();t++){
-	//				for (int h = 0; h<intermediatenodesdepartingcompositionsset[t].getIntermediateNodes().length; h++)
-	//				{
-	//					cplex.addEq(intermediatearcs2[t][h], 0);
-	//				}
-	//			}
-	//
-	//			//constraints (6)
-	//			for (int i=0;i<arrivingblocklist.size();i++){
-	//				cplex.addEq(summatchingsmade6[i],u[i]);
-	//			}
-	//
-	//			//constraints (7)
-	//			for (int j=0;j<departingblocklist.size();j++){
-	//				cplex.addEq(summatchingsmade7[j],v[j]); 
-	//			}
-	//
-	//			//constraints (length)
-	//			for (int i = 0; i<arrivingblocklist.size(); i++){
-	//				cplex.addLe(arrivingblocklist.get(i).getLength(),weightexpr[i]);
-	//			}
-	//
-	//			//cplex.setParam(IloCplex.Param.Simplex.Display, 1);
-	//
-	//
-	//			// solve
-	//			if(cplex.solve()){
-	//				System.out.println("obj = "+cplex.getObjValue());
-	//			}
-	//			else {
-	//				System.out.println("Model not solved");
-	//			}
-	//			for (int i=0;i<arrivingblocklist.size();i++){
-	//				for (int j=0;j<departingblocklist.size();j++){
-	//					//System.out.println("Z("+i+","+j+") is equal to "+cplex.getValue(z[i][j]));
-	//					if (cplex.getValue(z[i][j])==1){
-	//						zij[i][j] = true;
-	//					}
-	//				}
-	//			}
-	//			cplex.end();
-	//			return zij;
-	//		}
-	//		catch (IloException exc){
-	//			exc.printStackTrace();
-	//		} 
-	//		return zij;
-	//	}
+	
+	public boolean returnSolved(){
+		return solved;
+	}
 
 }
 

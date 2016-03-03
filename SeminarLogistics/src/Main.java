@@ -70,90 +70,98 @@ public class Main {
 			}
 
 			Track[] tracks =  readInTracks(trackdata);
-			for (int i = 0; i<tracks.length; i++){
-				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
-			}
+//			for (int i = 0; i<tracks.length; i++){
+//				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
+//			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
-			
-			Schedule schedule = new Schedule(trainsarr);
+			boolean feas = false;
+			int counter = 0;
+			while (feas == false){
+				counter++;
+				System.out.println("while loop iteration "+counter);
+				Schedule schedule = new Schedule(trainsarr);
 
-			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
+				ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
 
-			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
-			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
+				ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
+				ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
-			//ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
-			for (int i = 0; i< arrivingcompositions.size();i++){
-				if (arrivingtimes.get(i)<begintime){
-					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)+1-begintime);
-				}
-				else{
-					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
-				}
-			}
-
-
-			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
-			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
-
-			for (int i = 0; i< leavingcompositions.size();i++){
-				if (leavingtimes.get(i)<begintime){
-					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)+1-begintime);
-				}
-				else{
-					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
-				}
-			}
-
-			ArrayList<Composition> arrival1 = new ArrayList<>();
-			ArrayList<Composition> departure1 = new ArrayList<>();
-			for (int i = 0; i<6; i++){
-				arrival1.add(arrivingcompositions.get(i));
-			}
-			for (int j = 0; j<7; j++){
-				departure1.add(leavingcompositions.get(j));
-			}
-
-//			for (int i = 0; i<arrivingcompositions.size(); i++){
-//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
-//			}
-			Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions);
-//			for (int i = 0; i<arrivingcompositions.size(); i++){
-//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
-//			}
-			boolean[][] z = onzeMatching.getZ();
-
-			ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
-			ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
-			ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
-			for (int i = 0; i<z.length; i++){
-				for (int j = 0; j<z[0].length; j++){
-					if (z[i][j]==true){
-						System.out.println("z("+i+","+j+") = "+z[i][j]);
-						finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
-//						System.out.println(arrivingblocks.get(i).getArrivaltime());
-						//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
-						if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+Matching.c /*+finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()*/>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
-							throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
-						}	
+				//ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
+				for (int i = 0; i< arrivingcompositions.size();i++){
+					if (arrivingtimes.get(i)<begintime){
+						arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)+1-begintime);
+					}
+					else{
+						arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
 					}
 				}
+
+
+				ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
+				ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
+				ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
+
+				for (int i = 0; i< leavingcompositions.size();i++){
+					if (leavingtimes.get(i)<begintime){
+						leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)+1-begintime);
+					}
+					else{
+						leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
+					}
+				}
+
+//				ArrayList<Composition> arrival1 = new ArrayList<>();
+//				ArrayList<Composition> departure1 = new ArrayList<>();
+//				for (int i = 0; i<6; i++){
+//					arrival1.add(arrivingcompositions.get(i));
+//				}
+//				for (int j = 0; j<7; j++){
+//					departure1.add(leavingcompositions.get(j));
+//				}
+
+				//			for (int i = 0; i<arrivingcompositions.size(); i++){
+				//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
+				//			}
+				Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions);
+				feas = onzeMatching.returnSolved();
+				boolean[][] z = onzeMatching.getZ();
+
+				ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
+				ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
+				ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
+				for (int i = 0; i<z.length; i++){
+					for (int j = 0; j<z[0].length; j++){
+						if (z[i][j]==true){
+							System.out.println("z("+i+","+j+") = "+z[i][j]);
+							finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+							//						System.out.println(arrivingblocks.get(i).getArrivaltime());
+							//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
+							if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+Matching.c /*+finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()*/>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
+								throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
+							}	
+						}
+					}
+				}
+
+				Todo4 JobShop = new Todo4(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
+				ArrayList<Event> events = JobShop.getEvents();
+				System.gc();
+
+				//			for(int i = 0; i<events.size(); i++){
+				//				System.out.println("Event: " + events.get(i) + " Relatedevent: " + events.get(i).getRelatedEvent() + " Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
+				//			}
+
+				//Parking3 ourparking3 = new Parking3(events, tracks);
+				Parking5 ourparking5 = new Parking5(events,tracks);
 			}
 
-			Todo4 JobShop = new Todo4(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks); 
-			ArrayList<Event> events = JobShop.getEvents();
-			System.gc();
+			//			for (int i = 0; i<arrivingcompositions.size(); i++){
+			//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
+			//			}
 			
-//			for(int i = 0; i<events.size(); i++){
-//				System.out.println("Event: " + events.get(i) + " Relatedevent: " + events.get(i).getRelatedEvent() + " Starttime: " + events.get(i).getStarttime() + " Endtime: " + events.get(i).getEndtime() + " Block " + events.get(i).getEventblock() + " Type " + events.get(i).getType() + " FinalType " + events.get(i).getFinalType() + " Sideend "+ events.get(i).getSideend() + " Sidestart " + events.get(i).getSidestart() + "\n");
-//			}
-			
-			//Parking3 ourparking3 = new Parking3(events, tracks);
-			Parking5 ourparking5 = new Parking5(events,tracks);
-					
+
 			//			System.out.println(onzeMatching.getObjectiveValue());
 			//			int teller = 0;
 			//			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){

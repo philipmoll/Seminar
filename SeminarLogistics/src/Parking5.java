@@ -234,6 +234,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 	}
 
 	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
+		if (eventlist.size()>0){
 		timeline.add(eventlist.get(0));
 		if (eventlist.get(1).getTime() >= timeline.get(0).getTime()){
 			timeline.add(eventlist.get(1));
@@ -262,6 +263,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			if (timeline.get(i).getTime() > timeline.get(i+1).getTime()){
 				throw new MethodFailException("Timeline ordering in Parking constructor failed at position i = "+i+": timeline.get(i).getTime() = "+timeline.get(i).getTime()+" and timeline.get(i+1).getTime() = "+timeline.get(i+1).getTime());
 			}
+		}
 		}
 	}
 

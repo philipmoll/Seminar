@@ -66,6 +66,7 @@ public class Todo4 {
 				}
 			}
 			//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
+			System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
 			this.addComposition(this.finalblockss.get(k));
 			finalblockssshallow.add(this.finalblockss.get(k));
 			this.finalblockss.remove(k);

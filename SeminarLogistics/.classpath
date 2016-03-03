@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/Users/carpenter37/CPLEX/cplex/lib/cplex.jar">
+	<classpathentry kind="lib" path="C:/Program Files/IBM/ILOG/CPLEX_Studio1261/cplex/lib/cplex.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/carpenter37/CPLEX/cplex/bin/x64_win64"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/IBM/ILOG/CPLEX_Studio1261/cplex/bin/x64_win64"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
