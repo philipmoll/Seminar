@@ -106,7 +106,7 @@ public class Todo5 {
 		int temp;
 		int temptemp;
 		int amount = 0;
-		int mintemp = addedcomp.getArrivalTimeInteger(); //TODO: AFRONDEN GOED?
+		int mintemp = addedcomp.getArrivalTimeInteger(); 
 		Track temp1;
 		Track temptemp1;
 		int margin1 = 2432;
@@ -311,7 +311,7 @@ public class Todo5 {
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
 
-						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1)); 
 						this.setBusyTime(activities.get(activities.size()-1));
 						//Minimum time to loop from must be update since inspection cannot be moved later
 						if(j == 0){	
@@ -386,7 +386,7 @@ public class Todo5 {
 
 						//Storing first solution
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
-						temp1.setBusyTime(activities.get(activities.size()-1)); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1)); 
 						this.setBusyTime(activities.get(activities.size()-1));
 
 						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
@@ -496,8 +496,6 @@ public class Todo5 {
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
@@ -528,6 +526,47 @@ public class Todo5 {
 						}
 					}
 
+					for(int k = 0; k<platformsreserve.size(); k++){
+						trackfree = true;
+						index = 0;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+							if (platforms.get(k).getBusy(l)){
+								index = l;
+								trackfree = false;
+								break;
+							}
+						}
+
+						if (trackfree == false){
+							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
+
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if(temptemp<temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}	
+
+					}
+
+					
 					if(temp == 1440){
 						feasible2 = false;
 					}
@@ -536,7 +575,7 @@ public class Todo5 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
@@ -656,9 +695,7 @@ public class Todo5 {
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
-						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
+						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned(); 
 
 
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
@@ -689,6 +726,47 @@ public class Todo5 {
 						}
 					}
 
+					for(int k = 0; k<platformsreserve.size(); k++){
+						trackfree = true;
+						index = 0;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+							if (platforms.get(k).getBusy(l)){
+								index = l;
+								trackfree = false;
+								break;
+							}
+						}
+
+						if (trackfree == false){
+							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
+
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if(temptemp<temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}	
+
+					}
+
+					
 					if(temp == 1440){
 						feasible3 = false;
 					}
@@ -697,7 +775,7 @@ public class Todo5 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
@@ -817,8 +895,6 @@ public class Todo5 {
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
@@ -849,6 +925,47 @@ public class Todo5 {
 						}
 					}
 
+					for(int k = 0; k<platformsreserve.size(); k++){
+						trackfree = true;
+						index = 0;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+							if (platforms.get(k).getBusy(l)){
+								index = l;
+								trackfree = false;
+								break;
+							}
+						}
+
+						if (trackfree == false){
+							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
+
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if(temptemp<temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}	
+
+					}
+
+					
 					if(temp == 1440){
 						feasible4 = false;
 					}
@@ -857,7 +974,7 @@ public class Todo5 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
@@ -969,6 +1086,48 @@ public class Todo5 {
 						}
 
 					}
+					
+					for(int k = 0; k<platformsreserve.size(); k++){
+						trackfree = true;
+						index = 0;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+							if (platforms.get(k).getBusy(l)){
+								index = l;
+								trackfree = false;
+								break;
+							}
+						}
+
+						if (trackfree == false){
+							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
+
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if(temptemp<temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}	
+
+					}
+
+					
 					if(temp == 1440){
 						feasible5 = false;
 					}
@@ -978,9 +1137,6 @@ public class Todo5 {
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
-
 
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin5){
 							margin5 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
@@ -1018,7 +1174,7 @@ public class Todo5 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
@@ -1139,8 +1295,6 @@ public class Todo5 {
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-						//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-						//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin6){
@@ -1171,6 +1325,47 @@ public class Todo5 {
 						}
 					}
 
+					for(int k = 0; k<platformsreserve.size(); k++){
+						trackfree = true;
+						index = 0;
+						for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+							if (platforms.get(k).getBusy(l)){
+								index = l;
+								trackfree = false;
+								break;
+							}
+						}
+
+						if (trackfree == false){
+							if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+								for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
+
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
+											}
+										}
+									}
+								}
+							}
+						}
+
+						if(temptemp<temp){
+							temp = temptemp;
+							temp1 = temptemp1;
+						}	
+
+					}
+
+					
 					if(temp == 1440){
 						feasible6 = false;
 					}
@@ -1179,7 +1374,7 @@ public class Todo5 {
 						currenttrack = temp1;
 
 						addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+						temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 						this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
@@ -1328,8 +1523,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
@@ -1410,7 +1603,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5){
 								//System.out.println("JOEHOEEEE");
@@ -1562,8 +1755,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin8){
@@ -1594,6 +1785,47 @@ public class Todo5 {
 							}
 						}
 
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
+						
 						if(temp == 1440){
 							feasible8 = false;
 							//System.out.println("IM NOT FEASIBLE" + feasible7);
@@ -1604,7 +1836,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 5){
 								//System.out.println("JOEHOEEEE");
@@ -1754,6 +1986,48 @@ public class Todo5 {
 							}
 
 						}
+						
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
+						
 						if(temp == 1440){
 							feasible9 = false;
 						}
@@ -1763,8 +2037,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin9){
@@ -1803,7 +2075,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 6){
 
@@ -1963,8 +2235,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin10){
@@ -1994,6 +2264,47 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
+						
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
 
 						if(temp == 1440){
 							feasible10 = false;
@@ -2003,7 +2314,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 6){
 
@@ -2172,8 +2483,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin11){
@@ -2203,6 +2512,47 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
+						
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
 
 						if(temp == 1440){
 							feasible11 = false;
@@ -2212,7 +2562,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 
@@ -2376,8 +2726,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin12){
@@ -2408,6 +2756,47 @@ public class Todo5 {
 							}
 						}
 
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
+						
 						if(temp == 1440){
 							feasible12 = false;
 						}
@@ -2416,7 +2805,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 
@@ -2486,7 +2875,7 @@ public class Todo5 {
 
 
 
-		//ADDING OPTION 11!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//ADDING OPTION 13!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -2581,8 +2970,6 @@ public class Todo5 {
 							currenttrack = temp1;
 							time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							//addedcomp.setBusyTime(activities.get(activities.size()-1-j));
-							//temp1.setBusyTime(activities.get(activities.size()-1-j)); //TODO: MOVING TIME MUST BE INCLUDED
 
 
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin13){
@@ -2612,6 +2999,47 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
+						
+						for(int k = 0; k<platformsreserve.size(); k++){
+							trackfree = true;
+							index = 0;
+							for(int l = mintemp; l<activities.get(activities.size()-1).getUltimateTimeInteger(); l++){
+								if (platforms.get(k).getBusy(l)){
+									index = l;
+									trackfree = false;
+									break;
+								}
+							}
+
+							if (trackfree == false){
+								if (addedcomp.getLength() <= (platforms.get(k).getTracklength()-platforms.get(k).getActivity(index).getComposition().getLength())){
+
+									for(int l = platforms.get(k).getActivity(index).getPlannedTimeInteger(); l<(platforms.get(k).getActivity(index).getPlannedTimeInteger()+platforms.get(k).getActivity(index).getTotalDurationInteger()); l++){
+
+										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
+											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
+												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
+
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
+												}
+											}
+										}
+									}
+								}
+							}
+
+							if(temptemp<temp){
+								temp = temptemp;
+								temp1 = temptemp1;
+							}	
+
+						}
+
 
 						if(temp == 1440){
 							feasible13 = false;
@@ -2621,7 +3049,7 @@ public class Todo5 {
 							currenttrack = temp1;
 
 							addedcomp.setBusyTime(activities.get(activities.size()-1-sequence[j]));
-							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); //TODO: MOVING TIME MUST BE INCLUDED
+							temp1.setBusyTime(activities.get(activities.size()-1-sequence[j])); 
 							this.setBusyTime(activities.get(activities.size()-1-sequence[j]));
 							if(activities.get(activities.size()-1-sequence[j]).getActivity() == 8){
 
@@ -2910,7 +3338,7 @@ public class Todo5 {
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<movelist.length; i++){
 			if(movelist[i] != null && movelist[i].equals(activity)){
-				movelist[i] = null; //TODO: TEST WHETHER THIS IS ALLOWED, ONLY REMOVE REFERENCE TO OBJECT, NOT OBJECT SELF
+				movelist[i] = null; 
 			}
 		}
 	}
