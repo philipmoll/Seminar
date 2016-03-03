@@ -1,4 +1,5 @@
-//PARKING 3 WITH COUPLE DECOUPLE IMPLEMENTATION
+//PARKING 3 WITH COUPLE DECOUPLE IMPLEMENTATION--> reordered
+//FINAL FORM
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  *
  */
 public class Parking5 implements Serializable{ //TODO: test!
-
+	private int CHOICE = 1; //MAXDRIVEBACKORDER
 	private ArrayList<Track> parkingtracks;
 	//private int[][] parkingpositions;
 	//private ArrayList<Parking> previousparkings;
@@ -45,17 +46,44 @@ public class Parking5 implements Serializable{ //TODO: test!
 			//System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime());
 
 			System.out.println("i: "+i+" Event: "+timeline.get(i)+" Final block: "+timeline.get(i).getEventblock()+" finalevent: "+timeline.get(i).getFinalType()+" beginside: "+timeline.get(i).getSidestart()+" endside: "+timeline.get(i).getSideend()+" starttime this: "+timeline.get(i).getStarttime()+" starttime related: "+timeline.get(i).getRelatedEvent().getStarttime()+ " endtime this: "+timeline.get(i).getEndtime()+" endtime related: "+timeline.get(i).getRelatedEvent().getEndtime()+" time: "+timeline.get(i).getTime());
-			if (timeline.get(i).getType() == 0 && timeline.get(i).getFinalType() == 1){
-				ArrayList<Event> finalevents = new ArrayList<>();
-				finalevents.add(timeline.get(i));
-				int nrevents = 1;
-				for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
-					if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
-						finalevents.add(timeline.get(i+j));
-						nrevents++;
+			//if final type == 1, reorder a little
+			if (timeline.get(i).getFinalType() == 1){
+				if (timeline.get(i).getType() == 0){
+					ArrayList<Event> finalevents = new ArrayList<>();
+					finalevents.add(timeline.get(i));
+					int nrevents = 1;
+					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
+						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
+							finalevents.add(timeline.get(i+j));
+							nrevents++;
+						}
+						else{
+							break;
+						}
 					}
-					else{
-						break;
+					ArrayList<Event> tempevents = reorderEvents(finalevents,nrevents,i,0);
+					for (int j = 0; j<nrevents; j++){
+						timeline.remove(i+j);
+						timeline.add(i+j,tempevents.get(j));
+					}
+				}
+				if (timeline.get(i).getType() == 1){
+					ArrayList<Event> finalevents = new ArrayList<>();
+					finalevents.add(timeline.get(i));
+					int nrevents = 1;
+					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
+						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
+							finalevents.add(timeline.get(i+j));
+							nrevents++;
+						}
+						else{
+							break;
+						}
+					}
+					ArrayList<Event> tempevents = reorderEvents(finalevents,nrevents,i,0);
+					for (int j = 0; j<nrevents; j++){
+						timeline.remove(i+j);
+						timeline.add(i+j,tempevents.get(j));
 					}
 				}
 			}
@@ -92,12 +120,15 @@ public class Parking5 implements Serializable{ //TODO: test!
 
 		}
 	}
-	
-	private void reorderEvents(ArrayList<Event> arrivalevents1, int nrevents){ //TODO: heel erg aanpassen
+
+	private ArrayList<Event> reorderEvents(ArrayList<Event> arrivalevents1, int nrevents, int i, int dep) throws MethodFailException{ //TODO: heel erg aanpassen
 		ArrayList<Event> arrivalevents = new ArrayList<>();
 		//if A side arrival, sort from end to beginning
 		if (arrivalevents1.get(0).getSidestart()==0){
-			if (nrevents == 2){
+			if (nrevents == 1){
+				arrivalevents.add(arrivalevents1.get(0));
+			}
+			else if (nrevents == 2){
 				if (arrivalevents1.get(1).getSidestart()!= 0){
 					throw new MethodFailException("Sidestart is not 0, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 0");
 				}
@@ -133,12 +164,15 @@ public class Parking5 implements Serializable{ //TODO: test!
 				}
 			}
 			else{
-				throw new MethodFailException("Nrevents is "+nrevents+" and can only be 2 or 3 (i = "+i+")");
+				throw new MethodFailException("Nrevents is "+nrevents+" and can only be 1, 2, or 3 (i = "+i+")");
 			}
 		}
 		//else if B side arrival, sort from beginning to end
 		else if (arrivalevents1.get(0).getSidestart()==1){
-			if (nrevents == 2){
+			if (nrevents == 1){
+				arrivalevents.add(arrivalevents1.get(0));
+			}
+			else if (nrevents == 2){
 				if (arrivalevents1.get(1).getSidestart()!= 1){
 					throw new MethodFailException("Sidestart is not 1, but "+ arrivalevents1.get(1).getSidestart()+" and should be, since it arrives in a composition that arrives at side 1");
 				}
@@ -173,12 +207,25 @@ public class Parking5 implements Serializable{ //TODO: test!
 					arrivalevents.add(1,arrivalevents1.get(2));
 				}
 			}
+			else{
+				throw new MethodFailException("Nrevents is "+nrevents+" and can only be 1, 2, or 3 (i = "+i+")");
+			}
 		}
 		//else methodfail exception
 		else{
 			throw new MethodFailException("Sidestart of event is "+arrivalevents1.get(0)+" and can only be 0 or 1 (A or B, respectively)");
 		}
 
+		if (dep ==1) { //if it is a departure sequence
+			ArrayList<Event> arrivalevents_dep = new ArrayList<Event>();
+			for (int j = nrevents-1; j>=0; j--){
+				arrivalevents_dep.add(arrivalevents.get(j));
+			}
+			return arrivalevents_dep;
+		}
+		else{ //if it is an arriving sequence
+			return arrivalevents;
+		}
 	}
 
 	private void sortEvents(ArrayList<Event> eventlist) throws MethodFailException{
@@ -261,11 +308,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 	}
 
 	public boolean arrival(Event arrivalevent, int i) throws TrackNotFreeException, MethodFailException, IOException{
-		boolean parked = arrivalNormal(arrivalevent, i);
+		boolean parked = false;
+		if (CHOICE ==1){
+			parked = arrivalMaxDriveBackOrder(arrivalevent, i);
+		}
 		return parked;
 	}
 
-	public boolean arrivalNormal(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
+	public boolean arrivalMaxDriveBackOrder(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
 		boolean parked = false;
 		for (int j = 0; j<parkingtracks.size(); j++){
 			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
@@ -549,7 +599,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			//if: departure side most left is A
 			if (parkingtrack.getEventlist().get(0).getDepartureSide() == 0){
 				//if: departure time is larger than checkevent
-				if (parkingtrack.getEventlist().get(0).getEndtime()>checkevent.getEndtime()){
+				if (parkingtrack.getEventlist().get(0).getEndtime()>=checkevent.getEndtime()){
 					feasible = true;
 				}
 				//else: departure time is not larger than checkevent
@@ -583,7 +633,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			//else if: departure side most left is B
 			else if (parkingtrack.getEventlist().get(0).getDepartureSide() == 1){
 				//if: departure time is smaller than checkevent
-				if (parkingtrack.getEventlist().get(0).getEndtime()<checkevent.getEndtime()){
+				if (parkingtrack.getEventlist().get(0).getEndtime()<=checkevent.getEndtime()){
 					feasible = true;
 				}
 				//else: departure time is not larger than checkevent
@@ -609,7 +659,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			//if: departure side most right is A
 			if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getDepartureSide() == 0){
 				//if: departure time is smaller than checkevent
-				if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime()<checkevent.getEndtime()){
+				if (parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).getEndtime()<=checkevent.getEndtime()){
 					feasible = true;
 				}
 				//else: departure time is not larger than checkevent
@@ -643,7 +693,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			//else if: departure side is B
 			else if (parkingtrack.getEventlist().get(0).getDepartureSide() == 1){
 				//if: departure time is larger than checkevent
-				if (parkingtrack.getEventlist().get(0).getEndtime()>checkevent.getEndtime()){
+				if (parkingtrack.getEventlist().get(0).getEndtime()>=checkevent.getEndtime()){
 					feasible = true;
 				}
 				//else: departure time is not larger than checkevent
@@ -674,7 +724,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 	public boolean togglecheck(Event checkevent, int side) throws MethodFailException{
 		boolean toggle = false;
 		//if: it can drive back on track
-		if (checkevent.getEventblock().getLength() < checkevent.getEventTrack().getMaxDriveBackLength()){
+		if (checkevent.getEventblock().getLength() <= checkevent.getEventTrack().getMaxDriveBackLength()){
 			//if: only one on track
 			if (checkevent.getEventTrack().getEventlist().size() <= 1){
 				toggle = true;

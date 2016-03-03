@@ -1,4 +1,5 @@
-//NEW, COMPLETELY CHANGED
+//SIMPLEST FORM, no couple/decouple, simple priority rules
+//FINAL FORM
 
 import java.io.IOException;
 import java.io.Serializable;
