@@ -33,13 +33,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 		//take parktracks out of tracks and order by maxbackwardlength
 		parkingtracks = new ArrayList<Track>();
 		sortTracks(tracks);
+		parkingtracks.remove(parkingtracks.size()-1);
 
 		lifotracks = new ArrayList<Track>();
 		sortTracks2(tracks);
 
 		//TODO: zetuit!!!
-		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
-		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
+		//ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
+		//parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
 		//parkingtracks.add(parkingtracks2.get(0));
 		//parkingtracks.add(parkingtracks2.get(1));
 		//				parkingtracks.add(0,parkingtracks2.get(2))

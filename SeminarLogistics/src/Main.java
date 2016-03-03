@@ -71,7 +71,7 @@ public class Main {
 
 			Track[] tracks =  readInTracks(trackdata);
 			for (int i = 0; i<tracks.length; i++){
-				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()); 
+				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
 			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
@@ -84,7 +84,6 @@ public class Main {
 				new Schedule(trainsarr);
 
 				ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
-
 				ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
 				ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
 
@@ -134,7 +133,7 @@ public class Main {
 				for (int i = 0; i<z.length; i++){
 					for (int j = 0; j<z[0].length; j++){
 						if (z[i][j]==true){
-							System.out.println("z("+i+","+j+") = "+z[i][j]);
+							//System.out.println("z("+i+","+j+") = "+z[i][j]);
 							finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
 							//						System.out.println(arrivingblocks.get(i).getArrivaltime());
 							//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
@@ -158,34 +157,8 @@ public class Main {
 				System.out.println("Did not park: "+ourparking5.getNotParked());
 			}
 
-			//			for (int i = 0; i<arrivingcompositions.size(); i++){
-			//				System.out.println(arrivingcompositions.get(i).getArrivaltime());
-			//			}
 			
-
-			//			System.out.println(onzeMatching.getObjectiveValue());
-			//			int teller = 0;
-			//			for (int i = 0; i<onzeMatching.getArrivingBlockList().size(); i++){
-			//				for (int j = 0; j<onzeMatching.getDepartingBlockList().size(); j++){
-			//					System.out.println("z("+i+","+j+") = "+onzeMatching.getZ()[i][j]);
-			//					if (onzeMatching.getZ()[i][j] == true){
-			//						teller ++;
-			//					}
-			//				}
-			//			}
-			//			System.out.println("teller: "+teller);
-
-
-			//This is how we should write a couple function, N.B.: with the .remove function.
-			//arrivingcompositions.get(0).coupleComposition(arrivingcompositions.get(1));
-			//Composition a = arrivingcompositions.get(1);
-			//a = null;
-			//arrivingcompositions.remove(1);
-
-			//TODO: CURRENT SHOULD BE A DUPLICATE OF THE ARRIVING AND NOT A DIRECT REFERENCE TO THEIR OBEJCTS!!!!!!!
-			//This is how we should write a decouple function, N.B.: with the.add function.
-			//arrivingcompositions.add(arrivingcompositions.get(14).decoupleComposition(0));
-
+			
 		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
 		}
@@ -294,7 +267,7 @@ public class Main {
 				labelname = labelname + "d";
 				break;
 			}
-			tracks[i]= new Track(labelname,(int) trackdata.getElement(i, 2), (int) trackdata.getElement(i, 3), (int) trackdata.getElement(i, 4),  (int) trackdata.getElement(i, 5), (int) trackdata.getElement(i, 6), (int) trackdata.getElement(i, 7));
+			tracks[i]= new Track(labelname,(int) trackdata.getElement(i, 2), (int) trackdata.getElement(i, 3), (int) trackdata.getElement(i, 4),  (int) trackdata.getElement(i, 5), (int) trackdata.getElement(i, 6), (int) trackdata.getElement(i, 7), (int) trackdata.getElement(i,8));
 		}
 
 		return tracks;

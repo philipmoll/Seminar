@@ -78,12 +78,15 @@ public class Todo5 {
 			System.out.print("Platform " + i + "  ");
 			platforms.get(i).printTimeLine();
 			System.out.print("\n");
-		}
-		for(int i = 0; i<platformsreserve.size(); i++){
-			System.out.print("Platformreserve" + i + "  ");
+			System.out.print("Reserve " + i + "   ");
 			platformsreserve.get(i).printTimeLine();
 			System.out.print("\n");
 		}
+		/*for(int i = 0; i<platformsreserve.size(); i++){
+			System.out.print("Reserve " + i + "   ");
+			platformsreserve.get(i).printTimeLine();
+			System.out.print("\n");
+		}*/
 		for(int i = 0; i<washareas.size(); i++){
 			System.out.print("Washarea " + i + "  ");
 			washareas.get(i).printTimeLine();
