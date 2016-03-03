@@ -1321,7 +1321,7 @@ public class Todo4 {
 								
 								mintemp = time25 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
 
-								 
+								
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
 									margin7 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 								}
