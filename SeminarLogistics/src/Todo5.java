@@ -279,10 +279,13 @@ public class Todo5 {
 									if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 										if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 											if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-												temptemp = l;
+												if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													temptemp = l;
 
-												temptemp1 = platformsreserve.get(k);
-												break;
+													temptemp1 = platformsreserve.get(k);
+													break;
+												}
+
 											}
 										}
 									}
@@ -1353,7 +1356,7 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
-						
+
 						for(int k = 0; k<platformsreserve.size(); k++){
 							trackfree = true;
 							index = 0;
@@ -1373,10 +1376,13 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													temptemp = l;
+													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														temptemp = l;
 
-													temptemp1 = platformsreserve.get(k);
-													break;
+														temptemp1 = platformsreserve.get(k);
+														break;
+													}
+
 												}
 											}
 										}
