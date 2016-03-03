@@ -2869,7 +2869,53 @@ public class Todo4 {
 		}
 		return temp;
 	}
-
+	public int[] getWashlist(int abc) throws IOException{
+		int[] temp = new int[60*24];
+		if(abc < washareas.size()){
+			
+			for(int i = 0; i<60*24; i++){
+				if(washareas.get(abc).getBusy(i)){
+					temp[i] = 1;
+				}
+				else{
+					temp[i] = 0;
+				}
+			}
+			
+			
+			return temp;
+			
+		}
+		else{
+			throw new IOException("There are not that many washareas");
+		}
+		
+	}
+	public int[] getPlatformlist(int abc) throws IOException{
+		int[] temp = new int[60*24];
+		if(abc < platforms.size()){
+			
+			for(int i = 0; i<60*24; i++){
+				if(platforms.get(abc).getBusy(i)){
+					temp[i] = 1;
+				}
+				else{
+					temp[i] = 0;
+				}
+			}
+			
+			
+			return temp;
+			
+		}
+		else{
+			throw new IOException("There are not that many washareas");
+		}
+		
+	}
+	
+	
+	
 	public boolean checkFeasibility(){
 		boolean abcd = true;
 		for(int i = 0; i<activities.size(); i++){

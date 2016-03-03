@@ -347,6 +347,14 @@ public class Track implements Serializable {
 			}
 		}
 	}
+	public boolean getBusy(int abc){
+		if(busytime[abc]==null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 	public void removeBusyTimeMove(Activity activity) throws IOException{
 		for(int i = activity.getPlannedTimeInteger()+activity.getTotalDurationInteger()-Main.moveduration; i<activity.getPlannedTimeInteger()+activity.getTotalDurationInteger(); i++){
 			//System.out.print(busytime[i]);
@@ -386,6 +394,12 @@ public class Track implements Serializable {
 			}		
 		}
 	}
+	
+	public Activity getActivity(int index){
+		Activity act = busytime[index];
+		return act;
+	}
+	
 	public boolean getConsecutive(Activity activity1, Activity activity2){
 		boolean abcd;
 
