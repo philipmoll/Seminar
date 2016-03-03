@@ -2751,6 +2751,7 @@ public class Todo4 {
 		int acttimepertrain = 0;
 		int maxduration = -1;
 		for (int i=0; i<comp1.getSize(); i++){
+			acttimepertrain = 0;
 			if (comp1.getTrain(i).getActivity(act1)){
 				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
 			}
@@ -2769,6 +2770,7 @@ public class Todo4 {
 		int acttimepertrain = 0;
 		int maxduration = -1;
 		for (int i=0; i<comp1.getSize(); i++){
+			acttimepertrain = 0;
 			if (comp1.getTrain(i).getActivity(act1)){
 				acttimepertrain += comp1.getTrain(i).getActivityTimeInteger(act1);
 			}
