@@ -32,7 +32,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 		ArrayList<Track> parkingtracks2 = new ArrayList<Track>();
 		parkingtracks2 = (ArrayList<Track>) DeepCopy.copy(parkingtracks);
 		parkingtracks.add(parkingtracks2.get(0));
-		parkingtracks.add(parkingtracks2.get(1));
+		//parkingtracks.add(parkingtracks2.get(1));
 		//				parkingtracks.add(0,parkingtracks2.get(2))
 
 
@@ -53,12 +53,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 					finalevents.add(timeline.get(i));
 					int nrevents = 1;
 					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
-						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
-							finalevents.add(timeline.get(i+j));
-							nrevents++;
-						}
-						else{
-							break;
+						if (i+j<timeline.size()){
+							if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
+								finalevents.add(timeline.get(i+j));
+								nrevents++;
+							}
+							else{
+								break;
+							}
 						}
 					}
 					ArrayList<Event> tempevents = reorderEvents(finalevents,nrevents,i,0);
@@ -72,12 +74,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 					finalevents.add(timeline.get(i));
 					int nrevents = 1;
 					for (int j = 1; j<=2; j++){ //assumption: max 3 in one composition
-						if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
-							finalevents.add(timeline.get(i+j));
-							nrevents++;
-						}
-						else{
-							break;
+						if(i+j<timeline.size()){
+							if (timeline.get(i+j).getFinalType()==1 && timeline.get(i).getTime() == timeline.get(i+j).getTime() /*&& timeline.get(i).getEventblock().getOrigincomposition()==timeline.get(i+j).getEventblock().getOrigincomposition()*/){ //if they are the same final arrivingcomposition
+								finalevents.add(timeline.get(i+j));
+								nrevents++;
+							}
+							else{
+								break;
+							}
 						}
 					}
 					ArrayList<Event> tempevents = reorderEvents(finalevents,nrevents,i,0);
@@ -85,6 +89,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 						timeline.remove(i+j);
 						timeline.add(i+j,tempevents.get(j));
 					}
+
 				}
 			}
 		}
@@ -104,11 +109,11 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 			else if (timeline.get(i).getType()==0) { //if it is an arrival
 				boolean parked = arrival(timeline.get(i), i);
-				System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 				if (parked){
 					for (int x = 0; x<timeline.get(i).getEventTrack().getEventlist().size(); x++){
 						System.out.println(timeline.get(i).getEventTrack().getEventlist().get(x)+" dep side: "+timeline.get(i).getEventTrack().getEventlist().get(x).getDepartureSide()+" dep time: "+timeline.get(i).getEventTrack().getEventlist().get(x).getEndtime());
 					}
+					System.out.println("Arrival at track "+timeline.get(i).getEventTrack().getLabel()+" at time "+timeline.get(i).getTime());
 				}
 				else {
 					System.out.println("WARNING: Event "+i+", "+timeline.get(i)+" cannot be parked");

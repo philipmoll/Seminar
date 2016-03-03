@@ -65,6 +65,7 @@ public class Todo4 {
 					k = j;
 				}
 			}
+			//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
 			this.addComposition(this.finalblockss.get(k));
 			finalblockssshallow.add(this.finalblockss.get(k));
 			this.finalblockss.remove(k);
@@ -345,6 +346,10 @@ public class Todo4 {
 				}
 			}
 		}	
+		
+		//System.out.println(feasible1 + " " + activities.get(activities.size()-1-amount).getActivity() + " " + activities.get(activities.size()-1-amount).getTotalDurationInteger() + " " + activities.get(activities.size()-amount).getActivity() + " " + activities.get(activities.size()-amount).getTotalDurationInteger());
+
+		
 		if(feasible1 == false){
 			margin1 = -1;
 		}
@@ -1338,7 +1343,7 @@ public class Todo4 {
 					}
 				}
 			}
-			//System.out.println(margin7 + " " + bestmargin);
+			//System.out.println(feasible7 + " " + activities.get(activities.size()-1).getActivity() + " " + activities.get(activities.size()-1).getTotalDurationInteger());
 
 			if(feasible7 == false){
 				margin7 = -1;
@@ -1532,7 +1537,7 @@ public class Todo4 {
 					}
 				}
 			}
-			//System.out.println(margin7 + " " + bestmargin);
+			//System.out.println(feasible8 + " " + activities.get(activities.size()-1).getActivity() + " " + activities.get(activities.size()-1).getTotalDurationInteger());
 
 			if(feasible8 == false){
 				margin8 = -1;

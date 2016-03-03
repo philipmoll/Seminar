@@ -28,7 +28,7 @@ public class Train implements Serializable{
 	private boolean repairing;
 	private boolean washing;
 	
-	private double inspprob = 0.8;
+	private double inspprob = 1;
 	private double cleanprob = 1;
 	private double washprob = 0.1;
 	private double repprob = 0.05;
