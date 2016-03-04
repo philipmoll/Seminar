@@ -356,9 +356,9 @@ public class Track implements Serializable {
 		}
 	}
 	
-	public int[] getBusyArray(int a, int b){
-		int[] busyarray = new int[b-a+1];
-		for (int i = a; i<=b; i++){
+	public int[] getBusyArray(){
+		int[] busyarray = new int[60*24];
+		for (int i = 0; i<busyarray.length; i++){
 			if (this.getBusy(i) == true){
 				busyarray[i]=1;
 			}
@@ -369,9 +369,17 @@ public class Track implements Serializable {
 		return busyarray;
 	}
 	
+	public int[] getBusyArrayBetween(int a, int b){
+		int[] busyarraybetween = new int[b-a+1];
+		for (int i = a; i<=b; i++){
+			busyarraybetween[i-a]=this.getBusyArray()[a];
+		}
+		return busyarraybetween;
+	}
+	
 	public int getTotalBusyTime(){
 		int totalbusytime=0;
-		int[] busyarray = this.getBusyArray(0, 60*24-1);
+		int[] busyarray = this.getBusyArray();
 		for (int i = 0; i<busyarray.length; i++){
 			if (busyarray[i]==1){
 				totalbusytime++;

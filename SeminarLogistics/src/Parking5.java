@@ -393,7 +393,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 		}
 		if (!parked){
-			System.out.println("IK BEN HIER");
+//			System.out.println("IK BEN HIER");
 			for (int j = 0; j<lifotracks.size(); j++){
 				parked = lifoPark(arrivalevent, lifotracks.get(j),i);
 				if (parked == true){
@@ -403,12 +403,15 @@ public class Parking5 implements Serializable{ //TODO: test!
 			if (parked == true){
 				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
 				System.out.println(arrivalevent.getStarttime()+"  "+arrivalevent.getEndtime());
-				System.out.print(arrivalevent.getEventTrack().getBusyArray(arrivalevent.getStarttime(),arrivalevent.getEndtime()));
-			}
-			else {
-				System.out.println("Arrival "+i+" cannot be parked lifo");
+//				for (int j = 0; j< arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime()).length; j++){
+//					System.out.print(arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime())[j]);
+//				}
 			}
 		}
+		else {
+			System.out.println("Arrival "+i+" cannot be parked lifo");
+		}
+
 		return parked;
 	}
 
