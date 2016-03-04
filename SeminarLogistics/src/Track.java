@@ -356,14 +356,14 @@ public class Track implements Serializable {
 		}
 	}
 	
-	public int[] getBusyArray(){
-		int[] busyarray = new int[60*24];
-		for (int i = 0; i<60*24; i++){
+	public int[] getBusyArray(int a, int b){
+		int[] busyarray = new int[b-a+1];
+		for (int i = a; i<=b; i++){
 			if (this.getBusy(i) == true){
-				busyarray[i]=0;
+				busyarray[i]=1;
 			}
 			else{
-				busyarray[i]=1;
+				busyarray[i]=0;
 			}
 		}
 		return busyarray;
@@ -371,8 +371,9 @@ public class Track implements Serializable {
 	
 	public int getTotalBusyTime(){
 		int totalbusytime=0;
-		for (int i = 0; i<this.getBusyArray().length; i++){
-			if (this.getBusyArray()[i]==1){
+		int[] busyarray = this.getBusyArray(0, 60*24-1);
+		for (int i = 0; i<busyarray.length; i++){
+			if (busyarray[i]==1){
 				totalbusytime++;
 			}
 		}

@@ -5,7 +5,8 @@ import ilog.concert.*;
 import ilog.cplex.*;
 
 public class Matching {
-	public static final double c = 5*(double)Main.moveduration/60/24;
+	private double y;
+	public final double c = y*(double)Main.moveduration/60/24;
 	public static final int minplatformlength = 200; //TODO: verschilt per yard (kan ook washing area length zijn)
 	public static final int M = 1000;
 
@@ -54,8 +55,9 @@ public class Matching {
 	 * @throws IOException
 	 * @throws CloneNotSupportedException
 	 */
-	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
-		System.out.println(c);
+	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/, double y) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
+		this.y = y;
+		//System.out.println(c);
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
 //		for (int i = 0; i<arrivingblocklist.size(); i++){
@@ -107,13 +109,13 @@ public class Matching {
 		//set J_i at index i for every i in I
 		compatibledepartingblocksset = new CompatibleDepartingBlocks[nrarrivingblocks];
 		for (int i = 0; i<nrarrivingblocks;i++){
-			compatibledepartingblocksset[i] = new CompatibleDepartingBlocks(arrivingblocklist.get(i),departingblocklist);
+			compatibledepartingblocksset[i] = new CompatibleDepartingBlocks(arrivingblocklist.get(i),departingblocklist,c);
 		}
 
 		//set I_j at index j for every j in J
 		compatiblearrivingblocksset = new CompatibleArrivingBlocks[nrdepartingblocks];
 		for (int i = 0; i<nrdepartingblocks;i++){
-			compatiblearrivingblocksset[i] = new CompatibleArrivingBlocks(departingblocklist.get(i),arrivingblocklist);
+			compatiblearrivingblocksset[i] = new CompatibleArrivingBlocks(departingblocklist.get(i),arrivingblocklist,c);
 		}
 
 		//Set A_h^t+_a at index t,h for every t in T_a
@@ -556,6 +558,10 @@ public class Matching {
 		return solved;
 	}
 
+	public double getc() {
+		return c;
+	}
+
 }
 
 /**
@@ -941,7 +947,7 @@ class CompatibleDepartingBlocks {
 	 * @param arrivingblock - Arriving block (element of I) of which we want the compatible departing blocks
 	 * @throws IOException 
 	 */
-	public CompatibleDepartingBlocks(Block arrivingblock, ArrayList<Block> alldepartingblocks) throws IOException{
+	public CompatibleDepartingBlocks(Block arrivingblock, ArrayList<Block> alldepartingblocks, double c) throws IOException{
 		//throw exception if arrivingblock has an infeasible arrivaltime or departuretime not equal to -1 (-1 indicates it is an arrivingblock)
 		if (arrivingblock.getArrivaltime() <0 || arrivingblock.getArrivaltime() > 1){
 			throw new IOException("Arrival time of arrivingblock in class CompatibleDepartingBlocks is "+arrivingblock.getArrivaltime()+" and should be between 0 and 1");
@@ -968,7 +974,7 @@ class CompatibleDepartingBlocks {
 			}
 			boolean check = true;
 			
-			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + Matching.c + arrivingblock.getTotalServiceTime() && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
+			if (alldepartingblocks.get(i).getDeparturetime()> arrivingblock.getArrivaltime() + c + arrivingblock.getTotalServiceTime() && alldepartingblocks.get(i).getTrainList().size() == arrivingblock.getTrainList().size()){
 				for (int j = 0; j<arrivingblock.getTrainList().size(); j++){
 					if (arrivingblock.getTrainList().get(j).getSameClass(alldepartingblocks.get(i).getTrainList().get(j))== false){
 						check = false;
@@ -1021,7 +1027,7 @@ class CompatibleArrivingBlocks {
 	 * @param departingblock - Departing block (element of J) of which we want the compatible arriving blocks
 	 * @throws IOException 
 	 */
-	public CompatibleArrivingBlocks(Block departingblock, ArrayList<Block> allarrivingblocks) throws IOException{
+	public CompatibleArrivingBlocks(Block departingblock, ArrayList<Block> allarrivingblocks, double c) throws IOException{
 		//throw exception if departing blocks arrival time not equal to -1 (-1 indicates it is an departing block)
 		//throw exception if departing block has an infeasible departure time
 		if (departingblock.getDeparturetime() <0 || departingblock.getDeparturetime() > 1){
@@ -1046,7 +1052,7 @@ class CompatibleArrivingBlocks {
 			}
 			boolean check = true;
 			
-			if (allarrivingblocks.get(i).getArrivaltime()+ Matching.c  + allarrivingblocks.get(i).getTotalServiceTime() < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
+			if (allarrivingblocks.get(i).getArrivaltime()+ c  + allarrivingblocks.get(i).getTotalServiceTime() < departingblock.getDeparturetime() && departingblock.getTrainList().size() == allarrivingblocks.get(i).getTrainList().size()){
 				for (int j = 0; j<departingblock.getTrainList().size(); j++){
 					if (departingblock.getTrainList().get(j).getSameClass(allarrivingblocks.get(i).getTrainList().get(j))== false){
 						check = false;

@@ -402,9 +402,11 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 			if (parked == true){
 				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+				System.out.println(arrivalevent.getStarttime()+"  "+arrivalevent.getEndtime());
+				System.out.print(arrivalevent.getEventTrack().getBusyArray(arrivalevent.getStarttime(),arrivalevent.getEndtime()));
 			}
 			else {
-				System.out.println("Arrival "+i+" cannot be parked simply");
+				System.out.println("Arrival "+i+" cannot be parked lifo");
 			}
 		}
 		return parked;
@@ -454,29 +456,29 @@ public class Parking5 implements Serializable{ //TODO: test!
 		//if: enough room on track
 		if (parkingtrack.getTracklength() - parkingtrack.getCompositionLengthOnTrack()>=arrivalevent.getEventblock().getLength()){
 			//try to park without reverse arrival/departure of itself
-			System.out.println("Try park event "+i+" on track "+parkingtrack.getLabel()+" without reverse arrival/departure itself");
+			//			System.out.println("Try park event "+i+" on track "+parkingtrack.getLabel()+" without reverse arrival/departure itself");
 			parked = park1(arrivalevent, parkingtrack, i); //no reverse arrival/departure itself
 			//if: not easily parked, but can drive back
 			if (!parked){
-				System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse arrival");
+				//				System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse arrival");
 				if (parkingtrack.getMaxDriveBackLength() >= arrivalevent.getEventblock().getLength()){
 					//toggle reverse arrival, and try to park with reverse arrival
 					arrivalevent.toggleReverseArrival();
 					parked = park1(arrivalevent,parkingtrack, i);//reverse arrival
 					//if not parked, toggle reverse arrival and reverse departure and try to park with reverse departure
 					if (!parked){
-						System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse departure");
+						//						System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse departure");
 						arrivalevent.toggleReverseArrival();
 						arrivalevent.toggleReverseDeparture();
 						parked = park1(arrivalevent,parkingtrack,i);//reverse departure
 						//if not parked, toggle reverse arrival and try to park with reverse arrival and departure
 						if (!parked){
-							System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse arrival and departure");
+							//							System.out.println("Failed, try park event "+i+" on track "+parkingtrack.getLabel()+" with reverse arrival and departure");
 							arrivalevent.toggleReverseArrival();
 							parked = park1(arrivalevent,parkingtrack,i);//reverse arrival and departure
 							//if not parked, toggle reverse arrival and reverse departure back to original setting
 							if (!parked){
-								System.out.println("Failed, continue to next track");
+								//								System.out.println("Failed, continue to next track");
 								arrivalevent.toggleReverseArrival();
 								arrivalevent.toggleReverseDeparture();
 							}
@@ -486,7 +488,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 		}
 		else{
-			System.out.println("Not enough room available on track "+parkingtrack.getLabel());
+			//			System.out.println("Not enough room available on track "+parkingtrack.getLabel());
 		}
 		return parked;
 	}
@@ -509,7 +511,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 				//if: feasible with busytime
 				boolean feasiblebusytime = true;
 				for (int j = arrivalevent.getStarttime(); j<= arrivalevent.getEndtime(); j++){
-					if (parkingtrack.getBusyArray()[j] == 1){
+					if (parkingtrack.getBusy(j) == true){
 						feasiblebusytime = false;
 						break;
 					}
@@ -530,12 +532,12 @@ public class Parking5 implements Serializable{ //TODO: test!
 		if (arrivalevent.getArrivalSide() == 0){
 			//if: A side departure
 			if (arrivalevent.getDepartureSide()==0){
-				System.out.println("AA");
+				//				System.out.println("AA");
 				//check if we can park it
 				boolean feasible = checkFeasibleAA(arrivalevent, parkingtrack);
 				//if: we can park it directly
 				if (feasible){
-					System.out.println("Succeeded directly");
+					//					System.out.println("Succeeded directly");
 					arrivalASide(arrivalevent,parkingtrack);
 					parked = true;
 				}
@@ -543,28 +545,28 @@ public class Parking5 implements Serializable{ //TODO: test!
 				else{
 					//if: there is at least one on track
 					if (parkingtrack.getEventlist().size() > 0){
-						System.out.println("Try toggle adjacent");
+						//						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(0),0);
 						//if: we can toggle adjacent
 						if (toggle){
-							System.out.println("Toggle feasible");
+							//							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
-							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
-							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleAA(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
-								System.out.println("Succeeded with toggle adjacent");
+								//								System.out.println("Succeeded with toggle adjacent");
 								arrivalASide(arrivalevent,parkingtrack);
 								parked = true;
 							}
 							//else: undo toggle
 							else{
-								System.out.println("Not succeeded with toggle adjacent");
+								//								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(0).toggleReverseDeparture();
-								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+								//								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -572,12 +574,12 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 			//else if: B side departure
 			else if (arrivalevent.getDepartureSide()==1){
-				System.out.println("AB");
+				//				System.out.println("AB");
 				//check if we can park it
 				boolean feasible = checkFeasibleAB(arrivalevent, parkingtrack);
 				//if: we can park it directly
 				if (feasible){
-					System.out.println("Succeeded directly");
+					//					System.out.println("Succeeded directly");
 					arrivalASide(arrivalevent,parkingtrack);
 					parked = true;
 				}
@@ -585,28 +587,28 @@ public class Parking5 implements Serializable{ //TODO: test!
 				else{
 					//if: there is at least one on track
 					if (parkingtrack.getEventlist().size() > 0){
-						System.out.println("Try toggle adjacent");
+						//						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(0),0);
 						//if: we can toggle adjacent
 						if (toggle){
-							System.out.println("Toggle feasible");
+							//							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
-							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(0).toggleReverseDeparture();
-							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleAB(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
-								System.out.println("Succeeded with toggle adjacent");
+								//								System.out.println("Succeeded with toggle adjacent");
 								arrivalASide(arrivalevent,parkingtrack);
 								parked = true;
 							}
 							//else: undo toggle
 							else{
-								System.out.println("Not succeeded with toggle adjacent");
+								//								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(0).toggleReverseDeparture();
-								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+								//								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -621,12 +623,12 @@ public class Parking5 implements Serializable{ //TODO: test!
 		else if (arrivalevent.getArrivalSide() == 1){
 			//if: A side departure
 			if (arrivalevent.getDepartureSide()==0){
-				System.out.println("BA");
+				//				System.out.println("BA");
 				//check if we can park it
 				boolean feasible = checkFeasibleBA(arrivalevent, parkingtrack);
 				//if: we can park it directly
 				if (feasible){
-					System.out.println("Succeeded directly");
+					//					System.out.println("Succeeded directly");
 					arrivalBSide(arrivalevent,parkingtrack);
 					parked = true;
 				}
@@ -634,28 +636,28 @@ public class Parking5 implements Serializable{ //TODO: test!
 				else{
 					//if: there is at least one on track
 					if (parkingtrack.getEventlist().size() > 0){
-						System.out.println("Try toggle adjacent");
+						//						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
 						//if: we can toggle adjacent
 						if (toggle){
-							System.out.println("Toggle feasible");
+							//							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
-							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
-							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleBA(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
-								System.out.println("Succeeded with toggle adjacent");
+								//								System.out.println("Succeeded with toggle adjacent");
 								arrivalBSide(arrivalevent,parkingtrack);
 								parked = true;
 							}
 							//else: undo toggle
 							else{
-								System.out.println("Not succeeded with toggle adjacent");
+								//								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
-								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+								//								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}
@@ -663,12 +665,12 @@ public class Parking5 implements Serializable{ //TODO: test!
 			}
 			//else if: B side departure
 			else if (arrivalevent.getDepartureSide()==1){
-				System.out.println("BB");
+				//				System.out.println("BB");
 				//check if we can park it
 				boolean feasible = checkFeasibleBB(arrivalevent, parkingtrack);
 				//if: we can park it directly
 				if (feasible){
-					System.out.println("Succeeded directly");
+					//					System.out.println("Succeeded directly");
 					arrivalBSide(arrivalevent,parkingtrack);
 					parked = true;
 				}
@@ -676,28 +678,28 @@ public class Parking5 implements Serializable{ //TODO: test!
 				else{
 					//if: there is at least one on track
 					if (parkingtrack.getEventlist().size() > 0){
-						System.out.println("Try toggle adjacent");
+						//						System.out.println("Try toggle adjacent");
 						//check if we can toggle the adjacent
 						boolean toggle = togglecheck(parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1),1);
 						//if: we can toggle adjacent
 						if (toggle){
-							System.out.println("Toggle feasible");
+							//							System.out.println("Toggle feasible");
 							//toggle, and check if feasible
-							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
-							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+							//							System.out.println("New dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							feasible = checkFeasibleBB(arrivalevent, parkingtrack);
 							//if: we can park it
 							if (feasible){
-								System.out.println("Succeeded with toggle adjacent");
+								//								System.out.println("Succeeded with toggle adjacent");
 								arrivalBSide(arrivalevent,parkingtrack);
 								parked = true;
 							}
 							//else: undo toggle
 							else{
-								System.out.println("Not succeeded with toggle adjacent");
+								//								System.out.println("Not succeeded with toggle adjacent");
 								parkingtrack.getEventlist().get(parkingtrack.getEventlist().size()-1).toggleReverseDeparture();
-								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
+								//								System.out.println("Current dep side: "+parkingtrack.getEventlist().get(0).getDepartureSide());
 							}
 						}
 					}

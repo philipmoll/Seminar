@@ -28,10 +28,10 @@ public class Train implements Serializable{
 	private boolean repairing;
 	private boolean washing;
 	
-	private double inspprob = 1;
+	private double inspprob = .9;
 	private double cleanprob = 1;
 	private double washprob = 0.1;
-	private double repprob = 0.00;
+	private double repprob = 0.1;
 
 	private int position;
 	private Composition composition;
