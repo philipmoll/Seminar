@@ -154,7 +154,7 @@ public class Main {
 			}
 
 
-			Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks);
+			Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 0);
 			ArrayList<Event> events = JobShop.getEvents();
 			System.gc();
 

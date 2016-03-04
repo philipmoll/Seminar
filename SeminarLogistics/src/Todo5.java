@@ -19,10 +19,11 @@ public class Todo5 {
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
 
-	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks) throws IOException{
+	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int optionadd) throws IOException{
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
 		finalblockssshallow = new ArrayList<>();
+
 
 		for(int i=0;i<tracks.length;i++){
 			if (tracks[i].getInspectionposition() ==1){
@@ -55,23 +56,58 @@ public class Todo5 {
 			finalblockss.get(i).setBusyTimeMove(arrordepmove);
 		}
 
+
+
 		int temp;
 		int k;
 		int a = this.finalblockss.size();
-		for(int i = 0; i<a; i++){
-			temp = 14124;
-			k = -1;
-			for(int j = 0; j<this.finalblockss.size(); j++){
-				if(this.finalblockss.get(j).getShuntTime()<temp){
-					temp = this.finalblockss.get(j).getShuntTime();
-					k = j;
+		if(optionadd == 0){
+			for(int i = 0; i<a; i++){
+				temp = 14124;
+				k = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if(this.finalblockss.get(j).getShuntTime()<temp){
+						temp = this.finalblockss.get(j).getShuntTime();
+						k = j;
+					}
 				}
+				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
+				//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
 			}
-			//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
-			//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
-			this.addComposition(this.finalblockss.get(k));
-			finalblockssshallow.add(this.finalblockss.get(k));
-			this.finalblockss.remove(k);
+
+		}
+		else if(optionadd == 1){
+			for(int i = 0; i<a; i++){
+				k = -1;
+				temp = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if((int) this.finalblockss.get(j).getTotalServiceTime()>temp){
+						temp = (int) this.finalblockss.get(j).getTotalServiceTime();		
+						k = j;
+					}
+				}
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
+			}
+		}
+		else if(optionadd == 2){
+			for(int i = 0; i<a; i++){
+				k = -1;
+				temp = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if((int) this.finalblockss.get(j).getTotalServiceTime()>temp){
+						temp = (int) this.finalblockss.get(j).getTotalServiceTime();		
+						k = j;
+					}
+				}
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
+			}
 		}
 
 		for(int i = 0; i<platforms.size(); i++){
@@ -566,7 +602,7 @@ public class Todo5 {
 
 					}
 
-					
+
 					if(temp == 1440){
 						feasible2 = false;
 					}
@@ -766,7 +802,7 @@ public class Todo5 {
 
 					}
 
-					
+
 					if(temp == 1440){
 						feasible3 = false;
 					}
@@ -965,7 +1001,7 @@ public class Todo5 {
 
 					}
 
-					
+
 					if(temp == 1440){
 						feasible4 = false;
 					}
@@ -1086,7 +1122,7 @@ public class Todo5 {
 						}
 
 					}
-					
+
 					for(int k = 0; k<platformsreserve.size(); k++){
 						trackfree = true;
 						index = 0;
@@ -1127,7 +1163,7 @@ public class Todo5 {
 
 					}
 
-					
+
 					if(temp == 1440){
 						feasible5 = false;
 					}
@@ -1365,7 +1401,7 @@ public class Todo5 {
 
 					}
 
-					
+
 					if(temp == 1440){
 						feasible6 = false;
 					}
@@ -1825,7 +1861,7 @@ public class Todo5 {
 
 						}
 
-						
+
 						if(temp == 1440){
 							feasible8 = false;
 							//System.out.println("IM NOT FEASIBLE" + feasible7);
@@ -1986,7 +2022,7 @@ public class Todo5 {
 							}
 
 						}
-						
+
 						for(int k = 0; k<platformsreserve.size(); k++){
 							trackfree = true;
 							index = 0;
@@ -2027,7 +2063,7 @@ public class Todo5 {
 
 						}
 
-						
+
 						if(temp == 1440){
 							feasible9 = false;
 						}
@@ -2264,7 +2300,7 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
-						
+
 						for(int k = 0; k<platformsreserve.size(); k++){
 							trackfree = true;
 							index = 0;
@@ -2512,7 +2548,7 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
-						
+
 						for(int k = 0; k<platformsreserve.size(); k++){
 							trackfree = true;
 							index = 0;
@@ -2796,7 +2832,7 @@ public class Todo5 {
 
 						}
 
-						
+
 						if(temp == 1440){
 							feasible12 = false;
 						}
@@ -2999,7 +3035,7 @@ public class Todo5 {
 								temp1 = temptemp1;
 							}
 						}
-						
+
 						for(int k = 0; k<platformsreserve.size(); k++){
 							trackfree = true;
 							index = 0;
