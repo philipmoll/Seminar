@@ -10,6 +10,8 @@ public class Todo5 {
 	ArrayList<FinalBlock> finalblockss;
 	ArrayList<FinalBlock> finalblockssshallow;
 	int[] sequence = new int[3];
+	boolean feasible = true;
+	int option;
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -19,10 +21,11 @@ public class Todo5 {
 	ArrayList<Track> washareas = new ArrayList<>();
 	Activity[] movelist = new Activity[60*24];
 
-	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int optionadd) throws IOException{
+	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
 		finalblockssshallow = new ArrayList<>();
+		option = this.option;
 
 
 		for(int i=0;i<tracks.length;i++){
@@ -61,7 +64,7 @@ public class Todo5 {
 		int temp;
 		int k;
 		int a = this.finalblockss.size();
-		if(optionadd == 0){
+		if(option == 1 || option == 2){
 			for(int i = 0; i<a; i++){
 				temp = 14124;
 				k = -1;
@@ -79,7 +82,7 @@ public class Todo5 {
 			}
 
 		}
-		else if(optionadd == 1){
+		else if(option == 3 || option == 4){
 			for(int i = 0; i<a; i++){
 				k = -1;
 				temp = -1;
@@ -94,7 +97,22 @@ public class Todo5 {
 				this.finalblockss.remove(k);
 			}
 		}
-		else if(optionadd == 2){
+		else if(option == 5 || option == 6){
+			for(int i = 0; i<a; i++){
+				k = -1;
+				temp = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if((int) this.finalblockss.get(j).getTotalServiceTime()>temp){
+						temp = (int) this.finalblockss.get(j).getTotalServiceTime();		
+						k = j;
+					}
+				}
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
+			}
+		}
+		else if(option == 7 || option == 8){
 			for(int i = 0; i<a; i++){
 				k = -1;
 				temp = -1;
@@ -3223,7 +3241,7 @@ public class Todo5 {
 			}
 		}
 		else{
-			throw new IOException("No feasible solution found for job-shop");
+			feasible = false;
 		}
 
 
@@ -3446,7 +3464,9 @@ public class Todo5 {
 			}
 		}
 	}
-
+	public boolean getFeasible(){
+		return feasible;
+	}
 	/*
 	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
 	 */
