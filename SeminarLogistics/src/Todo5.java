@@ -3397,7 +3397,7 @@ public class Todo5 {
 			if(movelist[i] != null && movelist[i].equals(activity)){
 				movelist[i] = null; 
 			}
-		}
+		} 
 	}
 	public boolean getObjective(int l, int k){
 		boolean abc = false;
