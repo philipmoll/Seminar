@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  */
 public class Parking5 implements Serializable{ //TODO: test!
-	private int CHOICE = 1; //MAXDRIVEBACKORDER
+	private int CHOICE; //MAXDRIVEBACKORDER
 	private ArrayList<Track> parkingtracks;
 	private ArrayList<Track> lifotracks;
 	//private int[][] parkingpositions;
@@ -25,6 +25,8 @@ public class Parking5 implements Serializable{ //TODO: test!
 	//private ArrayList<int[]> freetracktimes;
 	private int notparked;
 	private Track[] tracks;
+	private int minL=15;
+	private int maxL=69;
 
 	public Parking5(ArrayList<Event> eventlist, Track[] tracks, int CHOICE) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
@@ -392,11 +394,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 				parked = arrivalSimple(arrivalevent, i);
 			}
 			else if (CHOICE == 2){
-				parked = arrivalMinOccupiedOrder(arrivalevent, i);
+				parked = arrivalLengthLeftOrder(arrivalevent, i);
+			}
+			else if (CHOICE == 3){
+				parked = arrivalBusyTrack(arrivalevent, i);
 			}
 		}
 		if (!parked){
-//			System.out.println("IK BEN HIER");
+			//			System.out.println("IK BEN HIER");
 			for (int j = 0; j<lifotracks.size(); j++){
 				parked = lifoPark(arrivalevent, lifotracks.get(j),i);
 				if (parked == true){
@@ -406,9 +411,9 @@ public class Parking5 implements Serializable{ //TODO: test!
 			if (parked == true){
 				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
 				System.out.println(arrivalevent.getStarttime()+"  "+arrivalevent.getEndtime());
-//				for (int j = 0; j< arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime()).length; j++){
-//					System.out.print(arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime())[j]);
-//				}
+				//				for (int j = 0; j< arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime()).length; j++){
+				//					System.out.print(arrivalevent.getEventTrack().getBusyArrayBetween(arrivalevent.getStarttime(),arrivalevent.getEndtime())[j]);
+				//				}
 			}
 		}
 		else {
@@ -418,8 +423,78 @@ public class Parking5 implements Serializable{ //TODO: test!
 		return parked;
 	}
 	
-	public boolean arrivalMinOccupiedOrder(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
+	public boolean arrivalBusyTrack(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
 		boolean parked = false;
+		
+		return parked;
+	}
+
+	public boolean arrivalLengthLeftOrder(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
+		boolean parked = false;
+		for (int j = 0; j<parkingtracks.size(); j++){
+			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
+			//if: block can drive back at track
+			if (parkingtracks.get(j).getMaxDriveBackLength()>=arrivalevent.getEventblock().getLength()){
+				if (parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() <= minL || parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() >= maxL){
+					parked = simplePark(arrivalevent, parkingtracks.get(j), i);
+				}
+			}
+			if (parked == true){
+				System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+				break;
+			}
+		}
+		if (!parked){
+			for (int j = 0; j<parkingtracks.size(); j++){
+				//check for the first track with maxdrivebacklength > size block if it fits on the correct side
+				//if: block can drive back at track
+				if (parkingtracks.get(j).getMaxDriveBackLength()<arrivalevent.getEventblock().getLength()){
+					if (parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() <= minL || parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() >= maxL){
+						parked = simplePark(arrivalevent, parkingtracks.get(j), i);
+					}
+				}
+				if (parked == true){
+					System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+					break;
+				}
+			}
+		}
+		if (!parked){
+			for (int j = 0; j<parkingtracks.size(); j++){
+				//check for the first track with maxdrivebacklength > size block if it fits on the correct side
+				//if: block can drive back at track
+				if (parkingtracks.get(j).getMaxDriveBackLength()>=arrivalevent.getEventblock().getLength()){
+					if (!(parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() <= minL) && !(parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() >= maxL)){
+						parked = simplePark(arrivalevent, parkingtracks.get(j), i);
+					}
+				}
+				if (parked == true){
+					System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+					break;
+				}
+			}
+		}
+		if (!parked){
+			for (int j = 0; j<parkingtracks.size(); j++){
+				//check for the first track with maxdrivebacklength > size block if it fits on the correct side
+				//if: block can drive back at track
+				if (parkingtracks.get(j).getMaxDriveBackLength()<arrivalevent.getEventblock().getLength()){
+					if (!(parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() <= minL) && !(parkingtracks.get(j).getCompositionLengthOnTrack() + arrivalevent.getEventblock().getLength() >= maxL)){
+						parked = simplePark(arrivalevent, parkingtracks.get(j), i);
+					}
+				}
+				if (parked == true){
+					System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+					break;
+				}
+			}
+		}
+		if (!parked){
+			System.out.println("Arrival "+i+" cannot be parked simply");
+		}
+		else {
+			System.out.println("Event "+i+" is parked at track "+arrivalevent.getEventTrack().getLabel());
+		}
 		return parked;
 	}
 
