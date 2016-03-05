@@ -21,7 +21,7 @@ public class Main {
 
 	public static final int decoupletime = 2; //MINUTES
 	public static final int coupletime = 3; //MINUTES
-	public final static int moveduration = 2; //MINUTES
+	public final static int moveduration = 1; //MINUTES
 	public final static double begintime = .33333333333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
 
 	public static void main(String args[])
@@ -252,7 +252,7 @@ public class Main {
 				//			}
 
 				//Parking3 ourparking3 = new Parking3(events, tracks);
-				Parking5 ourparking5 = new Parking5(events,tracks);
+				Parking5 ourparking5 = new Parking5(events,tracks,1);//1: maxdrivebackorder
 				System.out.println("Did not park: "+ourparking5.getNotParked());
 				if (ourparking5.getNotParked()>0){
 					System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");

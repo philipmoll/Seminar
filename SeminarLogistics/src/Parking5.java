@@ -26,8 +26,9 @@ public class Parking5 implements Serializable{ //TODO: test!
 	private int notparked;
 	private Track[] tracks;
 
-	public Parking5(ArrayList<Event> eventlist, Track[] tracks) throws MethodFailException, TrackNotFreeException, IOException{
+	public Parking5(ArrayList<Event> eventlist, Track[] tracks, int CHOICE) throws MethodFailException, TrackNotFreeException, IOException{
 		// input: eventlist met per compositie op welke tijd hij aankomt en weggaat en waarheen/waarvandaan, tracklist
+		this.CHOICE = CHOICE;
 		this.tracks = tracks;
 		notparked = 0;
 		//take parktracks out of tracks and order by maxbackwardlength
@@ -146,7 +147,6 @@ public class Parking5 implements Serializable{ //TODO: test!
 					throw new IOException("Type of event "+i+" should be 0 (arrival) or 1 (departure), but is "+i);
 				}
 			}
-
 		}
 	}
 
@@ -389,7 +389,10 @@ public class Parking5 implements Serializable{ //TODO: test!
 		boolean parked = false;
 		if(!parked){
 			if (CHOICE ==1){
-				parked = arrivalMaxDriveBackOrder(arrivalevent, i);
+				parked = arrivalSimple(arrivalevent, i);
+			}
+			else if (CHOICE == 2){
+				parked = arrivalMinOccupiedOrder(arrivalevent, i);
 			}
 		}
 		if (!parked){
@@ -414,8 +417,13 @@ public class Parking5 implements Serializable{ //TODO: test!
 
 		return parked;
 	}
+	
+	public boolean arrivalMinOccupiedOrder(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
+		boolean parked = false;
+		return parked;
+	}
 
-	public boolean arrivalMaxDriveBackOrder(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
+	public boolean arrivalSimple(Event arrivalevent, int i) throws TrackNotFreeException, IOException, MethodFailException{
 		boolean parked = false;
 		for (int j = 0; j<parkingtracks.size(); j++){
 			//check for the first track with maxdrivebacklength > size block if it fits on the correct side
