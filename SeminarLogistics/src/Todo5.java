@@ -22,6 +22,9 @@ public class Todo5 {
 	Activity[] movelist = new Activity[60*24];
 
 	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
+		if(option < 1 || option > 8){
+			throw new IOException("Not that many options exist");
+		}
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
 		finalblockssshallow = new ArrayList<>();
@@ -100,10 +103,10 @@ public class Todo5 {
 		else if(option == 5 || option == 6){
 			for(int i = 0; i<a; i++){
 				k = -1;
-				temp = -1;
+				temp = 14124;
 				for(int j = 0; j<this.finalblockss.size(); j++){
-					if((int) this.finalblockss.get(j).getTotalServiceTime()>temp){
-						temp = (int) this.finalblockss.get(j).getTotalServiceTime();		
+					if((int) this.finalblockss.get(j).getDepartureTimeInteger()<temp){
+						temp = (int) this.finalblockss.get(j).getDepartureTimeInteger();	
 						k = j;
 					}
 				}
@@ -115,10 +118,10 @@ public class Todo5 {
 		else if(option == 7 || option == 8){
 			for(int i = 0; i<a; i++){
 				k = -1;
-				temp = -1;
+				temp = 14124;
 				for(int j = 0; j<this.finalblockss.size(); j++){
-					if((int) this.finalblockss.get(j).getTotalServiceTime()>temp){
-						temp = (int) this.finalblockss.get(j).getTotalServiceTime();		
+					if((int) this.finalblockss.get(j).getArrivalTimeInteger()<temp){
+						temp = (int) this.finalblockss.get(j).getArrivalTimeInteger();		
 						k = j;
 					}
 				}
@@ -3395,6 +3398,18 @@ public class Todo5 {
 				movelist[i] = null; 
 			}
 		}
+	}
+	public boolean getObjective(int l, int k){
+		boolean abc = false;
+		if(option == 1 || option == 3 || option == 5 || option == 7){
+			if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+				abc = true;
+			}
+		}
+		else if(option == 2 || option == 4 || option == 6 || option == 8){
+			
+		}
+		return abc;
 	}
 	public boolean checkFeasibilityMove(Activity activity, int timetobechecked){
 
