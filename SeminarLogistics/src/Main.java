@@ -159,7 +159,6 @@ public class Main {
 				}
 			}
 
-
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
 			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
 			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
@@ -208,7 +207,7 @@ public class Main {
 			}
 
 
-			Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks,0);
+			Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);
 			boolean feasjobshop = JobShop.getFeasible(); //TODO: create method, do not throw error
 			while (!feasjobshop){
 				y = y+1;
@@ -258,8 +257,6 @@ public class Main {
 					System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
 				}
 			}
-
-
 		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
 		}
