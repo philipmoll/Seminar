@@ -257,8 +257,6 @@ public class Main {
 					System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
 				}
 			}
-
-
 		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
 		}
