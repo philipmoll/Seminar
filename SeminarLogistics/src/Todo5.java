@@ -22,13 +22,14 @@ public class Todo5 {
 	Activity[] movelist = new Activity[60*24];
 
 	public Todo5(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
+		
 		if(option < 1 || option > 8){
 			throw new IOException("Not that many options exist");
 		}
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
 		finalblockssshallow = new ArrayList<>();
-		option = this.option;
+		this.option = option;
 
 
 		for(int i=0;i<tracks.length;i++){
@@ -67,7 +68,6 @@ public class Todo5 {
 		int temp;
 		int k;
 		int a = this.finalblockss.size();
-		System.out.println(option);
 
 		if(option == 1 || option == 2){
 
@@ -3499,12 +3499,12 @@ public class Todo5 {
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
 							first = false;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
 							first = false;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 					}
 					else{
@@ -3514,7 +3514,7 @@ public class Todo5 {
 							abcd.get(abcd.size()-2).setEndTime(j);
 							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
 							first = true;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
@@ -3522,7 +3522,7 @@ public class Todo5 {
 							abcd.get(abcd.size()-2).setEndTime(j);
 							abcd.get(abcd.size()-2).setSideEnd(0);
 							first = true;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 
 					}
