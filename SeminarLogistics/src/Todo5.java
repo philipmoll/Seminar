@@ -344,7 +344,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -515,6 +515,14 @@ public class Todo5 {
 			}
 		}
 
+
+
+
+
+
+
+
+
 		//ADDING OPTION 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -610,7 +618,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -813,7 +821,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -1013,7 +1021,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -1176,7 +1184,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -1415,7 +1423,7 @@ public class Todo5 {
 										if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 											if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 												if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-													if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+													if(this.getObjective(l, k)){
 														temptemp = l;
 
 														temptemp1 = platformsreserve.get(k);
@@ -1645,7 +1653,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -1880,7 +1888,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -2085,7 +2093,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -2366,7 +2374,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -2617,7 +2625,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -2863,7 +2871,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -3110,7 +3118,7 @@ public class Todo5 {
 											if(platformsreserve.get(k).checkFeasibility(activities.get(activities.size()-1), l)){
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
-														if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+														if(this.getObjective(l, k)){
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -3447,7 +3455,18 @@ public class Todo5 {
 			}
 		}
 		else if(option == 2 || option == 4 || option == 6 || option == 8){
-			// if()
+			int temp = 0;
+			for(int i = 0; i<activities.size(); i++){
+				for(int j = i+1; j<activities.size(); j++){
+					if(activities.get(i).getTrackAssigned().equals(activities.get(j).getTrackAssigned())){
+						if(activities.get(i).getPlannedTimeInteger() < activities.get(j).getPlannedTimeInteger()){
+							if(activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1) < 11){
+								temp += activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1);
+							}
+						}
+					}
+				}
+			}
 		}
 		return abc;
 	}
