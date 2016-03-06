@@ -76,7 +76,11 @@ public class Main {
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
-						new Schedule(trainsarr);
+						Schedule hallo = new Schedule(trainsarr);
+						
+						for(int l = 0; l<trainsarr.length; l++){
+							System.out.println(trainsarr[l].getActivity(0) + " " + trainsarr[l].getActivity(1) + " " + trainsarr[l].getActivity(2) + " " + trainsarr[l].getActivity(3));
+						}
 			
 						ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
 						ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
@@ -106,7 +110,7 @@ public class Main {
 							}
 						}
 
-						double y = 4;
+						double y = 0;
 						Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
 						boolean[][] z = onzeMatching.getZ();
 			
@@ -116,7 +120,7 @@ public class Main {
 						for (int i = 0; i<z.length; i++){
 							for (int j = 0; j<z[0].length; j++){
 								if (z[i][j]==true){
-//									System.out.println("z("+i+","+j+") = "+z[i][j]);
+									System.out.println("z("+i+","+j+") = "+z[i][j]);
 									finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
 									//						System.out.println(arrivingblocks.get(i).getArrivaltime());
 									//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
@@ -126,6 +130,7 @@ public class Main {
 								}
 							}
 						}
+						
 			
 			
 						Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);

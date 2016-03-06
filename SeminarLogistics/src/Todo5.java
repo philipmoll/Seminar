@@ -67,7 +67,10 @@ public class Todo5 {
 		int temp;
 		int k;
 		int a = this.finalblockss.size();
+		System.out.println(option);
+
 		if(option == 1 || option == 2){
+
 			for(int i = 0; i<a; i++){
 				temp = 14124;
 				k = -1;
@@ -3407,7 +3410,7 @@ public class Todo5 {
 			}
 		}
 		else if(option == 2 || option == 4 || option == 6 || option == 8){
-			if()
+			// if()
 		}
 		return abc;
 	}
