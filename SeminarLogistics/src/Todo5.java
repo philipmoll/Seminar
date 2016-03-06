@@ -3470,7 +3470,7 @@ public class Todo5 {
 						}
 					}
 				}
-			} 
+			}
 			if(temp < compare){
 				abc = true;
 				compare = temp;
