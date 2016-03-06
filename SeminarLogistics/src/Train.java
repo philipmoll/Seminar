@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Train implements Serializable{
 	//////
 	private final int train_ID;
-	private final int type;
+	private int type;
 	private final int length;
 	private final int inspectiontime;
 	private final int cleaningtime;
@@ -400,6 +400,10 @@ public class Train implements Serializable{
 	}
 	public double getRepprob(){
 		return repprob;
+	}
+	
+	public void setType(int type){
+		this.type=type;
 	}
 	/**
 	 * Returns true if a train is of the same class and same number of carriages

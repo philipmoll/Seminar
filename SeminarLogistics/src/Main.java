@@ -27,8 +27,8 @@ public class Main {
 	private final static int nrjobshops = 8;
 	private final static int nrparkings = 2;
 
-//	private static int fromjobshop;
-//	private static int fromparking;
+	//	private static int fromjobshop;
+	//	private static int fromparking;
 
 	public static void main(String args[])
 	{
@@ -76,13 +76,86 @@ public class Main {
 			}
 
 			Track[] tracks =  readInTracks(trackdata);
+
 			for (int i = 0; i<tracks.length; i++){
 				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
 			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
+			for (int i = 0; i<trainsarr.length; i++){
+				System.out.println("interch"+trainsarr[i].getInterchangeable());
+			}
+			Train[] trainstoadd = new Train[17];
+			trainstoadd[0] = new Train(1000,2,4);
+			trainstoadd[1] = new Train(1001,2,4);
+			trainstoadd[2] = new Train(1002,1,4);
+			trainstoadd[3] = new Train(1003,3,4);
+			trainstoadd[4] = new Train(1004,2,4);
+			trainstoadd[5] = new Train(1005,1,4);
+			trainstoadd[6] = new Train(1006,2,4);
+			trainstoadd[7] = new Train(1007,2,4);
+
+			trainstoadd[8] = new Train(1008,2,4);
+			trainstoadd[9] = new Train(1009,3,4);
+			trainstoadd[10] = new Train(1010,2,4);
+			trainstoadd[11] = new Train(1011,2,4);
+			trainstoadd[12] = new Train(1012,1,4);
+
+			trainstoadd[13] = new Train(1013,2,4);
+			trainstoadd[14] = new Train(1014,1,4);
+			trainstoadd[15] = new Train(1015,2,4);
+			trainstoadd[16] = new Train(1016,2,4);
+
+			int[] arrivingpositions = new int[17];
+			arrivingpositions[0] = 7;
+			arrivingpositions[1] = 11;
+			arrivingpositions[2] = 8;
+			arrivingpositions[3] = 10;
+			arrivingpositions[4] = 12;
+			arrivingpositions[5] = 0;
+			arrivingpositions[6] = 13;
+			arrivingpositions[7] = 18;
+			arrivingpositions[8] = 4;
+			arrivingpositions[9] = 2;
+			arrivingpositions[10] = 1;
+			arrivingpositions[11] = 15;
+			arrivingpositions[12] = 6;
+			arrivingpositions[13] = 16;
+			arrivingpositions[14] = 5;
+			arrivingpositions[15] = 3;
+			arrivingpositions[16] = 9;
+
+			int[] departingpositions = new int[17];
+			departingpositions[0] = 13;
+			departingpositions[1] = 18;
+			departingpositions[2] = 9;
+			departingpositions[3] = 11;
+			departingpositions[4] = 17;
+			departingpositions[5] = 4;
+			departingpositions[6] = 15;
+			departingpositions[7] = 20;
+			departingpositions[8] = 6;
+			departingpositions[9] = 1;
+			departingpositions[10] = 2;
+			departingpositions[11] = 17;
+			departingpositions[12] = 8;
+			departingpositions[13] = 12;
+			departingpositions[14] = 3;
+			departingpositions[15] = 0;
+			departingpositions[16] = 7;
+
+			int nrtrainstoadd = 1; //TODO: zelf invullen
+			Train[] trainstoaddnow = new Train[nrtrainstoadd];
+			int[] arrivingpositionsnow = new int[nrtrainstoadd];
+			int[] departingpositionsnow = new int[nrtrainstoadd];
+			for (int i = 0; i<nrtrainstoadd; i++){
+				trainstoaddnow[i]=trainstoadd[i];
+				arrivingpositionsnow[i]=arrivingpositions[i];
+				departingpositionsnow[i]=departingpositions[i];
+			}
 			new Schedule(trainsarr);
+			new Schedule(trainstoaddnow);
 
 			//			for(int l = 0; l<trainsarr.length; l++){
 			//				System.out.println(trainsarr[l].getActivity(0) + " " + trainsarr[l].getActivity(1) + " " + trainsarr[l].getActivity(2) + " " + trainsarr[l].getActivity(3));
@@ -100,7 +173,8 @@ public class Main {
 				else{
 					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
 				}
-			} 
+			}
+
 
 
 			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
@@ -116,9 +190,43 @@ public class Main {
 				}
 			}
 
+			Composition[] addarriving = new Composition[nrtrainstoadd];
+			Composition[] adddeparting = new Composition[nrtrainstoadd];
+			for (int i = 0; i<nrtrainstoadd; i++){
+				Train addnow = trainstoaddnow[i];
+				addarriving[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},arrivingcompositions.get(arrivingpositionsnow[i]).getArrivaltime(),arrivingcompositions.get(arrivingpositionsnow[i]).getDeparturetime(),arrivingcompositions.get(arrivingpositionsnow[i]).getArrivalDepartureSide());
+				adddeparting[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},leavingcompositions.get(departingpositionsnow[i]).getArrivaltime(),leavingcompositions.get(departingpositionsnow[i]).getDeparturetime(),leavingcompositions.get(departingpositionsnow[i]).getArrivalDepartureSide());
+				arrivingcompositions.get(arrivingpositionsnow[i]).coupleComposition(addarriving[i]);
+				//				System.out.println("hoi "+arrivingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
+				leavingcompositions.get(departingpositionsnow[i]).coupleComposition(adddeparting[i]);
+				//				System.out.println("hoi2 "+leavingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
+			}
+
+			//			for (int i = 0; i < arrivingcompositions.size(); i++){
+			//				System.out.println("size: "+arrivingcompositions.get(i).getTrainList().size());
+			//			}
+			//			for (int i = 0; i < leavingcompositions.size(); i++){
+			//				System.out.println("size2: "+leavingcompositions.get(i).getTrainList().size());
+			//			}
+
+			for (int i = 0; i<arrivingcompositions.size(); i++){
+				for (int j = 0; j<arrivingcompositions.get(i).getTrainList().size(); j++){
+					if (arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 1){
+						arrivingcompositions.get(i).getTrainList().get(j).setType(arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable());
+					}
+				}
+			}
+			for (int i = 0; i<leavingcompositions.size(); i++){
+				for (int j = 0; j<leavingcompositions.get(i).getTrainList().size(); j++){
+					if (leavingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 1){
+						leavingcompositions.get(i).getTrainList().get(j).setType(leavingcompositions.get(i).getTrainList().get(j).getInterchangeable());
+					}
+				}
+			}
+
 			double y = 0;
 			boolean solutionfound = false;
-			while (solutionfound == false){
+			while (solutionfound == false && y <2){
 				Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
 				System.gc();
 				if (onzeMatching.returnSolved() == false){
@@ -126,6 +234,7 @@ public class Main {
 					break;
 				}
 				else{
+					System.out.println("Feasible matching");
 					boolean[][] z = onzeMatching.getZ();
 					ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
 					ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
@@ -144,10 +253,12 @@ public class Main {
 					for (int i = 1; i<=nrjobshops; i++){
 						Todo5 jobshop = new Todo5(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
 						if (jobshop.getFeasible()){
+							System.out.println("Feasible jobshop");
 							ArrayList<Event> events = jobshop.getEvents();
 							for (int j=1; j<=nrparkings; i++){
 								Parking5 parking = new Parking5(events,tracks,j);
 								if (parking.getFeasible()){
+									System.out.println("Feasible parking");
 									solutionfound = true;
 									break;
 								}
@@ -211,51 +322,51 @@ public class Main {
 		}
 	}
 
-//	public static Todo5 runJobShopParking(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> leavingcompositions, ArrayList<FinalBlock> finalcompositionblocks) throws IOException, MethodFailException, TrackNotFreeException{
-//		Todo5 jobshop = null;
-//		for (int i = fromjobshop; i<=nrjobshops; i++){
-//			jobshop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, i);
-//			System.gc();
-//			if (jobshop.getFeasible()){
-//				fromjobshop = i+1;
-//				break;
-//			}
-//		}
-//		if (jobshop != null){
-//			if (!jobshop.getFeasible()){
-//				fromjobshop = 1;
-//				jobshop = null;
-//			}
-//			else{
-//				ArrayList<Event> events = jobshop.getEvents();
-//				Parking5 parking = runParking(tracks,events);
-//				if (parking == null){
-//					jobshop = runJobShopParking(tracks,arrivingcompositions,leavingcompositions, finalcompositionblocks);
-//				}
-//				else{
-//					System.out.println("FEASIBLE SOLUTION FOUND");
-//				}
-//			}
-//		}
-//		return jobshop;
-//	}
-//
-//	public static Parking5 runParking(Track[] tracks, ArrayList<Event> events) throws MethodFailException, TrackNotFreeException, IOException{
-//		Parking5 parking = null;
-//		for (int i = fromparking; i<=nrparkings; i++){
-//			parking = new Parking5(events,tracks,i);
-//			System.gc();
-//			if (parking.getFeasible()){
-//				break;
-//			}
-//		}
-//		if (parking != null){
-//			if (!parking.getFeasible()){
-//				parking = null;
-//			}
-//		}
-//		return parking;
-//	}
+	//	public static Todo5 runJobShopParking(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> leavingcompositions, ArrayList<FinalBlock> finalcompositionblocks) throws IOException, MethodFailException, TrackNotFreeException{
+	//		Todo5 jobshop = null;
+	//		for (int i = fromjobshop; i<=nrjobshops; i++){
+	//			jobshop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, i);
+	//			System.gc();
+	//			if (jobshop.getFeasible()){
+	//				fromjobshop = i+1;
+	//				break;
+	//			}
+	//		}
+	//		if (jobshop != null){
+	//			if (!jobshop.getFeasible()){
+	//				fromjobshop = 1;
+	//				jobshop = null;
+	//			}
+	//			else{
+	//				ArrayList<Event> events = jobshop.getEvents();
+	//				Parking5 parking = runParking(tracks,events);
+	//				if (parking == null){
+	//					jobshop = runJobShopParking(tracks,arrivingcompositions,leavingcompositions, finalcompositionblocks);
+	//				}
+	//				else{
+	//					System.out.println("FEASIBLE SOLUTION FOUND");
+	//				}
+	//			}
+	//		}
+	//		return jobshop;
+	//	}
+	//
+	//	public static Parking5 runParking(Track[] tracks, ArrayList<Event> events) throws MethodFailException, TrackNotFreeException, IOException{
+	//		Parking5 parking = null;
+	//		for (int i = fromparking; i<=nrparkings; i++){
+	//			parking = new Parking5(events,tracks,i);
+	//			System.gc();
+	//			if (parking.getFeasible()){
+	//				break;
+	//			}
+	//		}
+	//		if (parking != null){
+	//			if (!parking.getFeasible()){
+	//				parking = null;
+	//			}
+	//		}
+	//		return parking;
+	//	}
 
 	public static ArrayList<Composition> setUpCompositions(int arrordep, Train[] trains1, Matrix compositiondata, Matrix compositiondata3){
 		int abcd = 0;

@@ -130,7 +130,7 @@ public class Composition implements Serializable{
 
 	public void coupleComposition(Composition addcomposition) throws MisMatchException, IndexOutOfBoundsException, IOException{
 		if (arrivaltime != addcomposition.getArrivaltime() || departuretime != addcomposition.getDeparturetime()){
-			throw new MisMatchException("Arrivaltime or departuretime are not the same when coupling two compositions");
+			throw new MisMatchException("Arrivaltime or departuretime are not the same when coupling two compositions: "+addcomposition.getArrivaltime()+" "+this.getArrivaltime());
 		}
 
 

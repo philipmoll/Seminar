@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 
-public class Activity {
+public class Activity implements Serializable{
 	private int plannedtime;
 	private Composition composition;
 	private int activity;
