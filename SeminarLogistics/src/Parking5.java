@@ -1091,5 +1091,14 @@ public class Parking5 implements Serializable{ //TODO: test!
 	public int getNotParked(){
 		return notparked;
 	}
+	
+	public boolean getFeasible(){
+		if (notparked > 0){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 }
 
