@@ -3483,16 +3483,26 @@ public class Todo5 {
 		boolean feasible = true;
 
 		for(int i = timetobechecked; i<timetobechecked+activity.getMoveTime(); i++){
-			if(movelist[i]!=null){
+			if(i >= 60*24){
 				feasible = false;
 				break;
 			}
+			else if(movelist[i]!=null){
+				feasible = false;
+				break;
+			}
+			
 		}
 		for(int i = timetobechecked + activity.getDurationInteger() + activity.getMoveTime(); i<timetobechecked + activity.getDurationInteger() + activity.getMoveTime2() + activity.getMoveTime(); i++){
-			if(movelist[i]!=null){
+			if(i >= 60*24){
 				feasible = false;
 				break;
 			}
+			else if(movelist[i]!=null){
+				feasible = false;
+				break;
+			}
+			
 		}
 		return feasible;
 	}
@@ -3532,7 +3542,7 @@ public class Todo5 {
 		for(int i = 0; i<activities.size(); i++){
 			if(activities.get(i).getPlannedTime()>activities.get(i).getUltimateTime()){
 				abcd = false;
-			}	
+			}
 		}
 		return abcd;
 	}

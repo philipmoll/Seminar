@@ -409,9 +409,15 @@ public class Track implements Serializable {
 		boolean feasible = true;
 
 		for(int i = timetobechecked; i<timetobechecked+activity.getTotalDurationInteger(); i++){
-			if(busytime[i]!=null){
+			if(i>=60*24){
 				feasible = false;
+				break;
 			}
+			else if(busytime[i]!=null){
+				feasible = false;
+				break;
+			}
+			
 		}
 
 		return feasible;
