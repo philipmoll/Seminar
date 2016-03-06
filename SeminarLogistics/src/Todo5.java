@@ -166,7 +166,9 @@ public class Todo5 {
 		int temp;
 		int temptemp;
 		int amount = 0;
-		int mintemp = addedcomp.getArrivalTimeInteger(); 
+		int mintemp = addedcomp.getArrivalTimeInteger();
+		System.out.print("mintemp "+ mintemp + " 0 ");
+
 		Track temp1;
 		Track temptemp1;
 		int margin1 = 2432;
@@ -380,6 +382,8 @@ public class Todo5 {
 
 
 							mintemp = time10 + durationactivity;
+							System.out.print("mintemp "+ mintemp + " 7 ");
+
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
@@ -1515,6 +1519,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 8 ");
 
 
 
@@ -1672,6 +1677,7 @@ public class Todo5 {
 								track25 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time25 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 9 ");
 
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin7){
@@ -1752,6 +1758,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 10 ");
 
 
 			//System.out.println(addedcomp.getTrain(0).getActivityTimeInteger(0) + " " + addedcomp.getTrain(0).getActivityTimeInteger(1) + " " + activities.get(activities.size()-1).getTotalDurationInteger());
@@ -1905,6 +1912,7 @@ public class Todo5 {
 								track25 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time25 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 10 ");
 
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin8){
@@ -1988,6 +1996,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 11 ");
 
 
 			// add the merged activity 5 which consists of activities 0 and 1. 
@@ -2153,6 +2162,7 @@ public class Todo5 {
 								track20 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time20 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 12 ");
 
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin9){
@@ -2232,6 +2242,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 13 ");
 
 
 			//System.out.println(addedcomp.getTrain(0).getActivityTimeInteger(0) + " " + addedcomp.getTrain(0).getActivityTimeInteger(1) + " " + activities.get(activities.size()-1).getTotalDurationInteger());
@@ -2392,7 +2403,7 @@ public class Todo5 {
 								track20 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time20 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
-
+								System.out.print(mintemp + " 1 ");
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin10){
 									margin10 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
@@ -2476,6 +2487,8 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 1 ");
+
 
 
 			// add the merged activity 5 which consists of activities 0 and 1. 
@@ -2640,6 +2653,7 @@ public class Todo5 {
 								track27 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time27 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 2 ");
 
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin11){
@@ -2723,6 +2737,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 3 ");
 
 
 			//System.out.println(addedcomp.getTrain(0).getActivityTimeInteger(0) + " " + addedcomp.getTrain(0).getActivityTimeInteger(1) + " " + activities.get(activities.size()-1).getTotalDurationInteger());
@@ -2883,6 +2898,7 @@ public class Todo5 {
 								track27 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time27 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 4 ");
 
 
 								if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin12){
@@ -2966,6 +2982,7 @@ public class Todo5 {
 			}
 
 			mintemp = addedcomp.getArrivalTimeInteger();
+			System.out.print("mintemp "+ mintemp + " 5 ");
 
 
 			// add the merged activity 5 which consists of activities 0 and 1. 
@@ -3117,6 +3134,7 @@ public class Todo5 {
 								track28 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
 								mintemp = time28 + activities.get(activities.size()-1-sequence[j]).getTotalDurationInteger();
+								System.out.print("mintemp "+ mintemp + " 6 ");
 
 
 
@@ -3302,6 +3320,11 @@ public class Todo5 {
 		//			throw new IOException("No feasible solution found for job-shop");
 		//		}
 
+		System.out.println("Arrival Time: " + addedcomp.getArrivalTimeInteger() + " Mintemp: " + mintemp);
+		for(int i = 0; i<amount; i++){
+			System.out.println("Activity: " + activities.get(activities.size()-1-i).getPlannedTimeInteger());
+		}
+		
 		System.out.print("Composition ");
 		addedcomp.printTimeLine();
 		System.out.print("\n");
