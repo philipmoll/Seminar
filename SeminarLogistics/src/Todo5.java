@@ -12,6 +12,8 @@ public class Todo5 {
 	int[] sequence = new int[3];
 	boolean feasible = true;
 	int option;
+	int compare = 14123;
+
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -166,6 +168,7 @@ public class Todo5 {
 		int temp;
 		int temptemp;
 		int amount = 0;
+		compare = 14123;
 		int mintemp = addedcomp.getArrivalTimeInteger();
 		//System.out.print("mintemp "+ mintemp + " 0 ");
 
@@ -2094,6 +2097,7 @@ public class Todo5 {
 												if(addedcomp.checkFeasibility(activities.get(activities.size()-1), l)){
 													if(this.checkFeasibilityMove(activities.get(activities.size()-1),l)){
 														if(this.getObjective(l, k)){
+															compare = 
 															temptemp = l;
 
 															temptemp1 = platformsreserve.get(k);
@@ -3466,6 +3470,10 @@ public class Todo5 {
 						}
 					}
 				}
+			} 
+			if(temp < compare){
+				abc = true;
+				compare = temp;
 			}
 		}
 		return abc;
