@@ -90,7 +90,7 @@ public class Main {
 							else{
 								arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
 							}
-						}
+						} 
 			
 			
 						ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
