@@ -6,7 +6,7 @@ import ilog.cplex.*;
 
 public class Matching {
 	private double y;
-	public final double c = y*(double)Main.moveduration/60/24;
+	private double c; 
 	public static final int minplatformlength = 200; //TODO: verschilt per yard (kan ook washing area length zijn)
 	public static final int M = 1000;
 
@@ -57,7 +57,8 @@ public class Matching {
 	 */
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/, double y) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		this.y = y;
-		//System.out.println(c);
+		this.c = y*(double)Main.moveduration/60/24;
+		System.out.println(c);
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
 //		for (int i = 0; i<arrivingblocklist.size(); i++){

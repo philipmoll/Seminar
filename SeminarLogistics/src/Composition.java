@@ -32,7 +32,7 @@ public class Composition implements Serializable{
 		busytime = new Activity[60*24];
 		this.arrivaldepartureside = -1;
 	}
-	
+
 	public Composition(ArrayList<Train> compositiontrains, int arrivaldepartureside) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
@@ -54,7 +54,7 @@ public class Composition implements Serializable{
 		busytime = new Activity[60*24];
 		arrivaldepartureside = -1;
 	}
-	
+
 	public Composition(ArrayList<Train> compositiontrains, double arrivaltime, double departuretime, int arrivaldepartureside) throws IOException{
 		this.compositiontrains = compositiontrains;
 		this.updateComposition();
@@ -600,15 +600,30 @@ public class Composition implements Serializable{
 	 * @throws IOException
 	 */
 	public double getTotalServiceTime() throws IOException{ //TODO testfunctie!!
+		double acttimepertrain = 0;
+		double washingtimecomposition = 0;
 		double totalservicetime = 0;
 		for (int i = 0; i<this.getSize(); i++){
-			Train currenttrain = compositiontrains.get(i);
-			for (int j = 0; j<=3; j++){
-				if (currenttrain.getActivity(j)==true){
-					totalservicetime += currenttrain.getActivityTime(j);
-				}
+			acttimepertrain = 0;
+			if(this.getTrain(i).getActivity(0)){
+				acttimepertrain += this.getTrain(i).getActivityTime(0);
 			}
+			if(this.getTrain(i).getActivity(1)){
+				acttimepertrain += this.getTrain(i).getActivityTime(1);
+			}
+			if(this.getTrain(i).getActivity(2)){
+				acttimepertrain += this.getTrain(i).getActivityTime(2);
+			}
+			if(acttimepertrain > totalservicetime){
+				totalservicetime = acttimepertrain;
+			}
+			if(this.getTrain(i).getActivity(3)){
+				washingtimecomposition += this.getTrain(i).getActivityTime(3);
+			}
+
 		}
+		totalservicetime += washingtimecomposition;
+
 		return totalservicetime;
 	}
 
@@ -617,7 +632,7 @@ public class Composition implements Serializable{
 			busytime[i] = activity;
 		}
 	}
-	
+
 
 	public void removeBusyTime(Activity activity){
 		for(int i = 0; i<busytime.length; i++){
@@ -675,7 +690,7 @@ public class Composition implements Serializable{
 		}
 		return abcd;
 	}
-	
+
 	public boolean getCleaning(){
 		boolean abcd = false;
 		for(int i = 0; i<compositiontrains.size(); i++){
@@ -686,7 +701,7 @@ public class Composition implements Serializable{
 		}
 		return abcd;
 	}
-	
+
 	public boolean getRepairing(){
 		boolean abcd = false;
 		for(int i = 0; i<compositiontrains.size(); i++){
@@ -697,24 +712,24 @@ public class Composition implements Serializable{
 		}
 		return abcd;
 	}
-	
+
 	public void printTrains(){
 		for (int i = 0; i<compositiontrains.size(); i++){
 			System.out.println("Train: "+compositiontrains.get(i)+" Type: "+compositiontrains.get(i).getType()+" Subtype: "+compositiontrains.get(i).getCarriages());
 		}
 	}
-	
+
 	public void setBusyTimeMove(Activity activity) throws IOException {
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
 			if(busytime[i] != null){
 				throw new IOException("It is impossible to have 2 trains arriving or leaving at the same time!");
 			}
 			else{
-			busytime[i] = activity;
+				busytime[i] = activity;
 			}
 		}
 	}
-	
+
 	public int getArrivalDepartureSide(){
 		return arrivaldepartureside;
 	}

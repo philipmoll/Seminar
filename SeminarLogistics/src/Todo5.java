@@ -136,27 +136,27 @@ public class Todo5 {
 			}
 		}
 
-		for(int i = 0; i<platforms.size(); i++){
-			System.out.print("Platform " + i + "  ");
-			platforms.get(i).printTimeLine();
-			System.out.print("\n");
-			System.out.print("Reserve " + i + "   ");
-			platformsreserve.get(i).printTimeLine();
-			System.out.print("\n");
-		}
+//		for(int i = 0; i<platforms.size(); i++){
+//			System.out.print("Platform " + i + "  ");
+//			platforms.get(i).printTimeLine();
+//			System.out.print("\n");
+//			System.out.print("Reserve " + i + "   ");
+//			platformsreserve.get(i).printTimeLine();
+//			System.out.print("\n");
+//		}
 		/*for(int i = 0; i<platformsreserve.size(); i++){
 			System.out.print("Reserve " + i + "   ");
 			platformsreserve.get(i).printTimeLine();
 			System.out.print("\n");
 		}*/
-		for(int i = 0; i<washareas.size(); i++){
-			System.out.print("Washarea " + i + "  ");
-			washareas.get(i).printTimeLine();
-			System.out.print("\n");
-		}
-		System.out.print("Movelist    " );
-		this.printTimeLine();
-		System.out.print("\n");
+//		for(int i = 0; i<washareas.size(); i++){
+//			System.out.print("Washarea " + i + "  ");
+//			washareas.get(i).printTimeLine();
+//			System.out.print("\n");
+//		}
+//		System.out.print("Movelist    " );
+//		this.printTimeLine();
+//		System.out.print("\n");
 	}
 	/**
 	 * Adds a composotion with all its required activities to the activity list.
@@ -3351,9 +3351,9 @@ public class Todo5 {
 		//	System.out.println("Activity: " + activities.get(activities.size()-1-i).getPlannedTimeInteger());
 		//}
 
-		System.out.print("Composition ");
-		addedcomp.printTimeLine();
-		System.out.print("\n");
+//		System.out.print("Composition ");
+//		addedcomp.printTimeLine();
+//		System.out.print("\n");
 	}
 
 	public boolean getConsecutive(Activity activity1, Activity activity2){		

@@ -224,7 +224,8 @@ public class Main {
 
 			double y = 0;
 			boolean solutionfound = false;
-			while (solutionfound == false && y <2){
+			while (solutionfound == false){ // &&y<50
+				System.out.println("Iteration "+y);
 				Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
 				System.gc();
 				if (onzeMatching.returnSolved() == false){
@@ -232,7 +233,7 @@ public class Main {
 					break;
 				}
 				else{
-					System.out.println("Feasible matching");
+					System.out.println("Feasible matching found");
 					boolean[][] z = onzeMatching.getZ();
 					ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
 					ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
@@ -251,18 +252,20 @@ public class Main {
 					Todo6 jobshop;
 					Parking5 parking;
 					for (int i = 1; i<=8; i++){
-						a += 1;
-						System.out.println(a);
+//						a += 1;
+//						System.out.println(a);
 						for(int p = 0; p<tracks.length; p++){
 							for(int j = 0; j<60*24; j++){
 								tracks[p].setFreeBusyTime(j);
 							}
 						}
+						jobshop = null;
+						parking = null;
 						jobshop = new Todo6(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
 						if (jobshop.getFeasible()){
-							System.out.println("Feasible jobshop");
+							System.out.println("Feasible jobshop option "+i);
 							ArrayList<Event> events = jobshop.getEvents();
-							for (int j=1; j<=nrparkings; i++){
+							for (int j=1; j<=nrparkings; j++){
 								parking = new Parking5(events,tracks,j);
 								if (parking.getFeasible()){
 									System.out.println("Feasible parking");
@@ -273,6 +276,12 @@ public class Main {
 							if (solutionfound){
 								break;
 							}
+							else{
+								System.out.println("No feasible parking");
+							}
+						}
+						else {
+							System.out.println("No feasible jobshop option "+i);
 						}
 					}
 					if (!solutionfound){
