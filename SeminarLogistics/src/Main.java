@@ -37,6 +37,7 @@ public class Main {
 			int user = 2; //Floor
 			//int user = 3; //Robin
 			//int user = 4; //Philip
+			int a = 0;
 
 			Matrix compositiondata;
 			Matrix compositiondata2;
@@ -247,13 +248,22 @@ public class Main {
 							}
 						}
 					}
-					for (int i = 1; i<=nrjobshops; i++){
-						Todo5 jobshop = new Todo5(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
+					Todo6 jobshop;
+					Parking5 parking;
+					for (int i = 1; i<=8; i++){
+						a += 1;
+						System.out.println(a);
+						for(int p = 0; p<tracks.length; p++){
+							for(int j = 0; j<60*24; j++){
+								tracks[p].setFreeBusyTime(j);
+							}
+						}
+						jobshop = new Todo6(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
 						if (jobshop.getFeasible()){
 							System.out.println("Feasible jobshop");
 							ArrayList<Event> events = jobshop.getEvents();
 							for (int j=1; j<=nrparkings; i++){
-								Parking5 parking = new Parking5(events,tracks,j);
+								parking = new Parking5(events,tracks,j);
 								if (parking.getFeasible()){
 									System.out.println("Feasible parking");
 									solutionfound = true;
@@ -266,6 +276,15 @@ public class Main {
 						}
 					}
 					if (!solutionfound){
+						jobshop = null;
+						parking = null;
+						for(int i = 0; i<tracks.length; i++){
+							for(int j = 0; j<60*24; j++){
+								tracks[i].setFreeBusyTime(j);
+							}
+						}
+						finalcompositionblocks = null;
+						System.gc();
 						y = y+1;
 					}
 				}

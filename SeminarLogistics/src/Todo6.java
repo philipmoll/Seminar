@@ -12,6 +12,8 @@ public class Todo6 {
 	int[] sequence = new int[3];
 	int option;
 	int compare = 14123;
+	boolean feasible = true;
+
 
 	//An activity representing any incoming/outgoing composition movement
 	Activity arrordepmove = new Activity(-1, -1, null, 4, true);
@@ -22,6 +24,11 @@ public class Todo6 {
 	Activity[] movelist = new Activity[60*24];
 
 	public Todo6(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
+		if(option < 1 || option > 8){
+			throw new IOException("Not that many options exist");
+		}
+		System.out.println("Option: " + option);
+		
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
 		finalblockssshallow = new ArrayList<>();
@@ -365,7 +372,7 @@ public class Todo6 {
 					}
 					else{
 						activities.get(activities.size()-1).setUpdate(temp, temp1);
-
+						//System.out.println("asdfafasdfa : " + temp1);
 						addedcomp.setBusyTime(activities.get(activities.size()-1));
 
 						temp1.setBusyTime(activities.get(activities.size()-1)); 
@@ -374,7 +381,7 @@ public class Todo6 {
 						if(j == 0){	
 							time10 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track10 = activities.get(activities.size()-1).getTrackAssigned();
-
+							
 
 							mintemp = time10 + durationactivity;
 							
@@ -469,14 +476,15 @@ public class Todo6 {
 
 		//System.out.println(feasible1 + " " + activities.get(activities.size()-1-amount).getActivity() + " " + activities.get(activities.size()-1-amount).getTotalDurationInteger() + " " + activities.get(activities.size()-amount).getActivity() + " " + activities.get(activities.size()-amount).getTotalDurationInteger());
 
-
 		if(feasible1 == false){
 			margin1 = -1;
 		}
 		else{
 			bestoption = 1;
+			bestmargin = margin1;
 		}
-		bestmargin = margin1;
+		if(track10 != null){
+		
 
 
 
@@ -517,6 +525,10 @@ public class Todo6 {
 			}
 		}
 
+		
+		
+		
+		
 		//ADDING OPTION 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -669,7 +681,13 @@ public class Todo6 {
 				}
 			}
 		}
-
+//		System.out.println(option);
+//		System.out.println(time20 + " " + track20);
+//		System.out.println(time21 + " " + track21);
+//		System.out.println(time22 + " " + track22);
+//		System.out.println(time23 + " " + track23);
+//		System.out.println(feasible1);
+//		System.out.println(feasible2);
 		if(feasible2 == false){
 			margin2 = -1;
 		}
@@ -683,6 +701,11 @@ public class Todo6 {
 			bestmargin = margin2;
 			bestoption = 2;
 		}
+//		System.out.println("This is the best option!");
+//		System.out.println(time10 + " " + track10);
+//		System.out.println(time11 + " " + track11);
+//		System.out.println(time12 + " " + track12);
+//		System.out.println(time13 + " " + track13);
 
 		//Remove all times which have been set at the previous solution, so we can use the available times for the next solution(s).
 		for(int i = 0; i<amount; i++){
@@ -3227,13 +3250,18 @@ public class Todo6 {
 
 
 
+		}
 
 
 
 
+//		System.out.println("Bestoption" + bestoption);
+//		System.out.println(time10 + " " + track10 + " " + amount + " " + activities.get(activities.size()-1-0).getActivity());
+//		System.out.println(time11 + " " + track11);
+//		System.out.println(time12 + " " + track12);
+//		System.out.println(time13 + " " + track13);
 
-
-
+		
 		//		//check if feasible solution exist, if so, then update with the best solution
 		if (bestmargin != -1){
 			for(int i = 0; i<amount; i++){
@@ -3308,6 +3336,7 @@ public class Todo6 {
 			else{
 				for(int i = 0; i<amount; i++){
 					if(activities.get(activities.size()-1-i).getActivity()==0){
+						//System.out.println(time10 + " " + track10 + " " + bestoption);
 						activities.get(activities.size()-1-i).setUpdate(time10, track10);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
@@ -3327,7 +3356,7 @@ public class Todo6 {
 			}
 		}
 		else{
-			throw new IOException("No feasible solution found for job-shop");
+			feasible = false;
 		}
 
 
@@ -3457,7 +3486,7 @@ public class Todo6 {
 	
 	public int getObjective(int margin, int a){
 		int abc = 0;
-		if(option == 1 || option == 3 || option == 5 || option == 7){
+		if(option == 1 || option == 3 || option == 5 || option == 7 ||option == 2 || option == 4 || option == 6 || option == 8 ){
 			if(activities.get(activities.size()-1-a).getMarginInteger()<margin){
 				abc = activities.get(activities.size()-1-a).getMarginInteger();
 			}
@@ -3466,12 +3495,16 @@ public class Todo6 {
 			int temp = 0;
 			for(int i = 0; i<activities.size(); i++){
 				for(int j = i+1; j<activities.size(); j++){
+//					System.out.println(i + " " + j + " " + activities.size());
+//					System.out.println(activities.get(i).getTrackAssigned() + " " + activities.get(j).getTrackAssigned());
+					if(activities.get(i).getTrackAssigned() != null && activities.get(j).getTrackAssigned() !=null){
 					if(activities.get(i).getTrackAssigned().equals(activities.get(j).getTrackAssigned())){
 						if(activities.get(i).getPlannedTimeInteger() < activities.get(j).getPlannedTimeInteger()){
 							if(activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1) < 11){
 								temp += activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1);
 							}
 						}
+					}
 					}
 				}
 			}
@@ -3656,5 +3689,8 @@ public class Todo6 {
 
 
 		return abcd;
+	}
+	public boolean getFeasible(){
+		return feasible; 
 	}
 }

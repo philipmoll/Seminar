@@ -109,6 +109,9 @@ public class Track implements Serializable {
 			this.setOccupied(i);
 		}
 	}
+	public void setFreeBusyTime(int a){
+		busytime[a] = null;
+	}
 
 	public void setFree(int position) throws IndexOutOfBoundsException{
 		if (position < 0 || position >= tracklength)
