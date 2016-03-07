@@ -3387,7 +3387,7 @@ public class Todo6 {
 	public boolean getObjective(int l, int k){
 		boolean abc = false;
 		if(option == 1 || option == 3 || option == 5 || option == 7){
-			if((l+activities.get(activities.size()-1).getTotalDurationInteger()) < (platforms.get(k).getActivity(l).getPlannedTimeInteger()+platforms.get(k).getActivity(l).getTotalDurationInteger())-Main.moveduration){
+			if(){
 				abc = true;
 			}
 		}
