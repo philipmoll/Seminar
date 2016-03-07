@@ -77,73 +77,70 @@ public class Main {
 
 			Track[] tracks =  readInTracks(trackdata);
 
-			for (int i = 0; i<tracks.length; i++){
-				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
-			}
+//			for (int i = 0; i<tracks.length; i++){
+//				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
+//			}
 			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
 			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
 
-			for (int i = 0; i<trainsarr.length; i++){
-				System.out.println("interch"+trainsarr[i].getInterchangeable());
-			}
-			Train[] trainstoadd = new Train[17];
-			trainstoadd[0] = new Train(1000,2,4);
-			trainstoadd[1] = new Train(1001,2,4);
-			trainstoadd[2] = new Train(1002,1,4);
-			trainstoadd[3] = new Train(1003,3,4);
-			trainstoadd[4] = new Train(1004,2,4);
-			trainstoadd[5] = new Train(1005,1,4);
-			trainstoadd[6] = new Train(1006,2,4);
-			trainstoadd[7] = new Train(1007,2,4);
+//			for (int i = 0; i<trainsarr.length; i++){
+//				System.out.println("interch"+trainsarr[i].getInterchangeable());
+//			}
+			Train[] trainstoadd = new Train[16];
+			trainstoadd[0] = new Train(1001,2,4);
+			trainstoadd[1] = new Train(1002,1,4);
+			trainstoadd[2] = new Train(1003,3,4);
+			trainstoadd[3] = new Train(1004,2,4);
+			trainstoadd[4] = new Train(1005,1,4);
+			trainstoadd[5] = new Train(1006,2,4);
+			trainstoadd[6] = new Train(1007,2,4);
 
-			trainstoadd[8] = new Train(1008,2,4);
-			trainstoadd[9] = new Train(1009,3,4);
-			trainstoadd[10] = new Train(1010,2,4);
-			trainstoadd[11] = new Train(1011,2,4);
-			trainstoadd[12] = new Train(1012,1,4);
+			trainstoadd[7] = new Train(1008,2,4);
+			trainstoadd[8] = new Train(1009,3,4);
+			trainstoadd[9] = new Train(1010,2,4);
+			trainstoadd[10] = new Train(1011,2,4);
+			trainstoadd[11] = new Train(1012,1,4);
 
-			trainstoadd[13] = new Train(1013,2,4);
-			trainstoadd[14] = new Train(1014,1,4);
-			trainstoadd[15] = new Train(1015,2,4);
-			trainstoadd[16] = new Train(1016,2,4);
+			trainstoadd[12] = new Train(1013,2,4);
+			trainstoadd[13] = new Train(1014,1,4);
+			trainstoadd[14] = new Train(1015,2,4);
+			trainstoadd[15] = new Train(1016,2,4);
 
-			int[] arrivingpositions = new int[17];
-			arrivingpositions[0] = 7;
-			arrivingpositions[1] = 11;
-			arrivingpositions[2] = 8;
-			arrivingpositions[3] = 10;
-			arrivingpositions[4] = 12;
-			arrivingpositions[5] = 0;
-			arrivingpositions[6] = 13;
-			arrivingpositions[7] = 18;
-			arrivingpositions[8] = 4;
-			arrivingpositions[9] = 2;
-			arrivingpositions[10] = 1;
-			arrivingpositions[11] = 15;
-			arrivingpositions[12] = 6;
-			arrivingpositions[13] = 16;
-			arrivingpositions[14] = 5;
-			arrivingpositions[15] = 3;
-			arrivingpositions[16] = 9;
+			int[] arrivingpositions = new int[16];
+			arrivingpositions[0] = 11;
+			arrivingpositions[1] = 8;
+			arrivingpositions[2] = 10;
+			arrivingpositions[3] = 12;
+			arrivingpositions[4] = 0;
+			arrivingpositions[5] = 13;
+			arrivingpositions[6] = 18;
+			arrivingpositions[7] = 4;
+			arrivingpositions[8] = 2;
+			arrivingpositions[9] = 1;
+			arrivingpositions[10] = 15;
+			arrivingpositions[11] = 6;
+			arrivingpositions[12] = 16;
+			arrivingpositions[13] = 5;
+			arrivingpositions[14] = 3;
+			arrivingpositions[15] = 9;
 
-			int[] departingpositions = new int[17];
-			departingpositions[0] = 13;
-			departingpositions[1] = 18;
-			departingpositions[2] = 9;
-			departingpositions[3] = 11;
-			departingpositions[4] = 17;
-			departingpositions[5] = 4;
-			departingpositions[6] = 15;
-			departingpositions[7] = 20;
-			departingpositions[8] = 6;
-			departingpositions[9] = 1;
-			departingpositions[10] = 2;
-			departingpositions[11] = 17;
-			departingpositions[12] = 8;
-			departingpositions[13] = 12;
-			departingpositions[14] = 3;
-			departingpositions[15] = 0;
-			departingpositions[16] = 7;
+			int[] departingpositions = new int[16];
+			departingpositions[0] = 18;
+			departingpositions[1] = 9;
+			departingpositions[2] = 11;
+			departingpositions[3] = 17;
+			departingpositions[4] = 4;
+			departingpositions[5] = 15;
+			departingpositions[6] = 20;
+			departingpositions[7] = 6;
+			departingpositions[8] = 1;
+			departingpositions[9] = 2;
+			departingpositions[10] = 17;
+			departingpositions[11] = 8;
+			departingpositions[12] = 12;
+			departingpositions[13] = 3;
+			departingpositions[14] = 0;
+			departingpositions[15] = 7;
 
 			int nrtrainstoadd = 1; //TODO: zelf invullen
 			Train[] trainstoaddnow = new Train[nrtrainstoadd];
@@ -211,15 +208,15 @@ public class Main {
 
 			for (int i = 0; i<arrivingcompositions.size(); i++){
 				for (int j = 0; j<arrivingcompositions.get(i).getTrainList().size(); j++){
-					if (arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 1){
-						arrivingcompositions.get(i).getTrainList().get(j).setType(arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable());
+					if (arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
+						arrivingcompositions.get(i).getTrainList().get(j).setType(arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
 					}
 				}
 			}
 			for (int i = 0; i<leavingcompositions.size(); i++){
 				for (int j = 0; j<leavingcompositions.get(i).getTrainList().size(); j++){
-					if (leavingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 1){
-						leavingcompositions.get(i).getTrainList().get(j).setType(leavingcompositions.get(i).getTrainList().get(j).getInterchangeable());
+					if (leavingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
+						leavingcompositions.get(i).getTrainList().get(j).setType(leavingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
 					}
 				}
 			}
@@ -434,7 +431,7 @@ public class Main {
 								length = (int) compositiondata2.getElement(j, 5);
 							}
 						}
-						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), (int) compositiondata.getElement(i,3), (compositiondata.getElement(i,5)==1.0), (compositiondata.getElement(i,6)==1.0), (compositiondata.getElement(i,7)==1.0), (compositiondata.getElement(i,8)==1.0));
+						trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), (int) compositiondata.getElement(i,4), (compositiondata.getElement(i,5)==1.0), (compositiondata.getElement(i,6)==1.0), (compositiondata.getElement(i,7)==1.0), (compositiondata.getElement(i,8)==1.0));
 						//trains[abcd] = new Train(abcd+1, (int) compositiondata.getElement(i, 1), (int) compositiondata.getElement(i, 2), length, (compositiondata.getElement(i,4)== 1.0), (compositiondata.getElement(i,5)== 1.0), (compositiondata.getElement(i,6)== 1.0), (compositiondata.getElement(i,7)== 1.0), (compositiondata.getElement(i,8)== 1.0));
 						abcd += 1;
 					}

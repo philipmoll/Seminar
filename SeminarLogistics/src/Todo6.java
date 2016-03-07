@@ -377,28 +377,34 @@ public class Todo6 {
 
 
 							mintemp = time10 + durationactivity;
-							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+							
+							margin1 = this.getObjective(margin1, 0);
+							/*if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
-							}
+							}*/
 						}
 						//Storing the first solution and keeping track of how many activities are done on the composition, except for inspection though
 						else if(j == 1){
 							time11 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track11 = activities.get(activities.size()-1).getTrackAssigned();
 
-
+							margin1 = this.getObjective(margin1, 0);
+/*
 							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
 							}
+							*/
 						}
 
 						//Storing the first solution ............. see above.
 						else if(j == 2){
 							time12 = activities.get(activities.size()-1).getPlannedTimeInteger();
 							track12 = activities.get(activities.size()-1).getTrackAssigned();
-							if(activities.get(activities.size()-1).getMarginInteger()<margin1){
+							margin1 = this.getObjective(margin1, 0);
+
+							/*if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 								margin1 = activities.get(activities.size()-1).getMarginInteger();
-							}
+							}*/
 						}
 						currenttrack = temp1;
 					}
@@ -449,9 +455,12 @@ public class Todo6 {
 						time13 = activities.get(activities.size()-1).getPlannedTimeInteger();
 						track13 = activities.get(activities.size()-1).getTrackAssigned();
 
+						margin1 = this.getObjective(margin1, 0);
+
+						/*
 						if(activities.get(activities.size()-1).getMarginInteger()<margin1){
 							margin1 = activities.get(activities.size()-1).getMarginInteger();
-						}
+						}*/
 
 					}
 				}
@@ -554,10 +563,11 @@ public class Todo6 {
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
 
-
+						margin2 = this.getObjective(margin2, sequence[j]);
+/*
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
 							margin2 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-						}
+						}*/
 					}
 				}
 				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
@@ -638,17 +648,22 @@ public class Todo6 {
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
+							margin2 = this.getObjective(margin2, sequence[j]);
+
+							/*if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
 								margin2 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-							}
+							}*/
 						}
 						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
 							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
+							margin2 = this.getObjective(margin2, sequence[j]);
+
+							
+							/*if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin2){
 								margin2 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 
-							}
+							}*/
 						}
 					}
 				}
@@ -755,10 +770,11 @@ public class Todo6 {
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned(); 
 
-
+						margin3 = this.getObjective(margin3, sequence[j]);
+/*
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
 							margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-						}
+						}*/
 					}
 				}
 				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
@@ -839,17 +855,22 @@ public class Todo6 {
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+							margin3 = this.getObjective(margin3, sequence[j]);
+
+							/*
 							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
 								margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-							}
+							}*/
 						}
 						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
 							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
+							margin3 = this.getObjective(margin3, sequence[j]);
+
+							/*if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin3){
 								margin3 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 
-							}
+							}*/
 						}
 					}
 				}
@@ -954,11 +975,12 @@ public class Todo6 {
 						currenttrack = temp1;
 						time23 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 						track23 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
+						margin4 = this.getObjective(margin4, sequence[j]);
 
-
+/*
 						if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
 							margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-						}
+						}*/
 					}
 				}
 				else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1 || activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
@@ -1039,17 +1061,22 @@ public class Todo6 {
 						if(activities.get(activities.size()-1-sequence[j]).getActivity() == 1){
 							time21 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track21 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
+							margin4 = this.getObjective(margin4, sequence[j]);
+
+							
+							/*if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
 								margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
-							}
+							}*/
 						}
 						else if(activities.get(activities.size()-1-sequence[j]).getActivity() == 2){
 							time22 = activities.get(activities.size()-1-sequence[j]).getPlannedTimeInteger();
 							track22 = activities.get(activities.size()-1-sequence[j]).getTrackAssigned();
-							if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
+							margin4 = this.getObjective(margin4, sequence[j]);
+
+							/*if(activities.get(activities.size()-1-sequence[j]).getMarginInteger()<margin4){
 								margin4 = activities.get(activities.size()-1-sequence[j]).getMarginInteger();
 
-							}
+							}*/
 						}
 					}
 				}
@@ -3383,8 +3410,35 @@ public class Todo6 {
 		Activity merged = new Activity(maxduration, (int) comp1.getDepartureTimeInteger()-(maxduration),comp1, actnr);
 		return merged;
 	}
-
-	public boolean getObjective(int l, int k){
+	
+	public int getObjective(int margin, int a){
+		int abc = 0;
+		if(option == 1 || option == 3 || option == 5 || option == 7){
+			if(activities.get(activities.size()-1-a).getMarginInteger()<margin){
+				abc = activities.get(activities.size()-1-a).getMarginInteger();
+			}
+		}
+		else if(option == 2 || option == 4 || option == 6 || option == 8){
+			int temp = 0;
+			for(int i = 0; i<activities.size(); i++){
+				for(int j = i+1; j<activities.size(); j++){
+					if(activities.get(i).getTrackAssigned().equals(activities.get(j).getTrackAssigned())){
+						if(activities.get(i).getPlannedTimeInteger() < activities.get(j).getPlannedTimeInteger()){
+							if(activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1) < 11){
+								temp += activities.get(j).getPlannedTimeInteger() - (activities.get(i).getPlannedTimeInteger()+activities.get(i).getTotalDurationInteger()-1);
+							}
+						}
+					}
+				}
+			}
+			if(temp > -margin){
+				abc = -temp;
+			}
+		}
+		return abc;
+	}
+/*
+	public boolean getObjective(int l, int k, int b){
 		boolean abc = false;
 		if(option == 1 || option == 3 || option == 5 || option == 7){
 			if(){
@@ -3411,6 +3465,7 @@ public class Todo6 {
 		}
 		return abc;
 	}
+	*/
 
 	public void setBusyTime(Activity activity){
 		for(int i = activity.getPlannedTimeInteger(); i<activity.getPlannedTimeInteger()+activity.getMoveTime(); i++){
@@ -3522,12 +3577,12 @@ public class Todo6 {
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
 							first = false;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
 							first = false;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 					}
 					else{
@@ -3537,7 +3592,7 @@ public class Todo6 {
 							abcd.get(abcd.size()-2).setEndTime(j);
 							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
 							first = true;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
@@ -3545,7 +3600,7 @@ public class Todo6 {
 							abcd.get(abcd.size()-2).setEndTime(j);
 							abcd.get(abcd.size()-2).setSideEnd(0);
 							first = true;
-							j += Main.moveduration;
+							j += Main.moveduration-1;
 						}
 
 					}
