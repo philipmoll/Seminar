@@ -24,328 +24,415 @@ public class Main {
 	public final static int moveduration = 1; //MINUTES
 	public final static double begintime = .33333333333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
 
+	
 	private final static int nrjobshops = 8;
 	private final static int nrparkings = 2;
+	public static double washingprobability;
+	private final static int nrwashings = 10;
+	public final static double inspprob1 = 1;
+	public final static double inspprob2 = .8;
+	public final static double cleanprob = 1;
+	public final static double repprob = .1;
+	
+	public final static double minpercfeasible = .9;
+
+	private static final int nriterations = 100; //TODO: zelf invullen
+	private static final int nrtrainstoadd = 0; //TODO: zelf invullen
 
 	//	private static int fromjobshop;
 	//	private static int fromparking;
 
 	public static void main(String args[])
 	{
+
 		try {
-			//int user = 1; //Friso
-			int user = 2; //Floor
-			//int user = 3; //Robin
-			//int user = 4; //Philip
-			int a = 0;
-
-			Matrix compositiondata;
-			Matrix compositiondata2;
-			Matrix compositiondata3;
-			Matrix trackdata;
-			Matrix connections;
-			if (user == 1) //Friso
-			{
-				compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/testcompositiondata.dat").DataToMatrix();
-				compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-				compositiondata3 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/testcompositiondata3.dat").DataToMatrix();
-				trackdata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-				connections = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+			double[] washingprobabilities = new double[Main.nrwashings];
+			washingprobabilities[0]=.1;
+			for (int i = 1; i<washingprobabilities.length; i++){
+				washingprobabilities[i]=washingprobabilities[i-1]+.05;
 			}
-			else if (user == 2){ //Floor
-				compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
-				compositiondata2 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-				compositiondata3 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
-				trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-				connections = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+			int[] nrsolutionsfoundarray = new int[10];
+			int[] noinitialpossiblearray = new int[10];
+			double[] percentagesolutionsfoundarray = new double[10];
+			double[] averagetimearray = new double[10];
+			double[] maxtimearray = new double[10];
+			for (int xx = 0; xx<washingprobabilities.length; xx++){
+				Main.washingprobability = washingprobabilities[xx];
+				//			int nriterations = 1000; //TODO: zelf invullen
+				//			int nrtrainstoadd = 0; //TODO: zelf invullen
 
-			}
-			else if (user == 3){ //Robin
-				compositiondata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
-				compositiondata2 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-				compositiondata3 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
-				trackdata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-				connections = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+				int noinitialpossible = 0;
+				double[] times = new double[Main.nriterations];
+				boolean[] solutionsfound = new boolean[Main.nriterations];
+				for (int x = 0;x<Main.nriterations; x++){
+					System.out.println("ITERATION "+x);
+					//int user = 1; //Friso
+					int user = 2; //Floor
+					//int user = 3; //Robin
+					//int user = 4; //Philip
 
-			}
-			else { //user == 4, Philip
-				compositiondata = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/testcompositiondata.dat").DataToMatrix();
-				compositiondata2 = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
-				compositiondata3 = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/testcompositiondata3.dat").DataToMatrix();
-				trackdata = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
-				connections = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
-			}
-
-			Track[] tracks =  readInTracks(trackdata);
-
-//			for (int i = 0; i<tracks.length; i++){
-//				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
-//			}
-			Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
-			Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
-
-//			for (int i = 0; i<trainsarr.length; i++){
-//				System.out.println("interch"+trainsarr[i].getInterchangeable());
-//			}
-			Train[] trainstoadd = new Train[16];
-			trainstoadd[0] = new Train(1001,2,4);
-			trainstoadd[1] = new Train(1002,1,4);
-			trainstoadd[2] = new Train(1003,3,4);
-			trainstoadd[3] = new Train(1004,2,4);
-			trainstoadd[4] = new Train(1005,1,4);
-			trainstoadd[5] = new Train(1006,2,4);
-			trainstoadd[6] = new Train(1007,2,4);
-
-			trainstoadd[7] = new Train(1008,2,4);
-			trainstoadd[8] = new Train(1009,3,4);
-			trainstoadd[9] = new Train(1010,2,4);
-			trainstoadd[10] = new Train(1011,2,4);
-			trainstoadd[11] = new Train(1012,1,4);
-
-			trainstoadd[12] = new Train(1013,2,4);
-			trainstoadd[13] = new Train(1014,1,4);
-			trainstoadd[14] = new Train(1015,2,4);
-			trainstoadd[15] = new Train(1016,2,4);
-
-			int[] arrivingpositions = new int[16];
-			arrivingpositions[0] = 11;
-			arrivingpositions[1] = 8;
-			arrivingpositions[2] = 10;
-			arrivingpositions[3] = 12;
-			arrivingpositions[4] = 0;
-			arrivingpositions[5] = 13;
-			arrivingpositions[6] = 18;
-			arrivingpositions[7] = 4;
-			arrivingpositions[8] = 2;
-			arrivingpositions[9] = 1;
-			arrivingpositions[10] = 15;
-			arrivingpositions[11] = 6;
-			arrivingpositions[12] = 16;
-			arrivingpositions[13] = 5;
-			arrivingpositions[14] = 3;
-			arrivingpositions[15] = 9;
-
-			int[] departingpositions = new int[16];
-			departingpositions[0] = 18;
-			departingpositions[1] = 9;
-			departingpositions[2] = 11;
-			departingpositions[3] = 17;
-			departingpositions[4] = 4;
-			departingpositions[5] = 15;
-			departingpositions[6] = 20;
-			departingpositions[7] = 6;
-			departingpositions[8] = 1;
-			departingpositions[9] = 2;
-			departingpositions[10] = 17;
-			departingpositions[11] = 8;
-			departingpositions[12] = 12;
-			departingpositions[13] = 3;
-			departingpositions[14] = 0;
-			departingpositions[15] = 7;
-
-			int nrtrainstoadd = 1; //TODO: zelf invullen
-			Train[] trainstoaddnow = new Train[nrtrainstoadd];
-			int[] arrivingpositionsnow = new int[nrtrainstoadd];
-			int[] departingpositionsnow = new int[nrtrainstoadd];
-			for (int i = 0; i<nrtrainstoadd; i++){
-				trainstoaddnow[i]=trainstoadd[i];
-				arrivingpositionsnow[i]=arrivingpositions[i];
-				departingpositionsnow[i]=departingpositions[i];
-			}
-			new Schedule(trainsarr);
-			new Schedule(trainstoaddnow);
-
-			//			for(int l = 0; l<trainsarr.length; l++){
-			//				System.out.println(trainsarr[l].getActivity(0) + " " + trainsarr[l].getActivity(1) + " " + trainsarr[l].getActivity(2) + " " + trainsarr[l].getActivity(3));
-			//			}
-
-			ArrayList<Composition> arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
-			ArrayList<Double> arrivingtimes = setUpTimes(0, compositiondata3);
-			ArrayList<Track> arrivingtracks = setUpTracks(0, tracks, compositiondata3);
-
-			//ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
-			for (int i = 0; i< arrivingcompositions.size();i++){
-				if (arrivingtimes.get(i)<begintime){
-					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)+1-begintime);
-				}
-				else{
-					arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
-				}
-			}
-
-
-
-			ArrayList<Composition> leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
-			ArrayList<Double> leavingtimes = setUpTimes(1, compositiondata3);
-			ArrayList<Track> leavingtracks = setUpTracks(1, tracks, compositiondata3);
-
-			for (int i = 0; i< leavingcompositions.size();i++){
-				if (leavingtimes.get(i)<begintime){
-					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)+1-begintime);
-				}
-				else{
-					leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
-				}
-			}
-
-			Composition[] addarriving = new Composition[nrtrainstoadd];
-			Composition[] adddeparting = new Composition[nrtrainstoadd];
-			for (int i = 0; i<nrtrainstoadd; i++){
-				Train addnow = trainstoaddnow[i];
-				addarriving[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},arrivingcompositions.get(arrivingpositionsnow[i]).getArrivaltime(),arrivingcompositions.get(arrivingpositionsnow[i]).getDeparturetime(),arrivingcompositions.get(arrivingpositionsnow[i]).getArrivalDepartureSide());
-				adddeparting[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},leavingcompositions.get(departingpositionsnow[i]).getArrivaltime(),leavingcompositions.get(departingpositionsnow[i]).getDeparturetime(),leavingcompositions.get(departingpositionsnow[i]).getArrivalDepartureSide());
-				arrivingcompositions.get(arrivingpositionsnow[i]).coupleComposition(addarriving[i]);
-				//				System.out.println("hoi "+arrivingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
-				leavingcompositions.get(departingpositionsnow[i]).coupleComposition(adddeparting[i]);
-				//				System.out.println("hoi2 "+leavingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
-			}
-
-			//			for (int i = 0; i < arrivingcompositions.size(); i++){
-			//				System.out.println("size: "+arrivingcompositions.get(i).getTrainList().size());
-			//			}
-			//			for (int i = 0; i < leavingcompositions.size(); i++){
-			//				System.out.println("size2: "+leavingcompositions.get(i).getTrainList().size());
-			//			}
-
-			for (int i = 0; i<arrivingcompositions.size(); i++){
-				for (int j = 0; j<arrivingcompositions.get(i).getTrainList().size(); j++){
-					if (arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
-						arrivingcompositions.get(i).getTrainList().get(j).setType(arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
+					Matrix compositiondata;
+					Matrix compositiondata2;
+					Matrix compositiondata3;
+					Matrix trackdata;
+					Matrix connections;
+					if (user == 1) //Friso
+					{
+						compositiondata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/testcompositiondata.dat").DataToMatrix();
+						compositiondata2 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+						compositiondata3 = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/testcompositiondata3.dat").DataToMatrix();
+						trackdata = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+						connections = new DataSet("/Users/frisotigchelaar/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
 					}
-				}
-			}
-			for (int i = 0; i<leavingcompositions.size(); i++){
-				for (int j = 0; j<leavingcompositions.get(i).getTrainList().size(); j++){
-					if (leavingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
-						leavingcompositions.get(i).getTrainList().get(j).setType(leavingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
-					}
-				}
-			}
+					else if (user == 2){ //Floor
+						compositiondata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+						compositiondata2 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+						compositiondata3 = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
+						trackdata = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+						connections = new DataSet("C:/Users/Floor Wofhagen/Documents/Econometrie/Master/Blok 3/Seminar Logistics/Workspace/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
 
-			double y = 0;
-			boolean solutionfound = false;
-			while (solutionfound == false){ // &&y<50
-				System.out.println("Iteration "+y);
-				Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
-				System.gc();
-				if (onzeMatching.returnSolved() == false){
-					solutionfound = false;
-					break;
-				}
-				else{
-					System.out.println("Feasible matching found");
-					boolean[][] z = onzeMatching.getZ();
-					ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
-					ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
-					ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
-					for (int i = 0; i<z.length; i++){
-						for (int j = 0; j<z[0].length; j++){
-							if (z[i][j]==true){
-								finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
-								//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
-								if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
-									throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
-								}	
+					}
+					else if (user == 3){ //Robin
+						compositiondata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata.dat").DataToMatrix();
+						compositiondata2 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+						compositiondata3 = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/compositiondata3.dat").DataToMatrix();
+						trackdata = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+						connections = new DataSet("/Users/carpenter37/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+
+					}
+					else { //user == 4, Philip
+						compositiondata = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/testcompositiondata.dat").DataToMatrix();
+						compositiondata2 = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/compositiondata2.dat").DataToMatrix();
+						compositiondata3 = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/testcompositiondata3.dat").DataToMatrix();
+						trackdata = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/trackdata.dat").DataToMatrix();
+						connections = new DataSet("C:/Users/Philip Moll/git/Seminar/SeminarLogistics/src/networkdata.dat").DataToMatrix();
+					}
+
+					Track[] tracks =  readInTracks(trackdata);
+
+					//			for (int i = 0; i<tracks.length; i++){
+					//				System.out.println(tracks[i].getLabel()+" has parkpos: "+tracks[i].getParktrain()+" and length "+tracks[i].getTracklength()+" and maxbackward "+tracks[i].getMaxDriveBackLength()); 
+					//			}
+					Train[] trainsarr = readInTrains(0, compositiondata, compositiondata2, compositiondata3);
+					Train[] trainsdep = readInTrains(1, compositiondata, compositiondata2, compositiondata3);
+
+					//			for (int i = 0; i<trainsarr.length; i++){
+					//				System.out.println("interch"+trainsarr[i].getInterchangeable());
+					//			}
+					Train[] trainstoadd = new Train[16];
+					trainstoadd[0] = new Train(1001,2,4);
+					trainstoadd[1] = new Train(1002,1,4);
+					trainstoadd[2] = new Train(1003,3,4);
+					trainstoadd[3] = new Train(1004,2,4);
+					trainstoadd[4] = new Train(1005,1,4);
+					trainstoadd[5] = new Train(1006,2,4);
+					trainstoadd[6] = new Train(1007,2,4);
+
+					trainstoadd[7] = new Train(1008,2,4);
+					trainstoadd[8] = new Train(1009,3,4);
+					trainstoadd[9] = new Train(1010,2,4);
+					//			trainstoadd[10] = new Train(1011,2,4);
+					trainstoadd[10] = new Train(1012,1,4);
+
+					trainstoadd[11] = new Train(1013,2,4);
+					trainstoadd[12] = new Train(1014,1,4);
+					trainstoadd[13] = new Train(1015,2,4);
+					trainstoadd[14] = new Train(1016,2,4);
+
+					int[] arrivingpositions = new int[15];
+					arrivingpositions[0] = 11;
+					arrivingpositions[1] = 8;
+					arrivingpositions[2] = 10;
+					arrivingpositions[3] = 12;
+					arrivingpositions[4] = 0;
+					arrivingpositions[5] = 13;
+					arrivingpositions[6] = 18;
+					arrivingpositions[7] = 4;
+					arrivingpositions[8] = 2;
+					arrivingpositions[9] = 1;
+					//			arrivingpositions[10] = 15;
+					arrivingpositions[10] = 6;
+					arrivingpositions[11] = 16;
+					arrivingpositions[12] = 5;
+					arrivingpositions[13] = 3;
+					arrivingpositions[14] = 9;
+
+					int[] departingpositions = new int[15];
+					departingpositions[0] = 18;
+					departingpositions[1] = 9;
+					departingpositions[2] = 11;
+					departingpositions[3] = 17;
+					departingpositions[4] = 4;
+					departingpositions[5] = 15;
+					departingpositions[6] = 20;
+					departingpositions[7] = 6;
+					departingpositions[8] = 1;
+					departingpositions[9] = 2;
+					//			departingpositions[10] = 17;
+					departingpositions[10] = 8;
+					departingpositions[11] = 12;
+					departingpositions[12] = 3;
+					departingpositions[13] = 0;
+					departingpositions[14] = 7;
+
+					Train[] trainstoaddnow = new Train[Main.nrtrainstoadd];
+					int[] arrivingpositionsnow = new int[Main.nrtrainstoadd];
+					int[] departingpositionsnow = new int[Main.nrtrainstoadd];
+					for (int i = 0; i<Main.nrtrainstoadd; i++){
+						trainstoaddnow[i]=trainstoadd[i];
+						arrivingpositionsnow[i]=arrivingpositions[i];
+						departingpositionsnow[i]=departingpositions[i];
+					}
+
+
+					long startTime = System.currentTimeMillis();
+					new Schedule(trainsarr);
+					new Schedule(trainstoaddnow);
+
+					//			for(int l = 0; l<trainsarr.length; l++){
+					//				System.out.println(trainsarr[l].getActivity(0) + " " + trainsarr[l].getActivity(1) + " " + trainsarr[l].getActivity(2) + " " + trainsarr[l].getActivity(3));
+					//			}
+					ArrayList<Composition> arrivingcompositions = null;
+					ArrayList<Double> arrivingtimes = null;
+					ArrayList<Track> arrivingtracks = null;
+					arrivingcompositions = setUpCompositions(0, trainsarr, compositiondata, compositiondata3);
+					arrivingtimes = setUpTimes(0, compositiondata3);
+					arrivingtracks = setUpTracks(0, tracks, compositiondata3);
+
+					//ArrayList<Composition> arrivingcompositionswitharrtime = new ArrayList<>();
+					for (int i = 0; i< arrivingcompositions.size();i++){
+						if (arrivingtimes.get(i)<begintime){
+							arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)+1-begintime);
+						}
+						else{
+							arrivingcompositions.get(i).setArrivaltime(arrivingtimes.get(i)-begintime);
+						}
+					}
+
+					ArrayList<Composition> leavingcompositions = null;
+					ArrayList<Double> leavingtimes = null;
+					ArrayList<Track> leavingtracks = null;
+
+					leavingcompositions = setUpCompositions(1, trainsdep, compositiondata, compositiondata3); //TODO: THIS SHOULD ALSO BE A DUPLICATE OF THE OBJECTS OTHERWISE THE TIMES AND POSITION OF A TRAIN IS BEING CHANGES IN ARRIVINGCOMPOSITIONS!!!!
+					leavingtimes = setUpTimes(1, compositiondata3);
+					leavingtracks = setUpTracks(1, tracks, compositiondata3);
+
+					for (int i = 0; i< leavingcompositions.size();i++){
+						if (leavingtimes.get(i)<begintime){
+							leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)+1-begintime);
+						}
+						else{
+							leavingcompositions.get(i).setDeparturetime(leavingtimes.get(i)-begintime);
+						}
+					}
+
+					Composition[] addarriving = null;
+					Composition[] adddeparting = null;
+					addarriving = new Composition[Main.nrtrainstoadd];
+					adddeparting = new Composition[Main.nrtrainstoadd];
+					for (int i = 0; i<Main.nrtrainstoadd; i++){
+						Train addnow = trainstoaddnow[i];
+						addarriving[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},arrivingcompositions.get(arrivingpositionsnow[i]).getArrivaltime(),arrivingcompositions.get(arrivingpositionsnow[i]).getDeparturetime(),arrivingcompositions.get(arrivingpositionsnow[i]).getArrivalDepartureSide());
+						adddeparting[i]=new Composition(new ArrayList<Train>(){{add(addnow);}},leavingcompositions.get(departingpositionsnow[i]).getArrivaltime(),leavingcompositions.get(departingpositionsnow[i]).getDeparturetime(),leavingcompositions.get(departingpositionsnow[i]).getArrivalDepartureSide());
+						arrivingcompositions.get(arrivingpositionsnow[i]).coupleComposition(addarriving[i]);
+						//				System.out.println("hoi "+arrivingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
+						leavingcompositions.get(departingpositionsnow[i]).coupleComposition(adddeparting[i]);
+						//				System.out.println("hoi2 "+leavingcompositions.get(arrivingpositionsnow[i]).getTrainList().size());
+					}
+
+					//			for (int i = 0; i < arrivingcompositions.size(); i++){
+					//				System.out.println("size: "+arrivingcompositions.get(i).getTrainList().size());
+					//			}
+					//			for (int i = 0; i < leavingcompositions.size(); i++){
+					//				System.out.println("size2: "+leavingcompositions.get(i).getTrainList().size());
+					//			}
+
+					for (int i = 0; i<arrivingcompositions.size(); i++){
+						for (int j = 0; j<arrivingcompositions.get(i).getTrainList().size(); j++){
+							if (arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
+								arrivingcompositions.get(i).getTrainList().get(j).setType(arrivingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
 							}
 						}
 					}
-					Todo6 jobshop;
-					Parking5 parking;
-					for (int i = 1; i<=8; i++){
-//						a += 1;
-//						System.out.println(a);
-						for(int p = 0; p<tracks.length; p++){
-							for(int j = 0; j<60*24; j++){
-								tracks[p].setFreeBusyTime(j);
+					for (int i = 0; i<leavingcompositions.size(); i++){
+						for (int j = 0; j<leavingcompositions.get(i).getTrainList().size(); j++){
+							if (leavingcompositions.get(i).getTrainList().get(j).getInterchangeable() > 0){
+								leavingcompositions.get(i).getTrainList().get(j).setType(leavingcompositions.get(i).getTrainList().get(j).getInterchangeable()+3);
 							}
 						}
-						jobshop = null;
-						parking = null;
-						jobshop = new Todo6(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
-						if (jobshop.getFeasible()){
-							System.out.println("Feasible jobshop option "+i);
-							ArrayList<Event> events = jobshop.getEvents();
-							for (int j=1; j<=nrparkings; j++){
-								parking = new Parking5(events,tracks,j);
-								if (parking.getFeasible()){
-									System.out.println("Feasible parking");
-									solutionfound = true;
-									break;
+					}
+
+					double y = 0;
+					boolean solutionfound = false;
+					while (solutionfound == false){ // &&y<50
+						System.out.println("Iteration "+y);
+						Matching onzeMatching = null;
+						onzeMatching= new Matching(arrivingcompositions, leavingcompositions, y);
+						System.gc();
+						if (onzeMatching.returnSolved() == false){
+							if (y < .5){
+								noinitialpossible++;
+//								x = x-1;
+							}
+							solutionfound = false;
+							break;
+						}
+						else{
+							//						System.out.println("Feasible matching found");
+							boolean[][] z = onzeMatching.getZ();
+							ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
+							ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
+							ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
+							for (int i = 0; i<z.length; i++){
+								for (int j = 0; j<z[0].length; j++){
+									if (z[i][j]==true){
+										finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+										//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
+										if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
+											throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
+										}	
+									}
 								}
 							}
-							if (solutionfound){
-								break;
+							Todo6 jobshop = null;
+							Parking5 parking = null;
+							for (int i = 1; i<=Main.nrjobshops; i++){
+								//						a += 1;
+								//						System.out.println(a);
+								for(int p = 0; p<tracks.length; p++){
+									for(int j = 0; j<60*24; j++){
+										tracks[p].setFreeBusyTime(j);
+									}
+								}
+								jobshop = null;
+								parking = null;
+								jobshop = new Todo6(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
+								if (jobshop.getFeasible()){
+									//								System.out.println("Feasible jobshop option "+i);
+									ArrayList<Event> events = jobshop.getEvents();
+									for (int j=1; j<=nrparkings; j++){
+										parking = new Parking5(events,tracks,j);
+										if (parking.getFeasible()){
+											//										System.out.println("Feasible parking");
+											solutionfound = true;
+											break;
+										}
+									}
+									if (solutionfound){
+										break;
+									}
+									else{
+										//									System.out.println("No feasible parking");
+									}
+								}
+								else {
+									//								System.out.println("No feasible jobshop option "+i);
+								}
 							}
-							else{
-								System.out.println("No feasible parking");
+							if (!solutionfound){
+								System.gc();
+								y = y+10;
 							}
-						}
-						else {
-							System.out.println("No feasible jobshop option "+i);
 						}
 					}
-					if (!solutionfound){
-						jobshop = null;
-						parking = null;
-						for(int i = 0; i<tracks.length; i++){
-							for(int j = 0; j<60*24; j++){
-								tracks[i].setFreeBusyTime(j);
-							}
+
+					solutionsfound[x]=solutionfound;
+					double endTime = System.currentTimeMillis();
+					double duration = (endTime - startTime); 
+					times[x] = duration;
+					
+				}
+				int nrsolutionsfound = 0;
+				double totaltime = 0;
+				double maxtime = 0;
+				for (int i = 0; i<nriterations; i++){
+					if (solutionsfound[i]==true){
+						if (times[i]>maxtime){
+							maxtime = times[i];
 						}
-						finalcompositionblocks = null;
-						System.gc();
-						y = y+1;
+						nrsolutionsfound++;
+						totaltime += times[i];
 					}
 				}
+				System.out.println("NUMBER OF SOLUTIONS FOUND: "+nrsolutionsfound);
+				System.out.println("NUMBER OF INFEASIBLE INPUTS WITH Y=0: "+noinitialpossible);
+				System.out.println("PERCENTAGE SOLUTIONS FOUND: "+( ((double) nrsolutionsfound / ((double) nriterations-(double) noinitialpossible))));
+				System.out.println("AVERAGE TIME: "+((totaltime/(double) nrsolutionsfound)/1000));
+				System.out.println("MAX TIME: "+(maxtime/1000));
+
+				nrsolutionsfoundarray[xx]=nrsolutionsfound;
+				noinitialpossiblearray[xx]=noinitialpossible;
+				percentagesolutionsfoundarray[xx] = ( ((double) nrsolutionsfound / ((double) nriterations-(double) noinitialpossible)));
+				averagetimearray[xx] = ((totaltime/(double) nrsolutionsfound)/1000);
+				maxtimearray[xx] = (maxtime/1000);
+				if (percentagesolutionsfoundarray[xx]<Main.minpercfeasible){
+					break;
+				}
 			}
-
-
-
-
-			//					double y=4;
-			//						Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
-			//						boolean[][] z = onzeMatching.getZ();
-			//			
-			//						ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
-			//						ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
-			//						ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
-			//						for (int i = 0; i<z.length; i++){
-			//							for (int j = 0; j<z[0].length; j++){
-			//								if (z[i][j]==true){
-			//									//									System.out.println("z("+i+","+j+") = "+z[i][j]);
-			//									//									System.out.println("Arriving Block: "+i);
-			//									//									System.out.println("Trainlist: ");
-			//									//									arrivingblocks.get(i).printTrains();
-			//									//									System.out.println("Arriving time: "+arrivingblocks.get(i).getOriginComposition().getArrivaltime());
-			//									//									System.out.println("Departing Block: "+j);
-			//									//									System.out.println("Trainlist: ");
-			//									//									departingblocks.get(j).printTrains();
-			//									//									System.out.println("Departing time: "+departingblocks.get(j).getOriginComposition().getDeparturetime());
-			//									finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
-			//									//						System.out.println(arrivingblocks.get(i).getArrivaltime());
-			//									//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
-			//									if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
-			//										throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
-			//									}	
-			//								}
-			//							}
-			//						}
-			//			
-			//			
-			//			
-			//						Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);
-			//						ArrayList<Event> events = JobShop.getEvents();
-			//						System.gc();
-			//			
-			//						Parking5 ourparking5 = new Parking5(events,tracks,1);
-			//						System.out.println("Did not park: "+ourparking5.getNotParked());
-			//						if (ourparking5.getNotParked()>0){
-			//							System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
-			//						}
+			System.out.println();
+			System.out.println("RESULTS:");
+			for (int yy = 0; yy<washingprobabilities.length; yy++){
+				System.out.println("WASHING PROBABILITY: "+washingprobabilities[yy]);
+				System.out.println("NUMBER OF SOLUTIONS FOUND: "+nrsolutionsfoundarray[yy]);
+				System.out.println("NUMBER OF INFEASIBLE INPUTS WITH Y=0: "+noinitialpossiblearray[yy]);
+				System.out.println("PERCENTAGE SOLUTIONS FOUND: "+percentagesolutionsfoundarray[yy]);
+				System.out.println("AVERAGE TIME: "+averagetimearray[yy]);
+				System.out.println("MAX TIME: "+maxtimearray[yy]);
+				System.out.println();
+			}
 		} catch (IOException| MatrixIncompleteException |IndexOutOfBoundsException | MisMatchException | TrackNotFreeException | CloneNotSupportedException | MethodFailException e) {
 			e.printStackTrace();
+
 		}
 	}
+	
+//	System.out.println();
+		//				for (int i=0; i<=x; i++){
+		//					total += times[i];
+		//					System.out.print(times[i]+" ");
+		//				}
+		//
+		//				System.out.println("average time: "+(total/(double) x));
+		//					double y=4;
+		//						Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
+		//						boolean[][] z = onzeMatching.getZ();
+		//			
+		//						ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
+		//						ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
+		//						ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
+		//						for (int i = 0; i<z.length; i++){
+		//							for (int j = 0; j<z[0].length; j++){
+		//								if (z[i][j]==true){
+		//									//									System.out.println("z("+i+","+j+") = "+z[i][j]);
+		//									//									System.out.println("Arriving Block: "+i);
+		//									//									System.out.println("Trainlist: ");
+		//									//									arrivingblocks.get(i).printTrains();
+		//									//									System.out.println("Arriving time: "+arrivingblocks.get(i).getOriginComposition().getArrivaltime());
+		//									//									System.out.println("Departing Block: "+j);
+		//									//									System.out.println("Trainlist: ");
+		//									//									departingblocks.get(j).printTrains();
+		//									//									System.out.println("Departing time: "+departingblocks.get(j).getOriginComposition().getDeparturetime());
+		//									finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+		//									//						System.out.println(arrivingblocks.get(i).getArrivaltime());
+		//									//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
+		//									if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
+		//										throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
+		//									}	
+		//								}
+		//							}
+		//						}
+		//			
+		//			
+		//			
+		//						Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);
+		//						ArrayList<Event> events = JobShop.getEvents();
+		//						System.gc();
+		//			
+		//						Parking5 ourparking5 = new Parking5(events,tracks,1);
+		//						System.out.println("Did not park: "+ourparking5.getNotParked());
+		//						if (ourparking5.getNotParked()>0){
+		//							System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
+		//						}
 
 	//	public static Todo5 runJobShopParking(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> leavingcompositions, ArrayList<FinalBlock> finalcompositionblocks) throws IOException, MethodFailException, TrackNotFreeException{
 	//		Todo5 jobshop = null;

@@ -949,7 +949,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 				//if: it's at the A side of the track
 				if (side == 0){
 					if (checkevent.getEventTrack().getEventlist().get(0)!=checkevent){
-						throw new MethodFailException("Checkevent should be at side 0 but is not the first entry of EventTrack.getEventlist()");
+//						throw new MethodFailException("Checkevent should be at side 0 but is not the first entry of EventTrack.getEventlist()");
 					}
 					else {
 						//if: it is now leaving from the A side (only logical one, if it is now leaving from the B side changing to A side won't make it feasible)
