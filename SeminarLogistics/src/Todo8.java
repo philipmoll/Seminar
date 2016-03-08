@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Todo8 {
-
+//INSPECTION ALTIJD OP PLATFORM
 	private ArrayList<Activity> activities;
 
 	ArrayList<Composition> arrivingcompositions;

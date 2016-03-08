@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Todo7 {
-
+//ZOWEL MET ALS ZONDER PLATFORMS
 	private ArrayList<Activity> activities;
 
 	ArrayList<Composition> arrivingcompositions;

@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Todo6 {
-
+//INSPECTING MAG ALLEEN OP PLATFORMS
 	private ArrayList<Activity> activities;
 
 	ArrayList<Composition> arrivingcompositions;
