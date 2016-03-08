@@ -6264,7 +6264,7 @@ public class Todo7 {
 				}
 			}
 
-			if (bestoption == 7 || bestoption == 8){
+			if (bestoption == 7 || bestoption == 8 || bestoption == 20 || bestoption == 21){
 				for(int i = 0; i<amount; i++){
 					if(activities.get(activities.size()-1-i).getActivity()==5){
 						activities.get(activities.size()-1-i).setUpdate(time15, track15);
@@ -6280,7 +6280,7 @@ public class Todo7 {
 					}
 				}
 			}
-			else if(bestoption == 9 || bestoption == 10){
+			else if(bestoption == 9 || bestoption == 10 || bestoption == 22 || bestoption == 23){
 				for(int i = 0; i<amount; i++){
 					if(activities.get(activities.size()-1-i).getActivity()==6){
 						activities.get(activities.size()-1-i).setUpdate(time16, track16);
@@ -6297,7 +6297,7 @@ public class Todo7 {
 				}
 
 			}
-			else if(bestoption == 11 || bestoption == 12){
+			else if(bestoption == 11 || bestoption == 12 || bestoption == 24 || bestoption == 25){
 				for(int i = 0; i<amount; i++){
 					if(activities.get(activities.size()-1-i).getActivity()==7){
 						activities.get(activities.size()-1-i).setUpdate(time17, track17);
@@ -6313,7 +6313,7 @@ public class Todo7 {
 					}
 				}
 			}
-			else if(bestoption == 13){
+			else if(bestoption == 13 || bestoption == 26){
 				for(int i = 0; i<amount; i++){
 					if(activities.get(activities.size()-1-i).getActivity()==8){
 						activities.get(activities.size()-1-i).setUpdate(time18, track18);
