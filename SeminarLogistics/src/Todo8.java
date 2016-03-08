@@ -38,7 +38,7 @@ public class Todo8 {
 			
 			if(finalblocks.get(i).getInspection()){
 				
-				int durationactivity = 0;
+				int durationactivity = 0; 
 				
 				
 				
