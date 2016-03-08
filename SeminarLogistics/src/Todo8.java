@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Todo8 {
-//INSPECTION ALTIJD OP PLATFORM
+	//INSPECTION ALTIJD OP PLATFORM
 	private ArrayList<Activity> activities;
 
 	ArrayList<Composition> arrivingcompositions;
@@ -24,11 +24,11 @@ public class Todo8 {
 	Activity[] movelist = new Activity[60*24];
 
 	public Todo8(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
-		if(option < 1 || option > 8){
+		if(option < 1 || option > 12){
 			throw new IOException("Not that many options exist");
 		}
 		if (Main.print == true){
-		System.out.println("Option: " + option);
+			System.out.println("Option: " + option);
 		}
 
 		activities = new ArrayList<>();
@@ -136,8 +136,8 @@ public class Todo8 {
 							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
 						}
 					}
-					
-					
+
+
 				}
 				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
 				//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
@@ -164,8 +164,8 @@ public class Todo8 {
 							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
 						}
 					}
-				
-					
+
+
 				}
 				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
 				//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
@@ -3675,18 +3675,25 @@ public class Todo8 {
 	/*
 	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
 	 */
-	public ArrayList<Event> getEvents(){
+	public ArrayList<Event> getEvents() throws IOException{
 		ArrayList<Event> abcd = new ArrayList<>();
 		for(int i = 0; i<finalblockssshallow.size(); i++){
 			boolean first = true;
 			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
 			for(int j = 0; j<60*24; j++){
 				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
+					//                                                                System.out.println(finalblockssshallow.get(i).getActivity(j).getBestOption());
+					//                                                                if(finalblockssshallow.get(i).getActivity(j).getBestOption()==-1){
+					//                                                                               throw new IOException("EWA BITCHESSS");
+					//                                                                }
 					if(first){
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
 							first = false;
 							j += Main.moveduration-1;
+							if(abcd.get(abcd.size()-1).getEventblock().getInspection()){
+								abcd.get(abcd.size()-1).setInspectingEvent(true);
+							}
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
@@ -3702,6 +3709,7 @@ public class Todo8 {
 							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
 							first = true;
 							j += Main.moveduration-1;
+
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
