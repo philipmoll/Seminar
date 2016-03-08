@@ -24,7 +24,7 @@ public class Todo6 {
 	Activity[] movelist = new Activity[60*24];
 
 	public Todo6(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> departurecompositions, ArrayList<FinalBlock> finalblocks, int option) throws IOException{
-		if(option < 1 || option > 8){
+		if(option < 1 || option > 12){
 			throw new IOException("Not that many options exist");
 		}
 //		System.out.println("Option: " + option);
@@ -69,10 +69,65 @@ public class Todo6 {
 
 
 		int temp;
+		double temp2;
 		int k;
 		int a = this.finalblockss.size();
 
 		if(option == 1 || option == 2){
+			for(int i = 0; i<a; i++){
+				temp = 14124;
+				temp2 = -1.0;
+				k = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24) == temp){
+						if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() > temp2){
+							temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+							k = j;
+							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+						}
+					}
+					else if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24)<temp){
+						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+						k = j;
+						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+					}
+					
+				}
+				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
+				//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
+			}
+		}
+		else if(option == 3 || option == 4){
+			for(int i = 0; i<a; i++){
+				temp = 14124;
+				temp2 = -1.0;
+				k = -1;
+				for(int j = 0; j<this.finalblockss.size(); j++){
+					if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24) == temp){
+						if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() > temp2){
+							temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+							k = j;
+							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+						}
+					}
+					else if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24)<temp){
+						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+						k = j;
+						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+					}
+					
+				}
+				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
+				//System.out.println(this.finalblockss.get(k).getTotalServiceTime() + " " + this.finalblockss.get(k).getArrivalTimeInteger() + " " + this.finalblockss.get(k).getDepartureTimeInteger());
+				this.addComposition(this.finalblockss.get(k));
+				finalblockssshallow.add(this.finalblockss.get(k));
+				this.finalblockss.remove(k);
+			}
+		}
+		else if(option == 9 || option == 10){
 
 			for(int i = 0; i<a; i++){
 				temp = 14124;
@@ -91,7 +146,7 @@ public class Todo6 {
 			}
 
 		}
-		else if(option == 3 || option == 4){
+		else if(option == 11 || option == 12){
 			for(int i = 0; i<a; i++){
 				k = -1;
 				temp = -1;
@@ -136,6 +191,8 @@ public class Todo6 {
 				this.finalblockss.remove(k);
 			}
 		}
+		
+		
 
 //		for(int i = 0; i<platforms.size(); i++){
 //			System.out.print("Platform " + i + "  ");
@@ -3418,12 +3475,12 @@ public class Todo6 {
 
 	public int getObjective(int margin, int a){
 		int abc = 0;
-		if(option == 1 || option == 3 || option == 5 || option == 7 ||option == 2 || option == 4 || option == 6 || option == 8 ){
+		if(option == 1 || option == 3 || option == 5 || option == 7 || option == 9 || option == 11){
 			if(activities.get(activities.size()-1-a).getMarginInteger()<margin){
 				abc = activities.get(activities.size()-1-a).getMarginInteger();
 			}
 		}
-		else if(option == 2 || option == 4 || option == 6 || option == 8){
+		else if(option == 2 || option == 4 || option == 6 || option == 8 || option == 10 || option == 12){
 			int temp = 0;
 			for(int i = 0; i<activities.size(); i++){
 				for(int j = i+1; j<activities.size(); j++){
