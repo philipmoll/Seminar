@@ -58,7 +58,7 @@ public class Matching {
 	public Matching(ArrayList<Composition> arrivingcompositions /*set T_a*/, ArrayList<Composition> departingcompositions /*set T_d*/, double y) throws IndexOutOfBoundsException, MisMatchException, TrackNotFreeException, IOException, CloneNotSupportedException{
 		this.y = y;
 		this.c = y*(double)Main.moveduration/60/24;
-		System.out.println(c);
+//		System.out.println(c);
 		//set I
 		arrivingblocklist = makeblocks(arrivingcompositions);
 //		for (int i = 0; i<arrivingblocklist.size(); i++){

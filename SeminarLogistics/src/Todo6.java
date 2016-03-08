@@ -27,7 +27,7 @@ public class Todo6 {
 		if(option < 1 || option > 8){
 			throw new IOException("Not that many options exist");
 		}
-		System.out.println("Option: " + option);
+//		System.out.println("Option: " + option);
 
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();

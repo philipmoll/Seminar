@@ -28,10 +28,10 @@ public class Train implements Serializable{
 	private boolean repairing;
 	private boolean washing;
 	
-	private double inspprob = .9;
-	private double cleanprob = 1;
-	private double washprob = 0.1;
-	private double repprob = 0.1;
+	private double inspprob;
+	private double cleanprob;
+	private double washprob;
+	private double repprob;
 
 	private int position;
 	private Composition composition;
@@ -52,7 +52,15 @@ public class Train implements Serializable{
 		this.type = type;
 		this.carriages = carriages;
 		this.composition = null;
-
+		this.cleanprob = Main.cleanprob;
+		if (type == 1){
+			this.inspprob = Main.inspprob1;
+		}
+		else {
+			this.inspprob = Main.inspprob2;
+		}
+		this.washprob = Main.washingprobability;
+		this.repprob = Main.repprob;
 		position = -1; //If you make a new train, it is the only train in its composition
 
 		interchangeable_ID = -1;
@@ -110,6 +118,16 @@ public class Train implements Serializable{
 	public Train(int train_ID, int type, int carriages){
 		this.train_ID = train_ID;
 		this.type = type;
+		this.cleanprob = Main.cleanprob;
+		if (type == 1){
+			this.inspprob = Main.inspprob1;
+		}
+		else {
+			this.inspprob = Main.inspprob2;
+		}
+		this.washprob = Main.washingprobability;
+		this.repprob = Main.repprob;
+		
 		this.carriages = carriages;
 		this.composition = null;
 
@@ -185,6 +203,15 @@ public class Train implements Serializable{
 	public Train(int train_ID, int type, int carriages, int interchangeable_ID, boolean inspecting, boolean cleaning, boolean repairing, boolean washing){
 		this.train_ID = train_ID;
 		this.type = type;
+		this.cleanprob = Main.cleanprob;
+		if (type == 1){
+			this.inspprob = Main.inspprob1;
+		}
+		else {
+			this.inspprob = Main.inspprob2;
+		}
+		this.washprob = Main.washingprobability;
+		this.repprob = Main.repprob;
 		this.carriages = carriages;
 		this.composition = null;
 
