@@ -400,7 +400,7 @@ public class Parking5 implements Serializable{ //TODO: test!
 				parked = arrivalBusyTrack(arrivalevent, i);
 			}
 		}
-		if (!parked){
+		if (!parked&&!arrivalevent.getInspectingEvent()){
 			//			//System.out.println("IK BEN HIER");
 			for (int j = 0; j<lifotracks.size(); j++){
 				parked = lifoPark(arrivalevent, lifotracks.get(j),i);

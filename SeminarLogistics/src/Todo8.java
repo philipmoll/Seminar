@@ -27,7 +27,9 @@ public class Todo8 {
 		if(option < 1 || option > 8){
 			throw new IOException("Not that many options exist");
 		}
+		if (Main.print == true){
 		System.out.println("Option: " + option);
+		}
 
 		activities = new ArrayList<>();
 		finalblockss = new ArrayList<>();
@@ -35,13 +37,13 @@ public class Todo8 {
 		this.option = option;
 
 		for(int i = 0; i<finalblocks.size(); i++){
-			
+
 			if(finalblocks.get(i).getInspection()){
-				
+
 				int durationactivity = 0; 
-				
-				
-				
+
+
+
 				if (finalblocks.get(i).getSize()==1){
 					if (finalblocks.get(i).getTrain(0).getActivity(0)){
 						durationactivity = finalblocks.get(i).getTrain(0).getActivityTimeInteger(0);
@@ -49,31 +51,31 @@ public class Todo8 {
 					}
 				}
 				else if (finalblocks.get(i).getSize()>1){
-						int count = 0;
-						int acttime = 0;
-						for (int j=0; j<finalblocks.get(i).getSize(); j++){
-							if (finalblocks.get(i).getTrain(j).getActivity(0)){
-								count++;
-								if(acttime < finalblocks.get(i).getTrain(j).getActivityTimeInteger(0)){
-									acttime = finalblocks.get(i).getTrain(j).getActivityTimeInteger(0);
-								}
-								finalblocks.get(i).getTrain(0).setInspecting(false);
-
+					int count = 0;
+					int acttime = 0;
+					for (int j=0; j<finalblocks.get(i).getSize(); j++){
+						if (finalblocks.get(i).getTrain(j).getActivity(0)){
+							count++;
+							if(acttime < finalblocks.get(i).getTrain(j).getActivityTimeInteger(0)){
+								acttime = finalblocks.get(i).getTrain(j).getActivityTimeInteger(0);
 							}
-						}
-						if (count==1){
-							durationactivity = acttime;
-						}
-						//Here we decouple the composition, so that the trains can be handled simultaneously and add 5 minutes for coupling/decoupling
-						else if (count>1){
-							durationactivity = acttime + 5;
+							finalblocks.get(i).getTrain(0).setInspecting(false);
+
 						}
 					}
-					
-				
-				
-				
-				
+					if (count==1){
+						durationactivity = acttime;
+					}
+					//Here we decouple the composition, so that the trains can be handled simultaneously and add 5 minutes for coupling/decoupling
+					else if (count>1){
+						durationactivity = acttime + 5;
+					}
+				}
+
+
+
+
+
 				finalblocks.get(i).setArrivaltime(finalblocks.get(i).getArrivaltime()+((double) durationactivity)/60/24);
 			}
 		}
@@ -179,23 +181,24 @@ public class Todo8 {
 				this.finalblockss.remove(k);
 			}
 		}
-
-				for(int i = 0; i<platforms.size(); i++){
-					System.out.print("Platform " + i + "  ");
-					platforms.get(i).printTimeLine();
-					System.out.print("\n");
-					System.out.print("Reserve " + i + "   ");
-					platformsreserve.get(i).printTimeLine();
-					System.out.print("\n");
-				}
-				for(int i = 0; i<washareas.size(); i++){
-					System.out.print("Washarea " + i + "  ");
-					washareas.get(i).printTimeLine();
-					System.out.print("\n");
-				}
-				System.out.print("Movelist    " );
-				this.printTimeLine();
+		if (Main.print == true){
+			for(int i = 0; i<platforms.size(); i++){
+				System.out.print("Platform " + i + "  ");
+				platforms.get(i).printTimeLine();
 				System.out.print("\n");
+				System.out.print("Reserve " + i + "   ");
+				platformsreserve.get(i).printTimeLine();
+				System.out.print("\n");
+			}
+			for(int i = 0; i<washareas.size(); i++){
+				System.out.print("Washarea " + i + "  ");
+				washareas.get(i).printTimeLine();
+				System.out.print("\n");
+			}
+			System.out.print("Movelist    " );
+			this.printTimeLine();
+			System.out.print("\n");
+		}
 	}
 	/**
 	 * Adds a composotion with all its required activities to the activity list.
@@ -3381,9 +3384,11 @@ public class Todo8 {
 		//			throw new IOException("No feasible solution found for job-shop");
 		//		}
 
-				System.out.print("Composition ");
-				addedcomp.printTimeLine();
-				System.out.print("\n");
+		if (Main.print == true){
+			System.out.print("Composition ");
+			addedcomp.printTimeLine();
+			System.out.print("\n");
+		}
 	}
 
 	public boolean getConsecutive(Activity activity1, Activity activity2){		

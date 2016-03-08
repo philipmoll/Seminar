@@ -23,6 +23,7 @@ public class Event { //TODO: test
 	private int reverseleave; //1: it will leave in reverse via a free track, 0 otherwise
 	private Track eventtrack;
 	private Event relatedevent;
+	private boolean inspectingevent;
 
 	public Event(FinalBlock eventblock, int typeevent, int finaltypeevent, int starttime, int endtime, int sidestart, int sideend, Event relatedevent) {
 		this.eventblock = eventblock;
@@ -266,6 +267,14 @@ public class Event { //TODO: test
 		else if (reverseleave == 1){
 			this.setReverseLeave(0);
 		}
+	}
+	
+	public void setInspectingEvent(boolean inspecting){
+		inspectingevent = inspecting;
+	}
+	
+	public boolean getInspectingEvent(){
+		return inspectingevent;
 	}
 
 }

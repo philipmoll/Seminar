@@ -24,19 +24,23 @@ public class Main {
 	public final static int moveduration = 1; //MINUTES
 	public final static double begintime = .33333333333; //MINUTES //TODO: make flexible!!!!!!!!!!! begintime nu 8AM, maar kan later veranderen
 
-	
+
 	private final static int nrjobshops = 8;
 	private final static int nrparkings = 2;
 	public static double washingprobability;
-	private final static int nrwashings = 10;
 	public final static double inspprob1 = 1;
 	public final static double inspprob2 = .8;
 	public final static double cleanprob = 1;
 	public final static double repprob = .1;
-	
+	public final static double y_start = 0;
+	public final static double y_increase = 10;
+	public final static double y_max = 100;
+	public static boolean print = false;
+
+	private final static int nrwashings = 1;
 	public final static double minpercfeasible = .9;
 
-	private static final int nriterations = 100; //TODO: zelf invullen
+	private static final int nriterations = 1000; //TODO: zelf invullen
 	private static final int nrtrainstoadd = 0; //TODO: zelf invullen
 
 	//	private static int fromjobshop;
@@ -46,17 +50,19 @@ public class Main {
 	{
 
 		try {
-			double[] washingprobabilities = new double[Main.nrwashings];
+			int sizearrays = Main.nrwashings;
+			double[] washingprobabilities = new double[sizearrays];
 			washingprobabilities[0]=.1;
 			for (int i = 1; i<washingprobabilities.length; i++){
 				washingprobabilities[i]=washingprobabilities[i-1]+.05;
 			}
-			int[] nrsolutionsfoundarray = new int[10];
-			int[] noinitialpossiblearray = new int[10];
-			double[] percentagesolutionsfoundarray = new double[10];
-			double[] averagetimearray = new double[10];
-			double[] maxtimearray = new double[10];
-			for (int xx = 0; xx<washingprobabilities.length; xx++){
+			
+			int[] nrsolutionsfoundarray = new int[sizearrays];
+			int[] noinitialpossiblearray = new int[sizearrays];
+			double[] percentagesolutionsfoundarray = new double[sizearrays];
+			double[] averagetimearray = new double[sizearrays];
+			double[] maxtimearray = new double[sizearrays];
+			for (int xx = 0; xx<sizearrays; xx++){
 				Main.washingprobability = washingprobabilities[xx];
 				//			int nriterations = 1000; //TODO: zelf invullen
 				//			int nrtrainstoadd = 0; //TODO: zelf invullen
@@ -262,9 +268,9 @@ public class Main {
 						}
 					}
 
-					double y = 0;
+					double y = Main.y_start;
 					boolean solutionfound = false;
-					while (solutionfound == false){ // &&y<50
+					while (solutionfound == false && y<Main.y_max){
 						System.out.println("Iteration "+y);
 						Matching onzeMatching = null;
 						onzeMatching= new Matching(arrivingcompositions, leavingcompositions, y);
@@ -272,13 +278,15 @@ public class Main {
 						if (onzeMatching.returnSolved() == false){
 							if (y < .5){
 								noinitialpossible++;
-//								x = x-1;
+								//								x = x-1;
 							}
 							solutionfound = false;
 							break;
 						}
 						else{
-							//						System.out.println("Feasible matching found");
+							if (print == true){
+								System.out.println("Feasible matching found");
+							}
 							boolean[][] z = onzeMatching.getZ();
 							ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
 							ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
@@ -294,7 +302,7 @@ public class Main {
 									}
 								}
 							}
-							Todo6 jobshop = null;
+							Todo8 jobshop = null;
 							Parking5 parking = null;
 							for (int i = 1; i<=Main.nrjobshops; i++){
 								//						a += 1;
@@ -306,14 +314,18 @@ public class Main {
 								}
 								jobshop = null;
 								parking = null;
-								jobshop = new Todo6(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
+								jobshop = new Todo8(tracks,arrivingcompositions,leavingcompositions,finalcompositionblocks,i);
 								if (jobshop.getFeasible()){
-									//								System.out.println("Feasible jobshop option "+i);
+									if (Main.print == true){
+										System.out.println("Feasible jobshop option "+i);
+									}
 									ArrayList<Event> events = jobshop.getEvents();
 									for (int j=1; j<=nrparkings; j++){
 										parking = new Parking5(events,tracks,j);
 										if (parking.getFeasible()){
-											//										System.out.println("Feasible parking");
+											if (Main.print == true){
+												System.out.println("Feasible parking");
+											}
 											solutionfound = true;
 											break;
 										}
@@ -322,16 +334,20 @@ public class Main {
 										break;
 									}
 									else{
-										//									System.out.println("No feasible parking");
+										if (Main.print == true){
+											System.out.println("No feasible parking, nr not parked: "+parking.getNotParked());
+										}
 									}
 								}
 								else {
-									//								System.out.println("No feasible jobshop option "+i);
+									if (Main.print == true){
+										System.out.println("No feasible jobshop option "+i);
+									}
 								}
 							}
 							if (!solutionfound){
 								System.gc();
-								y = y+10;
+								y = y+Main.y_increase;
 							}
 						}
 					}
@@ -340,7 +356,7 @@ public class Main {
 					double endTime = System.currentTimeMillis();
 					double duration = (endTime - startTime); 
 					times[x] = duration;
-					
+
 				}
 				int nrsolutionsfound = 0;
 				double totaltime = 0;
@@ -385,54 +401,54 @@ public class Main {
 
 		}
 	}
-	
-//	System.out.println();
-		//				for (int i=0; i<=x; i++){
-		//					total += times[i];
-		//					System.out.print(times[i]+" ");
-		//				}
-		//
-		//				System.out.println("average time: "+(total/(double) x));
-		//					double y=4;
-		//						Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
-		//						boolean[][] z = onzeMatching.getZ();
-		//			
-		//						ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
-		//						ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
-		//						ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
-		//						for (int i = 0; i<z.length; i++){
-		//							for (int j = 0; j<z[0].length; j++){
-		//								if (z[i][j]==true){
-		//									//									System.out.println("z("+i+","+j+") = "+z[i][j]);
-		//									//									System.out.println("Arriving Block: "+i);
-		//									//									System.out.println("Trainlist: ");
-		//									//									arrivingblocks.get(i).printTrains();
-		//									//									System.out.println("Arriving time: "+arrivingblocks.get(i).getOriginComposition().getArrivaltime());
-		//									//									System.out.println("Departing Block: "+j);
-		//									//									System.out.println("Trainlist: ");
-		//									//									departingblocks.get(j).printTrains();
-		//									//									System.out.println("Departing time: "+departingblocks.get(j).getOriginComposition().getDeparturetime());
-		//									finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
-		//									//						System.out.println(arrivingblocks.get(i).getArrivaltime());
-		//									//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
-		//									if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
-		//										throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
-		//									}	
-		//								}
-		//							}
-		//						}
-		//			
-		//			
-		//			
-		//						Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);
-		//						ArrayList<Event> events = JobShop.getEvents();
-		//						System.gc();
-		//			
-		//						Parking5 ourparking5 = new Parking5(events,tracks,1);
-		//						System.out.println("Did not park: "+ourparking5.getNotParked());
-		//						if (ourparking5.getNotParked()>0){
-		//							System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
-		//						}
+
+	//	System.out.println();
+	//				for (int i=0; i<=x; i++){
+	//					total += times[i];
+	//					System.out.print(times[i]+" ");
+	//				}
+	//
+	//				System.out.println("average time: "+(total/(double) x));
+	//					double y=4;
+	//						Matching onzeMatching = new Matching(arrivingcompositions, leavingcompositions, y);
+	//						boolean[][] z = onzeMatching.getZ();
+	//			
+	//						ArrayList<Block> arrivingblocks = onzeMatching.getArrivingBlockList();
+	//						ArrayList<Block> departingblocks = onzeMatching.getDepartingBlockList();
+	//						ArrayList<FinalBlock> finalcompositionblocks = new ArrayList<>();
+	//						for (int i = 0; i<z.length; i++){
+	//							for (int j = 0; j<z[0].length; j++){
+	//								if (z[i][j]==true){
+	//									//									System.out.println("z("+i+","+j+") = "+z[i][j]);
+	//									//									System.out.println("Arriving Block: "+i);
+	//									//									System.out.println("Trainlist: ");
+	//									//									arrivingblocks.get(i).printTrains();
+	//									//									System.out.println("Arriving time: "+arrivingblocks.get(i).getOriginComposition().getArrivaltime());
+	//									//									System.out.println("Departing Block: "+j);
+	//									//									System.out.println("Trainlist: ");
+	//									//									departingblocks.get(j).printTrains();
+	//									//									System.out.println("Departing time: "+departingblocks.get(j).getOriginComposition().getDeparturetime());
+	//									finalcompositionblocks.add(new FinalBlock(arrivingblocks.get(i).getTrainList(), arrivingblocks.get(i).getArrivaltime(), departingblocks.get(j).getDeparturetime(), arrivingblocks.get(i).getOriginComposition(), departingblocks.get(j).getOriginComposition(), arrivingblocks.get(i).getOriginComposition().getArrivalDepartureSide(), departingblocks.get(j).getOriginComposition().getArrivalDepartureSide(), arrivingblocks.get(i).getCutPosition1(), arrivingblocks.get(i).getCutPosition2(), departingblocks.get(j).getCutPosition1(), departingblocks.get(j).getCutPosition2()));
+	//									//						System.out.println(arrivingblocks.get(i).getArrivaltime());
+	//									//throw exception if blocks not compatible in time after all or if arrivaltime or departure time is not within range 0 and 1
+	//									if (finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()<0 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime()>1 || finalcompositionblocks.get(finalcompositionblocks.size()-1).getArrivaltime()+onzeMatching.getc() +finalcompositionblocks.get(finalcompositionblocks.size()-1).getTotalServiceTime()>finalcompositionblocks.get(finalcompositionblocks.size()-1).getDeparturetime() ){
+	//										throw new MisMatchException("Arrivalblock "+i+" and departureblock "+j+" are not compatible in time after all in Main");
+	//									}	
+	//								}
+	//							}
+	//						}
+	//			
+	//			
+	//			
+	//						Todo5 JobShop = new Todo5(tracks, arrivingcompositions, leavingcompositions, finalcompositionblocks, 1);
+	//						ArrayList<Event> events = JobShop.getEvents();
+	//						System.gc();
+	//			
+	//						Parking5 ourparking5 = new Parking5(events,tracks,1);
+	//						System.out.println("Did not park: "+ourparking5.getNotParked());
+	//						if (ourparking5.getNotParked()>0){
+	//							System.out.println("NO FEASIBLE PARKING SOLUTION FOUND");
+	//						}
 
 	//	public static Todo5 runJobShopParking(Track[] tracks, ArrayList<Composition> arrivingcompositions, ArrayList<Composition> leavingcompositions, ArrayList<FinalBlock> finalcompositionblocks) throws IOException, MethodFailException, TrackNotFreeException{
 	//		Todo5 jobshop = null;
