@@ -74,7 +74,7 @@ public class Todo8 {
 				
 				
 				
-				finalblocks.get(i).setArrivaltime(finalblocks.get(i).getArrivaltime()+durationactivity);
+				finalblocks.get(i).setArrivaltime(finalblocks.get(i).getArrivaltime()+((double) durationactivity)/60/24);
 			}
 		}
 
