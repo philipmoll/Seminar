@@ -14,6 +14,7 @@ public class Activity implements Serializable{
 	private Track previoustrack;
 	private int movetime;
 	private int movetime2;
+	private int bestoption = -1;
 
 	public Activity(int plannedtime, int duration, int ultimatetime, Composition composition, int activity, Track trackassigned){
 		this.plannedtime = plannedtime;
@@ -166,5 +167,11 @@ public class Activity implements Serializable{
 	}
 	public void setCurrentTrack(Track abc){
 		previoustrack = abc;
+	}
+	public void setBestOption(int a){
+		this.bestoption = a;
+	}
+	public int getBestOption(){
+		return this.bestoption;
 	}
 }

@@ -3183,12 +3183,12 @@ public class Todo7 {
 
 		}
 
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		if(addedcomp.getInspection()){
 
 			durationactivity = 0;
@@ -3229,22 +3229,22 @@ public class Todo7 {
 						durationactivity = acttime + 5;
 					}
 				}
-				
+
 				addedcomp.setArrivaltime(addedcomp.getArrivaltime()+((double) durationactivity)/60/24);
 			}
 
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
 		amount = 0;
 		mintemp = addedcomp.getArrivalTimeInteger(); 
 		int margin14 = 2432;
@@ -3275,27 +3275,27 @@ public class Todo7 {
 		boolean feasible26 = true;
 		trackfree = true;
 		count = 0;
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		//reset the sequence array
 		for (int i = 0; i<sequence.length; i++){
 			sequence[i] = -1;
@@ -6239,12 +6239,12 @@ public class Todo7 {
 
 
 		}
-		
-		
 
 
-		
-		
+
+
+
+
 
 
 		//		System.out.println("Bestoption" + bestoption);
@@ -6278,6 +6278,7 @@ public class Todo7 {
 						activities.get(activities.size()-1-i).setUpdate(time13, track13);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
+					activities.get(activities.size()-1-i).setBestOption(bestoption);
 				}
 			}
 			else if(bestoption == 9 || bestoption == 10 || bestoption == 22 || bestoption == 23){
@@ -6294,6 +6295,8 @@ public class Todo7 {
 						activities.get(activities.size()-1-i).setUpdate(time13, track13);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
+					activities.get(activities.size()-1-i).setBestOption(bestoption);
+
 				}
 
 			}
@@ -6311,6 +6314,8 @@ public class Todo7 {
 						activities.get(activities.size()-1-i).setUpdate(time13, track13);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
+					activities.get(activities.size()-1-i).setBestOption(bestoption);
+
 				}
 			}
 			else if(bestoption == 13 || bestoption == 26){
@@ -6323,6 +6328,8 @@ public class Todo7 {
 						activities.get(activities.size()-1-i).setUpdate(time13, track13);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
+					activities.get(activities.size()-1-i).setBestOption(bestoption);
+
 				}
 			}
 			else{
@@ -6344,6 +6351,8 @@ public class Todo7 {
 						activities.get(activities.size()-1-i).setUpdate(time13, track13);
 						this.setBusyTime(activities.get(activities.size()-1-i));
 					}
+					activities.get(activities.size()-1-i).setBestOption(bestoption);
+
 				}
 			}
 		}
@@ -6635,23 +6644,40 @@ public class Todo7 {
 	/*
 	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
 	 */
-	public ArrayList<Event> getEvents(){
+	public ArrayList<Event> getEvents() throws IOException{
 		ArrayList<Event> abcd = new ArrayList<>();
 		for(int i = 0; i<finalblockssshallow.size(); i++){
 			boolean first = true;
 			finalblockssshallow.get(i).getOrigincomposition().getArrivalTimeInteger();
 			for(int j = 0; j<60*24; j++){
+				if(finalblockssshallow.get(i).getActivity(j).getBestOption()==-1){
+					throw new IOException("EWA BITCHESSS");
+				}
 				if(finalblockssshallow.get(i).getActivity(j) != null && finalblockssshallow.get(i).getActivity(j) == movelist[j]){
 					if(first){
 						if(finalblockssshallow.get(i).getActivity(j).getActivity()==4){
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 1, j+Main.moveduration, -1, finalblockssshallow.get(i).getArrivalSide(), -1, null));
 							first = false;
 							j += Main.moveduration-1;
+							if(finalblockssshallow.get(i).getActivity(j).getBestOption() >13){
+								abcd.get(abcd.size()-1).setInspectingEvent(true);
+							}
+							else{
+								abcd.get(abcd.size()-1).setInspectingEvent(false);
+
+							}
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 0, 0, j+Main.moveduration, -1, 0, -1, null));
 							first = false;
 							j += Main.moveduration-1;
+							if(finalblockssshallow.get(i).getActivity(j).getBestOption() >13){
+								abcd.get(abcd.size()-1).setInspectingEvent(true);
+							}
+							else{
+								abcd.get(abcd.size()-1).setInspectingEvent(false);
+
+							}
 						}
 					}
 					else{
@@ -6662,6 +6688,13 @@ public class Todo7 {
 							abcd.get(abcd.size()-2).setSideEnd(finalblockssshallow.get(i).getDepartureSide());
 							first = true;
 							j += Main.moveduration-1;
+							if(finalblockssshallow.get(i).getActivity(j).getBestOption() >13){
+								abcd.get(abcd.size()-1).setInspectingEvent(true);
+							}
+							else{
+								abcd.get(abcd.size()-1).setInspectingEvent(false);
+
+							}
 						}
 						else{
 							abcd.add(new Event(finalblockssshallow.get(i), 1, 0, abcd.get(abcd.size()-1).getStarttime(), j, abcd.get(abcd.size()-1).getSidestart(), 0, abcd.get(abcd.size()-1)));
@@ -6670,6 +6703,14 @@ public class Todo7 {
 							abcd.get(abcd.size()-2).setSideEnd(0);
 							first = true;
 							j += Main.moveduration-1;
+							
+							if(finalblockssshallow.get(i).getActivity(j).getBestOption() >13){
+								abcd.get(abcd.size()-1).setInspectingEvent(true);
+							}
+							else{
+								abcd.get(abcd.size()-1).setInspectingEvent(false);
+
+							}
 						}
 
 					}
