@@ -79,18 +79,19 @@ public class Todo6 {
 				temp2 = -1.0;
 				k = -1;
 				for(int j = 0; j<this.finalblockss.size(); j++){
-					if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24) == temp){
-						if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() > temp2){
+					if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime()>temp2){
+						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+						k = j;
+						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+					}
+					else if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() == temp2){
+						if(this.finalblockss.get(j).getShuntTime()-(int) (this.finalblockss.get(j).getTotalServiceTime()*60*24) < temp){
 							temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
 							k = j;
 							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
 						}
 					}
-					else if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24)<temp){
-						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
-						k = j;
-						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
-					}
+					
 					
 				}
 				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
@@ -106,18 +107,19 @@ public class Todo6 {
 				temp2 = -1.0;
 				k = -1;
 				for(int j = 0; j<this.finalblockss.size(); j++){
-					if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24) == temp){
+					if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24)<temp){
+						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
+						k = j;
+						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
+					}
+					else if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24) == temp){
 						if(this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() > temp2){
 							temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
 							k = j;
 							temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
 						}
 					}
-					else if(this.finalblockss.get(j).getShuntTime()-(int)(this.finalblockss.get(j).getTotalServiceTime()*60*24)<temp){
-						temp = this.finalblockss.get(j).getShuntTime()-((int) (this.finalblockss.get(j).getTotalServiceTime()*60*24));
-						k = j;
-						temp2 = this.finalblockss.get(j).getTotalServiceTime()*60*24/(double) this.finalblockss.get(j).getShuntTime() ;
-					}
+				
 					
 				}
 				//System.out.println(this.finalblockss.get(k).getSize() + " " + this.finalblockss.get(k).getLength() + " " + this.finalblockss.get(k).getTrain(0).getType());
