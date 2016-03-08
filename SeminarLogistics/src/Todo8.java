@@ -3673,7 +3673,7 @@ public class Todo8 {
 	}
 
 	/*
-	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND
+	 * TODO: IF DIFFERENT DATA, EDIT 0 AND 1 FOR SIDESTART EN SIDEEND.
 	 */
 	public ArrayList<Event> getEvents() throws IOException{
 		ArrayList<Event> abcd = new ArrayList<>();
