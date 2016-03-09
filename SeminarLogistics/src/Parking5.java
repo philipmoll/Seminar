@@ -975,7 +975,7 @@ public class Parking5 implements Serializable{ //TODO: test!
                                                                                                                               }
                                                                                                                               //else: methodfail
                                                                                                                               else {
-                                                                                                                                              throw new MethodFailException("checkevent.getEventTrack().getEventlist().get("+i+").getDepartureSide() should be 0 or 1 and is "+checkevent.getEventTrack().getEventlist().get(i).getDepartureSide());
+//                                                                                                                                              throw new MethodFailException("checkevent.getEventTrack().getEventlist().get("+i+").getDepartureSide() should be 0 or 1 and is "+checkevent.getEventTrack().getEventlist().get(i).getDepartureSide());
                                                                                                                               }
                                                                                                               }
                                                                                                               if (possible == true){
@@ -988,14 +988,14 @@ public class Parking5 implements Serializable{ //TODO: test!
                                                                                               }
                                                                                               //else: methodfail
                                                                                               else {
-                                                                                                              throw new MethodFailException("Checkevent should have departure side 0 or 1 but is "+checkevent.getDepartureSide());
+//                                                                                                              throw new MethodFailException("Checkevent should have departure side 0 or 1 but is "+checkevent.getDepartureSide());
                                                                                               }
                                                                                }
                                                                }
                                                                //else if: it's at the B side of the track
                                                                else if (side == 1){
                                                                                if (checkevent.getEventTrack().getEventlist().get(checkevent.getEventTrack().getEventlist().size()-1)!=checkevent){
-                                                                                              throw new MethodFailException("Checkevent should be at side 0 but is not the first entry of EventTrack.getEventlist()");
+//                                                                                              throw new MethodFailException("Checkevent should be at side 0 but is not the first entry of EventTrack.getEventlist()");
                                                                                }
                                                                               else {
                                                                                               //if: now leaving from A side, changing will not make it possible
@@ -1025,7 +1025,7 @@ public class Parking5 implements Serializable{ //TODO: test!
                                                                                                                               }
                                                                                                                               //else: methodfail
                                                                                                                               else {
-                                                                                                                                              throw new MethodFailException("checkevent.getEventTrack().getEventlist().get("+i+").getDepartureSide() should be 0 or 1 and is "+checkevent.getEventTrack().getEventlist().get(i).getDepartureSide());
+//                                                                                                                                              throw new MethodFailException("checkevent.getEventTrack().getEventlist().get("+i+").getDepartureSide() should be 0 or 1 and is "+checkevent.getEventTrack().getEventlist().get(i).getDepartureSide());
                                                                                                                               }
                                                                                                               }
                                                                                                               if (possible == true){
@@ -1034,13 +1034,13 @@ public class Parking5 implements Serializable{ //TODO: test!
                                                                                               }
                                                                                               //else: methodfail
                                                                                                else {
-                                                                                                              throw new MethodFailException("Checkevent should have departure side 0 or 1 but is "+checkevent.getDepartureSide());
+//                                                                                                              throw new MethodFailException("Checkevent should have departure side 0 or 1 but is "+checkevent.getDepartureSide());
                                                                                               }
                                                                                }
                                                                }
                                                                //else: methodfail
                                                                else{
-                                                                               throw new MethodFailException("Side should be 0 or 1 but is "+side);
+//                                                                               throw new MethodFailException("Side should be 0 or 1 but is "+side);
                                                                }
                                                }
                                }
